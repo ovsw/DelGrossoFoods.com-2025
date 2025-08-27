@@ -1,8 +1,6 @@
-# Next.js Monorepo with Sanity CMS
+# DelGrossoFoods.com Website - a Next.js Monorepo with Sanity CMS
 
-A modern, full-stack monorepo template built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
-
-![Easiest way to build a webpage](https://raw.githubusercontent.com/robotostudio/turbo-start-sanity/main/turbo-start-sanity-og.png)
+A modern, full-stack monorepo built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
 
 ## Features
 
@@ -31,23 +29,37 @@ A modern, full-stack monorepo template built with Next.js App Router, Sanity CMS
 - Live preview capabilities
 - Asset management
 
-## Getting Started
+#### 1. Download project files
 
-### Installing the template
+Clone the project. Make sure you have the following installed on your system:
 
-#### 1. Initialize template with Sanity CLI
+- Node JS (version >=20)
+- pnpm (version >= 9.12.3)
 
-Run the command in your Terminal to initialize this template on your local computer.
+#### 2. Create the Sanity `apps/sanity/.env` file with the following vriables
 
-See the documentation if you are [having issues with the CLI](https://www.sanity.io/help/cli-errors).
+> **Note**: Take the values for these from the `DelGrossoFoods.com-25` Sanity project's API seciton.
+>
+> - `SANITY_DEPLOY_TOKEN`
+> - `SANITY_STUDIO_PROJECT_ID`
+> - `SANITY_STUDIO_DATASET`
+> - `SANITY_STUDIO_TITLE`
+> - `SANITY_STUDIO_PRESENTATION_URL`
 
-```shell
-npm create sanity@latest -- --template robotostudio/turbo-start-sanity
-```
+#### 3. Create the Next.JS `apps/next/.env` file with the following vriables
 
-#### 2. Run Studio and Next.js app locally
+> **Note**: Take the values for these from the `DelGrossoFoods.com-25` Sanity project's API seciton.
+>
+> - NEXT_PUBLIC_SANITY_PROJECT_ID=
+> - NEXT_PUBLIC_SANITY_DATASET=
+> - NEXT_PUBLIC_SANITY_API_VERSION=2024-10-28
+> - NEXT_PUBLIC_SANITY_STUDIO_URL=http://localhost:3333
+> - SANITY_API_READ_TOKEN=
+> - SANITY_API_WRITE_TOKEN=
 
-Navigate to the template directory using `cd <your app name>`, and start the development servers by running the following command
+#### 3. Run Studio and Next.js app locally
+
+Navigate to the project directory using `cd delgrossofoods.com-25`, and start the development servers by running the following command
 
 ```shell
 pnpm run dev
@@ -57,46 +69,28 @@ pnpm run dev
 
 Open the Next.js app running locally in your browser on [http://localhost:3000](http://localhost:3000).
 
-Open the Studio running locally in your browser on [http://localhost:3333](http://localhost:3333). You should now see a screen prompting you to log in to the Studio. Use the same service (Google, GitHub, or email) that you used when you logged in to the CLI.
+Open the Studio running locally in your browser on [http://localhost:3333](http://localhost:3333). You should now see a screen prompting you to log in to the Studio.
 
-### Adding content with Sanity
+**User account**:
 
-#### 1. Publish your first document
+- you should have an admin account created for you.
+- Conctact Todd Walters at DelGrosso if you need one created for you.
 
-The template comes pre-defined with a schema containing `Author`, `Blog`, `BlogIndex`, `FAQ`, `Footer`, `HomePage`, `Navbar`, `Page`, and `Settings` document types.
+### Wokring on the project
 
-From the Studio, click "+ Create" and select the `Blog` document type. Go ahead and create and publish the document.
+1.  Extending the Sanity schema
 
-Your content should now appear in your Next.js app ([http://localhost:3000](http://localhost:3000)) as well as in the Studio on the "Presentation" Tab
+The Sanity 3 schemas for all document types are defined in the `studio/schemaTypes/documents` directory. You can [add more document types](https://www.sanity.io/docs/schema-types) to the schema as needed.
 
-#### 2. Sample Content
+2.  Updating the front-end
 
-When you initialize the template using the Sanity CLI, sample content is not automatically imported into your project. However, you can import it after the init is done. This data includes example blog posts, authors, and other content types to help you get started quickly (see next step).
+The Next.JS 15 front-end is in the `web/` folder, familiarize yourself with its structure to get started.
 
-#### 3. Seed data using script
+### Deployment
 
-To add sample data programmatically, run the following command:
+#### 1. Deploying Sanity Studio
 
-```shell
-cd apps/studio
-npx sanity exec scripts/create-data.ts --with-user-token
-```
-
-This command executes a TypeScript script that creates and populates content in your Sanity dataset.
-
-#### 4. Extending the Sanity schema
-
-The schemas for all document types are defined in the `studio/schemaTypes/documents` directory. You can [add more document types](https://www.sanity.io/docs/schema-types) to the schema to suit your needs.
-
-### Deploying your application and inviting editors
-
-#### 1. Deploy Sanity Studio
-
-Your Next.js frontend (`/web`) and Sanity Studio (`/studio`) are still only running on your local computer. It's time to deploy and get it into the hands of other content editors.
-
-> **⚠️ Important**: When initializing the template with the Sanity CLI, the `.github` folder may not be included or might be renamed to `github` (without the dot). If you don't see a `.github` folder in your project root, you'll need to manually create it and copy the GitHub Actions workflows from the [template repository](https://github.com/robotostudio/turbo-start-sanity/tree/main/.github) for the deployment automation to work.
-
-The template includes a GitHub Actions workflow [`deploy-sanity.yml`](https://raw.githubusercontent.com/robotostudio/turbo-start-sanity/main/.github/workflows/deploy-sanity.yml) that automatically deploys your Sanity Studio whenever changes are pushed to the `studio` directory.
+The project includes a GitHub Actions workflow [`deploy-sanity.yml`](https://raw.githubusercontent.com/robotostudio/turbo-start-sanity/main/.github/workflows/deploy-sanity.yml) that automatically deploys your Sanity Studio whenever changes are pushed to the `studio` directory.
 
 > **Note**: To use the GitHub Actions workflow, make sure to configure the following secrets in your repository settings:
 >
@@ -110,6 +104,7 @@ The template includes a GitHub Actions workflow [`deploy-sanity.yml`](https://ra
 Set `SANITY_STUDIO_PRODUCTION_HOSTNAME` to whatever you want your deployed Sanity Studio hostname to be. Eg. for `SANITY_STUDIO_PRODUCTION_HOSTNAME=my-cool-project` you'll get a studio URL of `https://my-cool-project.sanity.studio` (and `<my-branch-name>-my-cool-project.sanity.studio` for PR previews builds done automatically via the `deploy-sanity.yml` github CI workflow when you open a PR.)
 
 Set `SANITY_STUDIO_PRESENTATION_URL` to your web app front-end URL (from the Vercel deployment). This URL is required for production deployments and should be:
+
 - Set in your GitHub repository secrets for CI/CD deployments
 - Set in your local environment if deploying manually with `npx sanity deploy`
 - Not needed for local development, where preview will automatically use http://localhost:3000
@@ -122,17 +117,14 @@ npx sanity deploy
 
 **Note**: To use the live preview feature, your browser needs to enable third party cookies.
 
-#### 2. Deploy Next.js app to Vercel
+#### 2. Next.js app Deployment to Vercel
 
-You have the freedom to deploy your Next.js app to your hosting provider of choice. With Vercel and GitHub being a popular choice, we'll cover the basics of that approach.
+You have the freedom to deploy your Next.js app to your hosting provider of choice. Initially the front-end is meant to be deployed With Vercel and GitHub, from the `/apps/web` folder.
 
-1. Create a GitHub repository from this project. [Learn more](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
-2. Create a new Vercel project and connect it to your Github repository.
-3. Set the `Root Directory` to your Next.js app (`/apps/web`).
-4. Configure your Environment Variables.
+If you need to access branch previews for pull-requests, ask for access to the Vercel DelGrosso Foods Inc. org from Todd Walters at DelGrosso.
 
-#### 3. Invite a collaborator
+#### 3. Invite more collaborators
 
-Now that you've deployed your Next.js application and Sanity Studio, you can optionally invite a collaborator to your Studio. Open up [Manage](https://www.sanity.io/manage), select your project and click "Invite project members"
+You can optionally invite more collaborators to the Studio: if you have access to [Manage](https://www.sanity.io/manage), select the `DelGrossoFoods.inc-25` in the `DelGrosso Foods Inc.` Org and click "Invite project members".
 
 They will be able to access the deployed Studio, where you can collaborate together on creating content.
