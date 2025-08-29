@@ -1,3 +1,4 @@
+import { DropIcon, PackageIcon } from "@sanity/icons";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   BookMarked,
@@ -32,6 +33,9 @@ type CreateSingleTon = {
   S: StructureBuilder;
 } & Base<SingletonType>;
 
+// This function creates a list item for a "singleton" document type.
+// Singleton documents are unique documents like a homepage or global settings.
+// The list item's child is the document form for that singleton.
 const createSingleTon = ({ S, type, title, icon }: CreateSingleTon) => {
   const newTitle = title ?? getTitleCase(type);
   return S.listItem()
@@ -64,6 +68,37 @@ type CreateIndexList = {
   context: StructureResolverContext;
 };
 
+const createIndexList = ({ S, list, index, context }: CreateIndexList) => {
+  const indexTitle = index.title ?? getTitleCase(index.type);
+  const listTitle = list.title ?? getTitleCase(list.type);
+  return S.listItem()
+    .title(listTitle)
+    .icon(index.icon ?? File)
+    .child(
+      S.list()
+        .title(indexTitle)
+        .items([
+          S.listItem()
+            .title(indexTitle)
+            .icon(index.icon ?? File)
+            .child(
+              S.document()
+                .views([S.view.form()])
+                .schemaType(index.type)
+                .documentId(index.type),
+            ),
+          createList({
+            S,
+            type: list.type,
+            title: list.title,
+            icon: list.icon,
+          }),
+        ]),
+    );
+};
+
+// This function creates a list item for an "index" document (like a blog index page).
+// Its child is a list containing the index document itself and an orderable list of related documents.
 const createIndexListWithOrderableItems = ({
   S,
   index,
@@ -109,6 +144,12 @@ export const structure = (
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
       S.divider(),
       createList({ S, type: "page", title: "Pages" }),
+      createIndexList({
+        S,
+        index: { type: "sauceIndex", icon: DropIcon },
+        list: { type: "sauce", title: "Sauces", icon: DropIcon },
+        context,
+      }),
       createIndexListWithOrderableItems({
         S,
         index: { type: "blogIndex", icon: BookMarked },
