@@ -1,4 +1,9 @@
-import { DocumentTextIcon, DropIcon, TagIcon } from "@sanity/icons";
+import {
+  DocumentTextIcon,
+  DropIcon,
+  PackageIcon,
+  TagIcon,
+} from "@sanity/icons";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   BookMarked,
@@ -147,6 +152,12 @@ export const structure = (
         S,
         index: { type: "sauceIndex", icon: DropIcon },
         list: { type: "sauce", title: "Sauces", icon: DropIcon },
+        context,
+      }),
+      createIndexList({
+        S,
+        index: { type: "productIndex", icon: PackageIcon },
+        list: { type: "product", title: "Products", icon: PackageIcon },
         context,
       }),
       createIndexList({
