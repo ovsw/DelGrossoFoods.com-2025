@@ -1,4 +1,4 @@
-import { DropIcon, PackageIcon } from "@sanity/icons";
+import { DocumentTextIcon, DropIcon, TagIcon } from "@sanity/icons";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   BookMarked,
@@ -6,7 +6,6 @@ import {
   File,
   FileText,
   HomeIcon,
-  type LucideIcon,
   MessageCircle,
   PanelBottom,
   PanelBottomIcon,
@@ -26,7 +25,7 @@ type Base<T = SchemaType> = {
   type: T;
   preview?: boolean;
   title?: string;
-  icon?: LucideIcon;
+  icon?: React.ComponentType;
 };
 
 type CreateSingleTon = {
@@ -149,6 +148,18 @@ export const structure = (
         index: { type: "sauceIndex", icon: DropIcon },
         list: { type: "sauce", title: "Sauces", icon: DropIcon },
         context,
+      }),
+      createIndexList({
+        S,
+        index: { type: "recipeIndex", icon: DocumentTextIcon },
+        list: { type: "recipe", title: "Recipes", icon: DocumentTextIcon },
+        context,
+      }),
+      createList({
+        S,
+        type: "recipeCategory",
+        title: "Recipe Categories",
+        icon: TagIcon,
       }),
       createIndexListWithOrderableItems({
         S,
