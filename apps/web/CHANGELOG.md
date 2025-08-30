@@ -1,5 +1,14 @@
 # web
 
+## 1.0.2
+
+### Patch Changes
+
+- [#18](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/18) [`5aa40f6`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/5aa40f6961a96b402f4e1fbaad61227f51badf7e) Thanks [@ovsw](https://github.com/ovsw)! - Raise minimum Node to 22.12.0 to fix Sanity typegen (ESM/CJS interop).
+
+- Updated dependencies [[`5aa40f6`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/5aa40f6961a96b402f4e1fbaad61227f51badf7e)]:
+  - @workspace/ui@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
