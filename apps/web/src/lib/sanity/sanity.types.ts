@@ -437,6 +437,92 @@ export type Settings = {
   };
 };
 
+export type ProductIndex = {
+  _id: string;
+  _type: "productIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+  slug: Slug;
+  pageBuilder?: PageBuilder;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
+export type RecipeIndex = {
+  _id: string;
+  _type: "recipeIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+  slug: Slug;
+  pageBuilder?: PageBuilder;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
+export type SauceIndex = {
+  _id: string;
+  _type: "sauceIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+  slug: Slug;
+  displayFeaturedSauces?: "yes" | "no";
+  featuredSaucesCount?: "1" | "2" | "3";
+  pageBuilder?: PageBuilder;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
 export type BlogIndex = {
   _id: string;
   _type: "blogIndex";
@@ -493,6 +579,298 @@ export type HomePage = {
   };
   ogTitle?: string;
   ogDescription?: string;
+};
+
+export type RecipeCategory = {
+  _id: string;
+  _type: "recipeCategory";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+};
+
+export type Recipe = {
+  _id: string;
+  _type: "recipe";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  versions: Array<string>;
+  dgfSauces?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "sauce";
+  }>;
+  lfdSauces?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "sauce";
+  }>;
+  tags?: Array<string>;
+  meat?: Array<string>;
+  serves?: string;
+  categories?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "recipeCategory";
+  }>;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  dgfIngredients: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  dgfDirections: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  dgfNotes?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  lfdIngredients: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  lfdDirections: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  lfdNotes?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  orderRank?: string;
+};
+
+export type Product = {
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  sku: string;
+  category: "case_of_12" | "gift_pack" | "merchandise";
+  shippingCategory: "normal_item" | "large_crate" | "gift_pack";
+  description?: RichText;
+  price?: number;
+  weight: number;
+  sauces?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "sauce";
+  }>;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+};
+
+export type Sauce = {
+  _id: string;
+  _type: "sauce";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name: string;
+  line: "Original" | "Organic" | "Ultra-Premium";
+  category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
+  sauceJarSize:
+    | "26 oz."
+    | "24 oz."
+    | "16.9 oz."
+    | "16 oz."
+    | "14 oz."
+    | "13.5 oz.";
+  description: RichText;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  labelFlatImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  nutritionalInfo?: {
+    netWeight?: string;
+    servingsPerContainer?: string;
+    servingSize?: string;
+    gramsPerServing?: string;
+    calories?: string;
+    totalFat?: string;
+    totalFatPerc?: string;
+    saturatedFat?: string;
+    saturatedFatPerc?: string;
+    transFat?: string;
+    cholesterol?: string;
+    cholesterolPerc?: string;
+    sodium?: string;
+    sodiumPerc?: string;
+    totalCarbohydrate?: string;
+    totalCarbohydratePerc?: string;
+    dietaryFiber?: string;
+    dietaryFiberPerc?: string;
+    totalSugars?: string;
+    addedSugars?: string;
+    addedSugarsPerc?: string;
+    protein?: string;
+    vitaminD?: string;
+    vitaminDPerc?: string;
+    calcium?: string;
+    calciumPerc?: string;
+    iron?: string;
+    ironPerc?: string;
+    potassium?: string;
+    potassiumPerc?: string;
+  };
+  ingredients?: string;
+  allergens?: string;
+  authorName?: string;
+  authorImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
 };
 
 export type Author = {
@@ -929,8 +1307,15 @@ export type AllSanitySchemaTypes =
   | Navbar
   | Footer
   | Settings
+  | ProductIndex
+  | RecipeIndex
+  | SauceIndex
   | BlogIndex
   | HomePage
+  | RecipeCategory
+  | Recipe
+  | Product
+  | Sauce
   | Author
   | Faq
   | Page
@@ -2638,6 +3023,39 @@ export type QueryGenericPageOGDataResult =
       description: string | null;
       image: string | null;
       dominantColor: string | null;
+      seoImage: string | null;
+      logo: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "productIndex";
+      title: string | null;
+      description: string | null;
+      image: null;
+      dominantColor: null;
+      seoImage: string | null;
+      logo: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "recipeIndex";
+      title: string | null;
+      description: string | null;
+      image: null;
+      dominantColor: null;
+      seoImage: string | null;
+      logo: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "sauceIndex";
+      title: string | null;
+      description: string | null;
+      image: null;
+      dominantColor: null;
       seoImage: string | null;
       logo: string | null;
       date: string;
