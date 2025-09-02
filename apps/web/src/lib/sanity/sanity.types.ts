@@ -1197,25 +1197,25 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityFileAsset = {
@@ -1354,14 +1354,14 @@ export type QueryImageTypeResult = {
   id: string | null;
   preview: string | null;
   hotspot: {
-    x: number | null;
-    y: number | null;
+    x: number;
+    y: number;
   } | null;
   crop: {
-    bottom: number | null;
-    left: number | null;
-    right: number | null;
-    top: number | null;
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
   } | null;
 } | null;
 // Variable: queryHomePageData
@@ -1418,14 +1418,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1497,14 +1497,14 @@ export type QueryHomePageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -1623,14 +1623,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1643,14 +1643,14 @@ export type QueryHomePageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -1704,14 +1704,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1735,14 +1735,14 @@ export type QueryHomePageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -1895,14 +1895,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1974,14 +1974,14 @@ export type QuerySlugPageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -2100,14 +2100,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2120,14 +2120,14 @@ export type QuerySlugPageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -2181,14 +2181,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2212,14 +2212,14 @@ export type QuerySlugPageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -2366,14 +2366,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2445,14 +2445,14 @@ export type QueryBlogIndexPageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -2571,14 +2571,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2591,14 +2591,14 @@ export type QueryBlogIndexPageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -2652,14 +2652,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2683,14 +2683,14 @@ export type QueryBlogIndexPageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -2787,14 +2787,14 @@ export type QueryBlogIndexPageDataResult = {
       id: string | null;
       preview: string | null;
       hotspot: {
-        x: number | null;
-        y: number | null;
+        x: number;
+        y: number;
       } | null;
       crop: {
-        bottom: number | null;
-        left: number | null;
-        right: number | null;
-        top: number | null;
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
       } | null;
     };
     publishedAt: string | null;
@@ -2806,14 +2806,14 @@ export type QueryBlogIndexPageDataResult = {
         id: string | null;
         preview: string | null;
         hotspot: {
-          x: number | null;
-          y: number | null;
+          x: number;
+          y: number;
         } | null;
         crop: {
-          bottom: number | null;
-          left: number | null;
-          right: number | null;
-          top: number | null;
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
         } | null;
       } | null;
     } | null;
@@ -2839,14 +2839,14 @@ export type QueryBlogSlugPageDataResult = {
       id: string | null;
       preview: string | null;
       hotspot: {
-        x: number | null;
-        y: number | null;
+        x: number;
+        y: number;
       } | null;
       crop: {
-        bottom: number | null;
-        left: number | null;
-        right: number | null;
-        top: number | null;
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
       } | null;
     } | null;
   } | null;
@@ -2855,14 +2855,14 @@ export type QueryBlogSlugPageDataResult = {
     id: string | null;
     preview: string | null;
     hotspot: {
-      x: number | null;
-      y: number | null;
+      x: number;
+      y: number;
     } | null;
     crop: {
-      bottom: number | null;
-      left: number | null;
-      right: number | null;
-      top: number | null;
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
     } | null;
   };
   richText: Array<
@@ -2902,14 +2902,14 @@ export type QueryBlogSlugPageDataResult = {
         };
         media?: unknown;
         hotspot: {
-          x: number | null;
-          y: number | null;
+          x: number;
+          y: number;
         } | null;
         crop: {
-          bottom: number | null;
-          left: number | null;
-          right: number | null;
-          top: number | null;
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
         } | null;
         caption: string | null;
         _type: "image";
@@ -3135,14 +3135,14 @@ export type QueryGlobalSeoSettingsResult = {
     id: string | null;
     preview: string | null;
     hotspot: {
-      x: number | null;
-      y: number | null;
+      x: number;
+      y: number;
     } | null;
     crop: {
-      bottom: number | null;
-      left: number | null;
-      right: number | null;
-      top: number | null;
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
     } | null;
   } | null;
   siteDescription: string;
