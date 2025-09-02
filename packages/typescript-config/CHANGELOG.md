@@ -1,5 +1,11 @@
 # @workspace/typescript-config
 
+## 1.2.0
+
+### Minor Changes
+
+- [#23](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/23) [`cece48c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/cece48cadaa5670776737bcdbb623098453dd76e) Thanks [@ovsw](https://github.com/ovsw)! - upgraded to sanity 4.6.0, added types for sauces, products, recipies and corresponding structures in the sanity back-end.
+
 ## 1.1.0
 
 ## 1.0.2
