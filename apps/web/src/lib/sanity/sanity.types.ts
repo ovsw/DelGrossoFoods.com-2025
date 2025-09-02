@@ -495,6 +495,100 @@ export type HomePage = {
   ogDescription?: string;
 };
 
+export type Sauce = {
+  _id: string;
+  _type: "sauce";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name: string;
+  line: "Original" | "Organic" | "Ultra-Premium";
+  category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
+  sauceJarSize:
+    | "26 oz."
+    | "24 oz."
+    | "16.9 oz."
+    | "16 oz."
+    | "14 oz."
+    | "13.5 oz.";
+  description: RichText;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  labelFlatImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  nutritionalInfo?: {
+    netWeight?: string;
+    servingsPerContainer?: string;
+    servingSize?: string;
+    gramsPerServing?: string;
+    calories?: string;
+    totalFat?: string;
+    totalFatPerc?: string;
+    saturatedFat?: string;
+    saturatedFatPerc?: string;
+    transFat?: string;
+    cholesterol?: string;
+    cholesterolPerc?: string;
+    sodium?: string;
+    sodiumPerc?: string;
+    totalCarbohydrate?: string;
+    totalCarbohydratePerc?: string;
+    dietaryFiber?: string;
+    dietaryFiberPerc?: string;
+    totalSugars?: string;
+    addedSugars?: string;
+    addedSugarsPerc?: string;
+    protein?: string;
+    vitaminD?: string;
+    vitaminDPerc?: string;
+    calcium?: string;
+    calciumPerc?: string;
+    iron?: string;
+    ironPerc?: string;
+    potassium?: string;
+    potassiumPerc?: string;
+  };
+  ingredients?: string;
+  allergens?: string;
+  authorName?: string;
+  authorImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type Author = {
   _id: string;
   _type: "author";
@@ -819,25 +913,25 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityFileAsset = {
@@ -931,6 +1025,7 @@ export type AllSanitySchemaTypes =
   | Settings
   | BlogIndex
   | HomePage
+  | Sauce
   | Author
   | Faq
   | Page
@@ -969,14 +1064,14 @@ export type QueryImageTypeResult = {
   id: string | null;
   preview: string | null;
   hotspot: {
-    x: number | null;
-    y: number | null;
+    x: number;
+    y: number;
   } | null;
   crop: {
-    bottom: number | null;
-    left: number | null;
-    right: number | null;
-    top: number | null;
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
   } | null;
 } | null;
 // Variable: queryHomePageData
@@ -1033,14 +1128,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1112,14 +1207,14 @@ export type QueryHomePageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -1238,14 +1333,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1258,14 +1353,14 @@ export type QueryHomePageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -1319,14 +1414,14 @@ export type QueryHomePageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1350,14 +1445,14 @@ export type QueryHomePageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -1510,14 +1605,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1589,14 +1684,14 @@ export type QuerySlugPageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -1715,14 +1810,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1735,14 +1830,14 @@ export type QuerySlugPageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -1796,14 +1891,14 @@ export type QuerySlugPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -1827,14 +1922,14 @@ export type QuerySlugPageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -1981,14 +2076,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2060,14 +2155,14 @@ export type QueryBlogIndexPageDataResult = {
                 };
                 media?: unknown;
                 hotspot: {
-                  x: number | null;
-                  y: number | null;
+                  x: number;
+                  y: number;
                 } | null;
                 crop: {
-                  bottom: number | null;
-                  left: number | null;
-                  right: number | null;
-                  top: number | null;
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
                 } | null;
                 caption: string | null;
                 _type: "image";
@@ -2186,14 +2281,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2206,14 +2301,14 @@ export type QueryBlogIndexPageDataResult = {
           id: string | null;
           preview: string | null;
           hotspot: {
-            x: number | null;
-            y: number | null;
+            x: number;
+            y: number;
           } | null;
           crop: {
-            bottom: number | null;
-            left: number | null;
-            right: number | null;
-            top: number | null;
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
           } | null;
         } | null;
         buttons: Array<{
@@ -2267,14 +2362,14 @@ export type QueryBlogIndexPageDataResult = {
               };
               media?: unknown;
               hotspot: {
-                x: number | null;
-                y: number | null;
+                x: number;
+                y: number;
               } | null;
               crop: {
-                bottom: number | null;
-                left: number | null;
-                right: number | null;
-                top: number | null;
+                bottom: number;
+                left: number;
+                right: number;
+                top: number;
               } | null;
               caption: string | null;
               _type: "image";
@@ -2298,14 +2393,14 @@ export type QueryBlogIndexPageDataResult = {
             id: string | null;
             preview: string | null;
             hotspot: {
-              x: number | null;
-              y: number | null;
+              x: number;
+              y: number;
             } | null;
             crop: {
-              bottom: number | null;
-              left: number | null;
-              right: number | null;
-              top: number | null;
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
             } | null;
           } | null;
           url?: CustomUrl;
@@ -2402,14 +2497,14 @@ export type QueryBlogIndexPageDataResult = {
       id: string | null;
       preview: string | null;
       hotspot: {
-        x: number | null;
-        y: number | null;
+        x: number;
+        y: number;
       } | null;
       crop: {
-        bottom: number | null;
-        left: number | null;
-        right: number | null;
-        top: number | null;
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
       } | null;
     };
     publishedAt: string | null;
@@ -2421,14 +2516,14 @@ export type QueryBlogIndexPageDataResult = {
         id: string | null;
         preview: string | null;
         hotspot: {
-          x: number | null;
-          y: number | null;
+          x: number;
+          y: number;
         } | null;
         crop: {
-          bottom: number | null;
-          left: number | null;
-          right: number | null;
-          top: number | null;
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
         } | null;
       } | null;
     } | null;
@@ -2454,14 +2549,14 @@ export type QueryBlogSlugPageDataResult = {
       id: string | null;
       preview: string | null;
       hotspot: {
-        x: number | null;
-        y: number | null;
+        x: number;
+        y: number;
       } | null;
       crop: {
-        bottom: number | null;
-        left: number | null;
-        right: number | null;
-        top: number | null;
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
       } | null;
     } | null;
   } | null;
@@ -2470,14 +2565,14 @@ export type QueryBlogSlugPageDataResult = {
     id: string | null;
     preview: string | null;
     hotspot: {
-      x: number | null;
-      y: number | null;
+      x: number;
+      y: number;
     } | null;
     crop: {
-      bottom: number | null;
-      left: number | null;
-      right: number | null;
-      top: number | null;
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
     } | null;
   };
   richText: Array<
@@ -2517,14 +2612,14 @@ export type QueryBlogSlugPageDataResult = {
         };
         media?: unknown;
         hotspot: {
-          x: number | null;
-          y: number | null;
+          x: number;
+          y: number;
         } | null;
         crop: {
-          bottom: number | null;
-          left: number | null;
-          right: number | null;
-          top: number | null;
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
         } | null;
         caption: string | null;
         _type: "image";
@@ -2717,14 +2812,14 @@ export type QueryGlobalSeoSettingsResult = {
     id: string | null;
     preview: string | null;
     hotspot: {
-      x: number | null;
-      y: number | null;
+      x: number;
+      y: number;
     } | null;
     crop: {
-      bottom: number | null;
-      left: number | null;
-      right: number | null;
-      top: number | null;
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
     } | null;
   } | null;
   siteDescription: string;
