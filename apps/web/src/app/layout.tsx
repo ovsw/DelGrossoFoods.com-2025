@@ -1,7 +1,7 @@
 import "@workspace/ui/styles/globals.css";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import { draftMode } from "next/headers";
+import { cookies, draftMode, headers } from "next/headers";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
@@ -27,8 +27,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // This is needed to support the color scheme client hint from cookies
+  const themeCookie = (await cookies()).get("theme")?.value;
+  const clientHints = await headers();
+  const chPref = clientHints.get("Sec-CH-Prefers-Color-Scheme");
+  const hintedTheme = chPref === "dark" || chPref === "light" ? chPref : undefined;
+  const initialTheme =
+    themeCookie === "dark" || themeCookie === "light"
+      ? themeCookie
+      : hintedTheme;
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={initialTheme}
+      style={initialTheme ? ({ colorScheme: initialTheme } as React.CSSProperties) : undefined}
+    >
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
       >
