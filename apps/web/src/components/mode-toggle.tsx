@@ -9,9 +9,24 @@ import {
 } from "@workspace/ui/components/dropdown-menu";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  // When the theme changes, update the "theme" cookie to persist the user's preference.
+  // If the theme is "dark" or "light", set the cookie to that value for 1 year.
+  // If the theme is "system" or undefined, clear the cookie.
+  useEffect(() => {
+    try {
+      if (theme === "dark" || theme === "light") {
+        document.cookie = `theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
+      } else {
+        document.cookie = `theme=; Path=/; Max-Age=0; SameSite=Lax`;
+      }
+    } catch {
+      // Ignore errors (e.g., if document is not available)
+    }
+  }, [theme]);
 
   return (
     <DropdownMenu>
