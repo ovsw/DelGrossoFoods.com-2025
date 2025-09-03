@@ -31,7 +31,8 @@ export default async function RootLayout({
   const themeCookie = (await cookies()).get("theme")?.value;
   const clientHints = await headers();
   const chPref = clientHints.get("Sec-CH-Prefers-Color-Scheme");
-  const hintedTheme = chPref === "dark" || chPref === "light" ? chPref : undefined;
+  const hintedTheme =
+    chPref === "dark" || chPref === "light" ? chPref : undefined;
   const initialTheme =
     themeCookie === "dark" || themeCookie === "light"
       ? themeCookie
@@ -40,7 +41,11 @@ export default async function RootLayout({
     <html
       lang="en"
       className={initialTheme}
-      style={initialTheme ? ({ colorScheme: initialTheme } as React.CSSProperties) : undefined}
+      style={
+        initialTheme
+          ? ({ colorScheme: initialTheme } as React.CSSProperties)
+          : undefined
+      }
     >
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
