@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-pnpm -w turbo run lint --continue
-pnpm -w turbo run check-types --continue
+# Run checks only in CI; do not block local pushes
+if [ -n "$CI" ]; then
+  set -e
+  pnpm -w turbo run lint
+  pnpm -w turbo run check-types
+else
+  echo "Skipping lint and type checks on local push; enforced in CI."
+fi
