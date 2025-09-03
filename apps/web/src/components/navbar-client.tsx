@@ -24,12 +24,10 @@ import {
 } from "@workspace/ui/components/sheet";
 import { cn } from "@workspace/ui/lib/utils";
 import { Menu } from "lucide-react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import { useIsMobile } from "@/hooks/use-is-mobile";
 import type {
   QueryGlobalSeoSettingsResult,
   QueryNavbarDataResult,
@@ -137,62 +135,66 @@ function MobileNavbar({
         </SheetTrigger>
       </div>
       <SheetContent className="overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>
-            {logo && (
-              <div className="max-w-[130px]">
-                <Logo
-                  alt={siteTitle}
-                  priority
-                  image={logo}
-                  width={80}
-                  height={40}
-                />
-              </div>
-            )}
-          </SheetTitle>
-        </SheetHeader>
+        {isOpen ? (
+          <>
+            <SheetHeader>
+              <SheetTitle>
+                {logo && (
+                  <div className="max-w-[130px]">
+                    <Logo
+                      alt={siteTitle}
+                      priority
+                      image={logo}
+                      width={80}
+                      height={40}
+                    />
+                  </div>
+                )}
+              </SheetTitle>
+            </SheetHeader>
 
-        <div className="mb-8 mt-8 flex flex-col gap-4">
-          {columns?.map((item) => {
-            if (item.type === "link") {
-              return (
-                <Link
-                  key={`column-link-${item.name}-${item._key}`}
-                  href={item.href ?? ""}
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    buttonVariants({ variant: "ghost" }),
-                    "justify-start",
-                  )}
-                >
-                  {item.name}
-                </Link>
-              );
-            }
-            return (
-              <Accordion
-                type="single"
-                collapsible
-                className="w-full"
-                key={item._key}
-              >
-                <MobileNavbarAccordionColumn
-                  column={item}
-                  setIsOpen={setIsOpen}
-                />
-              </Accordion>
-            );
-          })}
-        </div>
+            <div className="mb-8 mt-8 flex flex-col gap-4">
+              {columns?.map((item) => {
+                if (item.type === "link") {
+                  return (
+                    <Link
+                      key={`column-link-${item.name}-${item._key}`}
+                      href={item.href ?? ""}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "justify-start",
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                }
+                return (
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full"
+                    key={item._key}
+                  >
+                    <MobileNavbarAccordionColumn
+                      column={item}
+                      setIsOpen={setIsOpen}
+                    />
+                  </Accordion>
+                );
+              })}
+            </div>
 
-        <div className="border-t pt-4">
-          <SanityButtons
-            buttons={buttons ?? []}
-            buttonClassName="w-full"
-            className="flex mt-2 flex-col gap-3"
-          />
-        </div>
+            <div className="border-t pt-4">
+              <SanityButtons
+                buttons={buttons ?? []}
+                buttonClassName="w-full"
+                className="flex mt-2 flex-col gap-3"
+              />
+            </div>
+          </>
+        ) : null}
       </SheetContent>
     </Sheet>
   );
@@ -305,25 +307,24 @@ export function DesktopNavbar({
   );
 }
 
-const ClientSideNavbar = ({
+export function NavbarClient({
   navbarData,
   settingsData,
 }: {
   navbarData: QueryNavbarDataResult;
   settingsData: QueryGlobalSeoSettingsResult;
-}) => {
-  const isMobile = useIsMobile();
-
-  if (isMobile === undefined) {
-    return null; // Return null on initial render to avoid hydration mismatch
-  }
-
-  return isMobile ? (
-    <MobileNavbar navbarData={navbarData} settingsData={settingsData} />
-  ) : (
-    <DesktopNavbar navbarData={navbarData} />
+}) {
+  return (
+    <nav aria-label="Primary">
+      <div className="md:hidden">
+        <MobileNavbar navbarData={navbarData} settingsData={settingsData} />
+      </div>
+      <div className="hidden md:block">
+        <DesktopNavbar navbarData={navbarData} />
+      </div>
+    </nav>
   );
-};
+}
 
 function SkeletonMobileNavbar() {
   return (
@@ -369,9 +370,3 @@ export function NavbarSkeletonResponsive() {
     </>
   );
 }
-
-// Dynamically import the navbar with no SSR to avoid hydration issues
-export const NavbarClient = dynamic(() => Promise.resolve(ClientSideNavbar), {
-  ssr: false,
-  loading: () => <NavbarSkeletonResponsive />,
-});
