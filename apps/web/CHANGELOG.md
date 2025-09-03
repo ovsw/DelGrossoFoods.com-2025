@@ -1,5 +1,14 @@
 # web
 
+## 1.2.2
+
+### Patch Changes
+
+- [#28](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/28) [`50e130d`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/50e130d41ded6d8ba859978e492935d2a91da7cd) Thanks [@ovsw](https://github.com/ovsw)! - refactor: implement color scheme client hint support without needing to suppress hydration warnings and persist theme preference in cookies
+
+- Updated dependencies []:
+  - @workspace/ui@1.2.2
+
 ## 1.2.1
 
 ### Patch Changes
