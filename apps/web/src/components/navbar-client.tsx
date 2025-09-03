@@ -45,19 +45,37 @@ interface MenuItem {
   href?: string;
 }
 
+function normalizeHref(href?: string | null): string {
+  if (!href) return "/";
+  return href.startsWith("/") ? href : `/${href}`;
+}
+
+function isActiveRoute(currentPath: string, href?: string | null): boolean {
+  const path = currentPath || "/";
+  const target = normalizeHref(href);
+  if (target === "/") return path === "/";
+  return path === target || path.startsWith(`${target}/`);
+}
+
 function MenuItemLink({
   item,
   setIsOpen,
+  active,
 }: {
   item: MenuItem;
   setIsOpen?: (isOpen: boolean) => void;
+  active?: boolean;
 }) {
   return (
     <Link
       className={cn(
-        "flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-accent hover:text-accent-foreground items-center focus:bg-accent focus:text-accent-foreground",
+        "flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors items-center",
+        active
+          ? "bg-accent text-accent-foreground"
+          : "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
       )}
       aria-label={`Link to ${item.title ?? item.href}`}
+      aria-current={active ? "page" : undefined}
       onClick={() => setIsOpen?.(false)}
       href={item.href ?? "/"}
     >
@@ -75,9 +93,11 @@ function MenuItemLink({
 function MobileNavbarAccordionColumn({
   column,
   setIsOpen,
+  currentPath,
 }: {
   column: NonNullable<NonNullable<QueryNavbarDataResult>["columns"]>[number];
   setIsOpen: (isOpen: boolean) => void;
+  currentPath: string;
 }) {
   if (column.type !== "column") return null;
   return (
@@ -94,6 +114,7 @@ function MobileNavbarAccordionColumn({
           <MenuItemLink
             key={item._key}
             setIsOpen={setIsOpen}
+            active={isActiveRoute(currentPath, item.href)}
             item={{
               description: item.description ?? "",
               href: item.href ?? "",
@@ -118,12 +139,13 @@ function MobileNavbar({
   const { columns, buttons } = navbarData ?? {};
   const [isOpen, setIsOpen] = useState(false);
 
-  const path = usePathname();
+  const rawPath = usePathname();
+  const currentPath = rawPath ?? "/";
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: This is intentional
   useEffect(() => {
     setIsOpen(false);
-  }, [path]);
+  }, [rawPath]);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex justify-end">
@@ -164,7 +186,15 @@ function MobileNavbar({
                       className={cn(
                         buttonVariants({ variant: "ghost" }),
                         "justify-start",
+                        isActiveRoute(currentPath, item.href)
+                          ? "bg-accent text-accent-foreground"
+                          : undefined,
                       )}
+                      aria-current={
+                        isActiveRoute(currentPath, item.href)
+                          ? "page"
+                          : undefined
+                      }
                     >
                       {item.name}
                     </Link>
@@ -180,6 +210,7 @@ function MobileNavbar({
                     <MobileNavbarAccordionColumn
                       column={item}
                       setIsOpen={setIsOpen}
+                      currentPath={currentPath}
                     />
                   </Accordion>
                 );
@@ -208,6 +239,8 @@ function NavbarColumnLink({
     { type: "link" }
   >;
 }) {
+  const rawPath = usePathname();
+  const active = isActiveRoute(rawPath ?? "/", column.href);
   return (
     <Link
       aria-label={`Link to ${column.name ?? column.href}`}
@@ -215,9 +248,12 @@ function NavbarColumnLink({
       // legacyBehavior
       className={cn(
         navigationMenuTriggerStyle(),
-        "text-muted-foreground dark:text-neutral-300",
+        active
+          ? "text-foreground font-semibold"
+          : "text-muted-foreground dark:text-neutral-300",
       )}
       // passHref
+      aria-current={active ? "page" : undefined}
     >
       {/* <NavigationMenuLink
         > */}
@@ -241,6 +277,11 @@ export function NavbarColumn({
     { type: "column" }
   >;
 }) {
+  const rawPath = usePathname();
+  const path = rawPath ?? "/";
+  const isColumnActive = useMemo(() => {
+    return column.links?.some((l) => isActiveRoute(path, l.href)) ?? false;
+  }, [column.links, path]);
   const layoutClass = useMemo(
     () => getColumnLayoutClass(column.links?.length ?? 0),
     [column.links?.length],
@@ -249,7 +290,11 @@ export function NavbarColumn({
   return (
     <NavigationMenuList>
       <NavigationMenuItem className="text-muted-foreground dark:text-neutral-300">
-        <NavigationMenuTrigger>{column.title}</NavigationMenuTrigger>
+        <NavigationMenuTrigger
+          className={cn(isColumnActive ? "text-foreground font-semibold" : "")}
+        >
+          {column.title}
+        </NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul className={cn("p-3", layoutClass)}>
             {column.links?.map((item) => (
@@ -266,6 +311,7 @@ export function NavbarColumn({
                       />
                     ),
                   }}
+                  active={isActiveRoute(path, item.href)}
                 />
               </li>
             ))}
