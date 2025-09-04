@@ -41,7 +41,7 @@ export function Header() {
       {/* Sticky Navigation Bar Wrapper */}
       <div
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 px-4 sm:px-6 lg:px-8 transform transition-all will-change-transform will-change-opacity",
+          "fixed top-0 right-0 left-0 z-50 px-4 sm:px-6 lg:px-8 transform transition-all will-change-auto",
           isVisible
             ? "translate-y-0 ease-out duration-300 opacity-100"
             : "-translate-y-full ease-in duration-200 opacity-0",
