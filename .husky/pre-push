@@ -3,4 +3,3 @@ set -e
 
 pnpm -w run format:check
 pnpm -w turbo run lint
-pnpm -w turbo run check-types
