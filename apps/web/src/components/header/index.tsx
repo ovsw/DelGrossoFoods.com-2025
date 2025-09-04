@@ -15,7 +15,7 @@ import { MobileNavPanel } from "./MobileNavPanel";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isScrolled, isVisible } = useScrollVisibility();
+  const { isVisible } = useScrollVisibility();
 
   const navigationLinks = [
     { href: "/sauces", label: "Sauces" },
@@ -39,15 +39,21 @@ export function Header() {
   return (
     <>
       {/* Sticky Navigation Bar Wrapper */}
-      <div className="fixed top-8 right-0 left-0 z-50 px-4 sm:px-6 lg:px-8">
+      <div
+        className={cn(
+          "fixed top-0 right-0 left-0 z-50 px-4 sm:px-6 lg:px-8 transform transition-all will-change-transform will-change-opacity",
+          isVisible
+            ? "translate-y-0 ease-out duration-300 opacity-100"
+            : "-translate-y-full ease-in duration-200 opacity-0",
+        )}
+      >
         <nav
           className={cn(
-            "bg-light-100 mx-auto max-w-[80rem] transform rounded-lg p-1 transition-all duration-300",
-            isScrolled ? "shadow-lg" : "shadow-md",
-            isVisible ? "translate-y-0" : "-translate-y-full",
+            "mt-8 bg-light-100 mx-auto max-w-[80rem]  rounded-lg p-1 shadow-lg",
+            // isScrolled ? "shadow-lg" : "shadow-md",
           )}
         >
-          <div className="border-dark-800 rounded-sm border px-4 sm:px-6 lg:px-8">
+          <div className="border-brown-400 rounded-sm border px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               {/* Logo */}
               <div className="flex-shrink-0">
