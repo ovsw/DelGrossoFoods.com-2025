@@ -1,9 +1,6 @@
 #!/usr/bin/env sh
-# Run checks only in CI; do not block local pushes
-if [ -n "$CI" ]; then
-  set -e
-  pnpm -w turbo run lint
-  pnpm -w turbo run check-types
-else
-  echo "Skipping lint and type checks on local push; enforced in CI."
-fi
+set -e
+
+pnpm -w run format:check
+pnpm -w turbo run lint
+pnpm -w turbo run check-types
