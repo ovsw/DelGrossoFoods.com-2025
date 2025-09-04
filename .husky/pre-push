@@ -21,3 +21,6 @@ printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx prettier --check --ignore-unkno
 
 echo "Running ESLint on changed files..."
 printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx eslint --max-warnings 0
+
+echo "Running TypeScript check (workspace)..."
+pnpm -w turbo run check-types
