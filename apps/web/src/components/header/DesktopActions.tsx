@@ -6,7 +6,7 @@ export function DesktopActions() {
       <Button variant="outline" size="sm">
         Recipes
       </Button>
-      <Button variant="destructive" size="sm">
+      <Button variant="accent" size="sm">
         Cart{" "}
         <span>
           (<span data-fc-id="minicart-quantity">0</span>)
