@@ -40,49 +40,49 @@ export function Header() {
     <>
       {/* Sticky Navigation Bar Wrapper */}
       <div
+        role="banner"
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 px-4 sm:px-6 lg:px-8 transform transition-all will-change-auto",
+          "nav_wrap fixed top-0 right-0 left-0 z-50 transform px-4 transition-all will-change-auto sm:px-6 lg:px-8",
           isVisible
-            ? "translate-y-0 ease-out duration-300 opacity-100"
-            : "-translate-y-full ease-in duration-200 opacity-0",
+            ? "translate-y-0 opacity-100 duration-300 ease-out"
+            : "-translate-y-full opacity-0 duration-200 ease-in",
         )}
       >
         <nav
+          aria-label="Main navigation"
           className={cn(
-            "mt-8 bg-light-100 mx-auto max-w-[80rem]  rounded-lg p-1 shadow-lg",
+            "nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg  bg-th-light-100 p-1 shadow-lg",
             // isScrolled ? "shadow-lg" : "shadow-md",
           )}
         >
-          <div className="border-brown-400 rounded-sm border px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-              {/* Logo */}
-              <div className="flex-shrink-0">
-                <Link href="/">
-                  <LogoSvg className="h-7" />
-                </Link>
+          <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link href="/">
+                <LogoSvg className="h-7" />
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <DesktopNav navigationLinks={navigationLinks} />
+
+            {/* Desktop Search and Cart */}
+            <DesktopActions />
+
+            {/* Mobile actions group */}
+            <div className="flex items-center space-x-4 lg:hidden">
+              {/* Mobile Cart Button */}
+              <div>
+                <Button variant="secondary" size="sm">
+                  Cart (<span data-fc-id="minicart-quantity">0</span>)
+                </Button>
               </div>
 
-              {/* Desktop Navigation */}
-              <DesktopNav navigationLinks={navigationLinks} />
-
-              {/* Desktop Search and Cart */}
-              <DesktopActions />
-
-              {/* Mobile actions group */}
-              <div className="flex items-center space-x-4 lg:hidden">
-                {/* Mobile Cart Button */}
-                <div>
-                  <Button variant="secondary" size="sm">
-                    Cart (<span data-fc-id="minicart-quantity">0</span>)
-                  </Button>
-                </div>
-
-                {/* Mobile menu button */}
-                <MobileMenuToggle
-                  isMobileMenuOpen={isMobileMenuOpen}
-                  toggleMobileMenu={toggleMobileMenu}
-                />
-              </div>
+              {/* Mobile menu button */}
+              <MobileMenuToggle
+                isMobileMenuOpen={isMobileMenuOpen}
+                toggleMobileMenu={toggleMobileMenu}
+              />
             </div>
           </div>
 
