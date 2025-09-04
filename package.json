@@ -7,17 +7,21 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "check-types": "turbo check-types",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",
     "changeset": "changeset",
     "changeset:add": "changeset add",
     "changeset:status": "changeset status --since=origin/main",
-    "changeset:version": "changeset version"
+    "changeset:version": "changeset version",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.9",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "prettier": "^3.6.0",
     "turbo": "^2.5.4",
     "typescript": "5.9.2"
@@ -25,5 +29,22 @@
   "packageManager": "pnpm@10.12.2",
   "engines": {
     "node": ">=22.12.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
+      "pnpm -w dlx prettier --write --ignore-unknown"
+    ],
+    "apps/web/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/web/eslint.config.js --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0"
+    ],
+    "apps/studio/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --max-warnings 0"
+    ],
+    "packages/ui/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --max-warnings 0"
+    ]
   }
 }

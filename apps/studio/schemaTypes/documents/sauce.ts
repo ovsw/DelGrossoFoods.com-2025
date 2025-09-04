@@ -242,7 +242,12 @@ export const sauce = defineType({
         title: title || "Untitled Sauce",
         subtitle:
           (line && category && `${line} ${category} Sauce`) || line || category,
-        media,
+        // In Sanity preview, media can be an image field value; keep as-is.
+        media: media as any,
+      } as {
+        title: string;
+        subtitle?: string;
+        media?: any;
       };
     },
   },

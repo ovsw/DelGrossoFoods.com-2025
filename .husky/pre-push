@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+set -e
+
+# Determine base for diff (default to origin/main)
+BASE=$(git merge-base HEAD origin/main 2>/dev/null || echo "")
+if [ -z "$BASE" ]; then
+  echo "Could not determine merge base with origin/main; skipping pre-push checks."
+  exit 0
+fi
+
+# Gather changed files since base
+CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD | grep -E '\\.(js|jsx|ts|tsx|md|mdx|json|yml|yaml|css|scss)$' || true)
+
+if [ -z "$CHANGED_FILES" ]; then
+  echo "No relevant files changed; skipping format/lint checks."
+  exit 0
+fi
+
+echo "Running Prettier check on changed files..."
+printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx prettier --check --ignore-unknown
+
+echo "Running ESLint on changed files..."
+printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx eslint --max-warnings 0
+
+echo "Running TypeScript check (workspace)..."
+pnpm -w turbo run check-types
