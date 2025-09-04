@@ -1,2 +1,7 @@
 #!/usr/bin/env sh
+set -e
+
 pnpm -w lint-staged
+
+# Block commit if type errors exist in the workspace
+pnpm -w turbo run check-types

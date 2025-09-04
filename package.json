@@ -32,7 +32,19 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
-      "prettier --write --ignore-unknown"
+      "pnpm -w dlx prettier --write --ignore-unknown"
+    ],
+    "apps/web/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/web/eslint.config.js --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0"
+    ],
+    "apps/studio/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --max-warnings 0"
+    ],
+    "packages/ui/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix --max-warnings 0",
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --max-warnings 0"
     ]
   }
 }
