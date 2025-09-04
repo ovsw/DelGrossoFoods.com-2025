@@ -1,5 +1,11 @@
 # @workspace/eslint-config
 
+## 1.2.3
+
+### Patch Changes
+
+- [#34](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/34) [`91d6d51`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/91d6d51fccb5b73bf230c28950c0b306936a8bf8) Thanks [@ovsw](https://github.com/ovsw)! - chore(devx): introduce Husky + lint-staged to enforce format/lint/types at commit and push; add CI format check
+
 ## 1.2.2
 
 ## 1.2.1
