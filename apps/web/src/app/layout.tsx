@@ -56,7 +56,7 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
-        <Providers>
+        <Providers initialTheme={initialTheme as "light" | "dark" | undefined}>
           <Suspense fallback={<NavbarSkeleton />}>
             <NavbarServer />
           </Suspense>

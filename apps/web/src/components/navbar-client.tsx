@@ -157,75 +157,69 @@ function MobileNavbar({
         </SheetTrigger>
       </div>
       <SheetContent className="overflow-y-auto">
-        {isOpen ? (
-          <>
-            <SheetHeader>
-              <SheetTitle>
-                {logo && (
-                  <div className="max-w-[130px]">
-                    <Logo
-                      alt={siteTitle}
-                      priority
-                      image={logo}
-                      width={80}
-                      height={40}
-                    />
-                  </div>
-                )}
-              </SheetTitle>
-            </SheetHeader>
+        <SheetHeader>
+          <SheetTitle>
+            {logo && (
+              <div className="max-w-[130px]">
+                <Logo
+                  alt={siteTitle}
+                  priority
+                  image={logo}
+                  width={80}
+                  height={40}
+                />
+              </div>
+            )}
+          </SheetTitle>
+        </SheetHeader>
 
-            <div className="mb-8 mt-8 flex flex-col gap-4">
-              {columns?.map((item) => {
-                if (item.type === "link") {
-                  return (
-                    <Link
-                      key={`column-link-${item.name}-${item._key}`}
-                      href={item.href ?? ""}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        "justify-start",
-                        isActiveRoute(currentPath, item.href)
-                          ? "bg-accent text-accent-foreground"
-                          : undefined,
-                      )}
-                      aria-current={
-                        isActiveRoute(currentPath, item.href)
-                          ? "page"
-                          : undefined
-                      }
-                    >
-                      {item.name}
-                    </Link>
-                  );
-                }
-                return (
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="w-full"
-                    key={item._key}
-                  >
-                    <MobileNavbarAccordionColumn
-                      column={item}
-                      setIsOpen={setIsOpen}
-                      currentPath={currentPath}
-                    />
-                  </Accordion>
-                );
-              })}
-            </div>
+        <div className="mb-8 mt-8 flex flex-col gap-4">
+          {columns?.map((item) => {
+            if (item.type === "link") {
+              return (
+                <Link
+                  key={`column-link-${item.name}-${item._key}`}
+                  href={item.href ?? ""}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "justify-start",
+                    isActiveRoute(currentPath, item.href)
+                      ? "bg-accent text-accent-foreground"
+                      : undefined,
+                  )}
+                  aria-current={
+                    isActiveRoute(currentPath, item.href) ? "page" : undefined
+                  }
+                >
+                  {item.name}
+                </Link>
+              );
+            }
+            return (
+              <Accordion
+                type="single"
+                collapsible
+                className="w-full"
+                key={item._key}
+              >
+                <MobileNavbarAccordionColumn
+                  column={item}
+                  setIsOpen={setIsOpen}
+                  currentPath={currentPath}
+                />
+              </Accordion>
+            );
+          })}
+        </div>
 
-            <div className="border-t pt-4">
-              <SanityButtons
-                buttons={buttons ?? []}
-                buttonClassName="w-full"
-                className="flex mt-2 flex-col gap-3"
-              />
-            </div>
-          </>
-        ) : null}
+        <div className="border-t pt-4">
+          <SanityButtons
+            buttons={buttons ?? []}
+            buttonClassName="w-full"
+            className="flex mt-2 flex-col gap-3"
+          />
+        </div>
       </SheetContent>
     </Sheet>
   );
