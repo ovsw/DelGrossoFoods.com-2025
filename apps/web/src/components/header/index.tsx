@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 import LogoSvg from "@/components/elements/Logo";
 import { useScrollVisibility } from "@/hooks/useScrollVisibility";
 
+import { CartButton } from "./CartButton";
 import { DesktopActions } from "./DesktopActions";
 import { DesktopNav } from "./DesktopNav";
 import { MobileMenuToggle } from "./MobileMenuToggle";
@@ -73,9 +73,7 @@ export function Header() {
             <div className="flex items-center space-x-4 lg:hidden">
               {/* Mobile Cart Button */}
               <div>
-                <Button variant="secondary" size="sm">
-                  Cart (<span data-fc-id="minicart-quantity">0</span>)
-                </Button>
+                <CartButton variant="secondary" />
               </div>
 
               {/* Mobile menu button */}
