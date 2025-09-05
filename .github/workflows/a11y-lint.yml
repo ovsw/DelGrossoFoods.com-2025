@@ -24,4 +24,4 @@ jobs:
       - name: Install deps
         run: pnpm install --frozen-lockfile
       - name: Lint a11y for apps/web
-        run: pnpm -w exec eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx
+        run: pnpm -w dlx eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx
