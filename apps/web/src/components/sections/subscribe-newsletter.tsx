@@ -75,10 +75,15 @@ export function SubscribeNewsletter({
             action={() => {}}
           >
             <div className="flex bg-white dark:bg-zinc-200 items-center border rounded-xl p-2 drop-shadow-lg md:w-96 justify-between pl-4">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
               <input
                 type="email"
                 name="email"
+                id="newsletter-email"
                 required
+                aria-label="Email address"
                 placeholder="Enter your email address"
                 className="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full dark:text-zinc-900 dark:placeholder:text-zinc-900"
               />
