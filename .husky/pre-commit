@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -e
 
-# Run lint-staged quietly and without stashing to avoid confusing UI popups
-pnpm -w lint-staged --no-stash --quiet
+# Run lint-staged (use default stashing to preserve partial commits)
+pnpm -w lint-staged --quiet
 
 # Block commit if type errors exist in the workspace
 pnpm -w turbo run check-types
