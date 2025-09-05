@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -17,6 +18,7 @@ export const config = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  jsxA11y.configs.recommended,
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -29,6 +31,7 @@ export const config = [
   {
     plugins: {
       "react-hooks": pluginReactHooks,
+      "jsx-a11y": jsxA11y,
     },
     settings: { react: { version: "detect" } },
     rules: {
