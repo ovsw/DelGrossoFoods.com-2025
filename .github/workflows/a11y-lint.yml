@@ -14,11 +14,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.2
-          run_install: true
+          # Remove pnpm cache here; pnpm isn't installed yet and this causes failures
+      - name: Enable corepack
+        run: corepack enable
+      - name: Prepare pnpm
+        run: corepack prepare pnpm@10.12.2 --activate
+      - name: Verify pnpm
+        run: pnpm --version
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
       - name: Lint a11y for apps/web
-        run: pnpm -w dlx eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx
+        run: pnpm -w exec eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx
