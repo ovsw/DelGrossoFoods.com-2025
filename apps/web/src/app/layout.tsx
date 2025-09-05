@@ -6,8 +6,8 @@ import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
 import { FooterServer, FooterSkeleton } from "@/components/footer";
+import { Header } from "@/components/header";
 import { CombinedJsonLd } from "@/components/json-ld";
-import { NavbarServer, NavbarSkeleton } from "@/components/navbar";
 import { PreviewBar } from "@/components/preview-bar";
 import { Providers } from "@/components/providers";
 import { SanityLive } from "@/lib/sanity/live";
@@ -57,10 +57,10 @@ export default async function RootLayout({
           Skip to main content
         </a>
         <Providers initialTheme={initialTheme as "light" | "dark" | undefined}>
-          <Suspense fallback={<NavbarSkeleton />}>
-            <NavbarServer />
-          </Suspense>
-          <main id="main">{children}</main>
+          <Header />
+          <main id="main" className="pt-24 sm:pt-28">
+            {children}
+          </main>
 
           <Suspense fallback={<FooterSkeleton />}>
             <FooterServer />
