@@ -1,3 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running accessibility lint for apps/web..."
+pnpm -w dlx eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx || {
+  echo "A11y lint failed. Aborting push.";
+  exit 1;
+}
+
 #!/usr/bin/env sh
 set -e
 
