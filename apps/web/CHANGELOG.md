@@ -1,5 +1,18 @@
 # web
 
+## 1.3.0
+
+### Minor Changes
+
+- [#40](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/40) [`145ac73`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/145ac7305070c90f960c135bd15e01990954d551) Thanks [@ovsw](https://github.com/ovsw)! - Replace navbar with new header, Improve mobile menu styling and animation, Add Recipes button (desktop + mobile), Fix cart button hover cursor,Smooth hide-on-scroll behavior
+
+### Patch Changes
+
+- [#37](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/37) [`987c036`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/987c03628123a7f58e012c75bdbc811c5e873e9b) Thanks [@ovsw](https://github.com/ovsw)! - fix mobile nav not showing up after SSR refactor. Fix theme hydration issues after removing hydration warning suppression.
+
+- Updated dependencies [[`145ac73`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/145ac7305070c90f960c135bd15e01990954d551)]:
+  - @workspace/ui@1.3.0
+
 ## 1.2.3
 
 ### Patch Changes
