@@ -1,11 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
+set -e
 
-echo "Running accessibility lint for apps/web..."
-pnpm -w dlx eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx || {
-  echo "A11y lint failed. Aborting push.";
-  exit 1;
-}
+cd "$(git rev-parse --show-toplevel)/apps/web"
+echo "Running a11y lint (apps/web)…"
+pnpm run lint || { echo "A11y lint failed. Aborting push."; exit 1; }
 
 #!/usr/bin/env sh
 set -e
