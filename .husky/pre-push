@@ -16,10 +16,12 @@ fi
 
 # Gather changed files since base scoped to apps/web
 CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD | grep '^apps/web/.*\.(js\|jsx\|ts\|tsx)$' || true)
+# Make paths relative to apps/web since we cd'ed there
+REL_FILES=$(printf "%s\n" "$CHANGED_FILES" | sed 's#^apps/web/##')
 
-if [ -z "$CHANGED_FILES" ]; then
+if [ -z "$REL_FILES" ]; then
   echo "No relevant files changed in apps/web; skipping lint."
   exit 0
 fi
 
-printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0
+printf "%s\n" $REL_FILES | xargs pnpm -w dlx eslint -c eslint.config.js --max-warnings 0
