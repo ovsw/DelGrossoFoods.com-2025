@@ -41,11 +41,13 @@ export const nextJsConfig = [
       "simple-import-sort": eslintPluginSimpleImportSort,
       "@typescript-eslint": tseslint.plugin,
     },
-    ignores: ["node_modules", ".next"],
+    ignores: ["node_modules", ".next", "**/next-env.d.ts"],
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
       ...jsxA11y.configs.recommended.rules,
+      // App Router projects don't use the pages dir; disable this pages-only rule
+      "@next/next/no-html-link-for-pages": "off",
       // Enforce all a11y rules as errors project-wide
       "jsx-a11y/alt-text": "error",
       "jsx-a11y/anchor-has-content": "error",
