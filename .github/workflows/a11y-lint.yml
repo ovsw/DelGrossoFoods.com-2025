@@ -1,0 +1,27 @@
+name: a11y-lint
+
+on:
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # Remove pnpm cache here; pnpm isn't installed yet and this causes failures
+      - name: Enable corepack
+        run: corepack enable
+      - name: Prepare pnpm
+        run: corepack prepare pnpm@10.12.2 --activate
+      - name: Verify pnpm
+        run: pnpm --version
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+      - name: Lint a11y for apps/web
+        run: pnpm -w dlx eslint -c apps/web/eslint.config.js apps/web --ext .js,.jsx,.ts,.tsx

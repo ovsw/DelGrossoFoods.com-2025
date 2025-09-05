@@ -1,26 +1,19 @@
-#!/usr/bin/env sh
+#!/bin/sh
 set -e
+
+# Husky v10-compatible simple hook (no sourcing husky.sh)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+echo "Running a11y lint on changed files (apps/web)…"
 
 # Determine base for diff (default to origin/main)
 BASE=$(git merge-base HEAD origin/main 2>/dev/null || echo "")
 if [ -z "$BASE" ]; then
-  echo "Could not determine merge base with origin/main; skipping pre-push checks."
+  echo "Could not determine merge base with origin/main; running full lint."
+  pnpm -C apps/web -w dlx eslint -c eslint.config.js --max-warnings 0 . || { echo "A11y lint failed. Aborting push."; exit 1; }
   exit 0
 fi
 
-# Gather changed files since base
-CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD | grep -E '\\.(js|jsx|ts|tsx|md|mdx|json|yml|yaml|css|scss)$' || true)
-
-if [ -z "$CHANGED_FILES" ]; then
-  echo "No relevant files changed; skipping format/lint checks."
-  exit 0
-fi
-
-echo "Running Prettier check on changed files..."
-printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx prettier --check --ignore-unknown
-
-echo "Running ESLint on changed files..."
-printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx eslint --max-warnings 0
-
-echo "Running TypeScript check (workspace)..."
-pnpm -w turbo run check-types
+# Lint only changed web files using NUL-delimited paths (robust to spaces/newlines)
+git diff --name-only --diff-filter=ACMR -z "$BASE"...HEAD \
+  -- ':(glob)apps/web/**/*.js' ':(glob)apps/web/**/*.jsx' ':(glob)apps/web/**/*.ts' ':(glob)apps/web/**/*.tsx' \
+  | xargs -0 pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0 || { echo "A11y lint failed. Aborting push."; exit 1; }

@@ -1,5 +1,6 @@
-import { getBaseUrl } from "@/utils";
 import type { MetadataRoute } from "next";
+
+import { getBaseUrl } from "@/utils";
 
 const baseUrl = getBaseUrl();
 
