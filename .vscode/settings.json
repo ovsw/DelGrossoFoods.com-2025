@@ -1,17 +1,26 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "eslint.useFlatConfig": true,
-  "eslint.workingDirectories": [{ "mode": "auto" }],
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
+  "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": { "strings": "on" },
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass"],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.classFunctions": [
+    "tw",
+    "cn",
+    "cva",
+    "twMerge",
+    "clsx",
+    "tw\\.[a-z-]+"
   ],
-  "eslint.format.enable": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  }
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.rootFontSize": 16,
+  "tailwindCSS.lint.invalidScreen": "warning",
+  "tailwindCSS.lint.invalidVariant": "warning",
+  "tailwindCSS.lint.cssConflict": "warning",
+  "tailwindCSS.lint.recommendedVariantOrder": "warning"
 }

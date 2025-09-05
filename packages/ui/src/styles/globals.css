@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@source "../../../apps/**/*.{ts,tsx}";
-@source "../../../components/**/*.{ts,tsx}";
+@source "../../../../apps/**/*.{ts,tsx}";
+@source "../../../../packages/ui/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
 @import "tw-animate-css";
@@ -76,6 +76,45 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme {
+  --color-th-light-50: oklch(0.97 0 0);
+  --color-th-light-100: oklch(0.93 0.03 90);
+  --color-th-light-200: oklch(0.88 0.04 90);
+
+  --color-th-neutral-300: oklch(0.7 0.026 81);
+  --color-th-neutral-500: oklch(0.7 0.01 0);
+  --color-th-neutral-550: oklch(0.7 0.02 52);
+
+  --color-th-dark-750: oklch(0.37 0 0);
+  --color-th-dark-800: oklch(0.32 0.01 0);
+  --color-th-dark-900: oklch(0.13 0.01 51);
+
+  --color-brand-green: oklch(0.38 0.07 178);
+  --color-brand-green-text: var(--color-light-100);
+  --color-brand-yellow: oklch(0.9 0.12 90);
+  --color-brand-yellow-text: var(--color-dark-900);
+  --color-brand-red: oklch(0.57 0.21 25);
+  --color-brand-red-text: var(--color-light-900);
+
+  --color-brand-green-500: var(--color-brand-green);
+
+  /* browns */
+  --color-th-brown-400: oklch(0.66 0.08 70);
+  --color-th-brown-500: oklch(0.62 0.038 70);
+  --color-th-brown-600: oklch(0.57 0.06 70);
+  --color-th-brown-700: oklch(0.46 0.05 70);
+
+  /* greens */
+  --color-th-green-500: oklch(0.52 0.04 124);
+  --color-th-green-600: oklch(0.45 0.04 126);
+  --color-th-green-700: oklch(0.35 0.04 127);
+
+  /* reds */
+  --color-th-red-500: oklch(0.52 0.14 36);
+  --color-th-red-600: oklch(0.45 0.13 33);
+  --color-th-red-700: oklch(0.39 0.12 27);
 }
 
 @theme inline {
