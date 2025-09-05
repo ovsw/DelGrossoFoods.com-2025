@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { BlogCard, BlogHeader, FeaturedBlogCard } from "@/components/blog-card";
 import { PageBuilder } from "@/components/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
-import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
 import { queryBlogIndexPageData } from "@/lib/sanity/query";
+import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
 import { handleErrors } from "@/utils";
 
