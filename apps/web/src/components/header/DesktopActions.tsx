@@ -1,14 +1,11 @@
-import { Button } from "@workspace/ui/components/button";
-
 import { CartButton } from "./CartButton";
+import { RecipesButton } from "./RecipesButton";
 
 export function DesktopActions() {
   return (
     <div className="hidden items-center space-x-4 lg:flex">
-      <Button variant="outline" size="sm">
-        Recipes
-      </Button>
-      <CartButton variant="secondary" />
+      <RecipesButton variant="accent" size="sm" />
+      <CartButton variant="outline" />
     </div>
   );
 }
