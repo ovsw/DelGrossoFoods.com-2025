@@ -41,7 +41,7 @@ export const nextJsConfig = [
       "simple-import-sort": eslintPluginSimpleImportSort,
       "@typescript-eslint": tseslint.plugin,
     },
-    ignores: ["node_modules", ".next", "**/next-env.d.ts"],
+    ignores: ["node_modules", ".next"],
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
@@ -93,6 +93,9 @@ export const nextJsConfig = [
   {
     plugins: {
       "react-hooks": pluginReactHooks,
+      prettier: eslintPluginPrettier,
+      "simple-import-sort": eslintPluginSimpleImportSort,
+      "@typescript-eslint": tseslint.plugin,
     },
     settings: { react: { version: "detect" } },
     rules: {
