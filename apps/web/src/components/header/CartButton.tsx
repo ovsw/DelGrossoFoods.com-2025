@@ -22,7 +22,7 @@ export function CartButton({
     <Button
       variant={variant}
       size={size}
-      className={cn("relative group", className)}
+      className={cn("relative group cursor-pointer", className)}
       aria-label={ariaLabel ?? "Open cart"}
       {...props}
     >

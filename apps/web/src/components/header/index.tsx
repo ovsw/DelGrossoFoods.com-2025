@@ -12,6 +12,7 @@ import { DesktopActions } from "./DesktopActions";
 import { DesktopNav } from "./DesktopNav";
 import { MobileMenuToggle } from "./MobileMenuToggle";
 import { MobileNavPanel } from "./MobileNavPanel";
+import { RecipesButton } from "./RecipesButton";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -71,9 +72,13 @@ export function Header() {
 
             {/* Mobile actions group */}
             <div className="flex items-center space-x-4 lg:hidden">
+              {/* Mobile Recipes Button */}
+              <div>
+                <RecipesButton variant="accent" size="sm" />
+              </div>
               {/* Mobile Cart Button */}
               <div>
-                <CartButton variant="secondary" />
+                <CartButton variant="outline" />
               </div>
 
               {/* Mobile menu button */}
