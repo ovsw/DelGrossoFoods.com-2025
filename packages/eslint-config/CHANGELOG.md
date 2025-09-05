@@ -1,5 +1,7 @@
 # @workspace/eslint-config
 
+## 1.3.0
+
 ## 1.2.3
 
 ### Patch Changes
