@@ -15,14 +15,16 @@ export function MobileNavPanel({
   return (
     <div
       className={cn(
-        "overflow-hidden transition-all duration-300 ease-in-out lg:hidden",
-        "bg-light-100",
-        isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0",
+        "nav_mobile_wrap overflow-hidden lg:hidden bg-light-100 will-change-transform",
+        "transition-all",
+        isMobileMenuOpen
+          ? "max-h-[100svh] opacity-100 translate-y-0 duration-300 ease-out"
+          : "max-h-0 opacity-0 -translate-y-2 duration-200 ease-in",
       )}
     >
-      <div className="px-4 py-2">
+      <div className="nav_mobile_contain px-4 py-2">
         {/* Mobile Navigation Links */}
-        <ul className="flex flex-col divide-y divide-th-brown-400/20 border-t ">
+        <ul className="nav_mobile_layout flex flex-col divide-y divide-th-brown-400/20 border-t ">
           {navigationLinks.map((link, index) => (
             <li key={link.href ?? index.toString()}>
               <Link
