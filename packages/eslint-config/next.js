@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import pluginNext from "@next/eslint-plugin-next";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginPrettier from "eslint-plugin-prettier";
@@ -34,6 +35,7 @@ export const nextJsConfig = [
   {
     plugins: {
       "@next/next": pluginNext,
+      "jsx-a11y": jsxA11y,
       prettier: eslintPluginPrettier,
       import: eslintPluginImport,
       "simple-import-sort": eslintPluginSimpleImportSort,
@@ -43,6 +45,7 @@ export const nextJsConfig = [
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
+      ...jsxA11y.configs.recommended.rules,
     },
   },
   {
