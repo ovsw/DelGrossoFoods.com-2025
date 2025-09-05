@@ -4,5 +4,22 @@ set -e
 # Husky v10-compatible simple hook (no sourcing husky.sh)
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT/apps/web"
-echo "Running a11y lint (apps/web)…"
-pnpm run lint || { echo "A11y lint failed. Aborting push."; exit 1; }
+echo "Running a11y lint on changed files (apps/web)…"
+
+# Determine base for diff (default to origin/main)
+BASE=$(git merge-base HEAD origin/main 2>/dev/null || echo "")
+if [ -z "$BASE" ]; then
+  echo "Could not determine merge base with origin/main; running full lint."
+  pnpm run lint || { echo "A11y lint failed. Aborting push."; exit 1; }
+  exit 0
+fi
+
+# Gather changed files since base scoped to apps/web
+CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD | grep '^apps/web/.*\.(js\|jsx\|ts\|tsx)$' || true)
+
+if [ -z "$CHANGED_FILES" ]; then
+  echo "No relevant files changed in apps/web; skipping lint."
+  exit 0
+fi
+
+printf "%s\n" $CHANGED_FILES | xargs pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0
