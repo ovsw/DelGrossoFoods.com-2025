@@ -3,25 +3,17 @@ set -e
 
 # Husky v10-compatible simple hook (no sourcing husky.sh)
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "$REPO_ROOT/apps/web"
 echo "Running a11y lint on changed files (apps/web)…"
 
 # Determine base for diff (default to origin/main)
 BASE=$(git merge-base HEAD origin/main 2>/dev/null || echo "")
 if [ -z "$BASE" ]; then
   echo "Could not determine merge base with origin/main; running full lint."
-  pnpm run lint || { echo "A11y lint failed. Aborting push."; exit 1; }
+  pnpm -C apps/web -w dlx eslint -c eslint.config.js --max-warnings 0 . || { echo "A11y lint failed. Aborting push."; exit 1; }
   exit 0
 fi
 
-# Gather changed files since base scoped to apps/web
-CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD | grep '^apps/web/.*\.(js\|jsx\|ts\|tsx)$' || true)
-# Make paths relative to apps/web since we cd'ed there
-REL_FILES=$(printf "%s\n" "$CHANGED_FILES" | sed 's#^apps/web/##')
-
-if [ -z "$REL_FILES" ]; then
-  echo "No relevant files changed in apps/web; skipping lint."
-  exit 0
-fi
-
-printf "%s\n" $REL_FILES | xargs pnpm -w dlx eslint -c eslint.config.js --max-warnings 0
+# Lint only changed web files using NUL-delimited paths (robust to spaces/newlines)
+git diff --name-only --diff-filter=ACMR -z "$BASE"...HEAD \
+  -- ':(glob)apps/web/**/*.js' ':(glob)apps/web/**/*.jsx' ':(glob)apps/web/**/*.ts' ':(glob)apps/web/**/*.tsx' \
+  | xargs -0 pnpm -w dlx eslint -c apps/web/eslint.config.js --max-warnings 0 || { echo "A11y lint failed. Aborting push."; exit 1; }
