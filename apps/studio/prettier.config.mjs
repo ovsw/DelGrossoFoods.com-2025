@@ -1,11 +1,3 @@
-/**
- * @see https://prettier.io/docs/en/configuration.html
- * @type {import("prettier").Config}
- */
-const config = {
-  printWidth: 80,
-  semi: true,
-  bracketSpacing: true,
-};
-
-export default config;
+// This package now inherits Prettier from the repo root.
+// Intentionally left as a stub for discovery if needed in the future.
+export default {};
