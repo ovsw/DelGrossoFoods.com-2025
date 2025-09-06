@@ -4,5 +4,5 @@
  */
 
 export default {
-  '*.{md,mdx,json,yml,yaml}': ['pnpm -w dlx prettier --write --ignore-unknown'],
+  "*.{md,mdx,json,yml,yaml}": ["pnpm -w dlx prettier --write --ignore-unknown"],
 };
