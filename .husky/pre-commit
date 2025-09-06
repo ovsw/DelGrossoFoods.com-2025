@@ -1,3 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm -w dlx lint-staged
+
 #!/usr/bin/env sh
 set -e
 

@@ -29,22 +29,6 @@
   "packageManager": "pnpm@10.12.2",
   "engines": {
     "node": ">=22.12.0"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
-      "pnpm -w dlx prettier --write --ignore-unknown"
-    ],
-    "apps/web/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js --fix",
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js"
-    ],
-    "apps/studio/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix --max-warnings 0",
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --max-warnings 0"
-    ],
-    "packages/ui/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix --max-warnings 0",
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --max-warnings 0"
-    ]
   }
+  
 }

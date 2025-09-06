@@ -1,4 +1,10 @@
 #!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run type checks across the monorepo before pushing
+pnpm -w turbo run check-types
+
+#!/bin/sh
 set -e
 
 # Husky v10-compatible simple hook (no sourcing husky.sh)
