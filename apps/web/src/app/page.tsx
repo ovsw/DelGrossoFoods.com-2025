@@ -1,4 +1,5 @@
 // import { PageBuilder } from "@/components/pagebuilder";
+import { HomeSlideshow } from "@/components/HomeSlideshow";
 import { PageBuilder } from "@/components/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHomePageData } from "@/lib/sanity/query";
@@ -35,5 +36,10 @@ export default async function Page() {
 
   const { _id, _type, pageBuilder } = homePageData ?? {};
 
-  return <PageBuilder pageBuilder={pageBuilder ?? []} id={_id} type={_type} />;
+  return (
+    <>
+      <HomeSlideshow />
+      <PageBuilder pageBuilder={pageBuilder ?? []} id={_id} type={_type} />
+    </>
+  );
 }
