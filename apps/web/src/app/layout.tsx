@@ -58,9 +58,7 @@ export default async function RootLayout({
         </a>
         <Providers initialTheme={initialTheme as "light" | "dark" | undefined}>
           <Header />
-          <main id="main" className="pt-24 sm:pt-28">
-            {children}
-          </main>
+          <main id="main">{children}</main>
 
           <Suspense fallback={<FooterSkeleton />}>
             <FooterServer />
