@@ -1,27 +1,27 @@
-import { cn } from "@workspace/ui/lib/utils";
-import Link from "next/link";
+import { NavLink } from "./NavLink";
 
 interface DesktopNavProps {
   navigationLinks: { href: string; label: string }[];
+  currentPath?: string;
 }
 
-export function DesktopNav({ navigationLinks }: DesktopNavProps) {
+export function DesktopNav({ navigationLinks, currentPath }: DesktopNavProps) {
   return (
     <div className="hidden lg:block">
-      <div className="ml-10 flex items-baseline space-x-6 xl:space-x-8">
-        {navigationLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cn(
-              "text-md px-2 py-2 font-medium whitespace-nowrap text-amber-900",
-              "transition-colors duration-200 hover:text-amber-800 xl:px-3",
-            )}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </div>
+      <ul className="ml-10 flex items-baseline space-x-6 xl:space-x-8">
+        {navigationLinks.map((link) => {
+          const isActive =
+            currentPath === link.href ||
+            (currentPath ? currentPath.startsWith(`${link.href}/`) : false);
+          return (
+            <li key={link.href}>
+              <NavLink href={link.href} isActive={isActive}>
+                {link.label}
+              </NavLink>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
