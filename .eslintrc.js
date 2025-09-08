@@ -1,10 +1,3 @@
-// This configuration only applies to the package manager root.
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-  ignorePatterns: ["apps/**", "packages/**"],
-  extends: ["@workspace/eslint-config/library.js"],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: true,
-  },
-};
+// Deprecated: legacy .eslintrc not used with flat configs. Kept to avoid CI mis-linting.
+// Intentionally empty.
+module.exports = {};

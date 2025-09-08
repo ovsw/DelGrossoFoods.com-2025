@@ -14,6 +14,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   call_reusable_changesets_pr:
     name: Call Reusable Changesets PR Workflow
-    uses: DelGrosso-Foods-Inc/github-workflows/.github/workflows/reusable-changesets-pr.yml@v1.0.0
+    uses: DelGrosso-Foods-Inc/github-workflows/.github/workflows/reusable-changesets-pr.yml@v1.1.0
     with:
-      node-version: "20"
+      node-version: "22.15.0"
