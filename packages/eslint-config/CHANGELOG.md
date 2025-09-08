@@ -1,5 +1,11 @@
 # @workspace/eslint-config
 
+## 1.3.1
+
+### Patch Changes
+
+- [#41](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/41) [`23a8d24`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/23a8d24544a571a793d219d47844798a6a393e19) Thanks [@ovsw](https://github.com/ovsw)! - Enable project-wide a11y lint via eslint-plugin-jsx-a11y and enforce a11y rules as errors.
+
 ## 1.3.0
 
 ## 1.2.3
