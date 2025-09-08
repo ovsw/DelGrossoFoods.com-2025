@@ -2,6 +2,7 @@
 
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import LogoSvg from "@/components/elements/Logo";
@@ -17,6 +18,7 @@ import { RecipesButton } from "./RecipesButton";
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isVisible } = useScrollVisibility();
+  const pathname = usePathname();
 
   const navigationLinks = [
     { href: "/sauces", label: "Sauces" },
@@ -65,7 +67,10 @@ export function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <DesktopNav navigationLinks={navigationLinks} />
+            <DesktopNav
+              navigationLinks={navigationLinks}
+              currentPath={pathname ?? undefined}
+            />
 
             {/* Desktop Search and Cart */}
             <DesktopActions />
@@ -93,6 +98,7 @@ export function Header() {
           <MobileNavPanel
             isMobileMenuOpen={isMobileMenuOpen}
             navigationLinks={navigationLinks}
+            currentPath={pathname ?? undefined}
             setIsMobileMenuOpen={setIsMobileMenuOpen}
           />
         </nav>
