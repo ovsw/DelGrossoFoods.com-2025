@@ -1,4 +1,5 @@
 import "@workspace/ui/styles/globals.css";
+import "./background.css";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies, draftMode, headers } from "next/headers";
