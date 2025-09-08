@@ -1,5 +1,20 @@
 # web
 
+## 1.3.1
+
+### Patch Changes
+
+- [#44](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/44) [`6491694`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/64916948ba4cc5e162f781706f13c995986ebe57) Thanks [@ovsw](https://github.com/ovsw)! - Improve header navigation accessibility and hover/active UX.
+  - Introduce `NavLink` with `aria-current` and strong focus-visible styles
+  - Refactor `DesktopNav` to semantic `ul`/`li` markup using `NavLink`
+  - Add active state + `aria-current` in `MobileNavPanel` for consistency
+  - Keep UI styling consistent without adding new dependencies
+
+- [#41](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/41) [`23a8d24`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/23a8d24544a571a793d219d47844798a6a393e19) Thanks [@ovsw](https://github.com/ovsw)! - Enable project-wide a11y lint via eslint-plugin-jsx-a11y and enforce a11y rules as errors.
+
+- Updated dependencies []:
+  - @workspace/ui@1.3.1
+
 ## 1.3.0
 
 ### Minor Changes
