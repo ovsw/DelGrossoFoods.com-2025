@@ -101,7 +101,7 @@
   --color-brand-green-500: var(--color-brand-green);
 
   /* browns */
-  --color-th-brown-400: oklch(0.66 0.08 70);
+  --color-th-brown-400: oklch(0.71 0.06 80);
   --color-th-brown-500: oklch(0.62 0.038 70);
   --color-th-brown-600: oklch(0.57 0.06 70);
   --color-th-brown-700: oklch(0.46 0.05 70);
