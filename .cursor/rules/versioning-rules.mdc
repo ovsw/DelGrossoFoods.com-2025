@@ -5,129 +5,88 @@ alwaysApply: false
 
 ## Monorepo Versioning Rules (Changesets)
 
-### TL;DR
+### What “fixed group” means here
 
-- **Versioning system**: Changesets, configured at `.changeset/config.json` with GitHub changelog generation.
-- **Release cadence**: On push to `main`, CI opens a Release PR that bumps versions and updates CHANGELOGs. Merge that PR to land versions.
-- **Synchronized versions**: The following are versioned together (fixed group): `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config`.
-- **Never manually bump versions or edit CHANGELOGs**. Use Changesets; let CI generate the Release PR.
+- All workspaces in the fixed group always share the same version number.
+- You still select only the workspaces that actually changed when creating a changeset.
+- CI will bump the version for the whole fixed group to the highest bump level across all changesets on `main`.
+- CHANGELOG entries are generated only for the workspaces you selected in the changeset; others get the version bump but no notes.
 
-### Source of truth
+Fixed group (exact package names):
 
-- **Config file**: `.changeset/config.json`
-  - `baseBranch`: `main`
-  - `changelog`: `@changesets/changelog-github` (writes per-package/app `CHANGELOG.md`)
-  - `fixed`: all versioned workspaces bump together: `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config`
-  - `updateInternalDependencies`: `patch` (internal deps bumped at least by a patch to keep ranges in sync)
+- `web`
+- `studio`
+- `@workspace/ui`
+- `@workspace/eslint-config`
+- `@workspace/typescript-config`
 
-### Workspace + scripts
+Explicit selection rule to avoid confusion:
 
-- **Workspaces**: `pnpm` with `pnpm-workspace.yaml` covering `apps/*` and `packages/*`.
-- **Convenience scripts (run from repo root)** in `package.json`:
-  - `pnpm changeset:add` → start an interactive changeset
-  - `pnpm changeset:status` → show pending changesets / what will be released
-  - `pnpm changeset:version` → apply pending changesets locally (updates `package.json`s and `CHANGELOG.md`s)
+- When adding a changeset, select only the workspaces that actually changed; fixed groups still bump all workspaces to the same version (highest bump), but CHANGELOG entries are generated only for the selected ones.
 
-### CI automation (Release PR)
+### Quick recipes (copy/paste friendly)
 
-- Workflow: `.github/workflows/release.yml` runs on pushes to `main` and calls a reusable Changesets PR workflow.
-- Behavior: If there are pending changesets on `main`, CI opens a Release PR that:
-  - Runs the versioning step
-  - Updates affected `package.json` versions
-  - Updates per-package/app `CHANGELOG.md`
-- Merge the Release PR to land the version bump commits on `main`.
-- Packages/apps here are `private: true`; this repo’s flow doesn’t publish to npm.
-
-### Standard flow for contributors (feature → release)
-
-1. Create a changeset on your feature branch
+1. Add a changeset with the work done in this conversation
 
 ```bash
 pnpm changeset:add
+# Select only changed workspaces (from the fixed group above)
+# Choose bump: patch | minor | major (see guide below)
+# Write a concise, user-facing summary (be imperative)
+git add .changeset/*.md && git commit -m "chore(changeset): add changeset"
 ```
 
-- Select affected workspaces (any of `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config`).
-- Choose bump type (patch/minor/major). See decision guide below.
-- Write a concise, user-facing summary (this becomes the CHANGELOG entry).
-- Commit the generated file in `.changeset/` along with your code.
-
-2. Open a PR → merge to `main`.
-
-3. CI opens a Release PR automatically on `main`.
-
-- Review the generated `CHANGELOG.md` updates and version bumps.
-- Merge the Release PR when ready.
-
-Optional (local dry run):
+2. Add a changeset for this entire branch
 
 ```bash
-pnpm changeset:status   # preview pending releases
-pnpm changeset:version  # apply versions locally (don’t push to main; CI owns the authoritative Release PR)
+pnpm changeset:add
+# Select all workspaces that changed anywhere on this branch
+# (Do not select all by default—choose only the ones that actually changed)
+# Choose the appropriate bump; prefer patch unless API/UX changes warrant minor/major
+git add .changeset/*.md && git commit -m "chore(changeset): add branch changeset"
 ```
 
-### Bump decision guide
+3. Preview pending releases and versions
 
-- **patch**
-  - Bug fixes, perf tweaks, internal refactors
-  - Typing or tooling changes not affecting public API/behavior
-  - Docs-only updates
-- **minor**
-  - Backwards-compatible features (e.g., new optional props, new components that don’t break existing consumers)
-  - Notable UX improvements that don’t break API
-- **major**
-  - Breaking API changes (renaming/removing exports, required prop changes)
-  - Framework/tooling major upgrades that require consumer changes (e.g., Tailwind major upgrade)
+```bash
+pnpm changeset:status
+```
 
-Because versions are **fixed**, any bump to one of the grouped workspaces bumps them all to the same version. Choose the highest necessary bump across affected changes.
+4. CI Release PR (automatic on main)
 
-### Writing good changesets
+- After merging a changeset to `main`, CI opens a Release PR that bumps versions for the fixed group and writes CHANGELOGs for selected workspaces. Merge that PR to land the versions.
 
-- Keep the summary clear, imperative, and user-facing.
-- Explain the impact briefly; list key bullet points when useful.
-- Avoid implementation detail—focus on what changed and why it matters.
+### Bump decision (fast guide)
 
-Example (what you type in the prompt and/or edit afterward):
+- **patch**: bug fixes, performance tweaks, internal refactors, typings/tooling, docs-only
+- **minor**: backwards-compatible features or notable UX improvements (no breaking changes)
+- **major**: breaking API changes or framework upgrades requiring consumer changes
+
+Because versions are fixed, the final version is the highest bump among changesets on `main`.
+
+### Writing a good summary (examples)
+
+- “Improve header navigation accessibility and hover/active UX”
+- “Add ButtonGroup component and refactor CTA Button variants”
+
+Bullets (optional, keep short):
 
 ```md
-- Improve button architecture with ButtonGroup component and COVA integration
-
-  - Add ButtonGroup to UI for reusable button layout
-  - Enhance CTA Image with direct button variant control
-  - Replace SanityButtons with inline rendering
+- Introduce NavLink with aria-current and focus-visible styles
+- Use semantic ul/li markup in DesktopNav
+- Add active state handling in MobileNavPanel
 ```
 
 ### Validation checklist (before merging Release PR)
 
-- `pnpm changeset:status` shows the expected packages and bump levels.
-- `CHANGELOG.md` entries are clear and match the intended user-facing change.
-- All `package.json` versions in the fixed group are synchronized (e.g., all `2.3.0`).
-- Internal dependency ranges (e.g., `@workspace/ui`) reflect updated versions.
+- `pnpm changeset:status` shows expected workspaces and bump levels
+- CHANGELOG entries are clear and scoped to selected workspaces
+- All fixed workspaces share the same new version
+- Internal dependency ranges are aligned
 
-### Do / Don’t
+### Reference
 
-- Do:
-  - Use `pnpm changeset:add` for every meaningful change
-  - Keep summaries crisp and helpful
-  - Let CI generate the Release PR and land versions
-- Don’t:
-  - Don’t run `npm version` / `pnpm version`
-  - Don’t hand-edit `version` fields in `package.json`
-  - Don’t hand-edit `CHANGELOG.md`
-  - Don’t bypass the Release PR flow on `main`
-
-### Key paths
-
-- Changesets config: `.changeset/config.json`
-- Pending changesets: `.changeset/*.md` (auto-generated by `changeset add`)
-- App/package manifests: `apps/*/package.json`, `packages/*/package.json`
-- CHANGELOGs: `apps/*/CHANGELOG.md`, `packages/*/CHANGELOG.md`
+- Config: `.changeset/config.json` (baseBranch: `main`, changelog: GitHub)
+- Workspaces: `apps/*`, `packages/*` (pnpm)
+- Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
-
-### Notes for maintainers
-
-- Adding a new workspace that should share the synchronized version? Add it to the `fixed` group in `.changeset/config.json`.
-- `updateInternalDependencies: "patch"` ensures internal dep ranges remain aligned on each release.
-- If CI doesn’t open a Release PR after merging a changeset to `main`:
-  - Verify the workflow ran successfully on `main`
-  - Verify a changeset file exists on `main` (not just in a closed PR)
-  - Re-run the workflow if needed
