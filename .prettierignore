@@ -1,0 +1,11 @@
+.next
+.sanity
+.vercel
+.turbo
+out
+build
+dist
+coverage
+.swc
+.cache
+*.log
