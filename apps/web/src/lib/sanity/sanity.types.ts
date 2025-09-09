@@ -427,6 +427,9 @@ export type Settings = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  addressLines?: Array<string>;
+  tollFreePhone?: string;
+  officePhone?: string;
   contactEmail?: string;
   socialLinks?: {
     linkedin?: string;
