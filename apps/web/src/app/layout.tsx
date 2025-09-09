@@ -1,7 +1,10 @@
 import "@workspace/ui/styles/globals.css";
 import "./background.css";
 
-import { Geist, Geist_Mono, Libre_Baskerville } from "next/font/google";
+import {
+  // Geist, Geist_Mono,
+  Libre_Baskerville,
+} from "next/font/google";
 import { cookies, draftMode, headers } from "next/headers";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
@@ -57,7 +60,7 @@ export default async function RootLayout({
       }
     >
       <body
-        className={`${fontSerif.variable} 
+        className={`${fontSerif.variable}
         font-serif antialiased`}
         // add ${fontSans.variable} ${fontMono.variable} if needed
       >
