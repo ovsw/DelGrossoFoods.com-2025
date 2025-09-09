@@ -81,6 +81,25 @@ export const settings = defineType({
       },
     }),
     defineField({
+      name: "addressLines",
+      type: "array",
+      title: "Address Lines",
+      description: "One line per address row as it should appear in the footer",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "tollFreePhone",
+      type: "string",
+      title: "Toll-free Phone",
+      description: "Toll-free phone number (digits and symbols)",
+    }),
+    defineField({
+      name: "officePhone",
+      type: "string",
+      title: "Office Phone",
+      description: "Office phone number (digits and symbols)",
+    }),
+    defineField({
       name: "contactEmail",
       type: "string",
       title: "Contact Email",
