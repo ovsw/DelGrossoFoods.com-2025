@@ -53,10 +53,7 @@ export function Header() {
       >
         <nav
           aria-label="Main navigation"
-          className={cn(
-            "nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg  bg-th-light-100 p-1 shadow-lg",
-            // isScrolled ? "shadow-lg" : "shadow-md",
-          )}
+          className="nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg  bg-th-light-100 p-1 [box-shadow:var(--shadow-nav)]"
         >
           <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
             {/* Logo */}

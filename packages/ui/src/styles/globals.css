@@ -118,6 +118,11 @@
 }
 
 @theme inline {
+  /* component-level effects */
+  --shadow-nav:
+    0 0 #57180700, 0 1px 0.4px #57180708, 0 2px 0.8px #5718070a,
+    0 3.4px 1.6px #5718070b, 0 5.4px 2.9px #5718070c, 0 8.9px 5.3px #5718070c,
+    0 15.4px 10.4px #5718070d, 0 30.6px 22.8px #5718070e;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
