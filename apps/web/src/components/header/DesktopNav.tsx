@@ -8,7 +8,7 @@ interface DesktopNavProps {
 export function DesktopNav({ navigationLinks, currentPath }: DesktopNavProps) {
   return (
     <div className="hidden lg:block">
-      <ul className="ml-10 flex items-baseline space-x-6 xl:space-x-8">
+      <ul className="flex items-baseline space-x-6 xl:space-x-8">
         {navigationLinks.map((link) => {
           const isActive =
             currentPath === link.href ||

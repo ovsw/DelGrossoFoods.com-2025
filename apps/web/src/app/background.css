@@ -1,0 +1,20 @@
+/* Site-specific background for web app (fixed to viewport, iOS-friendly) */
+html {
+  background-color: var(--color-th-brown-400);
+}
+
+body {
+  background-image:
+    url("/images/bg/noise-red.svg"),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-th-brown-400), transparent 10%) 0rem,
+      #e3d8b9 30rem
+    );
+  background-repeat: repeat, no-repeat;
+  background-position:
+    0 0,
+    0 0;
+  background-size: auto, auto;
+  background-attachment: fixed, fixed;
+}
