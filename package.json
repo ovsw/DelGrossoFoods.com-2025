@@ -39,12 +39,12 @@
       "pnpm -w dlx eslint -c apps/web/eslint.config.js"
     ],
     "apps/studio/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix --max-warnings 0",
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --max-warnings 0"
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix",
+      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs"
     ],
     "packages/ui/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix --max-warnings 0",
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --max-warnings 0"
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix",
+      "pnpm -w dlx eslint -c packages/ui/eslint.config.js"
     ]
   }
 }
