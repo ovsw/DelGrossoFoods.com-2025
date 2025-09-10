@@ -104,7 +104,7 @@ export function FooterSkeleton() {
       <section className="container mx-auto px-4 md:px-6">
         <div className="h-[500px] lg:h-auto">
           <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left">
-            <div className="flex w-full max-w-96 shrink flex-col items-center justify-between gap-6 lg:items-start">
+            <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 lg:items-start">
               <div>
                 <span className="flex items-center justify-center gap-4 lg:justify-start">
                   <div className="h-[40px] w-[80px] bg-muted rounded animate-pulse" />
@@ -167,7 +167,7 @@ function Footer({ data, settingsData }: FooterProps) {
       <section className="container mx-auto">
         <div className="h-[500px] lg:h-auto">
           <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left mx-auto max-w-7xl px-4 md:px-6">
-            <div className="flex w-full max-w-96 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
+            <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
               <div>
                 <span className="flex items-center justify-center gap-4 lg:justify-start">
                   <div className="w-[180px]">
