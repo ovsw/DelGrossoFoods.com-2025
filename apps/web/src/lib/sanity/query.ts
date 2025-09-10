@@ -374,6 +374,10 @@ export const queryGlobalSeoSettings = defineQuery(`
       ${imageFields}
     },
     siteDescription,
+    addressLines,
+    contactEmail,
+    tollFreePhone,
+    officePhone,
     socialLinks{
       linkedin,
       facebook,

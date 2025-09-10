@@ -20,9 +20,16 @@ interface SocialLinksProps {
   data: NonNullable<QueryGlobalSeoSettingsResult>["socialLinks"];
 }
 
+type SettingsDataWithContact = NonNullable<QueryGlobalSeoSettingsResult> & {
+  addressLines?: string[] | null;
+  contactEmail?: string | null;
+  tollFreePhone?: string | null;
+  officePhone?: string | null;
+};
+
 interface FooterProps {
   data: NonNullable<QueryFooterDataResult>;
-  settingsData: NonNullable<QueryGlobalSeoSettingsResult>;
+  settingsData: SettingsDataWithContact;
 }
 
 export async function FooterServer() {
@@ -144,7 +151,15 @@ export function FooterSkeleton() {
 
 function Footer({ data, settingsData }: FooterProps) {
   const { subtitle, columns } = data;
-  const { siteTitle, logo, socialLinks } = settingsData;
+  const {
+    siteTitle,
+    logo,
+    socialLinks,
+    addressLines,
+    contactEmail,
+    tollFreePhone,
+    officePhone,
+  } = settingsData;
   const year = new Date().getFullYear();
 
   return (
@@ -157,10 +172,50 @@ function Footer({ data, settingsData }: FooterProps) {
                 <span className="flex items-center justify-center gap-4 lg:justify-start">
                   <Logo alt={siteTitle} priority image={logo} />
                 </span>
-                {subtitle && (
+                {/* {subtitle && (
                   <p className="mt-6 text-sm text-muted-foreground dark:text-zinc-400">
                     {subtitle}
                   </p>
+                )} */}
+                {(addressLines?.length ||
+                  contactEmail ||
+                  tollFreePhone ||
+                  officePhone) && (
+                  <div data-c="footer_text">
+                    <div
+                      data-c="footer_address"
+                      className="mt-6 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                    >
+                      {addressLines?.map((line, idx) => (
+                        <div key={`addr-${idx}`}>{line}</div>
+                      ))}
+                    </div>
+                    <div
+                      data-c="footer_contact"
+                      className="mt-4 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                    >
+                      {contactEmail && (
+                        <div>
+                          {/* Email:{" "} */}
+                          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                        </div>
+                      )}
+                      {tollFreePhone && (
+                        <div>
+                          {/* Toll Free:{" "} */}
+                          <a href={`tel:${tollFreePhone}`}>
+                            {tollFreePhone} (Toll Free)
+                          </a>
+                        </div>
+                      )}
+                      {officePhone && (
+                        <div>
+                          {/* Office:{" "} */}
+                          <a href={`tel:${officePhone}`}>{officePhone}</a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
               {socialLinks && <SocialLinks data={socialLinks} />}
