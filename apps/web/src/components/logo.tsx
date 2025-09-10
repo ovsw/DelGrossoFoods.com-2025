@@ -15,6 +15,7 @@ interface LogoProps {
   width?: number;
   height?: number;
   priority?: boolean;
+  className?: string;
 }
 
 export function Logo({
@@ -24,6 +25,7 @@ export function Logo({
   width = 170,
   height = 40,
   priority = true,
+  className,
 }: LogoProps) {
   return (
     <Link href="/" className="">
@@ -33,7 +35,7 @@ export function Logo({
           alt={alt ?? "logo"}
           // width={width}
           // height={height}
-          className="w-[170px]  dark:invert"
+          className={`${className ?? "w-[170px]"}  dark:invert`}
           loading="eager"
           decoding="sync"
         />
@@ -42,7 +44,7 @@ export function Logo({
           src={src ?? LOGO_URL}
           alt={alt ?? "logo"}
           width={width}
-          className="w-[170px] h-[40px] dark:invert"
+          className={`${className ?? "w-[170px] h-[40px]"} dark:invert`}
           height={height}
           loading="eager"
           priority={priority}
