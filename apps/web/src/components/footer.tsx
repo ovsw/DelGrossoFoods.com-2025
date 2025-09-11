@@ -100,48 +100,52 @@ function SocialLinks({ data }: SocialLinksProps) {
 
 export function FooterSkeleton() {
   return (
-    <footer className="mt-16 pb-8">
+    <footer className="mt-16">
       <section className="container mx-auto px-4 md:px-6">
-        <div className="h-[500px] lg:h-auto">
-          <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left">
-            <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 lg:items-start">
-              <div>
-                <span className="flex items-center justify-center gap-4 lg:justify-start">
-                  <div className="h-[40px] w-[80px] bg-muted rounded animate-pulse" />
-                </span>
-                <div className="mt-6 h-16 w-full bg-muted rounded animate-pulse" />
-              </div>
-              <div className="flex items-center space-x-6">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div
-                    key={i}
-                    className="h-6 w-6 bg-muted rounded animate-pulse"
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-6 lg:gap-20">
-              {[1, 2, 3].map((col) => (
-                <div key={col}>
-                  <div className="mb-6 h-6 w-24 bg-muted rounded animate-pulse" />
-                  <div className="space-y-4">
-                    {[1, 2, 3, 4].map((item) => (
+        <div className="mx-auto max-w-7xl bg-primary p-6">
+          <div className="border border-[color:var(--color-brand-yellow)]">
+            <div className="h-[500px] lg:h-auto">
+              <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left">
+                <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 lg:items-start">
+                  <div>
+                    <span className="flex items-center justify-center gap-4 lg:justify-start">
+                      <div className="h-[40px] w-[80px] bg-muted rounded animate-pulse" />
+                    </span>
+                    <div className="mt-6 h-16 w-full bg-muted rounded animate-pulse" />
+                  </div>
+                  <div className="flex items-center space-x-6">
+                    {[1, 2, 3, 4, 5].map((i) => (
                       <div
-                        key={item}
-                        className="h-4 w-full bg-muted rounded animate-pulse"
+                        key={i}
+                        className="h-6 w-6 bg-muted rounded animate-pulse"
                       />
                     ))}
                   </div>
                 </div>
-              ))}
+                <div className="grid grid-cols-3 gap-6 lg:gap-20">
+                  {[1, 2, 3].map((col) => (
+                    <div key={col}>
+                      <div className="mb-6 h-6 w-24 bg-muted rounded animate-pulse" />
+                      <div className="space-y-4">
+                        {[1, 2, 3, 4].map((item) => (
+                          <div
+                            key={item}
+                            className="h-4 w-full bg-muted rounded animate-pulse"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mt-20 flex flex-col justify-between gap-4 border-t pt-8 text-center lg:flex-row lg:items-center lg:text-left">
-            <div className="h-4 w-48 bg-muted rounded animate-pulse" />
-            <div className="flex justify-center gap-4 lg:justify-start">
-              <div className="h-4 w-32 bg-muted rounded animate-pulse" />
-              <div className="h-4 w-24 bg-muted rounded animate-pulse" />
-            </div>
+        </div>
+        <div className="mt-20 flex flex-col justify-between gap-4 border-t pt-8 text-center lg:flex-row lg:items-center lg:text-left">
+          <div className="h-4 w-48 bg-muted rounded animate-pulse" />
+          <div className="flex justify-center gap-4 lg:justify-start">
+            <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
           </div>
         </div>
       </section>
@@ -163,116 +167,123 @@ function Footer({ data, settingsData }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 pb-8">
+    <footer className="mt-20">
       <section className="container mx-auto">
-        <div className="h-[500px] lg:h-auto">
-          <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left mx-auto max-w-7xl px-4 md:px-6">
-            <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
-              <div>
-                <span className="flex items-center justify-center gap-4 lg:justify-start">
-                  <div className="w-[180px]">
-                    <Logo
-                      alt={siteTitle}
-                      priority
-                      image={logo}
-                      className="w-full"
-                    />
-                  </div>
-                </span>
-                {/* {subtitle && (
+        <div className="mx-auto max-w-7xl bg-brand-green p-4">
+          <div className="border border-brand-yellow">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10  text-center p-6 lg:flex-row lg:text-left">
+              <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
+                <div>
+                  <span className="flex items-center justify-center gap-4 lg:justify-start">
+                    <div className="w-[180px]">
+                      <Logo
+                        alt={siteTitle}
+                        priority
+                        image={logo}
+                        className="w-full"
+                      />
+                    </div>
+                  </span>
+                  {/* {subtitle && (
                   <p className="mt-6 text-sm text-muted-foreground dark:text-zinc-400">
                     {subtitle}
                   </p>
                 )} */}
-                {(addressLines?.length ||
-                  contactEmail ||
-                  tollFreePhone ||
-                  officePhone) && (
-                  <div data-c="footer_text">
-                    <div
-                      data-c="footer_address"
-                      className="mt-6 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
-                    >
-                      {addressLines?.map((line, idx) => (
-                        <div key={`addr-${idx}`}>{line}</div>
-                      ))}
-                    </div>
-                    <div
-                      data-c="footer_contact"
-                      className="mt-4 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
-                    >
-                      {contactEmail && (
-                        <div>
-                          {/* Email:{" "} */}
-                          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                        </div>
-                      )}
-                      {tollFreePhone && (
-                        <div>
-                          {/* Toll Free:{" "} */}
-                          <a href={`tel:${tollFreePhone}`}>
-                            {tollFreePhone} (Toll Free)
-                          </a>
-                        </div>
-                      )}
-                      {officePhone && (
-                        <div>
-                          {/* Office:{" "} */}
-                          <a href={`tel:${officePhone}`}>{officePhone}</a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {socialLinks && <SocialLinks data={socialLinks} />}
-            </div>
-            {Array.isArray(columns) && columns?.length > 0 && (
-              <div className="grid grid-cols-3 gap-6 lg:gap-28 lg:mr-20">
-                {columns.map((column, index) => (
-                  <div key={`column-${column?._key}-${index}`}>
-                    <h3 className="mb-6 font-semibold">{column?.title}</h3>
-                    {column?.links && column?.links?.length > 0 && (
-                      <ul className="space-y-4 text-sm text-muted-foreground dark:text-zinc-400">
-                        {column?.links?.map((link, index) => (
-                          <li
-                            key={`${link?._key}-${index}-column-${column?._key}`}
-                            className="font-medium hover:text-primary"
-                          >
-                            <Link
-                              href={link.href ?? "#"}
-                              target={link.openInNewTab ? "_blank" : undefined}
-                              rel={
-                                link.openInNewTab
-                                  ? "noopener noreferrer"
-                                  : undefined
-                              }
-                            >
-                              {link.name}
-                            </Link>
-                          </li>
+                  {(addressLines?.length ||
+                    contactEmail ||
+                    tollFreePhone ||
+                    officePhone) && (
+                    <div data-c="footer_text">
+                      <div
+                        data-c="footer_address"
+                        className="mt-6 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                      >
+                        {addressLines?.map((line, idx) => (
+                          <div key={`addr-${idx}`}>{line}</div>
                         ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
+                      </div>
+                      <div
+                        data-c="footer_contact"
+                        className="mt-4 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                      >
+                        {contactEmail && (
+                          <div>
+                            {/* Email:{" "} */}
+                            <a href={`mailto:${contactEmail}`}>
+                              {contactEmail}
+                            </a>
+                          </div>
+                        )}
+                        {tollFreePhone && (
+                          <div>
+                            {/* Toll Free:{" "} */}
+                            <a href={`tel:${tollFreePhone}`}>
+                              {tollFreePhone} (Toll Free)
+                            </a>
+                          </div>
+                        )}
+                        {officePhone && (
+                          <div>
+                            {/* Office:{" "} */}
+                            <a href={`tel:${officePhone}`}>{officePhone}</a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {socialLinks && <SocialLinks data={socialLinks} />}
               </div>
-            )}
-          </div>
-          <div className="mt-20 border-t pt-8">
-            <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-muted-foreground lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
-              <p>
-                © {year} {siteTitle}. All rights reserved.
-              </p>
-              <ul className="flex justify-center gap-4 lg:justify-start">
-                <li className="hover:text-primary">
-                  <Link href="/terms">Terms and Conditions</Link>
-                </li>
-                <li className="hover:text-primary">
-                  <Link href="/privacy">Privacy Policy</Link>
-                </li>
-              </ul>
+              {Array.isArray(columns) && columns?.length > 0 && (
+                <div className="grid grid-cols-3 gap-6 lg:gap-28 lg:mr-20">
+                  {columns.map((column, index) => (
+                    <div key={`column-${column?._key}-${index}`}>
+                      <h3 className="mb-6 font-semibold">{column?.title}</h3>
+                      {column?.links && column?.links?.length > 0 && (
+                        <ul className="space-y-4 text-sm text-muted-foreground dark:text-zinc-400">
+                          {column?.links?.map((link, index) => (
+                            <li
+                              key={`${link?._key}-${index}-column-${column?._key}`}
+                              className="font-medium hover:text-primary"
+                            >
+                              <Link
+                                href={link.href ?? "#"}
+                                target={
+                                  link.openInNewTab ? "_blank" : undefined
+                                }
+                                rel={
+                                  link.openInNewTab
+                                    ? "noopener noreferrer"
+                                    : undefined
+                                }
+                              >
+                                {link.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+          </div>
+        </div>
+
+        <div className="mt-20 border-t pt-8">
+          <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-muted-foreground lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
+            <p>
+              © {year} {siteTitle}. All rights reserved.
+            </p>
+            <ul className="flex justify-center gap-4 lg:justify-start">
+              <li className="hover:text-primary">
+                <Link href="/terms">Terms and Conditions</Link>
+              </li>
+              <li className="hover:text-primary">
+                <Link href="/privacy">Privacy Policy</Link>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
