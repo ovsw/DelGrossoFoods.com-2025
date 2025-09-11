@@ -268,8 +268,7 @@ const ogFieldsFragment = /* groq */ `
   ),
   "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
   "dominantColor": image.asset->metadata.palette.dominant.background,
-  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max", 
-  "logo": *[_type == "settings"][0].logo.asset->url + "?w=80&h=40&dpr=3&fit=max&q=100",
+  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",
   "date": coalesce(date, _createdAt)
 `;
 
@@ -370,9 +369,6 @@ export const queryGlobalSeoSettings = defineQuery(`
     _id,
     _type,
     siteTitle,
-    logo {
-      ${imageFields}
-    },
     siteDescription,
     addressLines,
     contactEmail,
@@ -394,7 +390,6 @@ export const querySettingsData = defineQuery(`
     _type,
     siteTitle,
     siteDescription,
-    "logo": logo.asset->url + "?w=80&h=40&dpr=3&fit=max",
     "socialLinks": socialLinks,
     "contactEmail": contactEmail,
   }

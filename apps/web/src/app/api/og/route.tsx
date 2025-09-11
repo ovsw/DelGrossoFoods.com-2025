@@ -33,7 +33,6 @@ type ContentProps = Record<string, string>;
 type DominantColorSeoImageRenderProps = {
   image?: Maybe<string>;
   title?: Maybe<string>;
-  logo?: Maybe<string>;
   dominantColor?: Maybe<string>;
   date?: Maybe<string>;
   _type?: Maybe<string>;
@@ -51,7 +50,6 @@ const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
 const dominantColorSeoImageRender = ({
   image,
   title,
-  logo,
   dominantColor,
   date,
   description,
@@ -81,7 +79,6 @@ const dominantColorSeoImageRender = ({
 
       <div tw="flex-1 p-10 flex flex-col justify-between relative z-10">
         <div tw="flex justify-between items-start w-full">
-          {logo && <img src={logo} alt="Logo" height={48} />}
           <div tw="bg-white flex bg-opacity-20 text-white px-4 py-2 rounded-full text-sm font-medium">
             {new Date(date ?? new Date()).toLocaleDateString("en-US", {
               month: "long",
@@ -120,10 +117,6 @@ const dominantColorSeoImageRender = ({
                   objectFit: "cover",
                 }}
               />
-            ) : logo ? (
-              <div tw="flex items-center justify-center h-full w-full">
-                <img src={logo} alt="Logo" width={400} height={400} />
-              </div>
             ) : (
               <div tw="flex items-center justify-center h-full w-full">
                 <img

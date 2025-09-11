@@ -7,7 +7,7 @@ import type {
   QueryGlobalSeoSettingsResult,
 } from "@/lib/sanity/sanity.types";
 
-import { Logo } from "./logo";
+import LogoSvg from "./elements/Logo";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -157,7 +157,6 @@ function Footer({ data, settingsData }: FooterProps) {
   const { subtitle, columns } = data;
   const {
     siteTitle,
-    logo,
     socialLinks,
     addressLines,
     contactEmail,
@@ -175,13 +174,9 @@ function Footer({ data, settingsData }: FooterProps) {
               <div className="flex w-full max-w-90 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
                 <div>
                   <span className="flex items-center justify-center gap-4 lg:justify-start">
-                    <div className="w-[180px]">
-                      <Logo
-                        alt={siteTitle}
-                        priority
-                        image={logo}
-                        className="w-full"
-                      />
+                    <div className="w-[180px] text-[color:var(--color-brand-yellow)]">
+                      <LogoSvg className="h-7 w-full" />
+                      <span className="sr-only">{siteTitle}</span>
                     </div>
                   </span>
                   {/* {subtitle && (
