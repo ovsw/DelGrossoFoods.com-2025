@@ -76,7 +76,7 @@ function SocialLinks({ data }: SocialLinksProps) {
   ].filter((link) => link.url);
 
   return (
-    <ul className="flex items-center space-x-6 text-muted-foreground">
+    <ul className="flex items-center space-x-6 text-[color:var(--color-brand-green-text)]">
       {socialLinks.map(({ url, Icon, label }, index) => (
         <li
           key={`social-link-${url}-${index.toString()}`}
@@ -89,7 +89,7 @@ function SocialLinks({ data }: SocialLinksProps) {
             rel="noopener noreferrer"
             aria-label={label}
           >
-            <Icon className="fill-muted-foreground hover:fill-primary/80 dark:fill-zinc-400 dark:hover:fill-primary" />
+            <Icon className="fill-[color:var(--color-brand-green-text)] hover:fill-primary/80" />
             <span className="sr-only">{label}</span>
           </Link>
         </li>
@@ -102,11 +102,11 @@ export function FooterSkeleton() {
   return (
     <footer className="mt-16">
       <section className="container mx-auto px-4 md:px-6">
-        <div className="mx-auto max-w-7xl bg-primary p-6">
-          <div className="border border-[color:var(--color-brand-yellow)]">
+        <div className="mx-auto max-w-7xl rounded-lg bg-brand-green p-6">
+          <div className="rounded-lg border border-[color:var(--color-brand-yellow)]">
             <div className="h-[500px] lg:h-auto">
-              <div className="flex flex-col items-center justify-between gap-10 text-center lg:flex-row lg:text-left">
-                <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 lg:items-start">
+              <div className="flex flex-col items-center justify-between gap-10 text-center text-[color:var(--color-brand-green-text)] lg:flex-row lg:text-left">
+                <div className="flex w-full max-w-90 shrink flex-col items-center justify-between gap-6 lg:items-start">
                   <div>
                     <span className="flex items-center justify-center gap-4 lg:justify-start">
                       <div className="h-[40px] w-[80px] bg-muted rounded animate-pulse" />
@@ -169,10 +169,10 @@ function Footer({ data, settingsData }: FooterProps) {
   return (
     <footer className="mt-20">
       <section className="container mx-auto">
-        <div className="mx-auto max-w-7xl bg-brand-green p-4">
-          <div className="border border-brand-yellow">
-            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10  text-center p-6 lg:flex-row lg:text-left">
-              <div className="flex w-full max-w-60 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
+        <div className="mx-auto max-w-7xl rounded-lg bg-brand-green p-4">
+          <div className="rounded-lg border border-brand-yellow">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10 text-center p-6 text-[color:var(--color-brand-green-text)] lg:flex-row lg:text-left">
+              <div className="flex w-full max-w-90 shrink flex-col items-center justify-between gap-6 md:gap-8 lg:items-start">
                 <div>
                   <span className="flex items-center justify-center gap-4 lg:justify-start">
                     <div className="w-[180px]">
@@ -196,7 +196,7 @@ function Footer({ data, settingsData }: FooterProps) {
                     <div data-c="footer_text">
                       <div
                         data-c="footer_address"
-                        className="mt-6 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                        className="mt-6 text-sm flex-grow align-items-stretch"
                       >
                         {addressLines?.map((line, idx) => (
                           <div key={`addr-${idx}`}>{line}</div>
@@ -204,7 +204,7 @@ function Footer({ data, settingsData }: FooterProps) {
                       </div>
                       <div
                         data-c="footer_contact"
-                        className="mt-4 text-sm text-muted-foreground dark:text-zinc-400 flex-grow align-items-stretch"
+                        className="mt-4 text-sm flex-grow align-items-stretch"
                       >
                         {contactEmail && (
                           <div>
@@ -235,12 +235,14 @@ function Footer({ data, settingsData }: FooterProps) {
                 {socialLinks && <SocialLinks data={socialLinks} />}
               </div>
               {Array.isArray(columns) && columns?.length > 0 && (
-                <div className="grid grid-cols-3 gap-6 lg:gap-28 lg:mr-20">
+                <div className="grid grid-cols-3 gap-2 lg:gap-28">
                   {columns.map((column, index) => (
                     <div key={`column-${column?._key}-${index}`}>
-                      <h3 className="mb-6 font-semibold">{column?.title}</h3>
+                      <h3 className="mb-6 font-semibold text-brand-yellow text-lg">
+                        {column?.title}
+                      </h3>
                       {column?.links && column?.links?.length > 0 && (
-                        <ul className="space-y-4 text-sm text-muted-foreground dark:text-zinc-400">
+                        <ul className="space-y-4 text-sm">
                           {column?.links?.map((link, index) => (
                             <li
                               key={`${link?._key}-${index}-column-${column?._key}`}
