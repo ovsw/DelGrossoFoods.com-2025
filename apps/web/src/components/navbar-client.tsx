@@ -33,9 +33,9 @@ import type {
   QueryNavbarDataResult,
 } from "@/lib/sanity/sanity.types";
 
+import LogoSvg from "./elements/Logo";
 import { SanityButtons } from "./elements/sanity-buttons";
 import { SanityIcon } from "./elements/sanity-icon";
-import { Logo } from "./logo";
 import { ModeToggle } from "./mode-toggle";
 
 interface MenuItem {
@@ -135,7 +135,7 @@ function MobileNavbar({
   navbarData: QueryNavbarDataResult;
   settingsData: QueryGlobalSeoSettingsResult;
 }) {
-  const { siteTitle, logo } = settingsData ?? {};
+  const { siteTitle } = settingsData ?? {};
   const { columns, buttons } = navbarData ?? {};
   const [isOpen, setIsOpen] = useState(false);
 
@@ -159,17 +159,9 @@ function MobileNavbar({
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>
-            {logo && (
-              <div className="max-w-[130px]">
-                <Logo
-                  alt={siteTitle}
-                  priority
-                  image={logo}
-                  width={80}
-                  height={40}
-                />
-              </div>
-            )}
+            <div className="max-w-[130px]">
+              <LogoSvg className="h-7" aria-label={siteTitle ?? "Logo"} />
+            </div>
           </SheetTitle>
         </SheetHeader>
 

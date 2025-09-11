@@ -71,15 +71,7 @@ export const settings = defineType({
       description: "A brief description of your website for SEO purposes",
       validation: (rule) => rule.required().min(50).max(160),
     }),
-    defineField({
-      name: "logo",
-      type: "image",
-      title: "Site Logo",
-      description: "Upload your website logo",
-      options: {
-        hotspot: true,
-      },
-    }),
+    // Deprecated: logo managed in code, not CMS
     defineField({
       name: "addressLines",
       type: "array",
