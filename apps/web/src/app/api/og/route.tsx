@@ -3,7 +3,7 @@
 import { ImageResponse } from "next/og";
 import type { ImageResponseOptions } from "next/server";
 
-import LogoSvg from "@/components/elements/Logo";
+import LogoSvg from "@/components/elements/logo";
 import type { Maybe } from "@/types";
 import { getTitleCase } from "@/utils";
 
