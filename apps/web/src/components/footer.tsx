@@ -189,10 +189,7 @@ function Footer({ data, settingsData }: FooterProps) {
                     tollFreePhone ||
                     officePhone) && (
                     <div data-c="footer_text">
-                      <div
-                        data-c="footer_address"
-                        className="mt-6 text-sm flex-grow align-items-stretch"
-                      >
+                      <div data-c="footer_address" className="mt-6 text-sm">
                         {addressLines?.map((line, idx) => (
                           <div key={`addr-${idx}`}>{line}</div>
                         ))}
