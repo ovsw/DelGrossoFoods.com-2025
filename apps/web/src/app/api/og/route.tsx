@@ -3,6 +3,7 @@
 import { ImageResponse } from "next/og";
 import type { ImageResponseOptions } from "next/server";
 
+import LogoSvg from "@/components/elements/Logo";
 import type { Maybe } from "@/types";
 import { getTitleCase } from "@/utils";
 
@@ -77,8 +78,22 @@ const dominantColorSeoImageRender = ({
         <rect width="100%" height="100%" fill="url(#gradient)" opacity="0.2" />
       </svg>
 
-      <div tw="flex-1 p-10 flex flex-col justify-between relative z-10">
-        <div tw="flex justify-between items-start w-full">
+      <div
+        tw="flex-1 p-10 flex flex-col justify-between relative z-10"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div
+          tw="flex justify-between items-start w-full"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <div tw="flex items-center gap-4">
+            {/* Inline SVG logo; Tailwind classes not applied in OG, so rely on style */}
+            <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
+          </div>
           <div tw="bg-white flex bg-opacity-20 text-white px-4 py-2 rounded-full text-sm font-medium">
             {new Date(date ?? new Date()).toLocaleDateString("en-US", {
               month: "long",
