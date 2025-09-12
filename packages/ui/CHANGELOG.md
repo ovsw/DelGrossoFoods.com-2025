@@ -1,5 +1,20 @@
 # @workspace/ui
 
+## 1.4.0
+
+### Patch Changes
+
+- [#47](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/47) [`7ab121c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7ab121c4a563fe81dfd3d36f88fdb96cd933096b) Thanks [@ovsw](https://github.com/ovsw)! - Introduce background color, noise texture, and top gradient via background.css
+  - Import `background.css` in `apps/web/src/app/layout.tsx`
+  - Add `public/images/bg/noise-red.svg` asset
+  - Adjust `packages/ui` global styles to support background layering
+
+- [#47](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/47) [`7ab121c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7ab121c4a563fe81dfd3d36f88fdb96cd933096b) Thanks [@ovsw](https://github.com/ovsw)! - Switch ESLint tooling to exec (lockfile‑pinned) and refine a11y policy
+  - Replace dlx with exec for ESLint/Prettier (root‑pinned toolchain) to eliminate local/CI drift
+  - Remove zero‑warning gates; warnings allowed, accessibility rules error and fail hooks
+  - Update Husky and lint‑staged to respect partial commits and show concise errors
+  - Keep shared config with a11y rules as errors; downgrade non‑a11y to warnings across packages
+
 ## 1.3.1
 
 ## 1.3.0
