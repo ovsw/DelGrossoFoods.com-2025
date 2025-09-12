@@ -8,13 +8,13 @@ export function Providers({
   initialTheme,
 }: {
   children: React.ReactNode;
-  initialTheme?: "light" | "dark";
+  initialTheme: "light" | "dark";
 }) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme={initialTheme ?? "system"}
-      enableSystem
+      defaultTheme={initialTheme}
+      enableSystem={false}
       disableTransitionOnChange
       enableColorScheme
     >

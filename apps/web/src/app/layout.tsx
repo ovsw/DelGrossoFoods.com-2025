@@ -48,16 +48,12 @@ export default async function RootLayout({
   const initialTheme =
     themeCookie === "dark" || themeCookie === "light"
       ? themeCookie
-      : hintedTheme;
+      : (hintedTheme ?? "light");
   return (
     <html
       lang="en"
       className={initialTheme}
-      style={
-        initialTheme
-          ? ({ colorScheme: initialTheme } as React.CSSProperties)
-          : undefined
-      }
+      style={{ colorScheme: initialTheme } as React.CSSProperties}
     >
       <body
         className={`${fontSerif.variable}
@@ -70,7 +66,7 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
-        <Providers initialTheme={initialTheme as "light" | "dark" | undefined}>
+        <Providers initialTheme={initialTheme as "light" | "dark"}>
           <Header />
           <main id="main">{children}</main>
 
