@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import LogoSvg from "@/components/elements/Logo";
+import LogoSvg from "@/components/elements/logo";
 
 export const runtime = "edge";
 

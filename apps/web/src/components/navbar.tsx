@@ -5,7 +5,7 @@ import type {
   QueryNavbarDataResult,
 } from "@/lib/sanity/sanity.types";
 
-import LogoSvg from "./elements/Logo";
+import LogoSvg from "./elements/logo";
 import { NavbarClient, NavbarSkeletonResponsive } from "./navbar-client";
 
 export async function NavbarServer() {
