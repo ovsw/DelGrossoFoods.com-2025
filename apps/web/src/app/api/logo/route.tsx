@@ -5,7 +5,7 @@ import LogoSvg from "@/components/elements/Logo";
 export const runtime = "edge";
 
 // /api/logo?w=400&h=120&color=%23ffffff&bg=transparent
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<ImageResponse | Response> {
   try {
     const { searchParams } = new URL(request.url);
     const width = Math.max(1, Number(searchParams.get("w") ?? 400));
