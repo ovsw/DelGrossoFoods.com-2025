@@ -148,8 +148,10 @@ export function ArticleJsonLd({ article, settings }: ArticleJsonLdProps) {
     publisher: {
       "@type": "Organization",
       name: settings?.siteTitle || "Website",
-      // Logo image removed from CMS; brand mark is code-owned
-      logo: undefined,
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/api/logo?w=400&h=120&color=%23000000&bg=transparent`,
+      } as ImageObject,
     } as Organization,
     datePublished: new Date(
       article.publishedAt || article._createdAt || new Date().toISOString(),
@@ -189,8 +191,10 @@ export function OrganizationJsonLd({ settings }: OrganizationJsonLdProps) {
     name: settings.siteTitle,
     description: settings.siteDescription || undefined,
     url: baseUrl,
-    // Logo image removed from CMS; brand mark is code-owned
-    logo: undefined,
+    logo: {
+      "@type": "ImageObject",
+      url: `${baseUrl}/api/logo?w=400&h=120&color=%23ffffff&bg=transparent`,
+    } as ImageObject,
     contactPoint: settings.contactEmail
       ? ({
           "@type": "ContactPoint",
