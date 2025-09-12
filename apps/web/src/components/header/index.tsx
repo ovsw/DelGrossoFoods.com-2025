@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import LogoSvg from "@/components/elements/Logo";
+import LogoSvg from "@/components/elements/logo";
 import { useScrollVisibility } from "@/hooks/useScrollVisibility";
 
 import { CartButton } from "./CartButton";
