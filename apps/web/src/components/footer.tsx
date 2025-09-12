@@ -179,7 +179,7 @@ function Footer({ data, settingsData }: FooterProps) {
                       aria-label={siteTitle}
                       className="block w-[180px] text-[color:var(--color-brand-yellow)]"
                     >
-                      <LogoSvg className="h-7 w-full" />
+                      <LogoSvg className="w-full h-auto" />
                     </Link>
                   </span>
                   {/* {subtitle && (
