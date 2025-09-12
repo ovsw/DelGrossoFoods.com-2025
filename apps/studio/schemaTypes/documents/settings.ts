@@ -71,14 +71,25 @@ export const settings = defineType({
       description: "A brief description of your website for SEO purposes",
       validation: (rule) => rule.required().min(50).max(160),
     }),
+    // Deprecated: logo managed in code, not CMS
     defineField({
-      name: "logo",
-      type: "image",
-      title: "Site Logo",
-      description: "Upload your website logo",
-      options: {
-        hotspot: true,
-      },
+      name: "addressLines",
+      type: "array",
+      title: "Address Lines",
+      description: "One line per address row as it should appear in the footer",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "tollFreePhone",
+      type: "string",
+      title: "Toll-free Phone",
+      description: "Toll-free phone number (digits and symbols)",
+    }),
+    defineField({
+      name: "officePhone",
+      type: "string",
+      title: "Office Phone",
+      description: "Office phone number (digits and symbols)",
     }),
     defineField({
       name: "contactEmail",
