@@ -1,5 +1,16 @@
 # studio
 
+## 1.4.1
+
+### Patch Changes
+
+- [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`6a10ecc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a10eccc583e7060b55b3b367223caece8872ea9) Thanks [@ovsw](https://github.com/ovsw)! - Make brand logo code-owned and remove CMS logo.
+  - Replace header, nav, and footer logos with inline `LogoSvg` (currentColor theming)
+  - Remove `logo` from Sanity `settings` schema and from related queries/types
+  - Update OG image route and JSON-LD to no longer depend on CMS logo
+  - Delete obsolete Sanity-driven `Logo` image component in web
+  - Lint/typecheck clean across web and studio
+
 ## 1.4.0
 
 ### Patch Changes
