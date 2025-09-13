@@ -13,14 +13,9 @@ export function Providers({
   return (
     <NextThemesProvider
       attribute="class"
-<NextThemesProvider
-  attribute="class"
-  defaultTheme={initialTheme}
-  enableSystem={false}
-  themes={["light", "dark"]}
-  disableTransitionOnChange
-  enableColorScheme
->
+      defaultTheme={initialTheme}
+      enableSystem={false}
+      disableTransitionOnChange
       enableColorScheme
     >
       {children}
