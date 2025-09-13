@@ -22,5 +22,29 @@
   "tailwindCSS.lint.invalidScreen": "warning",
   "tailwindCSS.lint.invalidVariant": "warning",
   "tailwindCSS.lint.cssConflict": "warning",
-  "tailwindCSS.lint.recommendedVariantOrder": "warning"
+  "tailwindCSS.lint.recommendedVariantOrder": "warning",
+  "piny.project_settings": {
+    "open-pages": ["pinyfakepage.html"],
+    "urls": {
+      "pinyfakepage.html": {
+        "open-page-views": [
+          {
+            "w": 1191.99,
+            "h": 0
+          }
+        ]
+      }
+    },
+    "ai-project-brief": null,
+    "tw-external-config": {
+      "external_config_url": "packages/ui/src/styles/globals.css",
+      "external_source_url": "packages/ui/src/styles/globals.css"
+    },
+    "source-folders": ["apps/web/src/", "packages/ui/src/"],
+    "preview-url": "http://localhost:3000",
+    "app-routes": {
+      "routes": ["/", "/blog"],
+      "current_route": "/"
+    }
+  }
 }

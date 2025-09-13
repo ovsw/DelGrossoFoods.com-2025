@@ -6,6 +6,7 @@ import {
   Libre_Baskerville,
 } from "next/font/google";
 import { cookies, draftMode, headers } from "next/headers";
+import Script from "next/script";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
@@ -82,6 +83,11 @@ export default async function RootLayout({
             </>
           )}
         </Providers>
+        {process.env.NODE_ENV === "development" &&
+          process.env.PINY_VISUAL_SELECT === "true" && (
+            <Script src="/_piny/piny.phone.js" strategy="beforeInteractive" />
+          )}{" "}
+        {/* <-- conditionally include the Piny script */}
       </body>
     </html>
   );
