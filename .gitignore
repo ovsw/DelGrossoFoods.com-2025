@@ -41,3 +41,7 @@ npm-debug.log*
 
 # playwright
 .playwright-mcp
+
+#piny
+apps/web/public/_piny
+public/_piny
