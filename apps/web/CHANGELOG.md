@@ -1,5 +1,14 @@
 # web
 
+## 1.4.2
+
+### Patch Changes
+
+- [#52](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/52) [`e089acb`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/e089acb4cc3f90aeb1d77ccd29b0c3bf2a362703) Thanks [@ovsw](https://github.com/ovsw)! - fix(a11y): footer links text color and hover colors, border colors.
+
+- Updated dependencies []:
+  - @workspace/ui@1.4.2
+
 ## 1.4.1
 
 ### Patch Changes
