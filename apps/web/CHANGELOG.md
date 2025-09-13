@@ -1,5 +1,34 @@
 # web
 
+## 1.4.1
+
+### Patch Changes
+
+- [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`5741fcd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/5741fcd19d028eee7b7af746cf7f07cba954d625) Thanks [@ovsw](https://github.com/ovsw)! - Make `LogoSvg` accept full SVG props and fix potential id collisions; rename file to `elements/logo.tsx` and update imports.
+  - Extend `LogoSvg` props to `ComponentPropsWithoutRef<'svg'>` and spread onto `<svg>` to allow `aria-*`, `role`, `id`, and other SVG attributes
+  - Remove hardcoded `id="a"` to avoid potential collisions in composed pages and OG rendering
+  - Rename `apps/web/src/components/elements/Logo.tsx` → `apps/web/src/components/elements/Logo.tsx` and update all imports (`navbar`, `navbar-client`, `footer`, `api/logo`, `api/og`, `header`)
+
+- [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`6a10ecc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a10eccc583e7060b55b3b367223caece8872ea9) Thanks [@ovsw](https://github.com/ovsw)! - Make brand logo code-owned and remove CMS logo.
+  - Replace header, nav, and footer logos with inline `LogoSvg` (currentColor theming)
+  - Remove `logo` from Sanity `settings` schema and from related queries/types
+  - Update OG image route and JSON-LD to no longer depend on CMS logo
+  - Delete obsolete Sanity-driven `Logo` image component in web
+  - Lint/typecheck clean across web and studio
+
+- [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`b90dfb1`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/b90dfb16f34092cbc9e390f0d57b6d4bca4e2393) Thanks [@ovsw](https://github.com/ovsw)! - Add OG logo rendering and PNG logo endpoint; update JSON-LD
+  - Add `/api/logo` endpoint (Edge) to render inline `LogoSvg` to PNG via next/og
+  - Render inline logo in OG route layout; fix Satori display style requirements
+  - Update JSON-LD Organization/Article to use absolute `/api/logo` URL
+  - Allow `/api/og/*` and `/api/logo/*` in robots
+
+- [#51](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/51) [`af09524`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/af09524b424f45dfaa942c77811833959ac2594f) Thanks [@ovsw](https://github.com/ovsw)! - Fix SSR hydration mismatch by making theme selection deterministic.
+  - Ensure the server-rendered `html` `class` and inline `color-scheme` match the initial theme used on the client to prevent hydration errors.
+  - Consolidate initial theme logic in `RootLayout` and providers to avoid client-only theme flashes.
+
+- Updated dependencies []:
+  - @workspace/ui@1.4.1
+
 ## 1.4.0
 
 ### Minor Changes
