@@ -80,7 +80,7 @@ function SocialLinks({ data }: SocialLinksProps) {
       {socialLinks.map(({ url, Icon, label }, index) => (
         <li
           key={`social-link-${url}-${index.toString()}`}
-          className="font-medium hover:text-primary"
+          className="font-medium hover:text-brand-yellow"
         >
           <Link
             href={url ?? "#"}
@@ -89,7 +89,7 @@ function SocialLinks({ data }: SocialLinksProps) {
             rel="noopener noreferrer"
             aria-label={label}
           >
-            <Icon className="fill-[color:var(--color-brand-green-text)] hover:fill-primary/80" />
+            <Icon className="fill-[color:var(--color-brand-green-text)] hover:fill-[color:var(--color-brand-yellow)]" />
             <span className="sr-only">{label}</span>
           </Link>
         </li>
@@ -204,7 +204,10 @@ function Footer({ data, settingsData }: FooterProps) {
                         {contactEmail && (
                           <div>
                             {/* Email:{" "} */}
-                            <a href={`mailto:${contactEmail}`}>
+                            <a
+                              href={`mailto:${contactEmail}`}
+                              className="hover:text-brand-yellow"
+                            >
                               {contactEmail}
                             </a>
                           </div>
@@ -212,7 +215,10 @@ function Footer({ data, settingsData }: FooterProps) {
                         {tollFreePhone && (
                           <div>
                             {/* Toll Free:{" "} */}
-                            <a href={`tel:${tollFreePhone}`}>
+                            <a
+                              href={`tel:${tollFreePhone}`}
+                              className="hover:text-brand-yellow"
+                            >
                               {tollFreePhone} (Toll Free)
                             </a>
                           </div>
@@ -220,7 +226,12 @@ function Footer({ data, settingsData }: FooterProps) {
                         {officePhone && (
                           <div>
                             {/* Office:{" "} */}
-                            <a href={`tel:${officePhone}`}>{officePhone}</a>
+                            <a
+                              href={`tel:${officePhone}`}
+                              className="hover:text-brand-yellow"
+                            >
+                              {officePhone}
+                            </a>
                           </div>
                         )}
                       </div>
@@ -241,7 +252,7 @@ function Footer({ data, settingsData }: FooterProps) {
                           {column?.links?.map((link, index) => (
                             <li
                               key={`${link?._key}-${index}-column-${column?._key}`}
-                              className="font-medium hover:text-primary"
+                              className="font-medium hover:text-brand-yellow"
                             >
                               <Link
                                 href={link.href ?? "#"}
@@ -268,16 +279,16 @@ function Footer({ data, settingsData }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-20 border-t pt-8">
-          <div className="flex flex-col justify-between gap-4  text-center text-sm font-normal text-muted-foreground lg:flex-row lg:items-center lg:text-left mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mt-14 border-t border-th-dark-900 py-8">
+          <div className="mx-auto flex max-w-7xl flex-col  justify-between gap-4 px-4 text-center text-sm font-normal text-th-dark-750/80 md:px-6 lg:flex-row lg:items-center lg:text-left">
             <p>
               © {year} {siteTitle}. All rights reserved.
             </p>
             <ul className="flex justify-center gap-4 lg:justify-start">
-              <li className="hover:text-primary">
+              <li className="hover:text-th-dark-900 hover:underline">
                 <Link href="/terms">Terms and Conditions</Link>
               </li>
-              <li className="hover:text-primary">
+              <li className="hover:text-th-dark-900 hover:underline">
                 <Link href="/privacy">Privacy Policy</Link>
               </li>
             </ul>
