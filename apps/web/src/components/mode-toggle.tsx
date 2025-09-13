@@ -13,9 +13,23 @@ import { useEffect } from "react";
 
 export function ModeToggle() {
   const { setTheme, theme } = useTheme();
+  // Coerce any legacy "system" preference to a concrete theme once on client
+  useEffect(() => {
+    if (theme === "system") {
+      try {
+        const prefersDark =
+          typeof window !== "undefined" &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setTheme(prefersDark ? "dark" : "light");
+      } catch {
+        setTheme("light");
+      }
+    }
+  }, [theme, setTheme]);
   // When the theme changes, update the "theme" cookie to persist the user's preference.
   // If the theme is "dark" or "light", set the cookie to that value for 1 year.
-  // If the theme is "system" or undefined, clear the cookie.
+  // Otherwise, clear the cookie.
   useEffect(() => {
     try {
       if (theme === "dark" || theme === "light") {
@@ -43,9 +57,6 @@ export function ModeToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
