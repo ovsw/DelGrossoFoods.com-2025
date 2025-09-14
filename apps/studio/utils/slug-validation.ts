@@ -295,6 +295,17 @@ function applyDocumentTypeRules(
       }
       return slug;
 
+    case "sauce":
+      // Ensure sauces live under /sauces/
+      if (!slug.startsWith("/sauces/")) {
+        if (slug === "/" || slug === "/sauces") {
+          return "/sauces/untitled";
+        }
+        const cleanPath = slug.replace(/^\/+/, "");
+        return `/sauces/${cleanPath}`;
+      }
+      return slug;
+
     default:
       return slug;
   }

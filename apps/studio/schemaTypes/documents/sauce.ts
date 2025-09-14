@@ -66,7 +66,7 @@ export const sauce = defineType({
         Rule.custom(
           createSlugValidator({
             documentType: "Sauce",
-            requiredPrefix: "/sauce/",
+            requiredPrefix: "/sauces/",
           }),
         ),
       ],
