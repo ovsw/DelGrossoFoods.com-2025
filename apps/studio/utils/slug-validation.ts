@@ -208,6 +208,41 @@ export function createSlugValidator(
 }
 
 /**
+ * Async uniqueness validator for slug fields that returns a descriptive message.
+ * Keeps scope global (site-wide unique slugs) to match default `isUnique` behavior.
+ */
+export function createUniqueSlugRule() {
+  return async (
+    slug: { current?: string } | undefined,
+    context: { document?: { _id?: string }; getClient: Function },
+  ): Promise<string | true> => {
+    const current = slug?.current;
+    if (!current) return true; // Let required/format validators handle empties
+
+    const { document, getClient } = context;
+    const client = getClient({ apiVersion: "2025-02-10" });
+    const id = (document?._id ?? "").replace(/^drafts\./, "");
+
+    const query = `*[
+      !(_id in [$draft, $published]) && slug.current == $slug
+    ][0]{ _id, _type, title, name, "slug": slug.current }`;
+    const params = {
+      draft: `drafts.${id}`,
+      published: id,
+      slug: current,
+    };
+
+    const dup = await client.fetch(query, params);
+    if (dup) {
+      const otherTitle = dup.title || dup.name || dup.slug || dup._id;
+      return `This URL is already used by "${otherTitle}"`;
+    }
+
+    return true;
+  };
+}
+
+/**
  * Validates slug with auto-configured document type options
  * For use in components where you have the Sanity document type
  */

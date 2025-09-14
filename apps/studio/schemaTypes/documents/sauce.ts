@@ -11,7 +11,10 @@ import type { AltTextFromFieldOptions } from "../../components/inputs/AltTextFro
 import { AltTextFromField } from "../../components/inputs/AltTextFromField";
 import { PathnameFieldComponent } from "../../components/slug-field-component";
 import { createSlug, isUnique } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSlugValidator,
+  createUniqueSlugRule,
+} from "../../utils/slug-validation";
 
 export const sauce = defineType({
   name: "sauce",
@@ -63,6 +66,7 @@ export const sauce = defineType({
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
+        Rule.custom(createUniqueSlugRule()),
         Rule.custom(
           createSlugValidator({
             documentType: "Sauce",

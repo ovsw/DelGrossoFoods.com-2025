@@ -10,7 +10,10 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug, isUnique } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSlugValidator,
+  createUniqueSlugRule,
+} from "../../utils/slug-validation";
 
 export const blog = defineType({
   name: "blog",
@@ -69,6 +72,7 @@ export const blog = defineType({
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
+        Rule.custom(createUniqueSlugRule()),
         Rule.custom(
           createSlugValidator({
             documentType: "Blog post",

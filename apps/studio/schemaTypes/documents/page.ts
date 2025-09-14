@@ -6,7 +6,10 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug, isUnique } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSlugValidator,
+  createUniqueSlugRule,
+} from "../../utils/slug-validation";
 import { pageBuilderField } from "../common";
 
 export const page = defineType({
@@ -66,6 +69,7 @@ export const page = defineType({
       validation: (Rule) =>
         Rule.required()
           .error("A URL slug is required for the page")
+          .custom(createUniqueSlugRule())
           .custom((slug) => {
             // First run basic validation
             const basicValidation = createSlugValidator({
