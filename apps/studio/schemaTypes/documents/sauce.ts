@@ -9,6 +9,9 @@ import { defineField, defineType } from "sanity";
 
 import type { AltTextFromFieldOptions } from "../../components/inputs/AltTextFromField";
 import { AltTextFromField } from "../../components/inputs/AltTextFromField";
+import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { createSlug, isUnique } from "../../utils/slug";
+import { createSlugValidator } from "../../utils/slug-validation";
 
 export const sauce = defineType({
   name: "sauce",
@@ -42,6 +45,31 @@ export const sauce = defineType({
       type: "string",
       group: "basic",
       validation: (rule) => rule.required().error("Name is required"),
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "URL",
+      description:
+        "The web address for this sauce (automatically created from its name)",
+      group: "basic",
+      components: {
+        field: PathnameFieldComponent,
+      },
+      options: {
+        source: "name",
+        slugify: createSlug,
+        isUnique,
+      },
+      validation: (Rule) => [
+        Rule.required().error("A URL slug is required"),
+        Rule.custom(
+          createSlugValidator({
+            documentType: "Sauce",
+            requiredPrefix: "/sauce/",
+          }),
+        ),
+      ],
     }),
     defineField({
       name: "line",
