@@ -14,10 +14,7 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
         <div className="bg-muted py-16 rounded-3xl px-4">
           <div className="text-center max-w-3xl mx-auto space-y-8">
             {eyebrow && (
-              <Badge
-                variant="secondary"
-                className="bg-zinc-200 dark:text-black"
-              >
+              <Badge variant="secondary" className="bg-zinc-200">
                 {eyebrow}
               </Badge>
             )}

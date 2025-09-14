@@ -36,7 +36,6 @@ import type {
 import LogoSvg from "./elements/logo";
 import { SanityButtons } from "./elements/sanity-buttons";
 import { SanityIcon } from "./elements/sanity-icon";
-import { ModeToggle } from "./mode-toggle";
 
 interface MenuItem {
   title: string;
@@ -234,9 +233,7 @@ function NavbarColumnLink({
       // legacyBehavior
       className={cn(
         navigationMenuTriggerStyle(),
-        active
-          ? "text-foreground font-semibold"
-          : "text-muted-foreground dark:text-neutral-300",
+        active ? "text-foreground font-semibold" : "text-muted-foreground",
       )}
       // passHref
       aria-current={active ? "page" : undefined}
@@ -275,7 +272,7 @@ export function NavbarColumn({
 
   return (
     <NavigationMenuList>
-      <NavigationMenuItem className="text-muted-foreground dark:text-neutral-300">
+      <NavigationMenuItem className="text-muted-foreground">
         <NavigationMenuTrigger
           className={cn(isColumnActive ? "text-foreground font-semibold" : "")}
         >
@@ -328,7 +325,6 @@ export function DesktopNavbar({
       </NavigationMenu>
 
       <div className="justify-self-end flex items-center gap-4">
-        <ModeToggle />
         <SanityButtons
           buttons={buttons ?? []}
           className="flex items-center gap-4"
