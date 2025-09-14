@@ -778,6 +778,7 @@ export type Sauce = {
   _rev: string;
   orderRank?: string;
   name: string;
+  slug: Slug;
   line: "Original" | "Organic" | "Ultra-Premium";
   category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
   sauceJarSize:
@@ -3029,6 +3030,16 @@ export type QueryGenericPageOGDataResult =
       image: null;
       dominantColor: null;
       seoImage: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "sauce";
+      title: null;
+      description: RichText;
+      image: null;
+      dominantColor: null;
+      seoImage: null;
       date: string;
     }
   | {
