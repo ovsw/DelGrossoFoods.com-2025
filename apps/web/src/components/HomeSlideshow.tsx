@@ -29,7 +29,7 @@ const slides: Slide[] = [
     sauceAlts: [
       "DelGrosso Marinara, Pepperoni Flavored, and Garlic & Cheese pasta sauces",
     ],
-    buttonLink: "/sauce/",
+    buttonLink: "/sauces/",
     buttonText: "Order Online",
   },
   {
@@ -41,7 +41,7 @@ const slides: Slide[] = [
     sauceImage: ["/images/collages/LFD-collage.avif"],
 
     sauceAlts: ["DelGrosso Arrabbiata, Mushroom, and Traditional pasta sauces"],
-    buttonLink: "/sauce/",
+    buttonLink: "/sauces/",
     buttonText: "Order Online",
   },
 
@@ -55,7 +55,7 @@ const slides: Slide[] = [
     sauceAlts: [
       "DelGrosso Meat Sauce, Four Cheese, and Roasted Garlic pasta sauces",
     ],
-    buttonLink: "/sauce/",
+    buttonLink: "/sauces/",
     buttonText: "Order Online",
   },
 ];

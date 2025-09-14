@@ -259,11 +259,13 @@ const ogFieldsFragment = /* groq */ `
   "title": select(
     defined(ogTitle) => ogTitle,
     defined(seoTitle) => seoTitle,
+    _type == "sauce" => name,
     title
   ),
   "description": select(
     defined(ogDescription) => ogDescription,
     defined(seoDescription) => seoDescription,
+    _type == "sauce" => pt::text(description),
     description
   ),
   "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
