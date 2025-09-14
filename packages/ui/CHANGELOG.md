@@ -1,5 +1,16 @@
 # @workspace/ui
 
+## 1.4.2
+
+### Patch Changes
+
+- [#54](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/54) [`93087f5`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/93087f5776205fed69cd28a3e337577ebcec11c7) Thanks [@ovsw](https://github.com/ovsw)! - chore(theme): disable runtime theme switching and purge dark variants
+  - Remove `next-themes` usage and theme toggle; stub `Providers` to no-op
+  - Simplify `layout.tsx` to light-only; drop cookie/client-hint logic
+  - Purge all `dark:` Tailwind variants across web and shared UI
+  - Remove `next-themes` from `web` and `@workspace/ui` dependencies
+  - Add ADR-001 with re-enable steps; update Cursor agent handbook to clarify light-only
+
 ## 1.4.1
 
 ## 1.4.0
