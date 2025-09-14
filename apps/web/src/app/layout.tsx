@@ -5,7 +5,7 @@ import {
   // Geist, Geist_Mono,
   Libre_Baskerville,
 } from "next/font/google";
-import { cookies, draftMode, headers } from "next/headers";
+import { draftMode } from "next/headers";
 import Script from "next/script";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
@@ -40,21 +40,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // This is needed to support the color scheme client hint from cookies
-  const themeCookie = (await cookies()).get("theme")?.value;
-  const clientHints = await headers();
-  const chPref = clientHints.get("Sec-CH-Prefers-Color-Scheme");
-  const hintedTheme =
-    chPref === "dark" || chPref === "light" ? chPref : undefined;
-  const initialTheme =
-    themeCookie === "dark" || themeCookie === "light"
-      ? themeCookie
-      : (hintedTheme ?? "light");
   return (
     <html
       lang="en"
-      className={initialTheme}
-      style={{ colorScheme: initialTheme } as React.CSSProperties}
+      className="light"
+      style={{ colorScheme: "light" } as React.CSSProperties}
     >
       <body
         className={`${fontSerif.variable}
@@ -67,7 +57,7 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
-        <Providers initialTheme={initialTheme as "light" | "dark"}>
+        <Providers>
           <Header />
           <main id="main">{children}</main>
 

@@ -183,7 +183,7 @@ function Footer({ data, settingsData }: FooterProps) {
                     </Link>
                   </span>
                   {/* {subtitle && (
-                  <p className="mt-6 text-sm text-muted-foreground dark:text-zinc-400">
+                  <p className="mt-6 text-sm text-muted-foreground">
                     {subtitle}
                   </p>
                 )} */}

@@ -405,9 +405,7 @@ const TableOfContentAnchor: FC<AnchorProps> = ({
         <Circle
           className={cn(
             "min-w-1.5 min-h-1.5 size-1.5 transition-colors duration-200",
-            !isChild
-              ? "dark:fill-zinc-100 fill-zinc-900"
-              : "dark:fill-zinc-400 fill-zinc-600",
+            !isChild ? "fill-zinc-900" : "fill-zinc-600",
           )}
           aria-hidden="true"
         />
@@ -469,8 +467,7 @@ export const TableOfContent: FC<TableOfContentProps> = ({
       className={cn(
         "sticky top-8 flex flex-col w-full max-w-xs p-4",
         "bg-gradient-to-b from-zinc-50 to-zinc-100",
-        "dark:from-zinc-800 dark:to-zinc-900",
-        "shadow-sm rounded-lg border border-zinc-300 dark:border-zinc-700",
+        "shadow-sm rounded-lg border border-zinc-300",
         "transition-all duration-200",
         className,
       )}
@@ -481,8 +478,8 @@ export const TableOfContent: FC<TableOfContentProps> = ({
         <summary
           className={cn(
             "flex cursor-pointer items-center justify-between",
-            "text-lg font-semibold text-zinc-800 dark:text-zinc-200",
-            "hover:text-blue-600 dark:hover:text-blue-400",
+            "text-lg font-semibold text-zinc-800",
+            "hover:text-blue-600",
             "transition-colors duration-200 focus:outline-none",
             "rounded-sm p-1",
           )}

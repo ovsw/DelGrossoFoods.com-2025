@@ -29,7 +29,7 @@ export function FaqAccordion({
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
             <Badge variant="secondary">{eyebrow}</Badge>
             <h2 className="text-3xl font-semibold md:text-5xl">{title}</h2>
-            <h3 className="text-lg font-normal text-[#374151] text-balance dark:text-zinc-400">
+            <h3 className="text-lg font-normal text-[#374151] text-balance">
               {subtitle}
             </h3>
           </div>
@@ -72,10 +72,7 @@ export function FaqAccordion({
                   {link?.description}
                 </p>
                 <span className="rounded-full border p-1">
-                  <ArrowUpRight
-                    size={16}
-                    className="text-[#374151] dark:text-neutral-300"
-                  />
+                  <ArrowUpRight size={16} className="text-[#374151]" />
                 </span>
               </Link>
             </div>
