@@ -64,7 +64,7 @@ alwaysApply: false
 - SEO utilities in `src/lib/seo.ts`; sitemap and robots in `src/app/sitemap.ts` and `src/app/robots.ts`.
 - Sanity client and queries live under `src/lib/sanity/`.
 - Images: Next image remote patterns are configured for Sanity CDN; prefer Sanity-aware image helpers.
- - The root `layout.tsx` renders `<html className="light" style={{ colorScheme: "light" }}>` and wraps children with a no-op `Providers`. Don’t introduce color-scheme negotiation or cookies for theme.
+- The root `layout.tsx` renders `<html className="light" style={{ colorScheme: "light" }}>` and wraps children with a no-op `Providers`. Don’t introduce color-scheme negotiation or cookies for theme.
 
 ### Sanity studio (apps/studio)
 
