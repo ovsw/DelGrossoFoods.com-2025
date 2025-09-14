@@ -95,10 +95,20 @@ function getDocumentTypeConfig(
         documentType: "Blog post",
         requiredPrefix: "/blog/",
       };
+    case "sauce":
+      return {
+        documentType: "Sauce",
+        requiredPrefix: "/sauces/",
+      };
     case "blogIndex":
       return {
         documentType: "Blog index",
         requiredPrefix: "/blog",
+      };
+    case "sauceIndex":
+      return {
+        documentType: "Sauce index",
+        requiredPrefix: "/sauces",
       };
     case "homePage":
       return {
@@ -327,6 +337,13 @@ function applyDocumentTypeRules(
           return "/page";
         }
         return `/${withoutBlogPrefix}`;
+      }
+      return slug;
+
+    case "sauceIndex":
+      // Sauce index should be exactly /sauces
+      if (slug !== "/sauces") {
+        return "/sauces";
       }
       return slug;
 
