@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { RichText } from "@/components/elements/rich-text";
@@ -30,9 +31,9 @@ async function fetchBlogPaths() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { slug } = params;
   const { data } = await fetchBlogSlugPageData(slug, false);
   return getSEOMetadata(
     data
@@ -55,9 +56,9 @@ export async function generateStaticParams() {
 export default async function BlogSlugPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
+  const { slug } = params;
   const { data } = await fetchBlogSlugPageData(slug);
   if (!data) return notFound();
   const { title, description, image, richText } = data ?? {};
