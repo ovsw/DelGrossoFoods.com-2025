@@ -18,7 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { SauceCard } from "@/components/sauce-card";
@@ -32,6 +32,155 @@ import {
 import { applyFiltersAndSort } from "@/lib/sauces/filters";
 import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
 import type { SauceListItem, SortOrder } from "@/types";
+
+type FiltersFormProps = {
+  idPrefix?: string;
+  search: string;
+  setSearch: (v: string) => void;
+  productLine: LineSlug[];
+  toggleLine: (line: LineSlug) => void;
+  sauceType: SauceQueryState["sauceType"];
+  setSauceType: (v: SauceQueryState["sauceType"]) => void;
+  clearAll: () => void;
+  clearProductLine: () => void;
+  clearSauceType: () => void;
+  applyButton?: React.ReactNode;
+};
+
+function FiltersForm({
+  idPrefix = "filters",
+  search,
+  setSearch,
+  productLine,
+  toggleLine,
+  sauceType,
+  setSauceType,
+  clearAll,
+  applyButton,
+  clearProductLine,
+  clearSauceType,
+}: FiltersFormProps) {
+  const searchId = `${idPrefix}-sauce-search`;
+  return (
+    <div className="space-y-6">
+      <div>
+        <label htmlFor={searchId} className="block text-sm font-medium">
+          Search sauces
+        </label>
+        <div className="mt-2 flex items-center gap-2">
+          <input
+            id={searchId}
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.currentTarget.value)}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            placeholder="Search by name or description"
+            aria-label="Search sauces"
+          />
+          {search ? (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setSearch("")}
+            >
+              Clear
+            </Button>
+          ) : null}
+        </div>
+      </div>
+
+      <fieldset className="border rounded-md p-4">
+        <legend className="px-1 text-sm font-medium">Product Line</legend>
+        <div className="mt-2 grid grid-cols-1 gap-2">
+          {allLineSlugs.map((slug) => {
+            const id = `${idPrefix}-line-${slug}`;
+            const cfg = lineMap[slug];
+            const checked = productLine.includes(slug);
+            return (
+              <label
+                key={slug}
+                htmlFor={id}
+                className="flex items-center gap-2"
+              >
+                <input
+                  id={id}
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggleLine(slug)}
+                  className="size-4 rounded-sm border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={cfg.display}
+                />
+                <span>{cfg.display}</span>
+              </label>
+            );
+          })}
+        </div>
+        {productLine.length > 0 ? (
+          <div className="mt-2">
+            <Button type="button" variant="ghost" onClick={clearProductLine}>
+              Clear
+            </Button>
+          </div>
+        ) : null}
+      </fieldset>
+
+      <fieldset className="border rounded-md p-4">
+        <legend className="px-1 text-sm font-medium">Sauce Type</legend>
+        <div className="mt-2 grid grid-cols-1 gap-2">
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              name={`${idPrefix}-sauce-type`}
+              value="all"
+              checked={sauceType === "all"}
+              onChange={() => setSauceType("all")}
+              className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="All"
+            />
+            <span>All</span>
+          </label>
+          {allTypeSlugs.map((slug) => {
+            const id = `${idPrefix}-type-${slug}`;
+            const cfg = typeMap[slug];
+            return (
+              <label
+                key={slug}
+                htmlFor={id}
+                className="flex items-center gap-2"
+              >
+                <input
+                  id={id}
+                  type="radio"
+                  name={`${idPrefix}-sauce-type`}
+                  value={slug}
+                  checked={sauceType === slug}
+                  onChange={() => setSauceType(slug)}
+                  className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={cfg.display}
+                />
+                <span>{cfg.display}</span>
+              </label>
+            );
+          })}
+        </div>
+        {sauceType !== "all" ? (
+          <div className="mt-2">
+            <Button type="button" variant="ghost" onClick={clearSauceType}>
+              Clear
+            </Button>
+          </div>
+        ) : null}
+      </fieldset>
+
+      <div className="flex items-center justify-between gap-2">
+        <Button type="button" variant="secondary" onClick={clearAll}>
+          Clear all
+        </Button>
+        {applyButton}
+      </div>
+    </div>
+  );
+}
 
 type Props = {
   readonly items: SauceListItem[];
@@ -48,7 +197,6 @@ function useDebouncedValue<T>(value: T, delay = 200): T {
 }
 
 export function SaucesClient({ items, initialState }: Props) {
-  const router = useRouter();
   const pathname = usePathname();
 
   const [search, setSearch] = useState<string>(initialState.search);
@@ -67,13 +215,15 @@ export function SaucesClient({ items, initialState }: Props) {
     [debouncedSearch, productLine, sauceType, sort],
   );
 
-  // Sync URL on state changes
+  // Sync URL on state changes without triggering a Next.js navigation
   useEffect(() => {
     const params = serializeStateToParams(state);
     const query = params.toString();
     const url = query ? `${pathname}?${query}` : pathname;
-    router.replace(url, { scroll: false });
-  }, [pathname, router, state]);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(window.history.state, "", url);
+    }
+  }, [pathname, state]);
 
   // Compute filtered and sorted results
   const results = useMemo(
@@ -96,139 +246,17 @@ export function SaucesClient({ items, initialState }: Props) {
     setSort("az");
   }
 
+  function clearProductLine() {
+    setProductLine([]);
+  }
+
+  function clearSauceType() {
+    setSauceType("all");
+  }
+
   function toggleLine(line: LineSlug) {
     setProductLine((prev) =>
       prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
-    );
-  }
-
-  function FiltersForm({ applyButton }: { applyButton?: React.ReactNode }) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <label htmlFor="sauce-search" className="block text-sm font-medium">
-            Search sauces
-          </label>
-          <div className="mt-2 flex items-center gap-2">
-            <input
-              id="sauce-search"
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              placeholder="Search by name or description"
-              aria-label="Search sauces"
-            />
-            {search ? (
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setSearch("")}
-              >
-                Clear
-              </Button>
-            ) : null}
-          </div>
-        </div>
-
-        <fieldset className="border rounded-md p-4">
-          <legend className="px-1 text-sm font-medium">Product Line</legend>
-          <div className="mt-2 grid grid-cols-1 gap-2">
-            {allLineSlugs.map((slug) => {
-              const id = `line-${slug}`;
-              const cfg = lineMap[slug];
-              const checked = productLine.includes(slug);
-              return (
-                <label
-                  key={slug}
-                  htmlFor={id}
-                  className="flex items-center gap-2"
-                >
-                  <input
-                    id={id}
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => toggleLine(slug)}
-                    className="size-4 rounded-sm border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label={cfg.display}
-                  />
-                  <span>{cfg.display}</span>
-                </label>
-              );
-            })}
-          </div>
-          {productLine.length > 0 ? (
-            <div className="mt-2">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setProductLine([])}
-              >
-                Clear
-              </Button>
-            </div>
-          ) : null}
-        </fieldset>
-
-        <fieldset className="border rounded-md p-4">
-          <legend className="px-1 text-sm font-medium">Sauce Type</legend>
-          <div className="mt-2 grid grid-cols-1 gap-2">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="sauce-type"
-                value="all"
-                checked={sauceType === "all"}
-                onChange={() => setSauceType("all")}
-                className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="All"
-              />
-              <span>All</span>
-            </label>
-            {allTypeSlugs.map((slug) => {
-              const id = `type-${slug}`;
-              const cfg = typeMap[slug];
-              return (
-                <label
-                  key={slug}
-                  htmlFor={id}
-                  className="flex items-center gap-2"
-                >
-                  <input
-                    id={id}
-                    type="radio"
-                    name="sauce-type"
-                    value={slug}
-                    checked={sauceType === slug}
-                    onChange={() => setSauceType(slug)}
-                    className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label={cfg.display}
-                  />
-                  <span>{cfg.display}</span>
-                </label>
-              );
-            })}
-          </div>
-          {sauceType !== "all" ? (
-            <div className="mt-2">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setSauceType("all")}
-              >
-                Clear
-              </Button>
-            </div>
-          ) : null}
-        </fieldset>
-
-        <div className="flex items-center justify-between gap-2">
-          <Button type="button" variant="secondary" onClick={clearAll}>
-            Clear all
-          </Button>
-          {applyButton}
-        </div>
-      </div>
     );
   }
 
@@ -237,7 +265,18 @@ export function SaucesClient({ items, initialState }: Props) {
       {/* Sidebar (desktop) */}
       <aside className="hidden lg:block">
         <div className="sticky top-20 space-y-6">
-          <FiltersForm />
+          <FiltersForm
+            idPrefix="desktop"
+            search={search}
+            setSearch={setSearch}
+            productLine={productLine}
+            toggleLine={toggleLine}
+            sauceType={sauceType}
+            setSauceType={setSauceType}
+            clearAll={clearAll}
+            clearProductLine={clearProductLine}
+            clearSauceType={clearSauceType}
+          />
         </div>
       </aside>
 
@@ -279,6 +318,16 @@ export function SaucesClient({ items, initialState }: Props) {
                   </SheetHeader>
                   <div className="mt-4 overflow-y-auto pb-24">
                     <FiltersForm
+                      idPrefix="sheet"
+                      search={search}
+                      setSearch={setSearch}
+                      productLine={productLine}
+                      toggleLine={toggleLine}
+                      sauceType={sauceType}
+                      setSauceType={setSauceType}
+                      clearAll={clearAll}
+                      clearProductLine={clearProductLine}
+                      clearSauceType={clearSauceType}
                       applyButton={
                         <SheetFooter>
                           <SheetClose asChild>
