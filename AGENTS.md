@@ -67,7 +67,31 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 ### Sanity studio (apps/studio)
 
 - Schemas under `studio/schemaTypes/**`. Always use `defineType` and `defineField`.
-- After schema changes: `pnpm -C apps/studio run type` to extract and generate types.
+- After schema changes or updating/adding queries in `apps/web/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
+  - Studio: `pnpm -C apps/studio run type` (extract + generate)
+  - Then re-run web typecheck/build.
+  - Keep web tightly coupled to generated types; derive UI types from generated query results where feasible.
+
+### Live Preview & Presentation
+
+// IMPORTANT: We use next-sanity v10 Live Content API — do NOT use the older preview APIs.
+
+- Do NOT import or use legacy preview components from `next-sanity/preview` or `@sanity/preview-kit` (e.g. `LiveQuery`, `useLiveQuery`, `LiveQueryProvider`). They are deprecated for our setup.
+- DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web/src/lib/sanity/live.ts`).
+  - Mount `<SanityLive />` at the end of the root layout body (already done).
+  - Fetch page data with `sanityFetch` in server components. This auto-switches to the Live Content API when Draft Mode is enabled.
+- Keep Presentation metadata intact: never force `stega: false` for fetches that render visible content. This is required for:
+  - Live updates while editing drafts (in Presentation)
+  - Showing "Documents on this page"
+  - Click-to-edit overlay/inspector
+- Optional debug only: if needed, use hooks from `next-sanity/hooks` (e.g. `useIsLivePreview`) — avoid legacy preview providers.
+
+Sanity Types (tight coupling)
+
+- After schema or query edits (in `apps/web/src/lib/sanity/query.ts`), always run Studio typegen:
+  - `pnpm -C apps/studio type`
+  - Then re-run web typecheck/build
+- Derive web UI types from generated query results in `apps/web/src/lib/sanity/sanity.types.ts` (e.g., `GetXQueryResult`) rather than hand-rolling shapes.
 - Keep icons consistent (prefer `@sanity/icons`, fallback to `lucide-react`).
 - Follow GROQ rules: prefer explicit filtering and fragments; don’t expand images unless asked.
 
