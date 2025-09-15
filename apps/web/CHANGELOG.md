@@ -1,5 +1,24 @@
 # web
 
+## 1.5.0
+
+### Minor Changes
+
+- [#55](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/55) [`e9803fc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/e9803fcba2fb9b3ec25c172e74489f0830522dd4) Thanks [@ovsw](https://github.com/ovsw)! - Make slug input schema-aware and add sauce slugs under `/sauces/`.
+  - Slug field component now respects each field’s `options.source` and `options.slugify`, enabling Generate/Clean Up for docs without a `title` (e.g., sauces use `name`).
+  - Enforce `/sauces/` prefix for `sauce` documents; add cleaner/validator rules and slug prefix mapping.
+  - Update sauce schema to include slug with auto-generation and validation.
+  - Update web links to `/sauces/` and fix OG queries to use plain-text sauce descriptions.
+
+### Patch Changes
+
+- [#55](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/55) [`530abd4`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/530abd46de184addc6ee5a1307fbb9d5be471e32) Thanks [@ovsw](https://github.com/ovsw)! - Address PR comment fixes in Studio and Web.
+  - Studio (page): use centralized slug validator with `sanityDocumentType: "page"`; remove manual `/blog` guard.
+  - Web (OG): coerce OG `title`/`description` to strings to avoid type drift (sauce).
+
+- Updated dependencies []:
+  - @workspace/ui@1.5.0
+
 ## 1.4.2
 
 ### Patch Changes
