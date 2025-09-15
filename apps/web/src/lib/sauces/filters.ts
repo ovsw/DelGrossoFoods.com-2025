@@ -1,3 +1,6 @@
+import type { IFuseOptions } from "fuse.js";
+import Fuse from "fuse.js";
+
 import {
   fromLineSlug,
   fromTypeSlug,
@@ -26,13 +29,14 @@ function isSubsequence(needle: string, haystack: string): boolean {
   return i === needle.length;
 }
 
-function fuzzyMatch(query: string, text: string): boolean {
-  const q = normalize(query).trim();
-  if (!q) return true;
-  const t = normalize(text);
-  // Simple contains or subsequence match as a lightweight fuzzy
-  return t.includes(q) || isSubsequence(q, t);
-}
+const fuseOptions: IFuseOptions<SauceListItem> = {
+  keys: ["name", "descriptionPlain"],
+  threshold: 0.3,
+  ignoreLocation: true,
+  isCaseSensitive: false,
+  includeScore: false,
+  minMatchCharLength: 1,
+};
 
 export function sortByName(
   items: SauceListItem[],
@@ -48,10 +52,10 @@ export function filterBySearch(
   items: SauceListItem[],
   search: string,
 ): SauceListItem[] {
-  if (!search?.trim()) return items;
-  return items.filter((it) =>
-    fuzzyMatch(search, `${it.name} ${it.descriptionPlain ?? ""}`),
-  );
+  const query = search?.trim();
+  if (!query) return items;
+  const fuse = new Fuse(items, fuseOptions);
+  return fuse.search(query).map((r) => r.item);
 }
 
 export function filterByProductLine(

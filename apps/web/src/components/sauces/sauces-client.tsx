@@ -80,6 +80,11 @@ export function SaucesClient({ items, initialState }: Props) {
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
+  // Avoid hydration flash: use SSR-computed initial results for first paint
+  const [firstPaint, setFirstPaint] = useState(true);
+  useEffect(() => {
+    setFirstPaint(false);
+  }, []);
 
   // A11y live region
   const resultsText = `${results.length} result${results.length === 1 ? "" : "s"}`;
@@ -245,7 +250,15 @@ export function SaucesClient({ items, initialState }: Props) {
             aria-atomic="true"
             className="text-sm text-muted-foreground"
           >
-            {resultsText}
+            {firstPaint
+              ? `${initialState ? applyFiltersAndSort(items, initialState).length : results.length} result${
+                  (initialState
+                    ? applyFiltersAndSort(items, initialState).length
+                    : results.length) === 1
+                    ? ""
+                    : "s"
+                }`
+              : resultsText}
           </div>
 
           <div className="flex items-center gap-2">
@@ -305,7 +318,8 @@ export function SaucesClient({ items, initialState }: Props) {
         </div>
 
         {/* Grid */}
-        {results.length === 0 ? (
+        {(firstPaint ? applyFiltersAndSort(items, initialState) : results)
+          .length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
               No sauces match your filters.
@@ -316,7 +330,10 @@ export function SaucesClient({ items, initialState }: Props) {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {results.map((item) => (
+            {(firstPaint
+              ? applyFiltersAndSort(items, initialState)
+              : results
+            ).map((item) => (
               <SauceCard key={item._id} item={item} />
             ))}
           </div>
