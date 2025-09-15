@@ -1,0 +1,45 @@
+import Link from "next/link";
+
+import { getSEOMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  return getSEOMetadata({
+    title: `Sauce: ${slug}`,
+    description: "Sauce details coming soon.",
+    slug: `/sauces/${slug}`,
+    pageType: "article",
+  });
+}
+
+export default async function SauceDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  return (
+    <main className="bg-background">
+      <div className="container my-16 mx-auto px-4 md:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="text-3xl font-bold sm:text-4xl">{slug}</h1>
+          <p className="mt-4 text-lg leading-8 text-muted-foreground">
+            Sauce details coming soon.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/sauces"
+              className="underline underline-offset-4 hover:no-underline"
+            >
+              ← Back to all sauces
+            </Link>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
