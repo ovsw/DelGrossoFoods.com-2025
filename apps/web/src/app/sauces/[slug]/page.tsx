@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getSEOMetadata } from "@/lib/seo";
@@ -5,9 +6,9 @@ import { getSEOMetadata } from "@/lib/seo";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { slug } = params;
   return getSEOMetadata({
     title: `Sauce: ${slug}`,
     description: "Sauce details coming soon.",
@@ -19,9 +20,9 @@ export async function generateMetadata({
 export default async function SauceDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
+  const { slug } = params;
   return (
     <main className="bg-background">
       <div className="container my-16 mx-auto px-4 md:px-6">

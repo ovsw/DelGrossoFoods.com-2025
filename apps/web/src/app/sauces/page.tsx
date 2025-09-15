@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SaucesClient } from "@/components/sauces/sauces-client";
@@ -12,7 +13,7 @@ import type { SauceIndexPageData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 // import { draftMode } from "next/headers";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const { data: result } = await sanityFetch({
     query: getSauceIndexPageQuery,
   });
