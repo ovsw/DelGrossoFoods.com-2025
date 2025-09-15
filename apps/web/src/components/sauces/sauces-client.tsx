@@ -1,0 +1,327 @@
+"use client";
+import { Button } from "@workspace/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@workspace/ui/components/sheet";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+import { SauceCard } from "@/components/sauce-card";
+import {
+  allLineSlugs,
+  allTypeSlugs,
+  lineMap,
+  type LineSlug,
+  typeMap,
+} from "@/config/sauce-taxonomy";
+import { applyFiltersAndSort } from "@/lib/sauces/filters";
+import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
+import type { SauceListItem, SortOrder } from "@/types";
+
+type Props = {
+  readonly items: SauceListItem[];
+  readonly initialState: SauceQueryState;
+};
+
+function useDebouncedValue<T>(value: T, delay = 200): T {
+  const [debounced, setDebounced] = useState<T>(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
+}
+
+export function SaucesClient({ items, initialState }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [search, setSearch] = useState<string>(initialState.search);
+  const [productLine, setProductLine] = useState<LineSlug[]>([
+    ...initialState.productLine,
+  ]);
+  const [sauceType, setSauceType] = useState<SauceQueryState["sauceType"]>(
+    initialState.sauceType,
+  );
+  const [sort, setSort] = useState<SortOrder>(initialState.sort);
+
+  const debouncedSearch = useDebouncedValue(search, 200);
+
+  const state: SauceQueryState = useMemo(
+    () => ({ search: debouncedSearch, productLine, sauceType, sort }),
+    [debouncedSearch, productLine, sauceType, sort],
+  );
+
+  // Sync URL on state changes
+  useEffect(() => {
+    const params = serializeStateToParams(state);
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+    router.replace(url, { scroll: false });
+  }, [pathname, router, state]);
+
+  // Compute filtered and sorted results
+  const results = useMemo(
+    () => applyFiltersAndSort(items, state),
+    [items, state],
+  );
+
+  // A11y live region
+  const resultsText = `${results.length} result${results.length === 1 ? "" : "s"}`;
+
+  function clearAll() {
+    setSearch("");
+    setProductLine([]);
+    setSauceType("all");
+    setSort("az");
+  }
+
+  function toggleLine(line: LineSlug) {
+    setProductLine((prev) =>
+      prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
+    );
+  }
+
+  function FiltersForm({ applyButton }: { applyButton?: React.ReactNode }) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <label htmlFor="sauce-search" className="block text-sm font-medium">
+            Search sauces
+          </label>
+          <div className="mt-2 flex items-center gap-2">
+            <input
+              id="sauce-search"
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              placeholder="Search by name or description"
+              aria-label="Search sauces"
+            />
+            {search ? (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setSearch("")}
+              >
+                Clear
+              </Button>
+            ) : null}
+          </div>
+        </div>
+
+        <fieldset className="border rounded-md p-4">
+          <legend className="px-1 text-sm font-medium">Product Line</legend>
+          <div className="mt-2 grid grid-cols-1 gap-2">
+            {allLineSlugs.map((slug) => {
+              const id = `line-${slug}`;
+              const cfg = lineMap[slug];
+              const checked = productLine.includes(slug);
+              return (
+                <label
+                  key={slug}
+                  htmlFor={id}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    id={id}
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleLine(slug)}
+                    className="size-4 rounded-sm border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={cfg.display}
+                  />
+                  <span>{cfg.display}</span>
+                </label>
+              );
+            })}
+          </div>
+          {productLine.length > 0 ? (
+            <div className="mt-2">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setProductLine([])}
+              >
+                Clear
+              </Button>
+            </div>
+          ) : null}
+        </fieldset>
+
+        <fieldset className="border rounded-md p-4">
+          <legend className="px-1 text-sm font-medium">Sauce Type</legend>
+          <div className="mt-2 grid grid-cols-1 gap-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="sauce-type"
+                value="all"
+                checked={sauceType === "all"}
+                onChange={() => setSauceType("all")}
+                className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="All"
+              />
+              <span>All</span>
+            </label>
+            {allTypeSlugs.map((slug) => {
+              const id = `type-${slug}`;
+              const cfg = typeMap[slug];
+              return (
+                <label
+                  key={slug}
+                  htmlFor={id}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    id={id}
+                    type="radio"
+                    name="sauce-type"
+                    value={slug}
+                    checked={sauceType === slug}
+                    onChange={() => setSauceType(slug)}
+                    className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={cfg.display}
+                  />
+                  <span>{cfg.display}</span>
+                </label>
+              );
+            })}
+          </div>
+          {sauceType !== "all" ? (
+            <div className="mt-2">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setSauceType("all")}
+              >
+                Clear
+              </Button>
+            </div>
+          ) : null}
+        </fieldset>
+
+        <div className="flex items-center justify-between gap-2">
+          <Button type="button" variant="secondary" onClick={clearAll}>
+            Clear all
+          </Button>
+          {applyButton}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+      {/* Sidebar (desktop) */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-20 space-y-6">
+          <FiltersForm />
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <section className="min-w-0">
+        {/* Top bar */}
+        <div className="flex items-center justify-between mb-4">
+          <div
+            aria-live="polite"
+            aria-atomic="true"
+            className="text-sm text-muted-foreground"
+          >
+            {resultsText}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Mobile filter button */}
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button type="button" variant="secondary">
+                    Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-80">
+                  <SheetHeader>
+                    <SheetTitle>Filters</SheetTitle>
+                    <SheetDescription>
+                      Refine the list of sauces
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-4 overflow-y-auto pb-24">
+                    <FiltersForm
+                      applyButton={
+                        <SheetFooter>
+                          <SheetClose asChild>
+                            <Button type="button">Apply</Button>
+                          </SheetClose>
+                        </SheetFooter>
+                      }
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            {/* Sort dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button type="button" variant="secondary">
+                  Sort
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Sort by name</DropdownMenuLabel>
+                <DropdownMenuRadioGroup
+                  value={sort}
+                  onValueChange={(v) => setSort((v as SortOrder) ?? "az")}
+                >
+                  <DropdownMenuRadioItem value="az">
+                    A → Z
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="za">
+                    Z → A
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
+        {/* Grid */}
+        {results.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground mb-4">
+              No sauces match your filters.
+            </p>
+            <Button type="button" onClick={clearAll}>
+              Clear all
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {results.map((item) => (
+              <SauceCard key={item._id} item={item} />
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
