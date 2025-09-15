@@ -10,11 +10,11 @@ import { parseSearchParams, type SauceQueryState } from "@/lib/sauces/url";
 import { getSEOMetadata } from "@/lib/seo";
 import type { SauceIndexPageData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
+// import { draftMode } from "next/headers";
 
 export async function generateMetadata() {
   const { data: result } = await sanityFetch({
     query: getSauceIndexPageQuery,
-    stega: false,
   });
 
   const data = result as SauceIndexPageData | null;
@@ -32,15 +32,11 @@ export async function generateMetadata() {
 }
 
 async function fetchSauces() {
-  return await handleErrors(
-    sanityFetch({ query: getAllSaucesForIndexQuery, stega: false }),
-  );
+  return await handleErrors(sanityFetch({ query: getAllSaucesForIndexQuery }));
 }
 
 async function fetchIndexCopy() {
-  return await handleErrors(
-    sanityFetch({ query: getSauceIndexPageQuery, stega: false }),
-  );
+  return await handleErrors(sanityFetch({ query: getSauceIndexPageQuery }));
 }
 
 export default async function SaucesIndexPage({
@@ -76,7 +72,6 @@ export default async function SaucesIndexPage({
         </div>
 
         <div className="mt-8">
-          {/* Client manages state; SSR computes same initial results to avoid flash */}
           <SaucesClient items={items} initialState={initialState} />
         </div>
       </div>
