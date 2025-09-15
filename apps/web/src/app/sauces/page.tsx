@@ -43,7 +43,8 @@ async function fetchIndexCopy() {
 export default async function SaucesIndexPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  // Next.js 15: searchParams is now async and must be awaited
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const [saucesRes, copyRes] = await Promise.all([
     fetchSauces(),
@@ -56,11 +57,12 @@ export default async function SaucesIndexPage({
   const indexDoc = (copyData?.data ?? null) as SauceIndexPageData | null;
   const items = (saucesData?.data ?? []) as SauceListItem[];
 
-  const initialState: SauceQueryState = parseSearchParams(searchParams ?? {});
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
 
   return (
-    <main className="bg-background">
-      <div className="container my-16 mx-auto px-4 md:px-6">
+    <main>
+      <div className="container py-60 mx-auto px-4 md:px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-bold sm:text-4xl">
             {indexDoc?.title ?? "Sauces"}

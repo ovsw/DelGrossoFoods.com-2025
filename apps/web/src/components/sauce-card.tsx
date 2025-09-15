@@ -15,19 +15,21 @@ export function SauceCard({ item }: { item: SauceListItem }) {
     <Link
       href={`/sauces/${slug}`}
       aria-label={`View ${name} sauce`}
-      className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl overflow-hidden border border-border shadow-sm transition hover:shadow-md"
+      className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
-      <div className="relative">
+      <div className="aspect-[1/1] flex items-center justify-center p-4">
         {mainImage?.id ? (
           <SanityImage
             image={mainImage}
-            width={600}
-            height={600}
+            respectSanityCrop={false}
+            width={200}
+            height={400}
             alt={mainImage?.alt ?? `${name} sauce`}
-            className="w-full aspect-square object-cover"
+            className="max-h-full max-w-full object-contain"
+            style={{ objectFit: "contain" }}
           />
         ) : (
-          <div className="w-full aspect-square bg-muted" />
+          <div className="h-full w-full bg-muted" />
         )}
       </div>
 
