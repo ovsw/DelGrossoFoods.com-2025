@@ -1,7 +1,7 @@
 ---
 description: AI agent handbook for exploring, editing, and shipping safely in this monorepo
 globs: **/*
-alwaysApply: false
+alwaysApply: true
 ---
 
 ### Quick facts

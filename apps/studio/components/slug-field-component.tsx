@@ -85,6 +85,7 @@ export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
     inputProps: { onChange, value, readOnly },
     title,
     description,
+    schemaType,
   } = props;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -126,32 +127,85 @@ export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
     },
     [handleChange],
   );
-  const handleGenerate = useCallback(() => {
-    const title = document?.title as string | undefined;
-    if (!title) return;
+  // Resolve slug field options from schema (source and slugify)
+  const slugOptions = (schemaType as any)?.options ?? {};
 
-    const newSlug = slugify(title, {
-      lower: true,
-      remove: /[^a-zA-Z0-9\s-]/g,
-    });
-
-    // Keep existing path structure if it exists
-    if (segments.length > 1) {
-      const basePath = segments.slice(0, -1).join("/");
-      const fullPath = `/${basePath}/${newSlug}`;
-      handleChange(fullPath);
-    } else {
-      const fullPath = `/${newSlug}`;
-      handleChange(fullPath);
+  const resolveSourceValue = useCallback((): string | undefined => {
+    const source = slugOptions?.source;
+    if (typeof source === "string") {
+      // Support simple dotted paths like "seo.title" if ever needed
+      return source.split(".").reduce<any>((acc, key) => acc?.[key], document);
     }
-  }, [document?.title, handleChange, segments]);
+    if (typeof source === "function") {
+      try {
+        return source(document);
+      } catch {
+        return undefined;
+      }
+    }
+    // Fallbacks
+    return (document?.title as string | undefined) ?? (document as any)?.name;
+  }, [document, slugOptions?.source]);
+
+  const generateFromSource = useCallback(
+    (sourceValue: string): string => {
+      const slugifyFn = slugOptions?.slugify as
+        | ((
+            input: string,
+            type?: unknown,
+            context?: { parent?: unknown },
+          ) => string)
+        | undefined;
+
+      if (typeof slugifyFn === "function") {
+        try {
+          // Pass the current document as parent to match createSlug's signature
+          return slugifyFn(sourceValue, undefined, { parent: document });
+        } catch {
+          // fall through to default
+        }
+      }
+
+      const basic = slugify(sourceValue, {
+        lower: true,
+        remove: /[^a-zA-Z0-9\s-]/g,
+      });
+
+      return `/${basic}`;
+    },
+    [document, slugOptions?.slugify],
+  );
+
+  const handleGenerate = useCallback(() => {
+    const sourceValue = resolveSourceValue();
+    if (!sourceValue) return;
+
+    const fullPath = generateFromSource(sourceValue);
+    handleChange(fullPath);
+  }, [generateFromSource, handleChange, resolveSourceValue]);
 
   const handleCleanUp = useCallback(() => {
-    if (!currentSlug || !document?._type) return;
+    // If there's no slug yet but we have a source, generate first.
+    if (!currentSlug) {
+      const sourceValue = resolveSourceValue();
+      if (sourceValue) {
+        const generated = generateFromSource(sourceValue);
+        handleChange(generated);
+      }
+      return;
+    }
+
+    if (!document?._type) return;
 
     const cleanValue = cleanSlug(currentSlug, document._type);
     handleChange(cleanValue);
-  }, [currentSlug, document?._type, handleChange]);
+  }, [
+    currentSlug,
+    document?._type,
+    handleChange,
+    generateFromSource,
+    resolveSourceValue,
+  ]);
 
   const localizedPathname = getDocumentPath({
     ...document,
@@ -223,7 +277,7 @@ export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
               icon={GenerateIcon}
               text="Generate"
               onClick={handleGenerate}
-              disabled={!document?.title || readOnly}
+              disabled={!resolveSourceValue() || readOnly}
               mode="ghost"
               tone="primary"
               fontSize={1}
