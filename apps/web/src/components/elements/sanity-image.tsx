@@ -30,6 +30,7 @@ interface ProcessedImageData {
 
 type SanityImageProps = {
   readonly image: SanityImageData;
+  readonly respectSanityCrop?: boolean;
 } & Omit<WrapperProps<"img">, "id">;
 
 // Base URL construction
@@ -82,15 +83,18 @@ function hasPreview(preview: unknown): preview is string {
 }
 
 // Main image processing function
-function processImageData(image: SanityImageData): ProcessedImageData | null {
+function processImageData(
+  image: SanityImageData,
+  includeTransforms: boolean = true,
+): ProcessedImageData | null {
   // Early return for invalid image data
   if (!image?.id || typeof image.id !== "string") {
     console.warn("SanityImage: Invalid image data provided", image);
     return null;
   }
 
-  const hotspot = extractHotspot(image);
-  const crop = extractCrop(image);
+  const hotspot = includeTransforms ? extractHotspot(image) : undefined;
+  const crop = includeTransforms ? extractCrop(image) : undefined;
   const preview = hasPreview(image.preview) ? image.preview : undefined;
 
   return {
@@ -107,8 +111,12 @@ const ImageWrapper = <T extends React.ElementType = "img">(
 ) => <BaseSanityImage baseUrl={SANITY_BASE_URL} {...props} />;
 
 // Main component
-function SanityImageComponent({ image, ...props }: SanityImageProps) {
-  const processedImageData = processImageData(image);
+function SanityImageComponent({
+  image,
+  respectSanityCrop = true,
+  ...props
+}: SanityImageProps) {
+  const processedImageData = processImageData(image, respectSanityCrop);
 
   // Early return for invalid image data
   if (!processedImageData) {
