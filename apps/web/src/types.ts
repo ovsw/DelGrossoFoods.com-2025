@@ -1,5 +1,6 @@
-import type { LineLabel, TypeLabel } from "@/config/sauce-taxonomy";
 import type {
+  GetAllSaucesForIndexQueryResult,
+  GetSauceIndexPageQueryResult,
   QueryBlogSlugPageDataResult,
   QueryHomePageDataResult,
   QueryImageTypeResult,
@@ -30,27 +31,8 @@ export type SanityRichTextBlock = Extract<
 
 export type Maybe<T> = T | null | undefined;
 
-// Sauces index types
-export interface SauceIndexPageData {
-  readonly _id: string;
-  readonly _type: string;
-  readonly title?: string | null;
-  readonly description?: string | null;
-  readonly slug?: string | null;
-}
-
-export interface SauceCardImage extends SanityImageProps {
-  readonly alt?: string | null;
-}
-
-export interface SauceListItem {
-  readonly _id: string;
-  readonly name: string;
-  readonly slug: string;
-  readonly line: LineLabel;
-  readonly category: TypeLabel;
-  readonly descriptionPlain?: string | null;
-  readonly mainImage?: SauceCardImage | null;
-}
+// Sauces index types derived from generated query result types (tight coupling)
+export type SauceIndexPageData = NonNullable<GetSauceIndexPageQueryResult>;
+export type SauceListItem = GetAllSaucesForIndexQueryResult[number];
 
 export type SortOrder = "az" | "za";

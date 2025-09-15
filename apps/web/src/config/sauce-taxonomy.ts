@@ -82,12 +82,14 @@ const inverseType: Record<TypeLabel, TypeSlug> = {
   "Sandwich Sauce": "sandwich",
 } as const;
 
-export function toLineSlug(label: LineLabel): LineSlug {
-  return inverseLine[label];
+export function toLineSlug(label: unknown): LineSlug | undefined {
+  if (!label) return undefined;
+  return inverseLine[label as LineLabel];
 }
 
-export function toTypeSlug(label: TypeLabel): TypeSlug {
-  return inverseType[label];
+export function toTypeSlug(label: unknown): TypeSlug | undefined {
+  if (!label) return undefined;
+  return inverseType[label as TypeLabel];
 }
 
 export function fromLineSlug(slug: LineSlug): LineLabel {
@@ -98,15 +100,23 @@ export function fromTypeSlug(slug: TypeSlug): TypeLabel {
   return typeMap[slug].label;
 }
 
-export function getLineBadge(label: LineLabel): BadgeConfig {
+export function getLineBadge(label: unknown): BadgeConfig {
   const slug = toLineSlug(label);
-  const cfg = lineMap[slug];
+  const cfg = slug ? lineMap[slug] : undefined;
+  if (!cfg) {
+    const text = typeof label === "string" && label ? label : "Unknown";
+    return { text, colorVar: "" };
+  }
   return { text: cfg.display, colorVar: cfg.colorVar };
 }
 
-export function getTypeBadge(label: TypeLabel): BadgeConfig {
+export function getTypeBadge(label: unknown): BadgeConfig {
   const slug = toTypeSlug(label);
-  const cfg = typeMap[slug];
+  const cfg = slug ? typeMap[slug] : undefined;
+  if (!cfg) {
+    const text = typeof label === "string" && label ? label : "Unknown";
+    return { text, colorVar: "" };
+  }
   return { text: cfg.display, colorVar: cfg.colorVar };
 }
 

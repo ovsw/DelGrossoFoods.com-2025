@@ -64,7 +64,10 @@ export function filterByProductLine(
 ): SauceListItem[] {
   if (!lines?.length) return items;
   const set = new Set<LineSlug>(lines);
-  return items.filter((it) => set.has(toLineSlug(it.line)));
+  return items.filter((it) => {
+    const slug = toLineSlug(it.line);
+    return slug ? set.has(slug) : false;
+  });
 }
 
 export function filterBySauceType(
@@ -72,7 +75,10 @@ export function filterBySauceType(
   type: TypeSlug | "all",
 ): SauceListItem[] {
   if (!type || type === "all") return items;
-  return items.filter((it) => toTypeSlug(it.category) === type);
+  return items.filter((it) => {
+    const slug = toTypeSlug(it.category);
+    return slug === type;
+  });
 }
 
 export function applyFiltersAndSort(
