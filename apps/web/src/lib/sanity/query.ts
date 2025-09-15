@@ -256,16 +256,18 @@ export const queryBlogPaths = defineQuery(`
 const ogFieldsFragment = /* groq */ `
   _id,
   _type,
-  "title": select(
+  "title": coalesce(string(select(
     defined(ogTitle) => ogTitle,
     defined(seoTitle) => seoTitle,
+    _type == "sauce" => name,
     title
-  ),
-  "description": select(
+  )), ""),
+  "description": coalesce(string(select(
     defined(ogDescription) => ogDescription,
     defined(seoDescription) => seoDescription,
+    _type == "sauce" => pt::text(description),
     description
-  ),
+  )), ""),
   "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
   "dominantColor": image.asset->metadata.palette.dominant.background,
   "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",
