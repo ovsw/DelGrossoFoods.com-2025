@@ -73,7 +73,7 @@ export default async function SaucesIndexPage({
 
   return (
     <main>
-      <div className="container py-60 mx-auto px-4 md:px-6">
+      <div className="container py-40 md:py-60 mx-auto px-4 md:px-6">
         {/* Page intro: left-aligned heading + paragraph to match comps */}
         <div className="max-w-3xl text-start">
           <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
