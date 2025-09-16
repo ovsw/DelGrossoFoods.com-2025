@@ -1,6 +1,7 @@
 "use client";
 import { Badge } from "@workspace/ui/components/badge";
 import Link from "next/link";
+import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import {
@@ -15,21 +16,24 @@ export function SauceCard({ item }: { item: SauceListItem }) {
   const { name, slug, mainImage, line, category } = item;
   const lineBadge = getLineBadge(line);
   const typeBadge = getTypeBadge(category);
+  // Clean non-visible a11y strings from Sanity stega metadata
+  const a11yName = stegaClean(name);
+  const altText = stegaClean(mainImage?.alt ?? `${a11yName} sauce`);
 
   return (
     <Link
       href={`/sauces/${slug}`}
-      aria-label={`View ${name} sauce`}
+      aria-label={`View ${a11yName} sauce`}
       className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
-      <div className="aspect-[1/1] flex items-center justify-center p-4">
+      <div className="aspect-[33/40] flex items-center justify-center p-4">
         {mainImage?.id ? (
           <SanityImage
             image={mainImage}
             respectSanityCrop={false}
             width={200}
             height={400}
-            alt={mainImage?.alt ?? `${name} sauce`}
+            alt={altText}
             className="max-h-full max-w-full object-contain"
             style={{ objectFit: "contain" }}
           />
