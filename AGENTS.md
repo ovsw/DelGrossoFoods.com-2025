@@ -33,7 +33,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Prefer semantic code search; use exact grep when you know the symbol. Parallelize independent searches.
 - Fetch external docs when needed (don’t rely on assumptions). Prefer most up-to-date sources.
 - Do not commit or push unless explicitly asked. Use GitHub CLI only when requested.
-- After any code changes, run `pnpm -C <affected> lint:fix` and typecheck before handing off.
+- Iteration default: do not run builds unless explicitly requested. After any code changes, run Prettier on the changed workspace(s) and then lint+typecheck: `pnpm -C <affected> format && pnpm -C <affected> lint:fix && pnpm -C <affected> typecheck`.
 
 ### Coding standards
 
@@ -111,7 +111,8 @@ Sanity Types (tight coupling)
 
 ### Quality gates
 
-- For web changes: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
+- Iteration (agents): `pnpm -C apps/web format && pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck` (skip build unless asked).
+- Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
 - For studio changes: `pnpm -C apps/studio lint:fix && pnpm -C apps/studio check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
 
