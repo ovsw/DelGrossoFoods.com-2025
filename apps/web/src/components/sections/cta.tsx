@@ -14,9 +14,7 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
         <div className="bg-muted py-16 rounded-3xl px-4">
           <div className="text-center max-w-3xl mx-auto space-y-8">
             {eyebrow && (
-              <Badge variant="secondary" className="bg-zinc-200">
-                {eyebrow}
-              </Badge>
+              <Badge text={eyebrow} variant="neutral" className="bg-zinc-200" />
             )}
             <h2 className="text-3xl font-semibold md:text-5xl text-balance">
               {title}
