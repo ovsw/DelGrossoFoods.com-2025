@@ -64,8 +64,8 @@ function FiltersForm({
   return (
     <div className="space-y-6">
       <div>
-        <label htmlFor={searchId} className="block text-sm font-medium">
-          Search sauces
+        <label htmlFor={searchId} className="block text-xl font-medium">
+          Search
         </label>
         <div className="mt-2 flex items-center gap-2">
           <input
@@ -90,7 +90,7 @@ function FiltersForm({
       </div>
 
       <fieldset className="border rounded-md p-4">
-        <legend className="px-1 text-sm font-medium">Product Line</legend>
+        <legend className="px-1 text-xl font-medium">Product Line</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           {allLineSlugs.map((slug) => {
             const id = `${idPrefix}-line-${slug}`;
@@ -125,7 +125,7 @@ function FiltersForm({
       </fieldset>
 
       <fieldset className="border rounded-md p-4">
-        <legend className="px-1 text-sm font-medium">Sauce Type</legend>
+        <legend className="px-1 text-xl font-medium">Sauce Type</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           <label className="flex items-center gap-2">
             <input
@@ -236,8 +236,8 @@ export function SaucesClient({ items, initialState }: Props) {
     setFirstPaint(false);
   }, []);
 
-  // A11y live region
-  const resultsText = `${results.length} result${results.length === 1 ? "" : "s"}`;
+  // A11y live region and count display: "Showing X of Y"
+  const resultsText = `Showing ${results.length} of ${items.length}`;
 
   function clearAll() {
     setSearch("");
@@ -290,13 +290,11 @@ export function SaucesClient({ items, initialState }: Props) {
             className="text-sm text-muted-foreground"
           >
             {firstPaint
-              ? `${initialState ? applyFiltersAndSort(items, initialState).length : results.length} result${
-                  (initialState
+              ? `Showing ${
+                  initialState
                     ? applyFiltersAndSort(items, initialState).length
-                    : results.length) === 1
-                    ? ""
-                    : "s"
-                }`
+                    : results.length
+                } of ${items.length}`
               : resultsText}
           </div>
 

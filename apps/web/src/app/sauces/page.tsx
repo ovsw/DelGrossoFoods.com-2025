@@ -28,7 +28,12 @@ export async function generateMetadata(): Promise<Metadata> {
           contentId: data?._id,
           contentType: data?._type,
         }
-      : {},
+      : {
+          title: "Premium Sauces",
+          description:
+            "Discover the Heart of Authentic Italian Flavor with Our Original Pasta, Pizza and Sandwich Sauces.",
+          slug: "/sauces",
+        },
   );
 }
 
@@ -60,21 +65,26 @@ export default async function SaucesIndexPage({
   const resolvedSearchParams = (await searchParams) ?? {};
   const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
 
+  // Fallback copy so the page always shows intro even if CMS data is missing
+  const heading = indexDoc?.title ?? "Premium Sauces";
+  const intro =
+    indexDoc?.description ??
+    "Discover the Heart of Authentic Italian Flavor with Our Original Pasta, Pizza and Sandwich Sauces.";
+
   return (
     <main>
       <div className="container py-60 mx-auto px-4 md:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold sm:text-4xl">
-            {indexDoc?.title ?? "Sauces"}
+        {/* Page intro: left-aligned heading + paragraph to match comps */}
+        <div className="max-w-3xl text-start">
+          <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
+            {heading}
           </h1>
-          {indexDoc?.description ? (
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              {indexDoc.description}
-            </p>
-          ) : null}
+          <p className="mt-4 text-xl leading-8 text-muted-foreground">
+            {intro}
+          </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-16">
           <SaucesClient items={items} initialState={initialState} />
         </div>
       </div>
