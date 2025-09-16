@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +9,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@workspace/ui/components/radio-group";
 import {
   Sheet,
   SheetClose,
@@ -73,7 +78,7 @@ function FiltersForm({
             type="search"
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="w-full rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Search by name or description"
             aria-label="Search sauces"
           />
@@ -89,8 +94,10 @@ function FiltersForm({
         </div>
       </div>
 
-      <fieldset className="border rounded-md p-4">
-        <legend className="px-1 text-xl font-medium">Product Line</legend>
+      <fieldset className="rounded-lg border border-th-brown-400/30 bg-th-light-100/30 p-4 shadow-sm">
+        <legend className="-ms-1 px-2 text-lg font-semibold text-th-dark-900">
+          Product Line
+        </legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           {allLineSlugs.map((slug) => {
             const id = `${idPrefix}-line-${slug}`;
@@ -102,12 +109,10 @@ function FiltersForm({
                 htmlFor={id}
                 className="flex items-center gap-2"
               >
-                <input
+                <Checkbox
                   id={id}
-                  type="checkbox"
                   checked={checked}
-                  onChange={() => toggleLine(slug)}
-                  className="size-4 rounded-sm border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                  onCheckedChange={() => toggleLine(slug)}
                   aria-label={cfg.display}
                 />
                 <span>{cfg.display}</span>
@@ -124,44 +129,45 @@ function FiltersForm({
         ) : null}
       </fieldset>
 
-      <fieldset className="border rounded-md p-4">
-        <legend className="px-1 text-xl font-medium">Sauce Type</legend>
+      <fieldset className="rounded-lg border border-th-brown-400/30 bg-th-light-100/30 p-4 shadow-sm">
+        <legend className="-ms-1 px-2 text-lg font-semibold text-th-dark-900">
+          Sauce Type
+        </legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name={`${idPrefix}-sauce-type`}
-              value="all"
-              checked={sauceType === "all"}
-              onChange={() => setSauceType("all")}
-              className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label="All"
-            />
-            <span>All</span>
-          </label>
-          {allTypeSlugs.map((slug) => {
-            const id = `${idPrefix}-type-${slug}`;
-            const cfg = typeMap[slug];
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2"
-              >
-                <input
-                  id={id}
-                  type="radio"
-                  name={`${idPrefix}-sauce-type`}
-                  value={slug}
-                  checked={sauceType === slug}
-                  onChange={() => setSauceType(slug)}
-                  className="size-4 rounded-full border border-input focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label={cfg.display}
-                />
-                <span>{cfg.display}</span>
-              </label>
-            );
-          })}
+          <RadioGroup
+            value={sauceType}
+            onValueChange={(v: SauceQueryState["sauceType"]) => setSauceType(v)}
+          >
+            <label
+              className="flex items-center gap-2"
+              htmlFor={`${idPrefix}-sauce-type-all`}
+            >
+              <RadioGroupItem
+                id={`${idPrefix}-sauce-type-all`}
+                value="all"
+                aria-label="All"
+              />
+              <span>All</span>
+            </label>
+            {allTypeSlugs.map((slug) => {
+              const id = `${idPrefix}-type-${slug}`;
+              const cfg = typeMap[slug];
+              return (
+                <label
+                  key={slug}
+                  htmlFor={id}
+                  className="flex items-center gap-2"
+                >
+                  <RadioGroupItem
+                    id={id}
+                    value={slug}
+                    aria-label={cfg.display}
+                  />
+                  <span>{cfg.display}</span>
+                </label>
+              );
+            })}
+          </RadioGroup>
         </div>
         {sauceType !== "all" ? (
           <div className="mt-2">
@@ -288,7 +294,7 @@ export function SaucesClient({ items, initialState }: Props) {
           <div
             aria-live="polite"
             aria-atomic="true"
-            className="text-sm text-muted-foreground"
+            className="text-muted-foreground"
           >
             {firstPaint
               ? `Showing ${
