@@ -2,6 +2,15 @@
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@workspace/ui/components/drawer";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -13,16 +22,6 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@workspace/ui/components/sheet";
 import { Filter } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -242,7 +241,7 @@ export function SaucesClient({ items, initialState }: Props) {
   }, []);
 
   // A11y live region and count display: "Showing X of Y"
-  const resultsText = `Showing ${results.length} of ${items.length}`;
+  const resultsText = `${results.length} of ${items.length}`;
 
   function clearAll() {
     setSearch("");
@@ -289,21 +288,20 @@ export function SaucesClient({ items, initialState }: Props) {
       {/* Main content */}
       <section className="min-w-0">
         {/* Top bar */}
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-8 md:mb-12 flex items-center gap-2">
           {/* Mobile filter button first on the left */}
           <div className="lg:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
+            <Drawer>
+              <DrawerTrigger asChild>
                 <Button type="button" variant="secondary">
                   <Filter className="me-2 size-4" aria-hidden="true" />
                   Filters
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-80">
-                <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
-                  <SheetDescription>Refine the list of sauces</SheetDescription>
-                </SheetHeader>
+              </DrawerTrigger>
+              <DrawerContent>
+                <DrawerHeader>
+                  <DrawerTitle>Filters</DrawerTitle>
+                </DrawerHeader>
                 <div className="mt-2 overflow-y-auto px-4 pb-24">
                   <FiltersForm
                     idPrefix="sheet"
@@ -317,16 +315,16 @@ export function SaucesClient({ items, initialState }: Props) {
                     clearProductLine={clearProductLine}
                     clearSauceType={clearSauceType}
                     applyButton={
-                      <SheetFooter>
-                        <SheetClose asChild>
+                      <DrawerFooter>
+                        <DrawerClose asChild>
                           <Button type="button">Apply</Button>
-                        </SheetClose>
-                      </SheetFooter>
+                        </DrawerClose>
+                      </DrawerFooter>
                     }
                   />
                 </div>
-              </SheetContent>
-            </Sheet>
+              </DrawerContent>
+            </Drawer>
           </div>
 
           {/* Live results text */}
