@@ -1,4 +1,4 @@
-import { Badge } from "@workspace/ui/components/badge";
+import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { cn } from "@workspace/ui/lib/utils";
 
 import type { PagebuilderType } from "@/types";
@@ -19,7 +19,7 @@ export function ImageLinkCards({
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
-            <Badge text={eyebrow ?? ""} variant="neutral" />
+            <Eyebrow text={eyebrow ?? ""} />
             <h2 className="text-3xl font-semibold md:text-5xl text-balance">
               {title}
             </h2>
