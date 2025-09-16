@@ -43,7 +43,11 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       </div>
 
       <div className="p-4">
-        <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-base font-semibold leading-tight group-hover:underline text-center">
+          {name}
+        </h3>
+
+        <div className="flex items-center justify-center gap-2 mt-2">
           <Badge
             text={lineBadge.text}
             variant={toLineSlug(line) ?? "neutral"}
@@ -55,10 +59,6 @@ export function SauceCard({ item }: { item: SauceListItem }) {
             className="text-xs"
           />
         </div>
-
-        <h3 className="text-base font-semibold leading-tight group-hover:underline text-center">
-          {name}
-        </h3>
       </div>
     </Link>
   );
