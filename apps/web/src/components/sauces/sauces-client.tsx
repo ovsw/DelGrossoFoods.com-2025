@@ -67,6 +67,8 @@ function FiltersForm({
   clearSauceType,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-sauce-search`;
+  // Unified styling for desktop and mobile: remove card borders and use simple section dividers
+  const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
       <div>
@@ -95,10 +97,8 @@ function FiltersForm({
         </div>
       </div>
 
-      <fieldset className="rounded-lg border border-th-brown-400/30 bg-th-light-100/30 p-4 shadow-sm">
-        <legend className="-ms-1 px-2 text-lg font-semibold text-th-dark-900">
-          Product Line
-        </legend>
+      <fieldset className="m-0 border-0 p-0 mt-6 pb-6">
+        <legend className={legendClass}>Product Line</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           {allLineSlugs.map((slug) => {
             const id = `${idPrefix}-line-${slug}`;
@@ -130,10 +130,8 @@ function FiltersForm({
         ) : null}
       </fieldset>
 
-      <fieldset className="rounded-lg border border-th-brown-400/30 bg-th-light-100/30 p-4 shadow-sm">
-        <legend className="-ms-1 px-2 text-lg font-semibold text-th-dark-900">
-          Sauce Type
-        </legend>
+      <fieldset className="m-0 border-0 p-0 border-t border-border/80 pt-6 pb-6">
+        <legend className={legendClass}>Sauce Type</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           <RadioGroup
             value={sauceType}
@@ -306,7 +304,7 @@ export function SaucesClient({ items, initialState }: Props) {
                   <SheetTitle>Filters</SheetTitle>
                   <SheetDescription>Refine the list of sauces</SheetDescription>
                 </SheetHeader>
-                <div className="mt-4 overflow-y-auto pb-24">
+                <div className="mt-2 overflow-y-auto px-4 pb-24">
                   <FiltersForm
                     idPrefix="sheet"
                     search={search}
