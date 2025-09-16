@@ -23,6 +23,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
+import { Filter } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -290,11 +291,51 @@ export function SaucesClient({ items, initialState }: Props) {
       {/* Main content */}
       <section className="min-w-0">
         {/* Top bar */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center gap-2">
+          {/* Mobile filter button first on the left */}
+          <div className="lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button type="button" variant="secondary">
+                  <Filter className="me-2 size-4" aria-hidden="true" />
+                  Filters
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle>Filters</SheetTitle>
+                  <SheetDescription>Refine the list of sauces</SheetDescription>
+                </SheetHeader>
+                <div className="mt-4 overflow-y-auto pb-24">
+                  <FiltersForm
+                    idPrefix="sheet"
+                    search={search}
+                    setSearch={setSearch}
+                    productLine={productLine}
+                    toggleLine={toggleLine}
+                    sauceType={sauceType}
+                    setSauceType={setSauceType}
+                    clearAll={clearAll}
+                    clearProductLine={clearProductLine}
+                    clearSauceType={clearSauceType}
+                    applyButton={
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button type="button">Apply</Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    }
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Live results text */}
           <div
             aria-live="polite"
             aria-atomic="true"
-            className="text-muted-foreground"
+            className="flex-1 text-muted-foreground"
           >
             {firstPaint
               ? `Showing ${
@@ -305,70 +346,24 @@ export function SaucesClient({ items, initialState }: Props) {
               : resultsText}
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Mobile filter button */}
-            <div className="lg:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button type="button" variant="secondary">
-                    Filters
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-80">
-                  <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
-                    <SheetDescription>
-                      Refine the list of sauces
-                    </SheetDescription>
-                  </SheetHeader>
-                  <div className="mt-4 overflow-y-auto pb-24">
-                    <FiltersForm
-                      idPrefix="sheet"
-                      search={search}
-                      setSearch={setSearch}
-                      productLine={productLine}
-                      toggleLine={toggleLine}
-                      sauceType={sauceType}
-                      setSauceType={setSauceType}
-                      clearAll={clearAll}
-                      clearProductLine={clearProductLine}
-                      clearSauceType={clearSauceType}
-                      applyButton={
-                        <SheetFooter>
-                          <SheetClose asChild>
-                            <Button type="button">Apply</Button>
-                          </SheetClose>
-                        </SheetFooter>
-                      }
-                    />
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-
-            {/* Sort dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button type="button" variant="secondary">
-                  Sort
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Sort by name</DropdownMenuLabel>
-                <DropdownMenuRadioGroup
-                  value={sort}
-                  onValueChange={(v) => setSort((v as SortOrder) ?? "az")}
-                >
-                  <DropdownMenuRadioItem value="az">
-                    A → Z
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="za">
-                    Z → A
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          {/* Sort dropdown on the right */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="secondary" className="ms-auto">
+                Sort
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Sort by name</DropdownMenuLabel>
+              <DropdownMenuRadioGroup
+                value={sort}
+                onValueChange={(v) => setSort((v as SortOrder) ?? "az")}
+              >
+                <DropdownMenuRadioItem value="az">A → Z</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="za">Z → A</DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Grid */}
