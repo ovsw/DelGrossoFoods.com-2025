@@ -264,7 +264,8 @@ export function SaucesClient({ items, initialState }: Props) {
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
       {/* Sidebar (desktop) */}
       <aside className="hidden lg:block">
-        <div className="sticky top-20 space-y-6">
+        {/* Offset the sticky sidebar so it doesn't collide with the fixed header */}
+        <div className="sticky top-32 space-y-6">
           <FiltersForm
             idPrefix="desktop"
             search={search}
