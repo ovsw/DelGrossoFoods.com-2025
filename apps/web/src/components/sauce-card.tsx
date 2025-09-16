@@ -26,7 +26,7 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       aria-label={`View ${a11yName} sauce`}
       className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
-      <div className="aspect-[33/40] flex items-center justify-center p-4">
+      <div className="aspect-[33/40] flex items-center justify-center">
         {mainImage?.id ? (
           <SanityImage
             image={mainImage}
@@ -43,7 +43,7 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       </div>
 
       <div className="p-4">
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center justify-center gap-2 mb-2">
           <Badge
             text={lineBadge.text}
             variant={toLineSlug(line) ?? "neutral"}
@@ -56,7 +56,7 @@ export function SauceCard({ item }: { item: SauceListItem }) {
           />
         </div>
 
-        <h3 className="text-base font-semibold leading-tight group-hover:underline">
+        <h3 className="text-base font-semibold leading-tight group-hover:underline text-center">
           {name}
         </h3>
       </div>

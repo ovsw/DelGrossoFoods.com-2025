@@ -96,7 +96,7 @@
   --color-brand-yellow: oklch(0.9 0.12 90);
   --color-brand-yellow-text: var(--color-th-dark-900);
   --color-brand-red: oklch(0.57 0.21 25);
-  --color-brand-red-text: var(--color-th-light-900);
+  --color-brand-red-text: var(--color-th-light-100);
 
   --color-brand-green-500: var(--color-brand-green);
 
