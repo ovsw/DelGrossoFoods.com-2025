@@ -3,7 +3,12 @@ import { Badge } from "@workspace/ui/components/badge";
 import Link from "next/link";
 
 import { SanityImage } from "@/components/elements/sanity-image";
-import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
+import {
+  getLineBadge,
+  getTypeBadge,
+  toLineSlug,
+  toTypeSlug,
+} from "@/config/sauce-taxonomy";
 import type { SauceListItem } from "@/types";
 
 export function SauceCard({ item }: { item: SauceListItem }) {
@@ -36,23 +41,15 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <Badge
+            text={lineBadge.text}
+            variant={toLineSlug(line) ?? "neutral"}
             className="text-xs"
-            style={{
-              background: `var(${lineBadge.colorVar})`,
-              color: "white",
-            }}
-          >
-            {lineBadge.text}
-          </Badge>
+          />
           <Badge
+            text={typeBadge.text}
+            variant={toTypeSlug(category) ?? "neutral"}
             className="text-xs"
-            style={{
-              background: `var(${typeBadge.colorVar || "--color-th-neutral-300"})`,
-              color: typeBadge.colorVar ? "black" : "black",
-            }}
-          >
-            {typeBadge.text}
-          </Badge>
+          />
         </div>
 
         <h3 className="text-base font-semibold leading-tight group-hover:underline">
