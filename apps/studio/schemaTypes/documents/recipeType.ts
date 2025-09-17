@@ -8,7 +8,7 @@ import type { SanityDocument } from "sanity";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { PathnameFieldComponent } from "../../components/slug-field-component";
-import { createSlug, isUnique } from "../../utils/slug";
+import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
   createUniqueSlugRule,
@@ -70,7 +70,6 @@ export const recipeType = defineType({
       options: {
         source: "name",
         slugify: createSlug,
-        isUnique,
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
