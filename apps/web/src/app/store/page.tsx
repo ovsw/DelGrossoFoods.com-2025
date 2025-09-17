@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ? {
           title: data?.title ?? "",
           description: data?.description ?? "",
-          slug: "/products",
+          slug: "/store",
           contentId: data?._id,
           contentType: data?._type,
         }

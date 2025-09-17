@@ -50,7 +50,7 @@ export const productType = defineType({
         Rule.custom(
           createSlugValidator({
             documentType: "Product",
-            requiredPrefix: "/products/",
+            requiredPrefix: "/store/",
           }),
         ),
       ],

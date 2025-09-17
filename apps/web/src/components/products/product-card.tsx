@@ -63,7 +63,11 @@ export function ProductCard({ item }: { item: ProductListItem }) {
     }
   }
 
-  const href = slug?.startsWith("/") ? slug : `/products/${slug}`;
+  // Normalize canonical links: migrate old /products/* to /store/*
+  const hrefRaw = slug?.startsWith("/") ? slug : `/store/${slug}`;
+  const href = hrefRaw?.startsWith("/products/")
+    ? hrefRaw.replace(/^\/products\//, "/store/")
+    : hrefRaw;
   return (
     <ListCard
       href={href}
