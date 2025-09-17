@@ -6,6 +6,15 @@ import { stegaClean } from "next-sanity";
 import { SanityImage } from "@/components/elements/sanity-image";
 import type { SanityImageProps as SanityImageData } from "@/types";
 
+// Stable, typed map of aspect ratio → Tailwind class.
+const ASPECT_CLASS = {
+  portrait: "aspect-[33/40]",
+  square: "aspect-square",
+  landscape: "aspect-[3/2]",
+} as const;
+
+type ImageAspect = keyof typeof ASPECT_CLASS;
+
 type BadgeSpec = { text: string; variant?: BadgeVariant };
 
 type ListCardProps = {
@@ -16,6 +25,7 @@ type ListCardProps = {
   ariaLabel?: string;
   subtitle?: string | null;
   badges?: BadgeSpec[]; // up to two typically
+  imageAspect?: ImageAspect;
 };
 
 export function ListCard({
@@ -26,9 +36,11 @@ export function ListCard({
   imageAlt,
   subtitle,
   badges = [],
+  imageAspect = "portrait",
 }: ListCardProps) {
   const cleanTitle = stegaClean(title);
   const altText = stegaClean(imageAlt ?? cleanTitle);
+  const aspectClass = ASPECT_CLASS[imageAspect];
 
   return (
     <Link
@@ -36,7 +48,7 @@ export function ListCard({
       aria-label={ariaLabel ?? cleanTitle}
       className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
-      <div className="aspect-[33/40] flex items-center justify-center">
+      <div className={`${aspectClass} flex items-center justify-center`}>
         {image?.id ? (
           <SanityImage
             image={image}
