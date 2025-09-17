@@ -1,5 +1,23 @@
 # @workspace/ui
 
+## 1.6.0
+
+### Minor Changes
+
+- [#57](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/57) [`2d327dd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/2d327ddf4d1dfe1e4ea4bed9cafb0ac788984076) Thanks [@ovsw](https://github.com/ovsw)! - Introduce Eyebrow component and refactor badge usage across sections
+  - Add `Eyebrow` UI component (`@workspace/ui/components/eyebrow`) with CVA variants `onLight` (default) and `onDark`. No background fill; uses a 1px left border and 1rem left padding; small text. Skips rendering when text is empty. Supports optional `aria-label` for accessibility.
+  - Refactor web sections to use `Eyebrow` instead of `Badge`:
+    - `hero.tsx`, `cta.tsx`, `faq-accordion.tsx`, `image-link-cards.tsx`, `feature-cards-with-icon.tsx`.
+  - Keep `Badge` only for sauce cards; move color logic into `Badge` CVA variants (`original`, `organic`, `premium`, `pizza`, `pasta`, `salsa`, `sandwich`).
+  - Simplify `Badge` API (required `text`, optional `href`) so the component only handles styling while callers supply content/links.
+
+### Patch Changes
+
+- [#57](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/57) [`4b7f020`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/4b7f0202f2664035cc59b3a74edee6972ee92ddc) Thanks [@ovsw](https://github.com/ovsw)! - Harden Badge typing and remove `any` cast
+  - Use a discriminated union for anchor vs. span props
+  - Conditionally pass `href` only when rendering an `<a>`
+  - Keep `text`, `className`, and `variant` API unchanged
+
 ## 1.5.0
 
 ## 1.4.2
