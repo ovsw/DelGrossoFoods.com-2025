@@ -1,20 +1,10 @@
 "use client";
-import { Badge } from "@workspace/ui/components/badge";
+import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import type { SanityImageProps as SanityImageData } from "@/types";
-
-type BadgeVariant =
-  | "neutral"
-  | "original"
-  | "organic"
-  | "premium"
-  | "pasta"
-  | "pizza"
-  | "salsa"
-  | "sandwich";
 
 type BadgeSpec = { text: string; variant?: BadgeVariant };
 
