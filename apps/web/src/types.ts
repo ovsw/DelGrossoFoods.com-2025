@@ -1,4 +1,6 @@
 import type {
+  GetAllSaucesForIndexQueryResult,
+  GetSauceIndexPageQueryResult,
   QueryBlogSlugPageDataResult,
   QueryHomePageDataResult,
   QueryImageTypeResult,
@@ -28,3 +30,9 @@ export type SanityRichTextBlock = Extract<
 >;
 
 export type Maybe<T> = T | null | undefined;
+
+// Sauces index types derived from generated query result types (tight coupling)
+export type SauceIndexPageData = NonNullable<GetSauceIndexPageQueryResult>;
+export type SauceListItem = GetAllSaucesForIndexQueryResult[number];
+
+export type SortOrder = "az" | "za";

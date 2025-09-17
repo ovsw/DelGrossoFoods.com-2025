@@ -3152,6 +3152,40 @@ export type QuerySettingsDataResult = {
   } | null;
   contactEmail: string | null;
 } | null;
+// Variable: getSauceIndexPageQuery
+// Query: *[_type == "sauceIndex"][0]{    _id,    _type,    title,    description,    "slug": slug.current  }
+export type GetSauceIndexPageQueryResult = {
+  _id: string;
+  _type: "sauceIndex";
+  title: string | null;
+  description: string | null;
+  slug: string;
+} | null;
+// Variable: getAllSaucesForIndexQuery
+// Query: *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){    _id,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
+export type GetAllSaucesForIndexQueryResult = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  line: "Organic" | "Original" | "Ultra-Premium";
+  category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
+  descriptionPlain: string;
+  mainImage: {
+    id: string | "";
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+    alt: string | null;
+  };
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -3173,5 +3207,7 @@ declare module "@sanity/client" {
     '{\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    addressLines,\n    contactEmail,\n    tollFreePhone,\n    officePhone,\n    socialLinks{\n      linkedin,\n      facebook,\n      twitter,\n      instagram,\n      youtube\n    }\n  }\n': QueryGlobalSeoSettingsResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    "socialLinks": socialLinks,\n    "contactEmail": contactEmail,\n  }\n': QuerySettingsDataResult;
+    '\n  *[_type == "sauceIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetSauceIndexPageQueryResult;
+    '\n  *[_type == "sauce" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "descriptionPlain": pt::text(description),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    }\n  }\n': GetAllSaucesForIndexQueryResult;
   }
 }

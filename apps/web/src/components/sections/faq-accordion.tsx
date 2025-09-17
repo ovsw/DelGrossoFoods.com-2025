@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@workspace/ui/components/accordion";
-import { Badge } from "@workspace/ui/components/badge";
+import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -27,7 +27,7 @@ export function FaqAccordion({
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
-            <Badge variant="secondary">{eyebrow}</Badge>
+            <Eyebrow text={eyebrow ?? ""} />
             <h2 className="text-3xl font-semibold md:text-5xl">{title}</h2>
             <h3 className="text-lg font-normal text-[#374151] text-balance">
               {subtitle}

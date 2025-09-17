@@ -1,4 +1,4 @@
-import { Badge } from "@workspace/ui/components/badge";
+import { Eyebrow } from "@workspace/ui/components/eyebrow";
 
 import type { PagebuilderType } from "@/types";
 
@@ -13,11 +13,7 @@ export function CTABlock({ richText, title, eyebrow, buttons }: CTABlockProps) {
       <div className="container mx-auto px-4 md:px-8">
         <div className="bg-muted py-16 rounded-3xl px-4">
           <div className="text-center max-w-3xl mx-auto space-y-8">
-            {eyebrow && (
-              <Badge variant="secondary" className="bg-zinc-200">
-                {eyebrow}
-              </Badge>
-            )}
+            {eyebrow && <Eyebrow text={eyebrow} />}
             <h2 className="text-3xl font-semibold md:text-5xl text-balance">
               {title}
             </h2>
