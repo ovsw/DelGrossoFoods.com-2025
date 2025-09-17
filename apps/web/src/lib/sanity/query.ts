@@ -396,3 +396,32 @@ export const querySettingsData = defineQuery(`
     "contactEmail": contactEmail,
   }
 `);
+
+// Sauces index queries
+export const getSauceIndexPageQuery = defineQuery(`
+  *[_type == "sauceIndex"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current
+  }
+`);
+
+export const getAllSaucesForIndexQuery = defineQuery(`
+  *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    line,
+    category,
+    "descriptionPlain": pt::text(description),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    }
+  }
+`);
