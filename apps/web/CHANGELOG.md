@@ -1,5 +1,28 @@
 # web
 
+## 1.6.0
+
+### Minor Changes
+
+- [#57](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/57) [`8c19b08`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/8c19b08bf4d5e7eebfc8c37c582122cb796b5a82) Thanks [@ovsw](https://github.com/ovsw)! - Add Sauces Index page with SSR + client filtering (search via Fuse.js, product line multi-select, sauce type single-select), A→Z/Z→A sorting, URL param syncing, responsive sidebar/sheet filters, and accessibility improvements. Also scaffold a basic sauce detail route at `/sauces/[slug]`.
+
+- [#57](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/57) [`2d327dd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/2d327ddf4d1dfe1e4ea4bed9cafb0ac788984076) Thanks [@ovsw](https://github.com/ovsw)! - Introduce Eyebrow component and refactor badge usage across sections
+  - Add `Eyebrow` UI component (`@workspace/ui/components/eyebrow`) with CVA variants `onLight` (default) and `onDark`. No background fill; uses a 1px left border and 1rem left padding; small text. Skips rendering when text is empty. Supports optional `aria-label` for accessibility.
+  - Refactor web sections to use `Eyebrow` instead of `Badge`:
+    - `hero.tsx`, `cta.tsx`, `faq-accordion.tsx`, `image-link-cards.tsx`, `feature-cards-with-icon.tsx`.
+  - Keep `Badge` only for sauce cards; move color logic into `Badge` CVA variants (`original`, `organic`, `premium`, `pizza`, `pasta`, `salsa`, `sandwich`).
+  - Simplify `Badge` API (required `text`, optional `href`) so the component only handles styling while callers supply content/links.
+
+### Patch Changes
+
+- [#57](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/57) [`4b7f020`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/4b7f0202f2664035cc59b3a74edee6972ee92ddc) Thanks [@ovsw](https://github.com/ovsw)! - Use `Badge` variant prop in SauceCard and sauce taxonomy for consistency and accessibility
+  - Switch SauceCard to variant-based `Badge` usage
+  - Align `src/config/sauce-taxonomy.ts` with `Badge` variants
+  - No intended UI or behavior changes
+
+- Updated dependencies [[`4b7f020`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/4b7f0202f2664035cc59b3a74edee6972ee92ddc), [`2d327dd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/2d327ddf4d1dfe1e4ea4bed9cafb0ac788984076)]:
+  - @workspace/ui@1.6.0
+
 ## 1.5.0
 
 ### Minor Changes
