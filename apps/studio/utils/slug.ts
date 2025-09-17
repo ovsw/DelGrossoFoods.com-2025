@@ -52,6 +52,8 @@ export async function isUnique(
 export const getDocTypePrefix = (type: string) => {
   if (["page"].includes(type)) return "";
   if (type === "sauce") return "sauces";
+  if (type === "product") return "products";
+  if (type === "recipe") return "recipes";
   return type;
 };
 
@@ -59,6 +61,8 @@ const slugMapper = {
   homePage: "/",
   blogIndex: "/blog",
   sauceIndex: "/sauces",
+  productIndex: "/products",
+  recipeIndex: "/recipes",
 } as Record<string, string>;
 
 export const createSlug: SlugifierFn = (input, _, { parent }) => {
