@@ -1,5 +1,27 @@
 # studio
 
+## 1.7.0
+
+### Minor Changes
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`d32e957`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/d32e957965eb1a42d17900cb96ba8c54f71ad2e6) Thanks [@ovsw](https://github.com/ovsw)! - Add slug fields to Product and Recipe schemas and add a slug backfill script for the development dataset.
+  - Add `slug` field to `productType` and `recipeType` documents in Studio
+  - Implement `apps/studio/scripts/backfill-slugs.ts` to populate slugs for all Product and Recipe documents in the dev dataset
+  - Regenerate Sanity types consumed by Web (`sanity.types.ts`)
+
+### Patch Changes
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`f8da36c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/f8da36c75041229070a377d0fbce2506929e1466) Thanks [@ovsw](https://github.com/ovsw)! - Deduplicate slug uniqueness validation by removing `options.isUnique` wherever a custom uniqueness rule already exists.
+  - Use `Rule.custom(createUniqueSlugRule())` as the single source of truth
+  - Drop redundant `isUnique` from slug field options in content docs (blog, page, product, recipe, sauce)
+  - Keep index docs as-is since they only use `isUnique` and have no duplication
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`7314a8f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7314a8f41343ef6ceac5625ea27ad0cf682a6f9b) Thanks [@ovsw](https://github.com/ovsw)! - Harden `createSlug` to safely support string and function mappers.
+  - Accept mapper values that are strings (fixed paths) or functions (computed)
+  - Treat strings ending with `/` as prefixes to compose with slugified input
+  - Normalize output (leading slash, collapse `//`, trim trailing slash)
+  - Preserve existing behavior for index docs (`/`, `/blog`, `/products`, etc.)
+
 ## 1.6.0
 
 ## 1.5.0
