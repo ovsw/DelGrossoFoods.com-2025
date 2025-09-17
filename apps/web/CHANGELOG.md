@@ -1,5 +1,24 @@
 # web
 
+## 1.7.0
+
+### Patch Changes
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`6a8fbfa`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a8fbfac5c54752792a9e8072bc1cdd037c1e8dd) Thanks [@ovsw](https://github.com/ovsw)! - Include `sauce` documents in the sitemap alongside pages, blogs, products, and recipes.
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`d32e957`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/d32e957965eb1a42d17900cb96ba8c54f71ad2e6) Thanks [@ovsw](https://github.com/ovsw)! - Add slug fields to Product and Recipe schemas and add a slug backfill script for the development dataset.
+  - Add `slug` field to `productType` and `recipeType` documents in Studio
+  - Implement `apps/studio/scripts/backfill-slugs.ts` to populate slugs for all Product and Recipe documents in the dev dataset
+  - Regenerate Sanity types consumed by Web (`sanity.types.ts`)
+
+- [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`6a8fbfa`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a8fbfac5c54752792a9e8072bc1cdd037c1e8dd) Thanks [@ovsw](https://github.com/ovsw)! - Improve OG data for products and recipes and extend sitemap coverage.
+  - Add fallbacks in OG projections: use `name` when `ogTitle/seoTitle/title` are missing; prefer `pt::text(description)` for product/recipe, fallback to `name`.
+  - Prefer `mainImage` (and its dominant color) before `image` to avoid null OG images.
+  - Add `product` and `recipe` pages to the sitemap query and generation.
+
+- Updated dependencies []:
+  - @workspace/ui@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes
