@@ -38,6 +38,7 @@ npm-debug.log*
 # Sanity
 .sanity
 /apps/studio/exports
+/apps/studio/backups
 
 # playwright
 .playwright-mcp
