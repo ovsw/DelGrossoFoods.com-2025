@@ -260,16 +260,27 @@ const ogFieldsFragment = /* groq */ `
     defined(ogTitle) => ogTitle,
     defined(seoTitle) => seoTitle,
     _type == "sauce" => name,
+    _type == "product" => name,
+    _type == "recipe" => name,
     title
   )), ""),
   "description": coalesce(string(select(
     defined(ogDescription) => ogDescription,
     defined(seoDescription) => seoDescription,
     _type == "sauce" => pt::text(description),
+    _type == "product" => coalesce(pt::text(description), name),
+    _type == "recipe" => coalesce(pt::text(description), name),
     description
   )), ""),
-  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
-  "dominantColor": image.asset->metadata.palette.dominant.background,
+  // Prefer mainImage (product/recipe) and fall back to image
+  "image": coalesce(
+    mainImage.asset->url,
+    image.asset->url
+  ) + "?w=566&h=566&dpr=2&fit=max",
+  "dominantColor": coalesce(
+    mainImage.asset->metadata.palette.dominant.background,
+    image.asset->metadata.palette.dominant.background
+  ),
   "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",
   "date": coalesce(date, _createdAt)
 `;
@@ -362,6 +373,18 @@ export const querySitemapData = defineQuery(`{
     "lastModified": _updatedAt
   },
   "blogPages": *[_type == "blog" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
+  },
+  "saucePages": *[_type == "sauce" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
+  },
+  "productPages": *[_type == "product" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
+  },
+  "recipePages": *[_type == "recipe" && defined(slug.current)]{
     "slug": slug.current,
     "lastModified": _updatedAt
   }

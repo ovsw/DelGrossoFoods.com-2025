@@ -2,6 +2,12 @@ import { ControlsIcon, PackageIcon, TagIcon } from "@sanity/icons"; // Assuming 
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { USDPriceInput } from "../../components/inputs/USDPriceInput";
+import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { createSlug } from "../../utils/slug";
+import {
+  createSlugValidator,
+  createUniqueSlugRule,
+} from "../../utils/slug-validation";
 
 export const productType = defineType({
   name: "product",
@@ -23,6 +29,31 @@ export const productType = defineType({
       type: "string",
       group: "basic",
       validation: (Rule) => Rule.required().error("Product name is required."),
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "URL",
+      description:
+        "The web address for this product (automatically created from its name)",
+      group: "basic",
+      components: {
+        field: PathnameFieldComponent,
+      },
+      options: {
+        source: "name",
+        slugify: createSlug,
+      },
+      validation: (Rule) => [
+        Rule.required().error("A URL slug is required"),
+        Rule.custom(createUniqueSlugRule()),
+        Rule.custom(
+          createSlugValidator({
+            documentType: "Product",
+            requiredPrefix: "/products/",
+          }),
+        ),
+      ],
     }),
     defineField({
       name: "sku",

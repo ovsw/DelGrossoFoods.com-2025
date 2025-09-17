@@ -588,6 +588,7 @@ export type Recipe = {
   _updatedAt: string;
   _rev: string;
   name: string;
+  slug: Slug;
   versions: Array<string>;
   dgfSauces?: Array<{
     _ref: string;
@@ -743,6 +744,7 @@ export type Product = {
   _updatedAt: string;
   _rev: string;
   name: string;
+  slug: Slug;
   sku: string;
   category: "case_of_12" | "gift_pack" | "merchandise";
   shippingCategory: "normal_item" | "large_crate" | "gift_pack";
@@ -3014,12 +3016,32 @@ export type QueryGenericPageOGDataResult =
     }
   | {
       _id: string;
+      _type: "product";
+      title: "";
+      description: "";
+      image: null;
+      dominantColor: null;
+      seoImage: null;
+      date: string;
+    }
+  | {
+      _id: string;
       _type: "productIndex";
       title: string | "";
       description: string | "";
       image: null;
       dominantColor: null;
       seoImage: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "recipe";
+      title: "";
+      description: "";
+      image: null;
+      dominantColor: null;
+      seoImage: null;
       date: string;
     }
   | {

@@ -10,7 +10,7 @@ import { defineField, defineType } from "sanity";
 import type { AltTextFromFieldOptions } from "../../components/inputs/AltTextFromField";
 import { AltTextFromField } from "../../components/inputs/AltTextFromField";
 import { PathnameFieldComponent } from "../../components/slug-field-component";
-import { createSlug, isUnique } from "../../utils/slug";
+import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
   createUniqueSlugRule,
@@ -62,7 +62,6 @@ export const sauce = defineType({
       options: {
         source: "name",
         slugify: createSlug,
-        isUnique,
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
