@@ -38,6 +38,10 @@ export const badgeVariants = cva(
   },
 );
 
+// Export a convenient variant type for consumers so they don't need to
+// depend on `VariantProps<typeof badgeVariants>` directly.
+export type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
+
 type CommonProps = {
   text: string;
   className?: string;

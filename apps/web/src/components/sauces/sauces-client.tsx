@@ -1,15 +1,7 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@workspace/ui/components/drawer";
+// Drawer is now encapsulated in the shared FilterableListLayout
 import {
   DropdownMenu,
   DropdownMenuContent,
