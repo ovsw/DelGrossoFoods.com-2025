@@ -448,3 +448,35 @@ export const getAllSaucesForIndexQuery = defineQuery(`
     }
   }
 `);
+
+// Products index queries
+export const getProductIndexPageQuery = defineQuery(`
+  *[_type == "productIndex"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current
+  }
+`);
+
+export const getAllProductsForIndexQuery = defineQuery(`
+  *[_type == "product" && !(_id in path('drafts.**'))] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    category,
+    price,
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
+    // Unique sets of referenced sauce attributes for filtering/badges
+    "sauceLines": array::unique((sauces[]->line)[defined(@)]),
+    "sauceTypes": array::unique((sauces[]->category)[defined(@)])
+  }
+`);

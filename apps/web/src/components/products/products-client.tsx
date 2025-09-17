@@ -2,15 +2,6 @@
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@workspace/ui/components/drawer";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -26,7 +17,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
-import { SauceCard } from "@/components/sauce-card";
+import { ProductCard } from "@/components/products/product-card";
+import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
 import {
   allLineSlugs,
   allTypeSlugs,
@@ -34,19 +26,25 @@ import {
   type LineSlug,
   typeMap,
 } from "@/config/sauce-taxonomy";
-import { applyFiltersAndSort } from "@/lib/sauces/filters";
-import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
-import type { SauceListItem, SortOrder } from "@/types";
+import { applyFiltersAndSort } from "@/lib/products/filters";
+import {
+  type ProductQueryState,
+  serializeStateToParams,
+} from "@/lib/products/url";
+import type { ProductListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
   search: string;
   setSearch: (v: string) => void;
+  packaging: PackagingSlug[];
+  togglePackaging: (p: PackagingSlug) => void;
   productLine: LineSlug[];
   toggleLine: (line: LineSlug) => void;
-  sauceType: SauceQueryState["sauceType"];
-  setSauceType: (v: SauceQueryState["sauceType"]) => void;
+  sauceType: ProductQueryState["sauceType"];
+  setSauceType: (v: ProductQueryState["sauceType"]) => void;
   clearAll: () => void;
+  clearPackaging: () => void;
   clearProductLine: () => void;
   clearSauceType: () => void;
   applyButton?: React.ReactNode;
@@ -56,17 +54,19 @@ function FiltersForm({
   idPrefix = "filters",
   search,
   setSearch,
+  packaging,
+  togglePackaging,
   productLine,
   toggleLine,
   sauceType,
   setSauceType,
   clearAll,
-  applyButton,
+  clearPackaging,
   clearProductLine,
   clearSauceType,
+  applyButton,
 }: FiltersFormProps) {
-  const searchId = `${idPrefix}-sauce-search`;
-  // Unified styling for desktop and mobile: remove card borders and use simple section dividers
+  const searchId = `${idPrefix}-product-search`;
   const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
@@ -82,7 +82,7 @@ function FiltersForm({
             onChange={(e) => setSearch(e.currentTarget.value)}
             className="w-full rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             placeholder="Search by name or description"
-            aria-label="Search sauces"
+            aria-label="Search products"
           />
           {search ? (
             <Button
@@ -95,6 +95,39 @@ function FiltersForm({
           ) : null}
         </div>
       </div>
+
+      <fieldset className="m-0 border-0 p-0 mt-6 pb-6">
+        <legend className={legendClass}>Packaging</legend>
+        <div className="mt-2 grid grid-cols-1 gap-2">
+          {(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => {
+            const id = `${idPrefix}-packaging-${slug}`;
+            const cfg = packagingMap[slug];
+            const checked = packaging.includes(slug);
+            return (
+              <label
+                key={slug}
+                htmlFor={id}
+                className="flex items-center gap-2"
+              >
+                <Checkbox
+                  id={id}
+                  checked={checked}
+                  onCheckedChange={() => togglePackaging(slug)}
+                  aria-label={cfg.display}
+                />
+                <span>{cfg.display}</span>
+              </label>
+            );
+          })}
+        </div>
+        {packaging.length > 0 ? (
+          <div className="mt-2">
+            <Button type="button" variant="ghost" onClick={clearPackaging}>
+              Clear
+            </Button>
+          </div>
+        ) : null}
+      </fieldset>
 
       <fieldset className="m-0 border-0 p-0 mt-6 pb-6">
         <legend className={legendClass}>Product Line</legend>
@@ -129,12 +162,14 @@ function FiltersForm({
         ) : null}
       </fieldset>
 
-      <fieldset className="m-0 border-0 p-0 border-t border-border/80 pt-6 pb-6">
+      <fieldset className="m-0 border-0 p-0 mt-6 pb-6">
         <legend className={legendClass}>Sauce Type</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           <RadioGroup
             value={sauceType}
-            onValueChange={(v: SauceQueryState["sauceType"]) => setSauceType(v)}
+            onValueChange={(v: ProductQueryState["sauceType"]) =>
+              setSauceType(v)
+            }
           >
             <label
               className="flex items-center gap-2"
@@ -147,9 +182,9 @@ function FiltersForm({
               />
               <span>All</span>
             </label>
-            {allTypeSlugs.map((slug) => {
+            {(allTypeSlugs as readonly string[]).map((slug) => {
               const id = `${idPrefix}-type-${slug}`;
-              const cfg = typeMap[slug];
+              const cfg = typeMap[slug as keyof typeof typeMap];
               return (
                 <label
                   key={slug}
@@ -165,6 +200,17 @@ function FiltersForm({
                 </label>
               );
             })}
+            <label
+              className="flex items-center gap-2"
+              htmlFor={`${idPrefix}-sauce-type-mix`}
+            >
+              <RadioGroupItem
+                id={`${idPrefix}-sauce-type-mix`}
+                value="mix"
+                aria-label="Mix"
+              />
+              <span>Mix</span>
+            </label>
           </RadioGroup>
         </div>
         {sauceType !== "all" ? (
@@ -187,8 +233,8 @@ function FiltersForm({
 }
 
 type Props = {
-  readonly items: SauceListItem[];
-  readonly initialState: SauceQueryState;
+  readonly items: ProductListItem[];
+  readonly initialState: ProductQueryState;
 };
 
 function useDebouncedValue<T>(value: T, delay = 200): T {
@@ -200,26 +246,34 @@ function useDebouncedValue<T>(value: T, delay = 200): T {
   return debounced;
 }
 
-export function SaucesClient({ items, initialState }: Props) {
+export function ProductsClient({ items, initialState }: Props) {
   const pathname = usePathname();
 
   const [search, setSearch] = useState<string>(initialState.search);
+  const [packaging, setPackaging] = useState<PackagingSlug[]>([
+    ...initialState.packaging,
+  ]);
   const [productLine, setProductLine] = useState<LineSlug[]>([
     ...initialState.productLine,
   ]);
-  const [sauceType, setSauceType] = useState<SauceQueryState["sauceType"]>(
+  const [sauceType, setSauceType] = useState<ProductQueryState["sauceType"]>(
     initialState.sauceType,
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
   const debouncedSearch = useDebouncedValue(search, 200);
 
-  const state: SauceQueryState = useMemo(
-    () => ({ search: debouncedSearch, productLine, sauceType, sort }),
-    [debouncedSearch, productLine, sauceType, sort],
+  const state: ProductQueryState = useMemo(
+    () => ({
+      search: debouncedSearch,
+      packaging,
+      productLine,
+      sauceType,
+      sort,
+    }),
+    [debouncedSearch, packaging, productLine, sauceType, sort],
   );
 
-  // Sync URL on state changes without triggering a Next.js navigation
   useEffect(() => {
     const params = serializeStateToParams(state);
     const query = params.toString();
@@ -229,35 +283,37 @@ export function SaucesClient({ items, initialState }: Props) {
     }
   }, [pathname, state]);
 
-  // Compute filtered and sorted results
   const results = useMemo(
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
-  // Avoid hydration flash: use SSR-computed initial results for first paint
-  const [firstPaint, setFirstPaint] = useState(true);
-  useEffect(() => {
-    setFirstPaint(false);
-  }, []);
 
-  // A11y live region and count display: "Showing X of Y"
+  const [firstPaint, setFirstPaint] = useState(true);
+  useEffect(() => setFirstPaint(false), []);
+
   const resultsText = `${results.length} of ${items.length}`;
 
   function clearAll() {
     setSearch("");
+    setPackaging([]);
     setProductLine([]);
     setSauceType("all");
     setSort("az");
   }
-
+  function clearPackaging() {
+    setPackaging([]);
+  }
   function clearProductLine() {
     setProductLine([]);
   }
-
   function clearSauceType() {
     setSauceType("all");
   }
-
+  function togglePackaging(p: PackagingSlug) {
+    setPackaging((prev) =>
+      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
+    );
+  }
   function toggleLine(line: LineSlug) {
     setProductLine((prev) =>
       prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
@@ -271,11 +327,14 @@ export function SaucesClient({ items, initialState }: Props) {
           idPrefix={idPrefix}
           search={search}
           setSearch={setSearch}
+          packaging={packaging}
+          togglePackaging={togglePackaging}
           productLine={productLine}
           toggleLine={toggleLine}
           sauceType={sauceType}
           setSauceType={setSauceType}
           clearAll={clearAll}
+          clearPackaging={clearPackaging}
           clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
           applyButton={applyButton}
@@ -283,11 +342,7 @@ export function SaucesClient({ items, initialState }: Props) {
       )}
       resultsText={
         firstPaint
-          ? `Showing ${
-              initialState
-                ? applyFiltersAndSort(items, initialState).length
-                : results.length
-            } of ${items.length}`
+          ? `Showing ${applyFiltersAndSort(items, initialState).length} of ${items.length}`
           : resultsText
       }
       sortControl={
@@ -314,19 +369,19 @@ export function SaucesClient({ items, initialState }: Props) {
         .length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
-            No sauces match your filters.
+            No products match your filters.
           </p>
           <Button type="button" onClick={clearAll}>
             Clear all
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12">
           {(firstPaint
             ? applyFiltersAndSort(items, initialState)
             : results
           ).map((item) => (
-            <SauceCard key={item._id} item={item} />
+            <ProductCard key={item._id} item={item} />
           ))}
         </div>
       )}
