@@ -7,6 +7,13 @@ import {
 import type { SanityDocument } from "sanity";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { createSlug } from "../../utils/slug";
+import {
+  createSlugValidator,
+  createUniqueSlugRule,
+} from "../../utils/slug-validation";
+
 const isVersionSelected = (
   document: (SanityDocument & { versions?: string[] }) | undefined,
   version: string,
@@ -49,6 +56,31 @@ export const recipeType = defineType({
       validation: (Rule) =>
         Rule.required().error("A name is required for the recipe."),
       group: "basic",
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "URL",
+      description:
+        "The web address for this recipe (automatically created from its name)",
+      group: "basic",
+      components: {
+        field: PathnameFieldComponent,
+      },
+      options: {
+        source: "name",
+        slugify: createSlug,
+      },
+      validation: (Rule) => [
+        Rule.required().error("A URL slug is required"),
+        Rule.custom(createUniqueSlugRule()),
+        Rule.custom(
+          createSlugValidator({
+            documentType: "Recipe",
+            requiredPrefix: "/recipes/",
+          }),
+        ),
+      ],
     }),
     defineField({
       name: "versions",

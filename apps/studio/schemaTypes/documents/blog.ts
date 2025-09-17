@@ -9,7 +9,7 @@ import { PathnameFieldComponent } from "../../components/slug-field-component";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
-import { createSlug, isUnique } from "../../utils/slug";
+import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
   createUniqueSlugRule,
@@ -68,7 +68,6 @@ export const blog = defineType({
       options: {
         source: "title",
         slugify: createSlug,
-        isUnique,
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
