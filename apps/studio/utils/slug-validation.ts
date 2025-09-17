@@ -100,6 +100,16 @@ function getDocumentTypeConfig(
         documentType: "Sauce",
         requiredPrefix: "/sauces/",
       };
+    case "product":
+      return {
+        documentType: "Product",
+        requiredPrefix: "/products/",
+      };
+    case "recipe":
+      return {
+        documentType: "Recipe",
+        requiredPrefix: "/recipes/",
+      };
     case "blogIndex":
       return {
         documentType: "Blog index",
@@ -109,6 +119,16 @@ function getDocumentTypeConfig(
       return {
         documentType: "Sauce index",
         requiredPrefix: "/sauces",
+      };
+    case "productIndex":
+      return {
+        documentType: "Product index",
+        requiredPrefix: "/products",
+      };
+    case "recipeIndex":
+      return {
+        documentType: "Recipe index",
+        requiredPrefix: "/recipes",
       };
     case "homePage":
       return {
@@ -346,6 +366,18 @@ function applyDocumentTypeRules(
         return "/sauces";
       }
       return slug;
+    case "productIndex":
+      // Product index should be exactly /products
+      if (slug !== "/products") {
+        return "/products";
+      }
+      return slug;
+    case "recipeIndex":
+      // Recipe index should be exactly /recipes
+      if (slug !== "/recipes") {
+        return "/recipes";
+      }
+      return slug;
 
     case "sauce":
       // Ensure sauces live under /sauces/
@@ -355,6 +387,26 @@ function applyDocumentTypeRules(
         }
         const cleanPath = slug.replace(/^\/+/, "");
         return `/sauces/${cleanPath}`;
+      }
+      return slug;
+    case "product":
+      // Ensure products live under /products/
+      if (!slug.startsWith("/products/")) {
+        if (slug === "/" || slug === "/products") {
+          return "/products/untitled";
+        }
+        const cleanPath = slug.replace(/^\/+/, "");
+        return `/products/${cleanPath}`;
+      }
+      return slug;
+    case "recipe":
+      // Ensure recipes live under /recipes/
+      if (!slug.startsWith("/recipes/")) {
+        if (slug === "/" || slug === "/recipes") {
+          return "/recipes/untitled";
+        }
+        const cleanPath = slug.replace(/^\/+/, "");
+        return `/recipes/${cleanPath}`;
       }
       return slug;
 
