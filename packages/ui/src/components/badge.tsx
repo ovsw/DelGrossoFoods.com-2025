@@ -38,27 +38,49 @@ export const badgeVariants = cva(
   },
 );
 
-type BadgeBaseProps = {
+type CommonProps = {
   text: string;
-  href?: string;
   className?: string;
-} & Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> &
-  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">;
+} & VariantProps<typeof badgeVariants>;
 
-type BadgeProps = BadgeBaseProps & VariantProps<typeof badgeVariants>;
+type LinkProps = {
+  href: string;
+} & Omit<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  "children" | "className" | "href"
+>;
 
-function Badge({ text, href, variant, className, ...rest }: BadgeProps) {
-  const Comp = href ? ("a" as const) : ("span" as const);
+type SpanProps = Omit<
+  React.HTMLAttributes<HTMLSpanElement>,
+  "children" | "className"
+> & { href?: never };
 
+type BadgeProps = CommonProps & (LinkProps | SpanProps);
+
+function Badge(props: BadgeProps) {
+  if ("href" in props) {
+    const { text, href, className, variant, ...anchorProps } = props;
+    return (
+      <a
+        data-slot="badge"
+        href={href}
+        className={cn(badgeVariants({ variant }), className)}
+        {...anchorProps}
+      >
+        {text}
+      </a>
+    );
+  }
+
+  const { text, className, variant, ...spanProps } = props;
   return (
-    <Comp
+    <span
       data-slot="badge"
-      href={href}
       className={cn(badgeVariants({ variant }), className)}
-      {...(rest as any)}
+      {...spanProps}
     >
       {text}
-    </Comp>
+    </span>
   );
 }
 
