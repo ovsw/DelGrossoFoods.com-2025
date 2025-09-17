@@ -14,19 +14,21 @@ export type TypeLabel =
 
 export interface BadgeConfig {
   readonly text: string;
-  readonly colorVar: string; // CSS variable name, e.g. --color-th-green-500
+  /**
+   * Visual variant key expected by the shared <Badge /> component.
+   * Typically the canonical slug (e.g., "original", "organic", "pizza").
+   */
+  readonly variant: "neutral" | LineSlug | TypeSlug;
 }
 
 interface LineConfigItem {
   readonly label: LineLabel;
   readonly display: string;
-  readonly colorVar: string;
 }
 
 interface TypeConfigItem {
   readonly label: TypeLabel;
   readonly display: string;
-  readonly colorVar: string;
 }
 
 /**
@@ -40,17 +42,14 @@ export const lineMap: Record<LineSlug, LineConfigItem> = {
   original: {
     label: "Original",
     display: "Original",
-    colorVar: "--color-th-red-600",
   },
   organic: {
     label: "Organic",
     display: "Organic",
-    colorVar: "--color-th-green-500",
   },
   premium: {
     label: "Ultra-Premium",
     display: "Premium",
-    colorVar: "--color-th-dark-900",
   },
 } as const;
 
@@ -65,22 +64,18 @@ export const typeMap: Record<TypeSlug, TypeConfigItem> = {
   pasta: {
     label: "Pasta Sauce",
     display: "Pasta Sauce",
-    colorVar: "--color-brand-red",
   },
   pizza: {
     label: "Pizza Sauce",
     display: "Pizza Sauce",
-    colorVar: "--color-brand-yellow",
   },
   salsa: {
     label: "Salsa Sauce",
     display: "Salsa Sauce",
-    colorVar: "--color-brand-green",
   },
   sandwich: {
     label: "Sandwich Sauce",
     display: "Sandwich Sauce",
-    colorVar: "",
   },
 } as const;
 
@@ -176,41 +171,47 @@ export function fromTypeSlug(slug: TypeSlug): TypeLabel {
 /**
  * Derive a badge configuration for a product line label.
  *
- * Returns a stable `text` and `colorVar` used by the shared `<Badge />`
- * component. Falls back to a neutral badge when the label is unknown.
+ * Returns a stable `text` and `variant` used by the shared `<Badge />`
+ * component (CVA variants). Falls back to a neutral badge when unknown.
  *
  * Examples:
- * - getLineBadge("Organic") -> { text: "Organic", colorVar: "--color-th-green-500" }
- * - getLineBadge("Unknown Line") -> { text: "Unknown Line", colorVar: "" }
+ * - getLineBadge("Organic") -> { text: "Organic", variant: "organic" }
+ * - getLineBadge("Unknown Line") -> { text: "Unknown Line", variant: "neutral" }
  */
 export function getLineBadge(label: unknown): BadgeConfig {
   const slug = toLineSlug(label);
   const cfg = slug ? lineMap[slug] : undefined;
   if (!cfg) {
     const text = typeof label === "string" && label ? label : "Unknown";
-    return { text, colorVar: "" };
+    return { text, variant: "neutral" };
   }
-  return { text: cfg.display, colorVar: cfg.colorVar };
+  return {
+    text: cfg.display,
+    variant: slug ?? "neutral",
+  };
 }
 
 /**
  * Derive a badge configuration for a sauce type label.
  *
- * Returns a stable `text` and `colorVar` for use with `<Badge />`.
+ * Returns a stable `text` and `variant` for use with `<Badge />`.
  * Falls back to a neutral display when the label cannot be mapped.
  *
  * Examples:
- * - getTypeBadge("Pizza Sauce") -> { text: "Pizza Sauce", colorVar: "--color-brand-yellow" }
- * - getTypeBadge(123) -> { text: "Unknown", colorVar: "" }
+ * - getTypeBadge("Pizza Sauce") -> { text: "Pizza Sauce", variant: "pizza" }
+ * - getTypeBadge(123) -> { text: "Unknown", variant: "neutral" }
  */
 export function getTypeBadge(label: unknown): BadgeConfig {
   const slug = toTypeSlug(label);
   const cfg = slug ? typeMap[slug] : undefined;
   if (!cfg) {
     const text = typeof label === "string" && label ? label : "Unknown";
-    return { text, colorVar: "" };
+    return { text, variant: "neutral" };
   }
-  return { text: cfg.display, colorVar: cfg.colorVar };
+  return {
+    text: cfg.display,
+    variant: slug ?? "neutral",
+  };
 }
 
 /**

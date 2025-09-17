@@ -4,12 +4,7 @@ import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
-import {
-  getLineBadge,
-  getTypeBadge,
-  toLineSlug,
-  toTypeSlug,
-} from "@/config/sauce-taxonomy";
+import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import type { SauceListItem } from "@/types";
 
 export function SauceCard({ item }: { item: SauceListItem }) {
@@ -50,12 +45,12 @@ export function SauceCard({ item }: { item: SauceListItem }) {
         <div className="flex items-center justify-center gap-2 mt-2">
           <Badge
             text={lineBadge.text}
-            variant={toLineSlug(line) ?? "neutral"}
+            variant={lineBadge.variant}
             className="text-xs"
           />
           <Badge
             text={typeBadge.text}
-            variant={toTypeSlug(category) ?? "neutral"}
+            variant={typeBadge.variant}
             className="text-xs"
           />
         </div>
