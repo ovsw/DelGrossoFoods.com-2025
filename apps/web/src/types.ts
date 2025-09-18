@@ -1,7 +1,10 @@
 import type {
   GetAllProductsForIndexQueryResult,
+  GetAllRecipeCategoriesQueryResult,
+  GetAllRecipesForIndexQueryResult,
   GetAllSaucesForIndexQueryResult,
   GetProductIndexPageQueryResult,
+  GetRecipeIndexPageQueryResult,
   GetSauceIndexPageQueryResult,
   QueryBlogSlugPageDataResult,
   QueryHomePageDataResult,
@@ -42,3 +45,8 @@ export type SortOrder = "az" | "za";
 // Products index types
 export type ProductIndexPageData = NonNullable<GetProductIndexPageQueryResult>;
 export type ProductListItem = GetAllProductsForIndexQueryResult[number];
+
+// Recipes index types
+export type RecipeIndexPageData = NonNullable<GetRecipeIndexPageQueryResult>;
+export type RecipeListItem = GetAllRecipesForIndexQueryResult[number];
+export type RecipeCategoryOption = GetAllRecipeCategoriesQueryResult[number];

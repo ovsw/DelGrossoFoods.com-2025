@@ -76,6 +76,8 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       image={mainImage}
       imageAlt={name}
       imageAspect="landscape"
+      imageWidth={800}
+      imageHeight={533}
       subtitle={subtitle}
       badges={badges}
     />

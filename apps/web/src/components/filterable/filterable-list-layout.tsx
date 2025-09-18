@@ -10,6 +10,7 @@ import {
   DrawerTrigger,
 } from "@workspace/ui/components/drawer";
 import { Filter } from "lucide-react";
+import React from "react";
 
 type FiltersRenderer = (args: {
   idPrefix: string;
@@ -21,6 +22,13 @@ type Props = {
   resultsText: string;
   sortControl: React.ReactNode;
   children: React.ReactNode;
+  resultsAnchorId?: string;
+  // When this key changes, layout scrolls to the results anchor
+  scrollToTopKey?: unknown;
+  // Skip scrolling when true (e.g., first render)
+  skipScroll?: boolean;
+  // Debounce for scroll to top
+  scrollDebounceMs?: number;
 };
 
 export function FilterableListLayout({
@@ -28,7 +36,21 @@ export function FilterableListLayout({
   resultsText,
   sortControl,
   children,
+  resultsAnchorId = "results-top",
+  scrollToTopKey,
+  skipScroll = false,
+  scrollDebounceMs = 200,
 }: Props) {
+  // Debounced scroll-to-top when the provided key changes
+  React.useEffect(() => {
+    if (skipScroll) return;
+    if (scrollToTopKey === undefined) return;
+    const id = setTimeout(() => {
+      const el = document.getElementById(resultsAnchorId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, scrollDebounceMs);
+    return () => clearTimeout(id);
+  }, [scrollToTopKey, skipScroll, resultsAnchorId, scrollDebounceMs]);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
       {/* Sidebar (desktop) */}
@@ -41,7 +63,7 @@ export function FilterableListLayout({
       {/* Main content */}
       <section className="min-w-0">
         {/* Top bar */}
-        <div className="mb-8 md:mb-12 flex items-center gap-2">
+        <div className="mb-8 md:mb-6 flex items-center gap-2">
           {/* Mobile filter button first on the left */}
           <div className="lg:hidden">
             <Drawer>
@@ -83,6 +105,9 @@ export function FilterableListLayout({
           {/* Sort dropdown on the right */}
           {sortControl}
         </div>
+
+        {/* Anchor at top of results for scroll-to-top on filter changes */}
+        <div id={resultsAnchorId} aria-hidden="true" />
 
         {/* Grid */}
         {children}

@@ -168,13 +168,14 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-img {
-  display: block;
-  max-width: 100%;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: var(--radius-md);
+  img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
+  html {
+    scroll-padding-top: calc(196px + 16px);
+  }
 }

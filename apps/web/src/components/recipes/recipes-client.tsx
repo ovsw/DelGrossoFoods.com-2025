@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
@@ -9,44 +10,45 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@workspace/ui/components/radio-group";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
-import { ProductCard } from "@/components/products/product-card";
-import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
+import { RecipeCard } from "@/components/recipes/recipe-card";
 import {
-  allLineSlugs,
-  allTypeSlugs,
-  lineMap,
-  type LineSlug,
-  typeMap,
-} from "@/config/sauce-taxonomy";
-import { applyFiltersAndSort } from "@/lib/products/filters";
+  allMeatSlugs,
+  allRecipeTagSlugs,
+  meatMap,
+  type MeatSlug,
+  type RecipeTagSlug,
+  tagMap,
+} from "@/config/recipe-taxonomy";
+import { allLineSlugs, lineMap, type LineSlug } from "@/config/sauce-taxonomy";
+import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
-  type ProductQueryState,
+  type RecipeQueryState,
   serializeStateToParams,
-} from "@/lib/products/url";
-import type { ProductListItem, SortOrder } from "@/types";
+} from "@/lib/recipes/url";
+import type { RecipeCategoryOption, RecipeListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
   search: string;
   setSearch: (v: string) => void;
-  packaging: PackagingSlug[];
-  togglePackaging: (p: PackagingSlug) => void;
   productLine: LineSlug[];
   toggleLine: (line: LineSlug) => void;
-  sauceType: ProductQueryState["sauceType"];
-  setSauceType: (v: ProductQueryState["sauceType"]) => void;
+  tags: RecipeTagSlug[];
+  toggleTag: (t: RecipeTagSlug) => void;
+  meats: MeatSlug[];
+  toggleMeat: (m: MeatSlug) => void;
+  categoryId: string | "all";
+  setCategoryId: (id: string | "all") => void;
   clearAll: () => void;
-  clearPackaging: () => void;
   clearProductLine: () => void;
-  clearSauceType: () => void;
+  clearTags: () => void;
+  clearMeats: () => void;
+  clearCategory: () => void;
+  categoryOptions: RecipeCategoryOption[];
   applyButton?: React.ReactNode;
 };
 
@@ -54,19 +56,23 @@ function FiltersForm({
   idPrefix = "filters",
   search,
   setSearch,
-  packaging,
-  togglePackaging,
   productLine,
   toggleLine,
-  sauceType,
-  setSauceType,
+  tags,
+  toggleTag,
+  meats,
+  toggleMeat,
+  categoryId,
+  setCategoryId,
   clearAll,
-  clearPackaging,
   clearProductLine,
-  clearSauceType,
+  clearTags,
+  clearMeats,
+  clearCategory,
+  categoryOptions,
   applyButton,
 }: FiltersFormProps) {
-  const searchId = `${idPrefix}-product-search`;
+  const searchId = `${idPrefix}-recipe-search`;
   const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
@@ -81,8 +87,8 @@ function FiltersForm({
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
             className="w-full rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Search by name or description"
-            aria-label="Search products"
+            placeholder="Search by name"
+            aria-label="Search recipes"
           />
           {search ? (
             <Button
@@ -96,38 +102,7 @@ function FiltersForm({
         </div>
       </div>
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Packaging</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          {(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => {
-            const id = `${idPrefix}-packaging-${slug}`;
-            const cfg = packagingMap[slug];
-            const checked = packaging.includes(slug);
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2"
-              >
-                <Checkbox
-                  id={id}
-                  checked={checked}
-                  onCheckedChange={() => togglePackaging(slug)}
-                  aria-label={cfg.display}
-                />
-                <span>{cfg.display}</span>
-              </label>
-            );
-          })}
-        </div>
-        {packaging.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearPackaging}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
-      </fieldset>
+      <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
@@ -162,64 +137,113 @@ function FiltersForm({
         ) : null}
       </fieldset>
 
+      <div className="my-4 border-b border-input" />
+
       <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Sauce Type</legend>
+        <legend className={legendClass}>Recipe Tags</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
-          <RadioGroup
-            value={sauceType}
-            onValueChange={(v: ProductQueryState["sauceType"]) =>
-              setSauceType(v)
-            }
-          >
-            <label
-              className="flex items-center gap-2"
-              htmlFor={`${idPrefix}-sauce-type-all`}
-            >
-              <RadioGroupItem
-                id={`${idPrefix}-sauce-type-all`}
-                value="all"
-                aria-label="All"
-              />
-              <span>All</span>
-            </label>
-            {(allTypeSlugs as readonly string[]).map((slug) => {
-              const id = `${idPrefix}-type-${slug}`;
-              const cfg = typeMap[slug as keyof typeof typeMap];
-              return (
-                <label
-                  key={slug}
-                  htmlFor={id}
-                  className="flex items-center gap-2"
-                >
-                  <RadioGroupItem
-                    id={id}
-                    value={slug}
-                    aria-label={cfg.display}
-                  />
-                  <span>{cfg.display}</span>
-                </label>
-              );
-            })}
-            <label
-              className="flex items-center gap-2"
-              htmlFor={`${idPrefix}-sauce-type-mix`}
-            >
-              <RadioGroupItem
-                id={`${idPrefix}-sauce-type-mix`}
-                value="mix"
-                aria-label="Mix"
-              />
-              <span>Mix</span>
-            </label>
-          </RadioGroup>
+          {allRecipeTagSlugs.map((slug) => {
+            const id = `${idPrefix}-tag-${slug}`;
+            const cfg = tagMap[slug];
+            const checked = tags.includes(slug);
+            return (
+              <label
+                key={slug}
+                htmlFor={id}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Checkbox
+                  id={id}
+                  checked={checked}
+                  onCheckedChange={() => toggleTag(slug)}
+                  aria-label={cfg.display}
+                />
+                <Badge
+                  text={cfg.display}
+                  variant={cfg.badgeVariant}
+                  className="text-sm"
+                />
+              </label>
+            );
+          })}
         </div>
-        {sauceType !== "all" ? (
+        {tags.length > 0 ? (
           <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearSauceType}>
+            <Button type="button" variant="ghost" onClick={clearTags}>
               Clear
             </Button>
           </div>
         ) : null}
+      </fieldset>
+
+      <div className="my-4 border-b border-input" />
+
+      <fieldset className="m-0 border-0 p-0 my-4">
+        <legend className={legendClass}>Meat</legend>
+        <div className="mt-2 flex flex-wrap gap-1">
+          {allMeatSlugs.map((slug) => {
+            const id = `${idPrefix}-meat-${slug}`;
+            const cfg = meatMap[slug];
+            const checked = meats.includes(slug);
+            return (
+              <button
+                key={slug}
+                type="button"
+                aria-pressed={checked}
+                aria-label={cfg.display}
+                onClick={() => toggleMeat(slug)}
+                className="inline-flex items-center rounded-xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
+              >
+                <Badge
+                  text={cfg.display}
+                  variant={checked ? "meat" : "outline"}
+                  className="text-sm"
+                />
+              </button>
+            );
+          })}
+        </div>
+        {meats.length > 0 ? (
+          <div className="mt-2">
+            <Button type="button" variant="ghost" onClick={clearMeats}>
+              Clear
+            </Button>
+          </div>
+        ) : null}
+      </fieldset>
+
+      <div className="my-4 border-b border-input" />
+
+      <fieldset className="m-0 border-0 p-0 my-4">
+        <legend className={legendClass}>Category</legend>
+        <div className="mt-2">
+          <div className="relative">
+            <select
+              id={`${idPrefix}-category-select`}
+              className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.currentTarget.value || "all")}
+              aria-label="Category"
+            >
+              <option value="all">Select</option>
+              {categoryOptions.map((c) => (
+                <option key={c._id} value={c._id}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-muted-foreground">
+              ▾
+            </span>
+          </div>
+          {categoryId !== "all" ? (
+            <div className="mt-2">
+              <Button type="button" variant="ghost" onClick={clearCategory}>
+                Clear
+              </Button>
+            </div>
+          ) : null}
+        </div>
       </fieldset>
 
       <div className="flex items-center justify-between gap-2">
@@ -233,8 +257,9 @@ function FiltersForm({
 }
 
 type Props = {
-  readonly items: ProductListItem[];
-  readonly initialState: ProductQueryState;
+  items: RecipeListItem[];
+  initialState: RecipeQueryState;
+  categories: RecipeCategoryOption[];
 };
 
 function useDebouncedValue<T>(value: T, delay = 200): T {
@@ -246,32 +271,31 @@ function useDebouncedValue<T>(value: T, delay = 200): T {
   return debounced;
 }
 
-export function ProductsClient({ items, initialState }: Props) {
+export function RecipesClient({ items, initialState, categories }: Props) {
   const pathname = usePathname();
 
-  const [search, setSearch] = useState<string>(initialState.search);
-  const [packaging, setPackaging] = useState<PackagingSlug[]>([
-    ...initialState.packaging,
-  ]);
+  const [search, setSearch] = useState(initialState.search);
   const [productLine, setProductLine] = useState<LineSlug[]>([
     ...initialState.productLine,
   ]);
-  const [sauceType, setSauceType] = useState<ProductQueryState["sauceType"]>(
-    initialState.sauceType,
+  const [tags, setTags] = useState<RecipeTagSlug[]>([...initialState.tags]);
+  const [meats, setMeats] = useState<MeatSlug[]>([...initialState.meats]);
+  const [categoryId, setCategoryId] = useState<string | "all">(
+    initialState.categoryId,
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
   const debouncedSearch = useDebouncedValue(search, 200);
-
-  const state: ProductQueryState = useMemo(
+  const state: RecipeQueryState = useMemo(
     () => ({
       search: debouncedSearch,
-      packaging,
       productLine,
-      sauceType,
+      tags,
+      meats,
+      categoryId,
       sort,
     }),
-    [debouncedSearch, packaging, productLine, sauceType, sort],
+    [debouncedSearch, productLine, tags, meats, categoryId, sort],
   );
 
   useEffect(() => {
@@ -287,45 +311,45 @@ export function ProductsClient({ items, initialState }: Props) {
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
-
   const [firstPaint, setFirstPaint] = useState(true);
   useEffect(() => setFirstPaint(false), []);
-
   const resultsText = `${results.length} of ${items.length}`;
+
+  // Key to trigger shared layout scroll behavior
+  const resultsAnchorId = "recipes-results-top";
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
-    packaging,
     productLine,
-    sauceType,
+    tags,
+    meats,
+    categoryId,
     sort,
   });
 
   function clearAll() {
     setSearch("");
-    setPackaging([]);
     setProductLine([]);
-    setSauceType("all");
+    setTags([]);
+    setMeats([]);
+    setCategoryId("all");
     setSort("az");
   }
-  function clearPackaging() {
-    setPackaging([]);
-  }
-  function clearProductLine() {
-    setProductLine([]);
-  }
-  function clearSauceType() {
-    setSauceType("all");
-  }
-  function togglePackaging(p: PackagingSlug) {
-    setPackaging((prev) =>
-      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
-    );
-  }
-  function toggleLine(line: LineSlug) {
+  const clearProductLine = () => setProductLine([]);
+  const clearTags = () => setTags([]);
+  const clearMeats = () => setMeats([]);
+  const clearCategory = () => setCategoryId("all");
+  const toggleLine = (l: LineSlug) =>
     setProductLine((prev) =>
-      prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
+      prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l],
     );
-  }
+  const toggleTag = (t: RecipeTagSlug) =>
+    setTags((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t],
+    );
+  const toggleMeat = (m: MeatSlug) =>
+    setMeats((prev) =>
+      prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m],
+    );
 
   return (
     <FilterableListLayout
@@ -334,16 +358,20 @@ export function ProductsClient({ items, initialState }: Props) {
           idPrefix={idPrefix}
           search={search}
           setSearch={setSearch}
-          packaging={packaging}
-          togglePackaging={togglePackaging}
           productLine={productLine}
           toggleLine={toggleLine}
-          sauceType={sauceType}
-          setSauceType={setSauceType}
+          tags={tags}
+          toggleTag={toggleTag}
+          meats={meats}
+          toggleMeat={toggleMeat}
+          categoryId={categoryId}
+          setCategoryId={setCategoryId}
           clearAll={clearAll}
-          clearPackaging={clearPackaging}
           clearProductLine={clearProductLine}
-          clearSauceType={clearSauceType}
+          clearTags={clearTags}
+          clearMeats={clearMeats}
+          clearCategory={clearCategory}
+          categoryOptions={categories}
           applyButton={applyButton}
         />
       )}
@@ -354,6 +382,7 @@ export function ProductsClient({ items, initialState }: Props) {
       }
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
+      resultsAnchorId={resultsAnchorId}
       sortControl={
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -378,19 +407,19 @@ export function ProductsClient({ items, initialState }: Props) {
         .length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
-            No products match your filters.
+            No recipes match your filters.
           </p>
           <Button type="button" onClick={clearAll}>
             Clear all
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-6">
           {(firstPaint
             ? applyFiltersAndSort(items, initialState)
             : results
           ).map((item) => (
-            <ProductCard key={item._id} item={item} />
+            <RecipeCard key={item._id} item={item} />
           ))}
         </div>
       )}
