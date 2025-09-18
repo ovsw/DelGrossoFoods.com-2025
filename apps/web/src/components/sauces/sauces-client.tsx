@@ -88,6 +88,8 @@ function FiltersForm({
         </div>
       </div>
 
+      <div className="my-4 border-b border-input" />
+
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
@@ -121,7 +123,9 @@ function FiltersForm({
         ) : null}
       </fieldset>
 
-      <fieldset className="m-0 border-0 p-0 border-t border-border/80 pt-6 pb-6">
+      <div className="my-4 border-b border-input" />
+
+      <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Sauce Type</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           <RadioGroup
@@ -167,6 +171,8 @@ function FiltersForm({
           </div>
         ) : null}
       </fieldset>
+
+      <div className="my-4 border-b border-input" />
 
       <div className="flex items-center justify-between gap-2">
         <Button type="button" variant="secondary" onClick={clearAll}>
