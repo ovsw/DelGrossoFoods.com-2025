@@ -88,7 +88,7 @@ function FiltersForm({
         </div>
       </div>
 
-      <fieldset className="m-0 border-0 p-0 mt-6 pb-6">
+      <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
         <div className="mt-2 grid grid-cols-1 gap-2">
           {allLineSlugs.map((slug) => {
@@ -234,6 +234,12 @@ export function SaucesClient({ items, initialState }: Props) {
 
   // A11y live region and count display: "Showing X of Y"
   const resultsText = `${results.length} of ${items.length}`;
+  const scrollKey = JSON.stringify({
+    search: debouncedSearch,
+    productLine,
+    sauceType,
+    sort,
+  });
 
   function clearAll() {
     setSearch("");
@@ -282,6 +288,8 @@ export function SaucesClient({ items, initialState }: Props) {
             } of ${items.length}`
           : resultsText
       }
+      scrollToTopKey={scrollKey}
+      skipScroll={firstPaint}
       sortControl={
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
