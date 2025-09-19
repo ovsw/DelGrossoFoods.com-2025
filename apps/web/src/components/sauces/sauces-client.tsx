@@ -32,6 +32,7 @@ import type { SauceListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
+  resultsText: string;
   search: string;
   setSearch: (v: string) => void;
   productLine: LineSlug[];
@@ -46,6 +47,7 @@ type FiltersFormProps = {
 
 function FiltersForm({
   idPrefix = "filters",
+  resultsText,
   search,
   setSearch,
   productLine,
@@ -62,6 +64,14 @@ function FiltersForm({
   const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="text-muted-foreground"
+      >
+        {resultsText}
+      </div>
+      <div className="my-4 border-b border-input" />
       <div>
         <label htmlFor={searchId} className="block text-xl font-medium">
           Search
@@ -273,6 +283,15 @@ export function SaucesClient({ items, initialState }: Props) {
       filters={({ idPrefix, applyButton }) => (
         <FiltersForm
           idPrefix={idPrefix}
+          resultsText={
+            firstPaint
+              ? `Showing ${
+                  initialState
+                    ? applyFiltersAndSort(items, initialState).length
+                    : results.length
+                } of ${items.length}`
+              : resultsText
+          }
           search={search}
           setSearch={setSearch}
           productLine={productLine}
@@ -285,15 +304,25 @@ export function SaucesClient({ items, initialState }: Props) {
           applyButton={applyButton}
         />
       )}
-      resultsText={
-        firstPaint
-          ? `Showing ${
-              initialState
-                ? applyFiltersAndSort(items, initialState).length
-                : results.length
-            } of ${items.length}`
-          : resultsText
-      }
+      resultsText={resultsText}
+      activeChips={[
+        ...productLine.map((slug) => ({
+          key: `line-${slug}`,
+          text: lineMap[slug].display,
+          variant: slug,
+          onRemove: () => toggleLine(slug),
+        })),
+        ...(sauceType !== "all"
+          ? [
+              {
+                key: `type-${sauceType}`,
+                text: typeMap[sauceType as keyof typeof typeMap].display,
+                variant: sauceType as any,
+                onRemove: () => setSauceType("all"),
+              },
+            ]
+          : []),
+      ]}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       sortControl={

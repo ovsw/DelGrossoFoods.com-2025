@@ -35,6 +35,7 @@ import type { ProductListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
+  resultsText: string;
   search: string;
   setSearch: (v: string) => void;
   packaging: PackagingSlug[];
@@ -52,6 +53,7 @@ type FiltersFormProps = {
 
 function FiltersForm({
   idPrefix = "filters",
+  resultsText,
   search,
   setSearch,
   packaging,
@@ -70,6 +72,14 @@ function FiltersForm({
   const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="text-muted-foreground"
+      >
+        {resultsText}
+      </div>
+      <div className="my-4 border-b border-input" />
       <div>
         <label htmlFor={searchId} className="block text-xl font-medium">
           Search
@@ -340,6 +350,11 @@ export function ProductsClient({ items, initialState }: Props) {
       filters={({ idPrefix, applyButton }) => (
         <FiltersForm
           idPrefix={idPrefix}
+          resultsText={
+            firstPaint
+              ? `Showing ${applyFiltersAndSort(items, initialState).length} of ${items.length}`
+              : resultsText
+          }
           search={search}
           setSearch={setSearch}
           packaging={packaging}
@@ -355,11 +370,31 @@ export function ProductsClient({ items, initialState }: Props) {
           applyButton={applyButton}
         />
       )}
-      resultsText={
-        firstPaint
-          ? `Showing ${applyFiltersAndSort(items, initialState).length} of ${items.length}`
-          : resultsText
-      }
+      resultsText={resultsText}
+      activeChips={[
+        ...packaging.map((slug) => ({
+          key: `pkg-${slug}`,
+          text: packagingMap[slug].display,
+          variant: "neutral" as const,
+          onRemove: () => togglePackaging(slug),
+        })),
+        ...productLine.map((slug) => ({
+          key: `line-${slug}`,
+          text: lineMap[slug].display,
+          variant: slug,
+          onRemove: () => toggleLine(slug),
+        })),
+        ...(sauceType !== "all" && sauceType !== "mix"
+          ? [
+              {
+                key: `type-${sauceType}`,
+                text: typeMap[sauceType].display,
+                variant: sauceType as any,
+                onRemove: () => setSauceType("all"),
+              },
+            ]
+          : []),
+      ]}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       sortControl={

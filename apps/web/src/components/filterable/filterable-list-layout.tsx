@@ -1,4 +1,5 @@
 "use client";
+import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
   Drawer,
@@ -29,6 +30,13 @@ type Props = {
   skipScroll?: boolean;
   // Debounce for scroll to top
   scrollDebounceMs?: number;
+  // Active filter chips rendered above the grid (desktop) and under the Filters button (mobile)
+  activeChips?: Array<{
+    key: string;
+    text: string;
+    variant?: BadgeVariant;
+    onRemove?: () => void;
+  }>;
 };
 
 export function FilterableListLayout({
@@ -40,6 +48,7 @@ export function FilterableListLayout({
   scrollToTopKey,
   skipScroll = false,
   scrollDebounceMs = 200,
+  activeChips = [],
 }: Props) {
   // Debounced scroll-to-top when the provided key changes
   const prevKeyRef = React.useRef<unknown>(undefined);
@@ -101,14 +110,26 @@ export function FilterableListLayout({
             </Drawer>
           </div>
 
-          {/* Live results text */}
-          <div
-            aria-live="polite"
-            aria-atomic="true"
-            className="flex-1 text-muted-foreground"
-          >
-            {resultsText}
-          </div>
+          {/* Desktop chips inline with Sort on the right; fills available space */}
+          {activeChips.length > 0 ? (
+            <div className="hidden lg:flex flex-wrap gap-2 ms-2 flex-1">
+              {activeChips.map((c) => (
+                <button
+                  key={c.key}
+                  type="button"
+                  onClick={c.onRemove}
+                  aria-label={`Remove filter ${c.text}`}
+                  className="cursor-pointer"
+                >
+                  <Badge text={`${c.text} ×`} variant={c.variant} />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="hidden lg:block flex-1" />
+          )}
+
+          {/* Mobile chips are rendered below the toolbar (see below) */}
 
           {/* Sort dropdown on the right */}
           {sortControl}
@@ -116,6 +137,25 @@ export function FilterableListLayout({
 
         {/* Anchor at top of results for scroll-to-top on filter changes */}
         <div id={resultsAnchorId} aria-hidden="true" />
+
+        {/* Mobile active chips below toolbar: single accent color */}
+        {activeChips.length > 0 ? (
+          <div className="lg:hidden flex flex-wrap gap-2 mb-4">
+            {activeChips.map((c) => (
+              <button
+                key={c.key}
+                type="button"
+                onClick={c.onRemove}
+                aria-label={`Remove filter ${c.text}`}
+                className="cursor-pointer"
+              >
+                <Badge text={`${c.text} ×`} variant="accent" />
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Desktop chips now inline with toolbar */}
 
         {/* Grid */}
         {children}
