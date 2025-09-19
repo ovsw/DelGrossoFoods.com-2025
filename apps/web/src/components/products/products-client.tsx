@@ -28,6 +28,9 @@ import {
   typeMap,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useFirstPaint } from "@/hooks/use-first-paint";
+import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/products/filters";
 import {
   type ProductQueryState,
@@ -265,15 +268,6 @@ type Props = {
   readonly initialState: ProductQueryState;
 };
 
-function useDebouncedValue<T>(value: T, delay = 200): T {
-  const [debounced, setDebounced] = useState<T>(value);
-  useEffect(() => {
-    const id = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(id);
-  }, [value, delay]);
-  return debounced;
-}
-
 export function ProductsClient({ items, initialState }: Props) {
   const pathname = usePathname();
 
@@ -302,22 +296,14 @@ export function ProductsClient({ items, initialState }: Props) {
     [debouncedSearch, packaging, productLine, sauceType, sort],
   );
 
-  useEffect(() => {
-    const params = serializeStateToParams(state);
-    const query = params.toString();
-    const url = query ? `${pathname}?${query}` : pathname;
-    if (typeof window !== "undefined") {
-      window.history.replaceState(window.history.state, "", url);
-    }
-  }, [pathname, state]);
+  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
 
   const results = useMemo(
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
 
-  const [firstPaint, setFirstPaint] = useState(true);
-  useEffect(() => setFirstPaint(false), []);
+  const firstPaint = useFirstPaint();
 
   const resultsText = `${results.length} of ${items.length}`;
   const scrollKey = JSON.stringify({

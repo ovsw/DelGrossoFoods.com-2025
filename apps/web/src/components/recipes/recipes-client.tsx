@@ -24,6 +24,9 @@ import {
   tagMap,
 } from "@/config/recipe-taxonomy";
 import { allLineSlugs, lineMap, type LineSlug } from "@/config/sauce-taxonomy";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useFirstPaint } from "@/hooks/use-first-paint";
+import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
   type RecipeQueryState,
@@ -272,15 +275,6 @@ type Props = {
   categories: RecipeCategoryOption[];
 };
 
-function useDebouncedValue<T>(value: T, delay = 200): T {
-  const [debounced, setDebounced] = useState<T>(value);
-  useEffect(() => {
-    const id = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(id);
-  }, [value, delay]);
-  return debounced;
-}
-
 export function RecipesClient({ items, initialState, categories }: Props) {
   const pathname = usePathname();
 
@@ -308,21 +302,13 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     [debouncedSearch, productLine, tags, meats, categoryId, sort],
   );
 
-  useEffect(() => {
-    const params = serializeStateToParams(state);
-    const query = params.toString();
-    const url = query ? `${pathname}?${query}` : pathname;
-    if (typeof window !== "undefined") {
-      window.history.replaceState(window.history.state, "", url);
-    }
-  }, [pathname, state]);
+  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
 
   const results = useMemo(
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
-  const [firstPaint, setFirstPaint] = useState(true);
-  useEffect(() => setFirstPaint(false), []);
+  const firstPaint = useFirstPaint();
   const resultsText = `${results.length} of ${items.length}`;
 
   // Key to trigger shared layout scroll behavior
