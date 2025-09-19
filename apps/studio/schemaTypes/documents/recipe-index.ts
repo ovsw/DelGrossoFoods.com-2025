@@ -34,6 +34,7 @@ export const recipeIndex = defineType({
       description:
         "The web address for your recipes listing page (for example, '/recipes'). Do not change this one unless you know what you're doing (you'll break the site).",
       group: GROUP.MAIN_CONTENT,
+      readOnly: true,
       options: {
         source: "title",
         slugify: createSlug,
