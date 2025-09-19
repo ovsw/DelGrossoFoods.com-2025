@@ -28,6 +28,9 @@ import {
   typeMap,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useFirstPaint } from "@/hooks/use-first-paint";
+import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/sauces/filters";
 import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
 import type { SauceListItem, SortOrder } from "@/types";
@@ -208,15 +211,6 @@ type Props = {
   readonly initialState: SauceQueryState;
 };
 
-function useDebouncedValue<T>(value: T, delay = 200): T {
-  const [debounced, setDebounced] = useState<T>(value);
-  useEffect(() => {
-    const id = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(id);
-  }, [value, delay]);
-  return debounced;
-}
-
 export function SaucesClient({ items, initialState }: Props) {
   const pathname = usePathname();
 
@@ -237,14 +231,7 @@ export function SaucesClient({ items, initialState }: Props) {
   );
 
   // Sync URL on state changes without triggering a Next.js navigation
-  useEffect(() => {
-    const params = serializeStateToParams(state);
-    const query = params.toString();
-    const url = query ? `${pathname}?${query}` : pathname;
-    if (typeof window !== "undefined") {
-      window.history.replaceState(window.history.state, "", url);
-    }
-  }, [pathname, state]);
+  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
 
   // Compute filtered and sorted results
   const results = useMemo(
@@ -252,10 +239,7 @@ export function SaucesClient({ items, initialState }: Props) {
     [items, state],
   );
   // Avoid hydration flash: use SSR-computed initial results for first paint
-  const [firstPaint, setFirstPaint] = useState(true);
-  useEffect(() => {
-    setFirstPaint(false);
-  }, []);
+  const firstPaint = useFirstPaint();
 
   // A11y live region and count display: "Showing X of Y"
   const resultsText = `${results.length} of ${items.length}`;
