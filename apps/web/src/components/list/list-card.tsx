@@ -6,14 +6,16 @@ import { stegaClean } from "next-sanity";
 import { SanityImage } from "@/components/elements/sanity-image";
 import type { SanityImageProps as SanityImageData } from "@/types";
 
-// Stable, typed map of aspect ratio → Tailwind class.
+// Stable, typed map of semantic crop → Tailwind aspect class.
+// Use semantic keys so wrappers can select the correct shape without
+// worrying about exact ratios.
 const ASPECT_CLASS = {
-  portrait: "aspect-[33/40]",
-  square: "aspect-square",
-  landscape: "aspect-[3/2]",
+  sauce: "aspect-[33/40]", // tall jars / sauces
+  product: "aspect-[2/1]", // landscape product shots
+  recipe: "aspect-[3/2]", // portrait-forward recipe images
 } as const;
 
-type ImageAspect = keyof typeof ASPECT_CLASS;
+type ImageAspect = keyof typeof ASPECT_CLASS; // 'sauce' | 'product' | 'recipe'
 
 type BadgeSpec = { text: string; variant?: BadgeVariant };
 
@@ -41,7 +43,7 @@ export function ListCard({
   imageAlt,
   subtitle,
   badges = [],
-  imageAspect = "portrait",
+  imageAspect = "sauce",
   imageFit = "contain",
   imageWidth,
   imageHeight,
@@ -64,11 +66,11 @@ export function ListCard({
   const badgesJustifyClass =
     textAlign === "center" ? "justify-center" : "justify-start";
 
-  // Default dimension presets per aspect when explicit values are not provided
+  // Default dimension presets per semantic crop when explicit values are not provided
   const DEFAULT_DIMS: Record<ImageAspect, { w: number; h: number }> = {
-    portrait: { w: 600, h: 800 },
-    square: { w: 700, h: 700 },
-    landscape: { w: 800, h: 533 },
+    sauce: { w: 600, h: 800 },
+    product: { w: 800, h: 533 },
+    recipe: { w: 600, h: 800 },
   } as const;
   const dims = {
     w: imageWidth ?? DEFAULT_DIMS[imageAspect].w,

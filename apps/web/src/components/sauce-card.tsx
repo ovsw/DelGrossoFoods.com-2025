@@ -15,6 +15,7 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       ariaLabel={`View ${name} sauce`}
       image={mainImage}
       imageAlt={`${name} sauce`}
+      imageAspect="sauce"
       badges={[
         { text: lineBadge.text, variant: lineBadge.variant },
         { text: typeBadge.text, variant: typeBadge.variant },

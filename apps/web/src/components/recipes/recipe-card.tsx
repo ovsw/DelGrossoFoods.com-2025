@@ -39,9 +39,9 @@ export function RecipeCard({ item }: { item: RecipeListItem }) {
       imageAlt={name}
       badges={badges}
       textAlign="start"
-      imageAspect="portrait"
-      imageWidth={340}
-      imageHeight={460}
+      imageAspect="recipe"
+      imageWidth={400}
+      imageHeight={300}
       imageFit="cover"
     />
   );

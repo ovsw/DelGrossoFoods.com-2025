@@ -75,7 +75,7 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       ariaLabel={`View ${name}`}
       image={mainImage}
       imageAlt={name}
-      imageAspect="landscape"
+      imageAspect="product"
       imageWidth={800}
       imageHeight={533}
       subtitle={subtitle}
