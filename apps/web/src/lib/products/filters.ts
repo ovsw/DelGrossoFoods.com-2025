@@ -1,5 +1,4 @@
 import type { IFuseOptions } from "fuse.js";
-import Fuse from "fuse.js";
 
 import type { PackagingSlug } from "@/config/product-taxonomy";
 import { toPackagingSlug } from "@/config/product-taxonomy";
@@ -10,16 +9,13 @@ import {
   toTypeSlug,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
+import {
+  filterBySearch as filterBySearchShared,
+  sortByName as sortByNameShared,
+} from "@/lib/list/shared-filters";
 import type { ProductListItem, SortOrder } from "@/types";
 
 import type { ProductQueryState } from "./url";
-
-function normalize(value: unknown): string {
-  return String(value ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-}
 
 const fuseOptions: IFuseOptions<ProductListItem> = {
   keys: ["name", "descriptionPlain"],
@@ -30,24 +26,14 @@ const fuseOptions: IFuseOptions<ProductListItem> = {
   minMatchCharLength: 1,
 };
 
-export function sortByName(
-  items: ProductListItem[],
-  order: SortOrder = "az",
-): ProductListItem[] {
-  const cmp = (a: ProductListItem, b: ProductListItem) =>
-    a.name.localeCompare(b.name, "en-US", { sensitivity: "base" });
-  const sorted = [...items].sort(cmp);
-  return order === "za" ? sorted.reverse() : sorted;
-}
+export const sortByName = (items: ProductListItem[], order: SortOrder = "az") =>
+  sortByNameShared(items, order);
 
 export function filterBySearch(
   items: ProductListItem[],
   search: string,
 ): ProductListItem[] {
-  const query = search?.trim();
-  if (!query) return items;
-  const fuse = new Fuse(items, fuseOptions);
-  return fuse.search(query).map((r) => r.item);
+  return filterBySearchShared(items, search, fuseOptions);
 }
 
 export function filterByPackaging(

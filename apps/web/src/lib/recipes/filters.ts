@@ -1,5 +1,4 @@
 import type { IFuseOptions } from "fuse.js";
-import Fuse from "fuse.js";
 
 import {
   type MeatSlug,
@@ -8,6 +7,10 @@ import {
   toRecipeTagSlug,
 } from "@/config/recipe-taxonomy";
 import { type LineSlug, toLineSlug } from "@/config/sauce-taxonomy";
+import {
+  filterBySearch as filterBySearchShared,
+  sortByName as sortByNameShared,
+} from "@/lib/list/shared-filters";
 import type { RecipeListItem, SortOrder } from "@/types";
 
 import type { RecipeQueryState } from "./url";
@@ -21,24 +24,14 @@ const fuseOptions: IFuseOptions<RecipeListItem> = {
   minMatchCharLength: 1,
 };
 
-export function sortByName(
-  items: RecipeListItem[],
-  order: SortOrder = "az",
-): RecipeListItem[] {
-  const cmp = (a: RecipeListItem, b: RecipeListItem) =>
-    a.name.localeCompare(b.name, "en-US", { sensitivity: "base" });
-  const sorted = [...items].sort(cmp);
-  return order === "za" ? sorted.reverse() : sorted;
-}
+export const sortByName = (items: RecipeListItem[], order: SortOrder = "az") =>
+  sortByNameShared(items, order);
 
 export function filterBySearch(
   items: RecipeListItem[],
   search: string,
 ): RecipeListItem[] {
-  const query = search?.trim();
-  if (!query) return items;
-  const fuse = new Fuse(items, fuseOptions);
-  return fuse.search(query).map((r) => r.item);
+  return filterBySearchShared(items, search, fuseOptions);
 }
 
 function recipeLineSlugs(item: RecipeListItem): LineSlug[] {
