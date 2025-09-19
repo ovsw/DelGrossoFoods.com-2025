@@ -6,12 +6,13 @@ import {
   toMeatSlug,
   toRecipeTagSlug,
 } from "@/config/recipe-taxonomy";
+import { buildHref } from "@/lib/list/href";
 import type { RecipeListItem } from "@/types";
 
 export function RecipeCard({ item }: { item: RecipeListItem }) {
   const { name, slug, mainImage, meat, tags } = item;
 
-  const href = slug?.startsWith("/") ? slug : `/recipes/${slug}`;
+  const href = buildHref("/recipes", slug);
   const meatBadges = (meat ?? []).map((value) => {
     const slugValue = toMeatSlug(value);
     if (slugValue) {
