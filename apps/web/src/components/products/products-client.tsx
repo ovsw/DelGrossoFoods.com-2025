@@ -107,7 +107,10 @@ function FiltersForm({
             ariaLabel: packagingMap[slug].display,
           }))}
           onToggle={(id) => {
-            const slug = id.split("-").pop() as PackagingSlug;
+            const slug = id.replace(
+              `${idPrefix}-packaging-`,
+              "",
+            ) as PackagingSlug;
             togglePackaging(slug);
           }}
         />
@@ -126,7 +129,7 @@ function FiltersForm({
             ariaLabel: lineMap[slug].display,
           }))}
           onToggle={(id) => {
-            const slug = id.split("-").pop() as LineSlug;
+            const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
             toggleLine(slug);
           }}
         />

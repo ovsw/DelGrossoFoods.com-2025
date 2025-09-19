@@ -105,7 +105,7 @@ function FiltersForm({
             ariaLabel: lineMap[slug].display,
           }))}
           onToggle={(id) => {
-            const slug = id.split("-").pop() as LineSlug;
+            const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
             toggleLine(slug);
           }}
         />
@@ -133,7 +133,7 @@ function FiltersForm({
             ariaLabel: tagMap[slug].display,
           }))}
           onToggle={(id) => {
-            const slug = id.split("-").pop() as RecipeTagSlug;
+            const slug = id.replace(`${idPrefix}-tag-`, "") as RecipeTagSlug;
             toggleTag(slug);
           }}
         />
