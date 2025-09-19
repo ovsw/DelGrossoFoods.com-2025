@@ -42,9 +42,17 @@ export function FilterableListLayout({
   scrollDebounceMs = 200,
 }: Props) {
   // Debounced scroll-to-top when the provided key changes
+  const prevKeyRef = React.useRef<unknown>(undefined);
   React.useEffect(() => {
-    if (skipScroll) return;
-    if (scrollToTopKey === undefined) return;
+    // Prime the previous key on first render or when skipping scroll
+    if (prevKeyRef.current === undefined || skipScroll) {
+      prevKeyRef.current = scrollToTopKey;
+      return;
+    }
+    // Only act when the key actually changes
+    if (Object.is(prevKeyRef.current, scrollToTopKey)) return;
+    prevKeyRef.current = scrollToTopKey;
+
     const id = setTimeout(() => {
       const el = document.getElementById(resultsAnchorId);
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
