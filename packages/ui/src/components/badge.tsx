@@ -35,6 +35,9 @@ export const badgeVariants = cva(
         // Generic outline pill for unselected filters
         outline:
           "bg-transparent text-th-dark-900 border-th-dark-900 [a&]:hover:bg-transparent",
+        // Accent pill (used e.g. for mobile active filter chips)
+        accent:
+          "bg-brand-red text-brand-red-text border-transparent [a&]:hover:brightness-95 text-md px-2 py-1 rounded-md min-h-8",
       },
     },
     defaultVariants: {

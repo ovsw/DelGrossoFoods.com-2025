@@ -33,6 +33,7 @@ import type { RecipeCategoryOption, RecipeListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
+  resultsText: string;
   search: string;
   setSearch: (v: string) => void;
   productLine: LineSlug[];
@@ -54,6 +55,7 @@ type FiltersFormProps = {
 
 function FiltersForm({
   idPrefix = "filters",
+  resultsText,
   search,
   setSearch,
   productLine,
@@ -76,6 +78,14 @@ function FiltersForm({
   const legendClass = "px-0 text-lg font-semibold";
   return (
     <div className="space-y-6">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="text-muted-foreground"
+      >
+        {resultsText}
+      </div>
+      <div className="my-4 border-b border-input" />
       <div>
         <label htmlFor={searchId} className="block text-xl font-medium">
           Search
@@ -356,6 +366,11 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       filters={({ idPrefix, applyButton }) => (
         <FiltersForm
           idPrefix={idPrefix}
+          resultsText={
+            firstPaint
+              ? `Showing ${applyFiltersAndSort(items, initialState).length} of ${items.length}`
+              : resultsText
+          }
           search={search}
           setSearch={setSearch}
           productLine={productLine}
@@ -375,11 +390,27 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           applyButton={applyButton}
         />
       )}
-      resultsText={
-        firstPaint
-          ? `Showing ${applyFiltersAndSort(items, initialState).length} of ${items.length}`
-          : resultsText
-      }
+      resultsText={resultsText}
+      activeChips={[
+        ...productLine.map((slug) => ({
+          key: `line-${slug}`,
+          text: lineMap[slug].display,
+          variant: slug,
+          onRemove: () => toggleLine(slug),
+        })),
+        ...tags.map((slug) => ({
+          key: `tag-${slug}`,
+          text: tagMap[slug].display,
+          variant: tagMap[slug].badgeVariant,
+          onRemove: () => toggleTag(slug),
+        })),
+        ...meats.map((slug) => ({
+          key: `meat-${slug}`,
+          text: meatMap[slug].display,
+          variant: "meat" as const,
+          onRemove: () => toggleMeat(slug),
+        })),
+      ]}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       resultsAnchorId={resultsAnchorId}
