@@ -70,7 +70,7 @@ export function ListCard({
   const DEFAULT_DIMS: Record<ImageAspect, { w: number; h: number }> = {
     sauce: { w: 600, h: 800 },
     product: { w: 800, h: 533 },
-    recipe: { w: 600, h: 800 },
+    recipe: { w: 400, h: 300 },
   } as const;
   const dims = {
     w: imageWidth ?? DEFAULT_DIMS[imageAspect].w,
