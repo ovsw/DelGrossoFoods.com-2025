@@ -1,11 +1,13 @@
 "use client";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { Checkbox } from "@workspace/ui/components/checkbox";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { CheckboxList } from "@/components/filterable/checkbox-list";
+import { ClearSection } from "@/components/filterable/clear-section";
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
+import { SearchField } from "@/components/filterable/search-field";
 import { SortDropdown } from "@/components/filterable/sort-dropdown";
 import { RecipeCard } from "@/components/recipes/recipe-card";
 import {
@@ -82,104 +84,60 @@ function FiltersForm({
         {resultsText}
       </div>
       <div className="my-4 border-b border-input" />
-      <div>
-        <label htmlFor={searchId} className="block text-xl font-medium">
-          Search
-        </label>
-        <div className="mt-2 flex items-center gap-2">
-          <input
-            id={searchId}
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-            className="w-full rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Search by name"
-            aria-label="Search recipes"
-          />
-          {search ? (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setSearch("")}
-            >
-              Clear
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <SearchField
+        id={searchId}
+        label="Search"
+        value={search}
+        onChange={setSearch}
+        placeholder="Search by name"
+        ariaLabel="Search recipes"
+      />
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          {allLineSlugs.map((slug) => {
-            const id = `${idPrefix}-line-${slug}`;
-            const cfg = lineMap[slug];
-            const checked = productLine.includes(slug);
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2"
-              >
-                <Checkbox
-                  id={id}
-                  checked={checked}
-                  onCheckedChange={() => toggleLine(slug)}
-                  aria-label={cfg.display}
-                />
-                <span>{cfg.display}</span>
-              </label>
-            );
-          })}
-        </div>
-        {productLine.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearProductLine}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
+        <CheckboxList
+          items={allLineSlugs.map((slug) => ({
+            id: `${idPrefix}-line-${slug}`,
+            label: lineMap[slug].display,
+            checked: productLine.includes(slug),
+            ariaLabel: lineMap[slug].display,
+          }))}
+          onToggle={(id) => {
+            const slug = id.split("-").pop() as LineSlug;
+            toggleLine(slug);
+          }}
+        />
+        <ClearSection
+          show={productLine.length > 0}
+          onClear={clearProductLine}
+        />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Recipe Tags</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          {allRecipeTagSlugs.map((slug) => {
-            const id = `${idPrefix}-tag-${slug}`;
-            const cfg = tagMap[slug];
-            const checked = tags.includes(slug);
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Checkbox
-                  id={id}
-                  checked={checked}
-                  onCheckedChange={() => toggleTag(slug)}
-                  aria-label={cfg.display}
-                />
-                <Badge
-                  text={cfg.display}
-                  variant={cfg.badgeVariant}
-                  className="text-sm"
-                />
-              </label>
-            );
-          })}
-        </div>
-        {tags.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearTags}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
+        <CheckboxList
+          items={allRecipeTagSlugs.map((slug) => ({
+            id: `${idPrefix}-tag-${slug}`,
+            label: (
+              <Badge
+                text={tagMap[slug].display}
+                variant={tagMap[slug].badgeVariant}
+                className="text-sm"
+              />
+            ),
+            checked: tags.includes(slug),
+            ariaLabel: tagMap[slug].display,
+          }))}
+          onToggle={(id) => {
+            const slug = id.split("-").pop() as RecipeTagSlug;
+            toggleTag(slug);
+          }}
+        />
+        <ClearSection show={tags.length > 0} onClear={clearTags} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />

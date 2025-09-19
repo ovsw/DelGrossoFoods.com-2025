@@ -1,15 +1,15 @@
 "use client";
 import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { Checkbox } from "@workspace/ui/components/checkbox";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@workspace/ui/components/radio-group";
+// (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { CheckboxList } from "@/components/filterable/checkbox-list";
+import { ClearSection } from "@/components/filterable/clear-section";
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
+import { RadioList } from "@/components/filterable/radio-list";
+import { SearchField } from "@/components/filterable/search-field";
 import { SortDropdown } from "@/components/filterable/sort-dropdown";
 import { ProductCard } from "@/components/products/product-card";
 import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
@@ -86,162 +86,85 @@ function FiltersForm({
         {resultsText}
       </div>
       <div className="my-4 border-b border-input" />
-      <div>
-        <label htmlFor={searchId} className="block text-xl font-medium">
-          Search
-        </label>
-        <div className="mt-2 flex items-center gap-2">
-          <input
-            id={searchId}
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-            className="w-full rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Search by name or description"
-            aria-label="Search products"
-          />
-          {search ? (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setSearch("")}
-            >
-              Clear
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <SearchField
+        id={searchId}
+        label="Search"
+        value={search}
+        onChange={setSearch}
+        placeholder="Search by name or description"
+        ariaLabel="Search products"
+      />
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Packaging</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          {(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => {
-            const id = `${idPrefix}-packaging-${slug}`;
-            const cfg = packagingMap[slug];
-            const checked = packaging.includes(slug);
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2"
-              >
-                <Checkbox
-                  id={id}
-                  checked={checked}
-                  onCheckedChange={() => togglePackaging(slug)}
-                  aria-label={cfg.display}
-                />
-                <span>{cfg.display}</span>
-              </label>
-            );
-          })}
-        </div>
-        {packaging.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearPackaging}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
+        <CheckboxList
+          items={(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => ({
+            id: `${idPrefix}-packaging-${slug}`,
+            label: packagingMap[slug].display,
+            checked: packaging.includes(slug),
+            ariaLabel: packagingMap[slug].display,
+          }))}
+          onToggle={(id) => {
+            const slug = id.split("-").pop() as PackagingSlug;
+            togglePackaging(slug);
+          }}
+        />
+        <ClearSection show={packaging.length > 0} onClear={clearPackaging} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          {allLineSlugs.map((slug) => {
-            const id = `${idPrefix}-line-${slug}`;
-            const cfg = lineMap[slug];
-            const checked = productLine.includes(slug);
-            return (
-              <label
-                key={slug}
-                htmlFor={id}
-                className="flex items-center gap-2"
-              >
-                <Checkbox
-                  id={id}
-                  checked={checked}
-                  onCheckedChange={() => toggleLine(slug)}
-                  aria-label={cfg.display}
-                />
-                <span>{cfg.display}</span>
-              </label>
-            );
-          })}
-        </div>
-        {productLine.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearProductLine}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
+        <CheckboxList
+          items={allLineSlugs.map((slug) => ({
+            id: `${idPrefix}-line-${slug}`,
+            label: lineMap[slug].display,
+            checked: productLine.includes(slug),
+            ariaLabel: lineMap[slug].display,
+          }))}
+          onToggle={(id) => {
+            const slug = id.split("-").pop() as LineSlug;
+            toggleLine(slug);
+          }}
+        />
+        <ClearSection
+          show={productLine.length > 0}
+          onClear={clearProductLine}
+        />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Sauce Type</legend>
-        <div className="mt-2 grid grid-cols-1 gap-2">
-          <RadioGroup
-            value={sauceType}
-            onValueChange={(v: ProductQueryState["sauceType"]) =>
-              setSauceType(v)
-            }
-          >
-            <label
-              className="flex items-center gap-2"
-              htmlFor={`${idPrefix}-sauce-type-all`}
-            >
-              <RadioGroupItem
-                id={`${idPrefix}-sauce-type-all`}
-                value="all"
-                aria-label="All"
-              />
-              <span>All</span>
-            </label>
-            {(allTypeSlugs as readonly string[]).map((slug) => {
-              const id = `${idPrefix}-type-${slug}`;
-              const cfg = typeMap[slug as keyof typeof typeMap];
-              return (
-                <label
-                  key={slug}
-                  htmlFor={id}
-                  className="flex items-center gap-2"
-                >
-                  <RadioGroupItem
-                    id={id}
-                    value={slug}
-                    aria-label={cfg.display}
-                  />
-                  <span>{cfg.display}</span>
-                </label>
-              );
-            })}
-            <label
-              className="flex items-center gap-2"
-              htmlFor={`${idPrefix}-sauce-type-mix`}
-            >
-              <RadioGroupItem
-                id={`${idPrefix}-sauce-type-mix`}
-                value="mix"
-                aria-label="Mix"
-              />
-              <span>Mix</span>
-            </label>
-          </RadioGroup>
-        </div>
-        {sauceType !== "all" ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearSauceType}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
+        <RadioList
+          value={sauceType}
+          onChange={(v) => setSauceType(v as ProductQueryState["sauceType"])}
+          items={[
+            {
+              id: `${idPrefix}-sauce-type-all`,
+              value: "all",
+              label: "All",
+              ariaLabel: "All",
+            },
+            ...allTypeSlugs.map((slug) => ({
+              id: `${idPrefix}-type-${slug}`,
+              value: slug,
+              label: typeMap[slug as keyof typeof typeMap].display,
+              ariaLabel: typeMap[slug as keyof typeof typeMap].display,
+            })),
+            {
+              id: `${idPrefix}-sauce-type-mix`,
+              value: "mix",
+              label: "Mix",
+              ariaLabel: "Mix",
+            },
+          ]}
+        />
+        <ClearSection show={sauceType !== "all"} onClear={clearSauceType} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
