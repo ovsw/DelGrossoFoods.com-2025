@@ -3,21 +3,14 @@ import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
-import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
+import { SortDropdown } from "@/components/filterable/sort-dropdown";
 import { ProductCard } from "@/components/products/product-card";
 import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
 import {
@@ -394,23 +387,11 @@ export function ProductsClient({ items, initialState }: Props) {
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       sortControl={
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="secondary" className="ms-auto">
-              Sort
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Sort by name</DropdownMenuLabel>
-            <DropdownMenuRadioGroup
-              value={sort}
-              onValueChange={(v) => setSort((v as SortOrder) ?? "az")}
-            >
-              <DropdownMenuRadioItem value="az">A → Z</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="za">Z → A</DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <SortDropdown
+          value={sort}
+          onChange={(v) => setSort(v)}
+          className="ms-auto"
+        />
       }
     >
       {(firstPaint ? applyFiltersAndSort(items, initialState) : results)

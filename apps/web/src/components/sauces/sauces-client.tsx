@@ -4,21 +4,14 @@ import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 // Drawer is now encapsulated in the shared FilterableListLayout
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
-import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
+import { SortDropdown } from "@/components/filterable/sort-dropdown";
 import { SauceCard } from "@/components/sauce-card";
 import {
   allLineSlugs,
@@ -320,23 +313,7 @@ export function SaucesClient({ items, initialState }: Props) {
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       sortControl={
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="secondary" className="ms-auto">
-              Sort
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Sort by name</DropdownMenuLabel>
-            <DropdownMenuRadioGroup
-              value={sort}
-              onValueChange={(v) => setSort((v as SortOrder) ?? "az")}
-            >
-              <DropdownMenuRadioItem value="az">A → Z</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="za">Z → A</DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <SortDropdown value={sort} onChange={setSort} className="ms-auto" />
       }
     >
       {(firstPaint ? applyFiltersAndSort(items, initialState) : results)
