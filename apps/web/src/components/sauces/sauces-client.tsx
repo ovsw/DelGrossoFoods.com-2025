@@ -1,4 +1,5 @@
 "use client";
+import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 // Drawer is now encapsulated in the shared FilterableListLayout
@@ -25,6 +26,7 @@ import {
   lineMap,
   type LineSlug,
   typeMap,
+  type TypeSlug,
 } from "@/config/sauce-taxonomy";
 import { applyFiltersAndSort } from "@/lib/sauces/filters";
 import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
@@ -43,6 +45,13 @@ type FiltersFormProps = {
   clearProductLine: () => void;
   clearSauceType: () => void;
   applyButton?: React.ReactNode;
+};
+
+const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
+  pasta: "pasta",
+  pizza: "pizza",
+  salsa: "salsa",
+  sandwich: "sandwich",
 };
 
 function FiltersForm({
@@ -317,7 +326,8 @@ export function SaucesClient({ items, initialState }: Props) {
               {
                 key: `type-${sauceType}`,
                 text: typeMap[sauceType as keyof typeof typeMap].display,
-                variant: sauceType as any,
+                variant:
+                  sauceTypeToBadgeVariant[sauceType as TypeSlug] ?? "neutral",
                 onRemove: () => setSauceType("all"),
               },
             ]

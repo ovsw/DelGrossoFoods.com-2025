@@ -1,4 +1,5 @@
 "use client";
+import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import {
@@ -25,6 +26,7 @@ import {
   lineMap,
   type LineSlug,
   typeMap,
+  type TypeSlug,
 } from "@/config/sauce-taxonomy";
 import { applyFiltersAndSort } from "@/lib/products/filters";
 import {
@@ -49,6 +51,14 @@ type FiltersFormProps = {
   clearProductLine: () => void;
   clearSauceType: () => void;
   applyButton?: React.ReactNode;
+};
+
+// Strongly-typed map from sauce type slug → Badge variant
+const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
+  pasta: "pasta",
+  pizza: "pizza",
+  salsa: "salsa",
+  sandwich: "sandwich",
 };
 
 function FiltersForm({
@@ -389,7 +399,7 @@ export function ProductsClient({ items, initialState }: Props) {
               {
                 key: `type-${sauceType}`,
                 text: typeMap[sauceType].display,
-                variant: sauceType as any,
+                variant: sauceTypeToBadgeVariant[sauceType] ?? "neutral",
                 onRemove: () => setSauceType("all"),
               },
             ]
