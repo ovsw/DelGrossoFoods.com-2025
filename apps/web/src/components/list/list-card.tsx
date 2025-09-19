@@ -33,6 +33,8 @@ type ListCardProps = {
   imageWidth?: number;
   imageHeight?: number;
   textAlign?: "center" | "start";
+  // Responsive sizes attribute for better bandwidth on mobile
+  sizes?: string;
 };
 
 export function ListCard({
@@ -48,6 +50,7 @@ export function ListCard({
   imageWidth,
   imageHeight,
   textAlign = "center",
+  sizes,
 }: ListCardProps) {
   const cleanTitle = stegaClean(title);
   const altText = stegaClean(imageAlt ?? cleanTitle);
@@ -77,6 +80,11 @@ export function ListCard({
     h: imageHeight ?? DEFAULT_DIMS[imageAspect].h,
   };
 
+  // Sensible default sizes: full width on small screens, half on tablets, one-third on desktop
+  const DEFAULT_SIZES =
+    "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" as const;
+  const sizesAttr = sizes ?? DEFAULT_SIZES;
+
   return (
     <Link
       href={href}
@@ -93,6 +101,7 @@ export function ListCard({
             alt={altText}
             className={imageClassName}
             mode={imageFit}
+            sizes={sizesAttr}
           />
         ) : (
           <div className="h-full w-full bg-muted" />
