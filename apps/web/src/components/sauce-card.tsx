@@ -1,6 +1,7 @@
 "use client";
 import { ListCard } from "@/components/list/list-card";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
+import { buildHref } from "@/lib/list/href";
 import type { SauceListItem } from "@/types";
 
 export function SauceCard({ item }: { item: SauceListItem }) {
@@ -10,7 +11,7 @@ export function SauceCard({ item }: { item: SauceListItem }) {
 
   return (
     <ListCard
-      href={`/sauces/${slug}`}
+      href={buildHref("/sauces", slug)}
       title={name}
       ariaLabel={`View ${name} sauce`}
       image={mainImage}

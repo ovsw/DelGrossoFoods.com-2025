@@ -1,9 +1,14 @@
 "use client";
-import { stegaClean } from "next-sanity";
 
 import { ListCard } from "@/components/list/list-card";
-import { getPackagingText, toPackagingSlug } from "@/config/product-taxonomy";
-import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
+import {
+  getPackagingText,
+  getUniqueLineSlug,
+  getUniqueTypeSlug,
+  toPackagingSlug,
+} from "@/config/product-taxonomy";
+import { lineMap, typeMap } from "@/config/sauce-taxonomy";
+import { buildHref } from "@/lib/list/href";
 import type { ProductListItem } from "@/types";
 
 function formatUSD(value: number | null | undefined): string | null {
@@ -41,29 +46,22 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       | "sandwich";
   }[] = [];
   if (pkgSlug !== "other") {
-    // Derive unique line (single) or skip if mixed/none
-    const uniqueLine = (() => {
-      const set = new Set<string>();
-      for (const v of sauceLines ?? []) set.add(stegaClean(String(v)));
-      return set.size === 1 ? [...set][0] : undefined;
-    })();
-    if (uniqueLine) {
-      const b = getLineBadge(uniqueLine);
-      badges.push({ text: b.text, variant: b.variant });
+    // Unique line badge (skip if mixed/none)
+    const lineSlug = getUniqueLineSlug(sauceLines ?? undefined);
+    if (lineSlug) {
+      badges.push({ text: lineMap[lineSlug].display, variant: lineSlug });
     }
 
-    // Derive type: one => specific badge, >1 => Mix, 0 => none
-    const typeSet = new Set<string>();
-    for (const v of sauceTypes ?? []) typeSet.add(stegaClean(String(v)));
-    if (typeSet.size === 1) {
-      const b = getTypeBadge([...typeSet][0]);
-      badges.push({ text: b.text, variant: b.variant });
-    } else if (typeSet.size > 1) {
+    // Type badge: single => specific, multiple => Mix
+    const typeSlug = getUniqueTypeSlug(sauceTypes ?? undefined);
+    if (typeSlug) {
+      badges.push({ text: typeMap[typeSlug].display, variant: typeSlug });
+    } else if ((sauceTypes?.length ?? 0) > 1) {
       badges.push({ text: "Mix" });
     }
   }
 
-  const href = slug?.startsWith("/") ? slug : `/store/${slug}`;
+  const href = buildHref("/store", slug);
   return (
     <ListCard
       href={href}
