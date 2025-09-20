@@ -1,12 +1,11 @@
 "use client";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { DrawerClose, DrawerFooter } from "@workspace/ui/components/drawer";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
-import { ClearSection } from "@/components/filterable/clear-section";
+import { FilterGroupSection } from "@/components/filterable/filter-group-section";
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
 import { SearchField } from "@/components/filterable/search-field";
 import { SortDropdown } from "@/components/filterable/sort-dropdown";
@@ -32,7 +31,6 @@ import type { RecipeCategoryOption, RecipeListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
-  resultsText: string;
   search: string;
   setSearch: (v: string) => void;
   productLine: LineSlug[];
@@ -43,19 +41,15 @@ type FiltersFormProps = {
   toggleMeat: (m: MeatSlug) => void;
   categoryId: string | "all";
   setCategoryId: (id: string | "all") => void;
-  clearAll: () => void;
   clearProductLine: () => void;
   clearTags: () => void;
   clearMeats: () => void;
   clearCategory: () => void;
   categoryOptions: RecipeCategoryOption[];
-  applyButton?: React.ReactNode;
-  setSheetHeaderRight?: (node: React.ReactNode) => void;
 };
 
 function FiltersForm({
   idPrefix = "filters",
-  resultsText,
   search,
   setSearch,
   productLine,
@@ -66,54 +60,15 @@ function FiltersForm({
   toggleMeat,
   categoryId,
   setCategoryId,
-  clearAll,
   clearProductLine,
   clearTags,
   clearMeats,
   clearCategory,
   categoryOptions,
-  applyButton,
-  setSheetHeaderRight,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-recipe-search`;
-  const legendClass = "sr-only";
-  const anyFiltersActive =
-    Boolean(search) ||
-    productLine.length > 0 ||
-    tags.length > 0 ||
-    meats.length > 0 ||
-    categoryId !== "all";
-  useEffect(() => {
-    if (idPrefix === "sheet" && setSheetHeaderRight) {
-      setSheetHeaderRight(
-        <ClearSection
-          label="Clear all"
-          show={anyFiltersActive}
-          onClear={clearAll}
-        />,
-      );
-    }
-  }, [idPrefix, setSheetHeaderRight, anyFiltersActive, clearAll]);
   return (
-    <div className="space-y-6">
-      {idPrefix === "desktop" ? (
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Filters</h2>
-          <ClearSection
-            label="Clear all"
-            show={anyFiltersActive}
-            onClear={clearAll}
-          />
-        </div>
-      ) : null}
-      <div
-        aria-live="polite"
-        aria-atomic="true"
-        className="text-xs text-muted-foreground"
-      >
-        {resultsText}
-      </div>
-      <div className="my-4 border-b border-input" />
+    <div>
       <SearchField
         id={searchId}
         label="Search"
@@ -126,15 +81,12 @@ function FiltersForm({
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Product Line</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Product Line</span>
-          <ClearSection
-            show={productLine.length > 0}
-            onClear={clearProductLine}
-          />
-        </div>
+      <FilterGroupSection
+        title="Product Line"
+        showClear={productLine.length > 0}
+        onClear={clearProductLine}
+        contentClassName=""
+      >
         <CheckboxList
           items={allLineSlugs
             .filter((slug) => slug !== "organic")
@@ -149,16 +101,16 @@ function FiltersForm({
             toggleLine(slug);
           }}
         />
-      </fieldset>
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Recipe Tags</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Recipe Tags</span>
-          <ClearSection show={tags.length > 0} onClear={clearTags} />
-        </div>
+      <FilterGroupSection
+        title="Recipe Tags"
+        showClear={tags.length > 0}
+        onClear={clearTags}
+        contentClassName=""
+      >
         <CheckboxList
           items={allRecipeTagSlugs.map((slug) => ({
             id: `${idPrefix}-tag-${slug}`,
@@ -177,19 +129,18 @@ function FiltersForm({
             toggleTag(slug);
           }}
         />
-      </fieldset>
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Meat</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Meat</span>
-          <ClearSection show={meats.length > 0} onClear={clearMeats} />
-        </div>
+      <FilterGroupSection
+        title="Meat"
+        showClear={meats.length > 0}
+        onClear={clearMeats}
+        contentClassName=""
+      >
         <div className="mt-2 flex flex-wrap gap-1">
           {allMeatSlugs.map((slug) => {
-            const id = `${idPrefix}-meat-${slug}`;
             const cfg = meatMap[slug];
             const checked = meats.includes(slug);
             return (
@@ -210,16 +161,16 @@ function FiltersForm({
             );
           })}
         </div>
-      </fieldset>
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Category</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Category</span>
-          <ClearSection show={categoryId !== "all"} onClear={clearCategory} />
-        </div>
+      <FilterGroupSection
+        title="Category"
+        showClear={categoryId !== "all"}
+        onClear={clearCategory}
+        contentClassName=""
+      >
         <div className="mt-2">
           <div className="relative">
             <select
@@ -241,26 +192,7 @@ function FiltersForm({
             </span>
           </div>
         </div>
-      </fieldset>
-
-      {idPrefix === "sheet" ? (
-        <DrawerFooter className="flex-row items-center justify-between gap-2">
-          <Button
-            type="button"
-            variant="link"
-            size="sm"
-            className="px-0 h-auto cursor-pointer underline font-medium"
-            onClick={clearAll}
-          >
-            Clear all
-          </Button>
-          <DrawerClose asChild>
-            <Button type="button">Apply</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      ) : applyButton ? (
-        <div className="mt-2">{applyButton}</div>
-      ) : null}
+      </FilterGroupSection>
     </div>
   );
 }
@@ -304,8 +236,20 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
+  const initialResults = useMemo(
+    () => applyFiltersAndSort(items, initialState),
+    [items, initialState],
+  );
   const firstPaint = useFirstPaint();
-  const resultsText = `Showing ${results.length} out of ${items.length}`;
+  const effectiveResults = firstPaint ? initialResults : results;
+  const totalCount = items.length;
+  const resultsCount = effectiveResults.length;
+  const filtersActive =
+    Boolean(search) ||
+    productLine.length > 0 ||
+    tags.length > 0 ||
+    meats.length > 0 ||
+    categoryId !== "all";
 
   // Key to trigger shared layout scroll behavior
   const resultsAnchorId = "recipes-results-top";
@@ -345,14 +289,9 @@ export function RecipesClient({ items, initialState, categories }: Props) {
 
   return (
     <FilterableListLayout
-      filters={({ idPrefix, applyButton, setSheetHeaderRight }) => (
+      renderFilters={({ idPrefix }) => (
         <FiltersForm
           idPrefix={idPrefix}
-          resultsText={
-            firstPaint
-              ? `Showing ${applyFiltersAndSort(items, initialState).length} out of ${items.length}`
-              : resultsText
-          }
           search={search}
           setSearch={setSearch}
           productLine={productLine}
@@ -363,17 +302,17 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           toggleMeat={toggleMeat}
           categoryId={categoryId}
           setCategoryId={setCategoryId}
-          clearAll={clearAll}
           clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}
           clearCategory={clearCategory}
           categoryOptions={categories}
-          applyButton={applyButton}
-          setSheetHeaderRight={setSheetHeaderRight}
         />
       )}
-      resultsText={resultsText}
+      resultsCount={resultsCount}
+      resultsTotal={totalCount}
+      isAnyActive={filtersActive}
+      onClearAll={clearAll}
       activeChips={[
         ...productLine.map((slug) => ({
           key: `line-${slug}`,
@@ -405,8 +344,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         />
       }
     >
-      {(firstPaint ? applyFiltersAndSort(items, initialState) : results)
-        .length === 0 ? (
+      {resultsCount === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
             No recipes match your filters.
@@ -417,10 +355,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-6">
-          {(firstPaint
-            ? applyFiltersAndSort(items, initialState)
-            : results
-          ).map((item) => (
+          {effectiveResults.map((item) => (
             <RecipeCard key={item._id} item={item} />
           ))}
         </div>

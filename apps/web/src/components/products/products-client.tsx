@@ -1,13 +1,12 @@
 "use client";
 import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { DrawerClose, DrawerFooter } from "@workspace/ui/components/drawer";
 // (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
-import { ClearSection } from "@/components/filterable/clear-section";
+import { FilterGroupSection } from "@/components/filterable/filter-group-section";
 import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
 import { RadioList } from "@/components/filterable/radio-list";
 import { SearchField } from "@/components/filterable/search-field";
@@ -34,7 +33,6 @@ import type { ProductListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
-  resultsText: string;
   search: string;
   setSearch: (v: string) => void;
   packaging: PackagingSlug[];
@@ -43,12 +41,9 @@ type FiltersFormProps = {
   toggleLine: (line: LineSlug) => void;
   sauceType: ProductQueryState["sauceType"];
   setSauceType: (v: ProductQueryState["sauceType"]) => void;
-  clearAll: () => void;
   clearPackaging: () => void;
   clearProductLine: () => void;
   clearSauceType: () => void;
-  applyButton?: React.ReactNode;
-  setSheetHeaderRight?: (node: React.ReactNode) => void;
 };
 
 // Strongly-typed map from sauce type slug → Badge variant
@@ -61,7 +56,6 @@ const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
 
 function FiltersForm({
   idPrefix = "filters",
-  resultsText,
   search,
   setSearch,
   packaging,
@@ -70,51 +64,13 @@ function FiltersForm({
   toggleLine,
   sauceType,
   setSauceType,
-  clearAll,
   clearPackaging,
   clearProductLine,
   clearSauceType,
-  applyButton,
-  setSheetHeaderRight,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-product-search`;
-  const legendClass = "sr-only";
-  const anyFiltersActive =
-    Boolean(search) ||
-    packaging.length > 0 ||
-    productLine.length > 0 ||
-    sauceType !== "all";
-  useEffect(() => {
-    if (idPrefix === "sheet" && setSheetHeaderRight) {
-      setSheetHeaderRight(
-        <ClearSection
-          label="Clear all"
-          show={anyFiltersActive}
-          onClear={clearAll}
-        />,
-      );
-    }
-  }, [idPrefix, setSheetHeaderRight, anyFiltersActive, clearAll]);
   return (
-    <div className="space-y-6">
-      {idPrefix === "desktop" ? (
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Filters</h2>
-          <ClearSection
-            label="Clear all"
-            show={anyFiltersActive}
-            onClear={clearAll}
-          />
-        </div>
-      ) : null}
-      <div
-        aria-live="polite"
-        aria-atomic="true"
-        className="text-xs text-muted-foreground"
-      >
-        {resultsText}
-      </div>
-      <div className="my-4 border-b border-input" />
+    <div>
       <SearchField
         id={searchId}
         label="Search"
@@ -127,12 +83,12 @@ function FiltersForm({
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Packaging</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Packaging</span>
-          <ClearSection show={packaging.length > 0} onClear={clearPackaging} />
-        </div>
+      <FilterGroupSection
+        title="Packaging"
+        showClear={packaging.length > 0}
+        onClear={clearPackaging}
+        contentClassName=""
+      >
         <CheckboxList
           items={(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => ({
             id: `${idPrefix}-packaging-${slug}`,
@@ -148,19 +104,16 @@ function FiltersForm({
             togglePackaging(slug);
           }}
         />
-      </fieldset>
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Product Line</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Product Line</span>
-          <ClearSection
-            show={productLine.length > 0}
-            onClear={clearProductLine}
-          />
-        </div>
+      <FilterGroupSection
+        title="Product Line"
+        showClear={productLine.length > 0}
+        onClear={clearProductLine}
+        contentClassName=""
+      >
         <CheckboxList
           items={allLineSlugs.map((slug) => ({
             id: `${idPrefix}-line-${slug}`,
@@ -173,16 +126,16 @@ function FiltersForm({
             toggleLine(slug);
           }}
         />
-      </fieldset>
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
-      <fieldset className="m-0 border-0 p-0 my-4">
-        <legend className={legendClass}>Sauce Type</legend>
-        <div className="flex items-center justify-between gap-2">
-          <span className="px-0 text-lg font-semibold">Sauce Type</span>
-          <ClearSection show={sauceType !== "all"} onClear={clearSauceType} />
-        </div>
+      <FilterGroupSection
+        title="Sauce Type"
+        showClear={sauceType !== "all"}
+        onClear={clearSauceType}
+        contentClassName=""
+      >
         <RadioList
           value={sauceType}
           onChange={(v) => setSauceType(v as ProductQueryState["sauceType"])}
@@ -207,27 +160,7 @@ function FiltersForm({
             },
           ]}
         />
-      </fieldset>
-
-      <div className="my-4 border-b border-input" />
-      {idPrefix === "sheet" ? (
-        <DrawerFooter className="flex-row items-center justify-between gap-2">
-          <Button
-            type="button"
-            variant="link"
-            size="sm"
-            className="px-0 h-auto cursor-pointer underline font-medium"
-            onClick={clearAll}
-          >
-            Clear all
-          </Button>
-          <DrawerClose asChild>
-            <Button type="button">Apply</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      ) : applyButton ? (
-        <div className="mt-2">{applyButton}</div>
-      ) : null}
+      </FilterGroupSection>
     </div>
   );
 }
@@ -271,10 +204,21 @@ export function ProductsClient({ items, initialState }: Props) {
     () => applyFiltersAndSort(items, state),
     [items, state],
   );
+  const initialResults = useMemo(
+    () => applyFiltersAndSort(items, initialState),
+    [items, initialState],
+  );
 
   const firstPaint = useFirstPaint();
+  const effectiveResults = firstPaint ? initialResults : results;
 
-  const resultsText = `Showing ${results.length} out of ${items.length}`;
+  const totalCount = items.length;
+  const resultsCount = effectiveResults.length;
+  const filtersActive =
+    Boolean(search) ||
+    packaging.length > 0 ||
+    productLine.length > 0 ||
+    sauceType !== "all";
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
     packaging,
@@ -312,14 +256,9 @@ export function ProductsClient({ items, initialState }: Props) {
 
   return (
     <FilterableListLayout
-      filters={({ idPrefix, applyButton, setSheetHeaderRight }) => (
+      renderFilters={({ idPrefix }) => (
         <FiltersForm
           idPrefix={idPrefix}
-          resultsText={
-            firstPaint
-              ? `Showing ${applyFiltersAndSort(items, initialState).length} out of ${items.length}`
-              : resultsText
-          }
           search={search}
           setSearch={setSearch}
           packaging={packaging}
@@ -328,15 +267,15 @@ export function ProductsClient({ items, initialState }: Props) {
           toggleLine={toggleLine}
           sauceType={sauceType}
           setSauceType={setSauceType}
-          clearAll={clearAll}
           clearPackaging={clearPackaging}
           clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
-          applyButton={applyButton}
-          setSheetHeaderRight={setSheetHeaderRight}
         />
       )}
-      resultsText={resultsText}
+      resultsCount={resultsCount}
+      resultsTotal={totalCount}
+      isAnyActive={filtersActive}
+      onClearAll={clearAll}
       activeChips={[
         ...packaging.map((slug) => ({
           key: `pkg-${slug}`,
@@ -371,8 +310,7 @@ export function ProductsClient({ items, initialState }: Props) {
         />
       }
     >
-      {(firstPaint ? applyFiltersAndSort(items, initialState) : results)
-        .length === 0 ? (
+      {resultsCount === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
             No products match your filters.
@@ -383,10 +321,7 @@ export function ProductsClient({ items, initialState }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12">
-          {(firstPaint
-            ? applyFiltersAndSort(items, initialState)
-            : results
-          ).map((item) => (
+          {effectiveResults.map((item) => (
             <ProductCard key={item._id} item={item} />
           ))}
         </div>
