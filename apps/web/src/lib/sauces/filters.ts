@@ -1,5 +1,4 @@
 import type { IFuseOptions } from "fuse.js";
-import Fuse from "fuse.js";
 
 import {
   fromLineSlug,
@@ -9,25 +8,13 @@ import {
   toTypeSlug,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
+import {
+  filterBySearch as filterBySearchShared,
+  sortByName as sortByNameShared,
+} from "@/lib/list/shared-filters";
 import type { SauceListItem, SortOrder } from "@/types";
 
 import type { SauceQueryState } from "./url";
-
-function normalize(value: unknown): string {
-  return String(value ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-}
-
-function isSubsequence(needle: string, haystack: string): boolean {
-  if (!needle) return true;
-  let i = 0;
-  for (let j = 0; j < haystack.length && i < needle.length; j++) {
-    if (needle[i] === haystack[j]) i++;
-  }
-  return i === needle.length;
-}
 
 const fuseOptions: IFuseOptions<SauceListItem> = {
   keys: ["name", "descriptionPlain"],
@@ -38,24 +25,14 @@ const fuseOptions: IFuseOptions<SauceListItem> = {
   minMatchCharLength: 1,
 };
 
-export function sortByName(
-  items: SauceListItem[],
-  order: SortOrder = "az",
-): SauceListItem[] {
-  const cmp = (a: SauceListItem, b: SauceListItem) =>
-    a.name.localeCompare(b.name, "en-US", { sensitivity: "base" });
-  const sorted = [...items].sort(cmp);
-  return order === "za" ? sorted.reverse() : sorted;
-}
+export const sortByName = (items: SauceListItem[], order: SortOrder = "az") =>
+  sortByNameShared(items, order);
 
 export function filterBySearch(
   items: SauceListItem[],
   search: string,
 ): SauceListItem[] {
-  const query = search?.trim();
-  if (!query) return items;
-  const fuse = new Fuse(items, fuseOptions);
-  return fuse.search(query).map((r) => r.item);
+  return filterBySearchShared(items, search, fuseOptions);
 }
 
 export function filterByProductLine(

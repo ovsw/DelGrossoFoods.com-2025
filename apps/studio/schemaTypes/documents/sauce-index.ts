@@ -34,6 +34,7 @@ export const sauceIndex = defineType({
       description:
         "The web address for your sauces listing page (for example, '/sauces'). Do not change this one unless you know what you're doing (you'll break the site).",
       group: GROUP.MAIN_CONTENT,
+      readOnly: true,
       options: {
         source: "title",
         slugify: createSlug,
