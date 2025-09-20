@@ -73,7 +73,7 @@ function FiltersForm({
   applyButton,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-recipe-search`;
-  const legendClass = "px-0 text-lg font-semibold";
+  const legendClass = "sr-only";
   return (
     <div className="space-y-6">
       <div
@@ -97,6 +97,13 @@ function FiltersForm({
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Product Line</span>
+          <ClearSection
+            show={productLine.length > 0}
+            onClear={clearProductLine}
+          />
+        </div>
         <CheckboxList
           items={allLineSlugs.map((slug) => ({
             id: `${idPrefix}-line-${slug}`,
@@ -109,16 +116,16 @@ function FiltersForm({
             toggleLine(slug);
           }}
         />
-        <ClearSection
-          show={productLine.length > 0}
-          onClear={clearProductLine}
-        />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Recipe Tags</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Recipe Tags</span>
+          <ClearSection show={tags.length > 0} onClear={clearTags} />
+        </div>
         <CheckboxList
           items={allRecipeTagSlugs.map((slug) => ({
             id: `${idPrefix}-tag-${slug}`,
@@ -137,13 +144,16 @@ function FiltersForm({
             toggleTag(slug);
           }}
         />
-        <ClearSection show={tags.length > 0} onClear={clearTags} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Meat</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Meat</span>
+          <ClearSection show={meats.length > 0} onClear={clearMeats} />
+        </div>
         <div className="mt-2 flex flex-wrap gap-1">
           {allMeatSlugs.map((slug) => {
             const id = `${idPrefix}-meat-${slug}`;
@@ -167,19 +177,16 @@ function FiltersForm({
             );
           })}
         </div>
-        {meats.length > 0 ? (
-          <div className="mt-2">
-            <Button type="button" variant="ghost" onClick={clearMeats}>
-              Clear
-            </Button>
-          </div>
-        ) : null}
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Category</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Category</span>
+          <ClearSection show={categoryId !== "all"} onClear={clearCategory} />
+        </div>
         <div className="mt-2">
           <div className="relative">
             <select
@@ -200,18 +207,16 @@ function FiltersForm({
               ▾
             </span>
           </div>
-          {categoryId !== "all" ? (
-            <div className="mt-2">
-              <Button type="button" variant="ghost" onClick={clearCategory}>
-                Clear
-              </Button>
-            </div>
-          ) : null}
         </div>
       </fieldset>
 
       <div className="flex items-center justify-between gap-2">
-        <Button type="button" variant="secondary" onClick={clearAll}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={clearAll}
+          className="cursor-pointer"
+        >
           Clear all
         </Button>
         {applyButton}
@@ -365,7 +370,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           <p className="text-muted-foreground mb-4">
             No recipes match your filters.
           </p>
-          <Button type="button" onClick={clearAll}>
+          <Button type="button" onClick={clearAll} className="cursor-pointer">
             Clear all
           </Button>
         </div>

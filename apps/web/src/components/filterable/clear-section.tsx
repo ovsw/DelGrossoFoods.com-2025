@@ -10,10 +10,14 @@ type Props = {
 export function ClearSection({ onClear, show, label = "Clear" }: Props) {
   if (!show) return null;
   return (
-    <div className="mt-2">
-      <Button type="button" variant="ghost" onClick={onClear}>
-        {label}
-      </Button>
-    </div>
+    <Button
+      type="button"
+      variant="link"
+      size="sm"
+      className="px-0 h-auto cursor-pointer underline font-medium"
+      onClick={onClear}
+    >
+      {label}
+    </Button>
   );
 }
