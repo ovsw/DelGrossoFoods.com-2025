@@ -1,9 +1,10 @@
 "use client";
 import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import { DrawerClose, DrawerFooter } from "@workspace/ui/components/drawer";
 // (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
 import { ClearSection } from "@/components/filterable/clear-section";
@@ -40,6 +41,7 @@ type FiltersFormProps = {
   clearProductLine: () => void;
   clearSauceType: () => void;
   applyButton?: React.ReactNode;
+  setSheetHeaderRight?: (node: React.ReactNode) => void;
 };
 
 const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
@@ -62,16 +64,40 @@ function FiltersForm({
   applyButton,
   clearProductLine,
   clearSauceType,
+  setSheetHeaderRight,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-sauce-search`;
   // Unified styling for desktop and mobile: remove card borders and use simple section dividers
   const legendClass = "sr-only";
+  const anyFiltersActive =
+    Boolean(search) || productLine.length > 0 || sauceType !== "all";
+  useEffect(() => {
+    if (idPrefix === "sheet" && setSheetHeaderRight) {
+      setSheetHeaderRight(
+        <ClearSection
+          label="Clear all"
+          show={anyFiltersActive}
+          onClear={clearAll}
+        />,
+      );
+    }
+  }, [idPrefix, setSheetHeaderRight, anyFiltersActive, clearAll]);
   return (
     <div className="space-y-6">
+      {idPrefix === "desktop" ? (
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold">Filters</h2>
+          <ClearSection
+            label="Clear all"
+            show={anyFiltersActive}
+            onClear={clearAll}
+          />
+        </div>
+      ) : null}
       <div
         aria-live="polite"
         aria-atomic="true"
-        className="text-muted-foreground"
+        className="text-xs text-muted-foreground"
       >
         {resultsText}
       </div>
@@ -83,6 +109,7 @@ function FiltersForm({
         onChange={setSearch}
         placeholder="Search by name or description"
         ariaLabel="Search sauces"
+        visuallyHideLabel
       />
 
       <div className="my-4 border-b border-input" />
@@ -139,18 +166,24 @@ function FiltersForm({
       </fieldset>
 
       <div className="my-4 border-b border-input" />
-
-      <div className="flex items-center justify-between gap-2">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={clearAll}
-          className="cursor-pointer"
-        >
-          Clear all
-        </Button>
-        {applyButton}
-      </div>
+      {idPrefix === "sheet" ? (
+        <DrawerFooter className="flex-row items-center justify-between gap-2">
+          <Button
+            type="button"
+            variant="link"
+            size="sm"
+            className="px-0 h-auto cursor-pointer underline font-medium"
+            onClick={clearAll}
+          >
+            Clear all
+          </Button>
+          <DrawerClose asChild>
+            <Button type="button">Apply</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      ) : applyButton ? (
+        <div className="mt-2">{applyButton}</div>
+      ) : null}
     </div>
   );
 }
@@ -190,8 +223,8 @@ export function SaucesClient({ items, initialState }: Props) {
   // Avoid hydration flash: use SSR-computed initial results for first paint
   const firstPaint = useFirstPaint();
 
-  // A11y live region and count display: "Showing X of Y"
-  const resultsText = `${results.length} of ${items.length}`;
+  // A11y live region and count display
+  const resultsText = `Showing ${results.length} out of ${items.length}`;
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
     productLine,
@@ -222,7 +255,7 @@ export function SaucesClient({ items, initialState }: Props) {
 
   return (
     <FilterableListLayout
-      filters={({ idPrefix, applyButton }) => (
+      filters={({ idPrefix, applyButton, setSheetHeaderRight }) => (
         <FiltersForm
           idPrefix={idPrefix}
           resultsText={
@@ -231,7 +264,7 @@ export function SaucesClient({ items, initialState }: Props) {
                   initialState
                     ? applyFiltersAndSort(items, initialState).length
                     : results.length
-                } of ${items.length}`
+                } out of ${items.length}`
               : resultsText
           }
           search={search}
@@ -244,6 +277,7 @@ export function SaucesClient({ items, initialState }: Props) {
           clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
           applyButton={applyButton}
+          setSheetHeaderRight={setSheetHeaderRight}
         />
       )}
       resultsText={resultsText}
