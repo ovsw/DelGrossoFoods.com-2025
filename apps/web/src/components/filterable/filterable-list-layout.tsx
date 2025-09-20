@@ -16,6 +16,7 @@ import React from "react";
 type FiltersRenderer = (args: {
   idPrefix: string;
   applyButton?: React.ReactNode;
+  setSheetHeaderRight?: (node: React.ReactNode) => void;
 }) => React.ReactNode;
 
 type Props = {
@@ -50,6 +51,8 @@ export function FilterableListLayout({
   scrollDebounceMs = 200,
   activeChips = [],
 }: Props) {
+  const [sheetHeaderRight, setSheetHeaderRight] =
+    React.useState<React.ReactNode | null>(null);
   // Debounced scroll-to-top when the provided key changes
   const prevKeyRef = React.useRef<unknown>(undefined);
   React.useEffect(() => {
@@ -91,12 +94,16 @@ export function FilterableListLayout({
                 </Button>
               </DrawerTrigger>
               <DrawerContent>
-                <DrawerHeader>
-                  <DrawerTitle>Filters</DrawerTitle>
+                <DrawerHeader className="pe-12">
+                  <div className="flex items-center justify-between">
+                    <DrawerTitle>Filters</DrawerTitle>
+                    {sheetHeaderRight}
+                  </div>
                 </DrawerHeader>
                 <div className="mt-2 overflow-y-auto px-4 pb-24">
                   {filters({
                     idPrefix: "sheet",
+                    setSheetHeaderRight,
                     applyButton: (
                       <DrawerFooter>
                         <DrawerClose asChild>
