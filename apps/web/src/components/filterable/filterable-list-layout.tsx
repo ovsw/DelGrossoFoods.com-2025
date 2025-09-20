@@ -78,26 +78,32 @@ export function FilterableListLayout({
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
       {/* Sidebar (desktop) */}
       <aside className="hidden lg:block">
-        <div className="sticky top-32 space-y-6">
-          <div>
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Filters</h2>
-              <ClearSection
-                label="Clear all"
-                show={isAnyActive}
-                onClear={onClearAll}
-              />
+        <div className="sticky top-32">
+          <div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-hidden pe-2">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">Filters</h2>
+                <ClearSection
+                  label="Clear all"
+                  show={isAnyActive}
+                  onClear={onClearAll}
+                />
+              </div>
+              <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="text-sm text-muted-foreground"
+              >
+                {resultsSummary}
+              </div>
+              <div className="border-b border-input" />
             </div>
-            <div
-              aria-live="polite"
-              aria-atomic="true"
-              className="mt-2 text-sm text-muted-foreground"
-            >
-              {resultsSummary}
+            <div className="min-h-0 flex-1 overflow-y-auto pt-4 filter-scroll-area">
+              <div className="pe-2 pb-8">
+                {renderFilters({ idPrefix: "desktop" })}
+              </div>
             </div>
           </div>
-          <div className="my-4 border-b border-input" />
-          {renderFilters({ idPrefix: "desktop" })}
         </div>
       </aside>
 
