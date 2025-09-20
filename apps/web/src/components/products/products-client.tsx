@@ -75,7 +75,7 @@ function FiltersForm({
   applyButton,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-product-search`;
-  const legendClass = "px-0 text-lg font-semibold";
+  const legendClass = "sr-only";
   return (
     <div className="space-y-6">
       <div
@@ -99,6 +99,10 @@ function FiltersForm({
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Packaging</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Packaging</span>
+          <ClearSection show={packaging.length > 0} onClear={clearPackaging} />
+        </div>
         <CheckboxList
           items={(Object.keys(packagingMap) as PackagingSlug[]).map((slug) => ({
             id: `${idPrefix}-packaging-${slug}`,
@@ -114,13 +118,19 @@ function FiltersForm({
             togglePackaging(slug);
           }}
         />
-        <ClearSection show={packaging.length > 0} onClear={clearPackaging} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Product Line</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Product Line</span>
+          <ClearSection
+            show={productLine.length > 0}
+            onClear={clearProductLine}
+          />
+        </div>
         <CheckboxList
           items={allLineSlugs.map((slug) => ({
             id: `${idPrefix}-line-${slug}`,
@@ -133,16 +143,16 @@ function FiltersForm({
             toggleLine(slug);
           }}
         />
-        <ClearSection
-          show={productLine.length > 0}
-          onClear={clearProductLine}
-        />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <fieldset className="m-0 border-0 p-0 my-4">
         <legend className={legendClass}>Sauce Type</legend>
+        <div className="flex items-center justify-between gap-2">
+          <span className="px-0 text-lg font-semibold">Sauce Type</span>
+          <ClearSection show={sauceType !== "all"} onClear={clearSauceType} />
+        </div>
         <RadioList
           value={sauceType}
           onChange={(v) => setSauceType(v as ProductQueryState["sauceType"])}
@@ -167,13 +177,17 @@ function FiltersForm({
             },
           ]}
         />
-        <ClearSection show={sauceType !== "all"} onClear={clearSauceType} />
       </fieldset>
 
       <div className="my-4 border-b border-input" />
 
       <div className="flex items-center justify-between gap-2">
-        <Button type="button" variant="secondary" onClick={clearAll}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={clearAll}
+          className="cursor-pointer"
+        >
           Clear all
         </Button>
         {applyButton}
@@ -326,7 +340,7 @@ export function ProductsClient({ items, initialState }: Props) {
           <p className="text-muted-foreground mb-4">
             No products match your filters.
           </p>
-          <Button type="button" onClick={clearAll}>
+          <Button type="button" onClick={clearAll} className="cursor-pointer">
             Clear all
           </Button>
         </div>

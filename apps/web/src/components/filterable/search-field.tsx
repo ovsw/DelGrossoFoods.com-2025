@@ -42,6 +42,7 @@ export function SearchField({
           <Button
             type="button"
             variant={clearButtonVariant}
+            className="cursor-pointer"
             onClick={() => onChange("")}
           >
             Clear
