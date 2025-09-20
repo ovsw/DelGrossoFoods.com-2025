@@ -5,7 +5,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -13,15 +12,16 @@ import {
 import { Filter } from "lucide-react";
 import React from "react";
 
-type FiltersRenderer = (args: {
-  idPrefix: string;
-  applyButton?: React.ReactNode;
-  setSheetHeaderRight?: (node: React.ReactNode) => void;
-}) => React.ReactNode;
+import { ClearSection } from "@/components/filterable/clear-section";
+
+type FiltersRenderer = (args: { idPrefix: string }) => React.ReactNode;
 
 type Props = {
-  filters: FiltersRenderer;
-  resultsText: string;
+  renderFilters: FiltersRenderer;
+  resultsCount: number;
+  resultsTotal: number;
+  isAnyActive: boolean;
+  onClearAll: () => void;
   sortControl: React.ReactNode;
   children: React.ReactNode;
   resultsAnchorId?: string;
@@ -41,8 +41,11 @@ type Props = {
 };
 
 export function FilterableListLayout({
-  filters,
-  resultsText,
+  renderFilters,
+  resultsCount,
+  resultsTotal,
+  isAnyActive,
+  onClearAll,
   sortControl,
   children,
   resultsAnchorId = "results-top",
@@ -51,8 +54,6 @@ export function FilterableListLayout({
   scrollDebounceMs = 200,
   activeChips = [],
 }: Props) {
-  const [sheetHeaderRight, setSheetHeaderRight] =
-    React.useState<React.ReactNode | null>(null);
   // Debounced scroll-to-top when the provided key changes
   const prevKeyRef = React.useRef<unknown>(undefined);
   React.useEffect(() => {
@@ -71,12 +72,32 @@ export function FilterableListLayout({
     }, scrollDebounceMs);
     return () => clearTimeout(id);
   }, [scrollToTopKey, skipScroll, resultsAnchorId, scrollDebounceMs]);
+
+  const resultsSummary = `Showing ${resultsCount} out of ${resultsTotal}`;
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
       {/* Sidebar (desktop) */}
       <aside className="hidden lg:block">
         <div className="sticky top-32 space-y-6">
-          {filters({ idPrefix: "desktop" })}
+          <div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">Filters</h2>
+              <ClearSection
+                label="Clear all"
+                show={isAnyActive}
+                onClear={onClearAll}
+              />
+            </div>
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              className="mt-2 text-sm text-muted-foreground"
+            >
+              {resultsSummary}
+            </div>
+          </div>
+          <div className="my-4 border-b border-input" />
+          {renderFilters({ idPrefix: "desktop" })}
         </div>
       </aside>
 
@@ -97,21 +118,32 @@ export function FilterableListLayout({
                 <DrawerHeader className="pe-12">
                   <div className="flex items-center justify-between">
                     <DrawerTitle>Filters</DrawerTitle>
-                    {sheetHeaderRight}
+                    <ClearSection
+                      label="Clear all"
+                      show={isAnyActive}
+                      onClear={onClearAll}
+                    />
+                  </div>
+                  <div
+                    aria-live="polite"
+                    aria-atomic="true"
+                    className="mt-2 text-xs text-muted-foreground"
+                  >
+                    {resultsSummary}
                   </div>
                 </DrawerHeader>
-                <div className="mt-2 overflow-y-auto px-4 pb-24">
-                  {filters({
-                    idPrefix: "sheet",
-                    setSheetHeaderRight,
-                    applyButton: (
-                      <DrawerFooter>
-                        <DrawerClose asChild>
-                          <Button type="button">Apply</Button>
-                        </DrawerClose>
-                      </DrawerFooter>
-                    ),
-                  })}
+                <div className="mt-2 overflow-y-auto px-4 pb-10">
+                  {renderFilters({ idPrefix: "sheet" })}
+                  <div className="mt-6 flex items-center justify-between gap-2 pb-6">
+                    <ClearSection
+                      label="Clear all"
+                      show={isAnyActive}
+                      onClear={onClearAll}
+                    />
+                    <DrawerClose asChild>
+                      <Button type="button">Apply</Button>
+                    </DrawerClose>
+                  </div>
                 </div>
               </DrawerContent>
             </Drawer>
