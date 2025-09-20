@@ -497,7 +497,7 @@ export const getProductIndexPageQuery = defineQuery(`
 `);
 
 export const getAllProductsForIndexQuery = defineQuery(`
-  *[_type == "product" && !(_id in path('drafts.**'))] | order(name asc){
+  *[_type == "product" && defined(slug.current) && !(_id in path('drafts.**'))] | order(name asc){
     _id,
     name,
     "slug": slug.current,
