@@ -34,9 +34,9 @@ type FiltersFormProps = {
   search: string;
   setSearch: (v: string) => void;
   productLine: LineSlug[];
-  toggleLine: (line: LineSlug) => void;
+  toggleLine: (line: LineSlug, checked: boolean) => void;
   tags: RecipeTagSlug[];
-  toggleTag: (t: RecipeTagSlug) => void;
+  toggleTag: (t: RecipeTagSlug, checked: boolean) => void;
   meats: MeatSlug[];
   toggleMeat: (m: MeatSlug) => void;
   categoryId: string | "all";
@@ -96,9 +96,9 @@ function FiltersForm({
               checked: productLine.includes(slug),
               ariaLabel: lineMap[slug].display,
             }))}
-          onToggle={(id) => {
+          onToggle={(id, checked) => {
             const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug);
+            toggleLine(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -124,9 +124,9 @@ function FiltersForm({
             checked: tags.includes(slug),
             ariaLabel: tagMap[slug].display,
           }))}
-          onToggle={(id) => {
+          onToggle={(id, checked) => {
             const slug = id.replace(`${idPrefix}-tag-`, "") as RecipeTagSlug;
-            toggleTag(slug);
+            toggleTag(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -274,14 +274,20 @@ export function RecipesClient({ items, initialState, categories }: Props) {
   const clearTags = () => setTags([]);
   const clearMeats = () => setMeats([]);
   const clearCategory = () => setCategoryId("all");
-  const toggleLine = (l: LineSlug) =>
-    setProductLine((prev) =>
-      prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l],
-    );
-  const toggleTag = (t: RecipeTagSlug) =>
-    setTags((prev) =>
-      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t],
-    );
+  const toggleLine = (l: LineSlug, checked: boolean) =>
+    setProductLine((prev) => {
+      if (checked) {
+        return prev.includes(l) ? prev : [...prev, l];
+      }
+      return prev.filter((x) => x !== l);
+    });
+  const toggleTag = (t: RecipeTagSlug, checked: boolean) =>
+    setTags((prev) => {
+      if (checked) {
+        return prev.includes(t) ? prev : [...prev, t];
+      }
+      return prev.filter((x) => x !== t);
+    });
   const toggleMeat = (m: MeatSlug) =>
     setMeats((prev) =>
       prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m],
@@ -318,13 +324,13 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           key: `line-${slug}`,
           text: lineMap[slug].display,
           variant: slug,
-          onRemove: () => toggleLine(slug),
+          onRemove: () => toggleLine(slug, false),
         })),
         ...tags.map((slug) => ({
           key: `tag-${slug}`,
           text: tagMap[slug].display,
           variant: tagMap[slug].badgeVariant,
-          onRemove: () => toggleTag(slug),
+          onRemove: () => toggleTag(slug, false),
         })),
         ...meats.map((slug) => ({
           key: `meat-${slug}`,

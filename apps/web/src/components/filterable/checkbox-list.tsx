@@ -9,9 +9,9 @@ export type CheckboxItem = {
   ariaLabel?: string;
 };
 
-type Props = {
+export type Props = {
   items: CheckboxItem[];
-  onToggle: (id: string) => void;
+  onToggle: (id: string, checked: boolean) => void;
   className?: string;
 };
 
@@ -30,7 +30,10 @@ export function CheckboxList({ items, onToggle, className }: Props) {
             <Checkbox
               id={item.id}
               checked={item.checked}
-              onCheckedChange={() => onToggle(item.id)}
+              onCheckedChange={() => {
+                const nextChecked = !item.checked;
+                onToggle(item.id, nextChecked);
+              }}
               aria-labelledby={item.ariaLabel ? undefined : labelId}
               aria-label={item.ariaLabel}
             />
