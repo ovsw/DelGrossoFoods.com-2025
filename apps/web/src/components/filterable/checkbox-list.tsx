@@ -18,24 +18,26 @@ type Props = {
 export function CheckboxList({ items, onToggle, className }: Props) {
   return (
     <div className={className ?? "mt-2 grid grid-cols-1 gap-2"}>
-      {items.map((item) => (
-        <label
-          key={item.id}
-          htmlFor={item.id}
-          className="flex items-center gap-2"
-        >
-          <Checkbox
-            id={item.id}
-            checked={item.checked}
-            onCheckedChange={() => onToggle(item.id)}
-            aria-label={
-              item.ariaLabel ??
-              (typeof item.label === "string" ? item.label : undefined)
-            }
-          />
-          <span>{item.label}</span>
-        </label>
-      ))}
+      {items.map((item) => {
+        const labelId = `${item.id}-label`;
+
+        return (
+          <label
+            key={item.id}
+            htmlFor={item.id}
+            className="flex items-center gap-2"
+          >
+            <Checkbox
+              id={item.id}
+              checked={item.checked}
+              onCheckedChange={() => onToggle(item.id)}
+              aria-labelledby={item.ariaLabel ? undefined : labelId}
+              aria-label={item.ariaLabel}
+            />
+            <span id={labelId}>{item.label}</span>
+          </label>
+        );
+      })}
     </div>
   );
 }
