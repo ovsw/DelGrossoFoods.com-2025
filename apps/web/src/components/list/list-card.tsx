@@ -23,6 +23,7 @@ type BadgeSpec = { text: string; variant?: BadgeVariant };
 type ListCardProps = {
   href: string;
   title: string;
+  titleSecondary?: string | null;
   image?: SanityImageData | null;
   imageAlt?: string | null;
   ariaLabel?: string;
@@ -44,6 +45,7 @@ type ListCardProps = {
 export function ListCard({
   href,
   title,
+  titleSecondary,
   image,
   ariaLabel,
   imageAlt,
@@ -60,7 +62,15 @@ export function ListCard({
   sanityFieldPath,
 }: ListCardProps) {
   const cleanTitle = stegaClean(title);
-  const altText = stegaClean(imageAlt ?? cleanTitle);
+  const cleanSecondary = titleSecondary
+    ? stegaClean(titleSecondary)
+    : undefined;
+  const accessibleTitle = [cleanTitle, cleanSecondary]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  const providedAriaLabel = ariaLabel ? stegaClean(ariaLabel) : undefined;
+  const altText = stegaClean(imageAlt ?? accessibleTitle);
   const aspectClass = ASPECT_CLASS[imageAspect];
   const wrapperClassName =
     imageFit === "cover"
@@ -107,7 +117,7 @@ export function ListCard({
   return (
     <Link
       href={href}
-      aria-label={ariaLabel ?? cleanTitle}
+      aria-label={providedAriaLabel ?? accessibleTitle}
       className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
       <div className={wrapperClassName}>
@@ -132,7 +142,12 @@ export function ListCard({
         <h3
           className={`text-base font-semibold leading-tight group-hover:underline ${titleAlignClass}`}
         >
-          {title}
+          <span className="block">{cleanTitle}</span>
+          {cleanSecondary ? (
+            <span className="mt-0.5 block text-sm font-medium text-muted-foreground">
+              {cleanSecondary}
+            </span>
+          ) : null}
         </h3>
 
         {subtitle ? (
