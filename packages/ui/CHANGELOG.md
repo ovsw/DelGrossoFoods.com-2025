@@ -1,5 +1,21 @@
 # @workspace/ui
 
+## 1.8.0
+
+### Patch Changes
+
+- [#61](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/61) [`b24cd5f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/b24cd5f03ba6278533a27327b80ef01bcd1bb74b) Thanks [@ovsw](https://github.com/ovsw)! - Add SSR + client-filterable Store index at `/store` and refactor shared UI for filterable lists.
+  - Implement `/store` with SSR data fetch and client-side filtering for products
+  - Add product queries (`getProductIndexPageQuery`, `getAllProductsForIndexQuery`)
+  - Extract `FilterableListLayout` (shared layout for filters/results/sort) and `ListCard` (shared grid card)
+  - Update Sauces index to reuse shared layout and card
+  - Scaffold `/store/[slug]` placeholder page
+  - UI: export `BadgeVariant` type inferred from `badgeVariants` CVA for safer consumers
+
+  Notes:
+  - Product filters include Search, Packaging (Case/Gift/Other), Product Line, and Sauce Type (including Mix)
+  - Merchandise shows no badges; Mix only matches products with multiple sauce types
+
 ## 1.7.0
 
 ## 1.6.0
