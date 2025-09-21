@@ -103,7 +103,7 @@ function getDocumentTypeConfig(
     case "product":
       return {
         documentType: "Product",
-        requiredPrefix: "/products/",
+        requiredPrefix: "/store/",
       };
     case "recipe":
       return {
@@ -123,7 +123,7 @@ function getDocumentTypeConfig(
     case "productIndex":
       return {
         documentType: "Product index",
-        requiredPrefix: "/products",
+        requiredPrefix: "/store",
       };
     case "recipeIndex":
       return {
@@ -367,9 +367,9 @@ function applyDocumentTypeRules(
       }
       return slug;
     case "productIndex":
-      // Product index should be exactly /products
-      if (slug !== "/products") {
-        return "/products";
+      // Product index should be exactly /store
+      if (slug !== "/store") {
+        return "/store";
       }
       return slug;
     case "recipeIndex":
@@ -390,13 +390,13 @@ function applyDocumentTypeRules(
       }
       return slug;
     case "product":
-      // Ensure products live under /products/
-      if (!slug.startsWith("/products/")) {
-        if (slug === "/" || slug === "/products") {
-          return "/products/untitled";
+      // Ensure products live under /store/
+      if (!slug.startsWith("/store/")) {
+        if (slug === "/" || slug === "/store") {
+          return "/store/untitled";
         }
         const cleanPath = slug.replace(/^\/+/, "");
-        return `/products/${cleanPath}`;
+        return `/store/${cleanPath}`;
       }
       return slug;
     case "recipe":

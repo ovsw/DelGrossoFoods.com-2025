@@ -34,8 +34,9 @@ export const productIndex = defineType({
       name: "slug",
       type: "slug",
       description:
-        "The web address for your products listing page (for example, '/products'). Do not change this one unless you know what you're doing (you'll break the site).",
+        "The web address for your products listing page (for example, '/store'). Do not change this one unless you know what you're doing (you'll break the site).",
       group: GROUP.MAIN_CONTENT,
+      readOnly: true,
       options: {
         source: "title",
         slugify: createSlug,

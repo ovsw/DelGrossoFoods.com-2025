@@ -2936,7 +2936,7 @@ export type QueryBlogSlugPageDataResult = {
 // Query: *[_type == "blog" && defined(slug.current)].slug.current
 export type QueryBlogPathsResult = Array<string>;
 // Variable: queryHomePageOGData
-// Query: *[_type == "homePage" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    description  )), ""),  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": image.asset->metadata.palette.dominant.background,  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
+// Query: *[_type == "homePage" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  // Prefer mainImage (product/recipe) and fall back to image  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QueryHomePageOGDataResult = {
   _id: string;
   _type: "homePage";
@@ -2948,7 +2948,7 @@ export type QueryHomePageOGDataResult = {
   date: string;
 } | null;
 // Variable: querySlugPageOGData
-// Query: *[_type == "page" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    description  )), ""),  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": image.asset->metadata.palette.dominant.background,  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
+// Query: *[_type == "page" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  // Prefer mainImage (product/recipe) and fall back to image  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QuerySlugPageOGDataResult = {
   _id: string;
   _type: "page";
@@ -2960,7 +2960,7 @@ export type QuerySlugPageOGDataResult = {
   date: string;
 } | null;
 // Variable: queryBlogPageOGData
-// Query: *[_type == "blog" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    description  )), ""),  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": image.asset->metadata.palette.dominant.background,  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
+// Query: *[_type == "blog" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  // Prefer mainImage (product/recipe) and fall back to image  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QueryBlogPageOGDataResult = {
   _id: string;
   _type: "blog";
@@ -2972,7 +2972,7 @@ export type QueryBlogPageOGDataResult = {
   date: string;
 } | null;
 // Variable: queryGenericPageOGData
-// Query: *[ defined(slug.current) && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    description  )), ""),  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": image.asset->metadata.palette.dominant.background,  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
+// Query: *[ defined(slug.current) && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  // Prefer mainImage (product/recipe) and fall back to image  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QueryGenericPageOGDataResult =
   | {
       _id: string;
@@ -3017,10 +3017,10 @@ export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "product";
-      title: "";
-      description: "";
-      image: null;
-      dominantColor: null;
+      title: string;
+      description: string;
+      image: string | null;
+      dominantColor: string | null;
       seoImage: null;
       date: string;
     }
@@ -3037,10 +3037,10 @@ export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "recipe";
-      title: "";
-      description: "";
-      image: null;
-      dominantColor: null;
+      title: string;
+      description: string;
+      image: string | null;
+      dominantColor: string | null;
       seoImage: null;
       date: string;
     }
@@ -3059,8 +3059,8 @@ export type QueryGenericPageOGDataResult =
       _type: "sauce";
       title: string;
       description: string;
-      image: null;
-      dominantColor: null;
+      image: string | null;
+      dominantColor: string | null;
       seoImage: null;
       date: string;
     }
@@ -3128,13 +3128,25 @@ export type QueryNavbarDataResult = {
   }> | null;
 } | null;
 // Variable: querySitemapData
-// Query: {  "slugPages": *[_type == "page" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "blogPages": *[_type == "blog" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
+// Query: {  "slugPages": *[_type == "page" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "blogPages": *[_type == "blog" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type QuerySitemapDataResult = {
   slugPages: Array<{
     slug: string;
     lastModified: string;
   }>;
   blogPages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  saucePages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  productPages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  recipePages: Array<{
     slug: string;
     lastModified: string;
   }>;
@@ -3184,16 +3196,17 @@ export type GetSauceIndexPageQueryResult = {
   slug: string;
 } | null;
 // Variable: getAllSaucesForIndexQuery
-// Query: *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){    _id,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
+// Query: *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": mainImage.asset._ref,      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
 export type GetAllSaucesForIndexQueryResult = Array<{
   _id: string;
+  _type: "sauce";
   name: string;
   slug: string;
   line: "Organic" | "Original" | "Ultra-Premium";
   category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
   descriptionPlain: string;
   mainImage: {
-    id: string | "";
+    id: string | null;
     preview: string | null;
     hotspot: {
       x: number;
@@ -3208,6 +3221,89 @@ export type GetAllSaucesForIndexQueryResult = Array<{
     alt: string | null;
   };
 }>;
+// Variable: getRecipeIndexPageQuery
+// Query: *[_type == "recipeIndex"][0]{    _id,    _type,    title,    description,    "slug": slug.current  }
+export type GetRecipeIndexPageQueryResult = {
+  _id: string;
+  _type: "recipeIndex";
+  title: string | null;
+  description: string | null;
+  slug: string;
+} | null;
+// Variable: getAllRecipesForIndexQuery
+// Query: *[_type == "recipe" && !(_id in path('drafts.**'))] | order(name asc){    _id,    name,    "slug": slug.current,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title }),    "descriptionPlain": "",    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right }    },    // Compute unique product lines from both DGF and LFD sauces    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))  }
+export type GetAllRecipesForIndexQueryResult = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  tags: Array<string> | null;
+  meat: Array<string> | null;
+  versions: Array<string>;
+  categories: Array<{
+    _id: string;
+    title: string;
+  }> | null;
+  descriptionPlain: "";
+  mainImage: {
+    id: string | "";
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+  };
+  sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
+}>;
+// Variable: getAllRecipeCategoriesQuery
+// Query: *[_type == "recipeCategory"] | order(title asc){ _id, title }
+export type GetAllRecipeCategoriesQueryResult = Array<{
+  _id: string;
+  title: string;
+}>;
+// Variable: getProductIndexPageQuery
+// Query: *[_type == "productIndex"][0]{    _id,    _type,    title,    description,    "slug": slug.current  }
+export type GetProductIndexPageQueryResult = {
+  _id: string;
+  _type: "productIndex";
+  title: string | null;
+  description: string | null;
+  slug: string;
+} | null;
+// Variable: getAllProductsForIndexQuery
+// Query: *[_type == "product" && defined(slug.current) && !(_id in path('drafts.**'))] | order(name asc){    _id,    name,    "slug": slug.current,    category,    price,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    // Unique sets of referenced sauce attributes for filtering/badges    "sauceLines": array::unique((sauces[]->line)[defined(@)]),    "sauceTypes": array::unique((sauces[]->category)[defined(@)])  }
+export type GetAllProductsForIndexQueryResult = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  category: "case_of_12" | "gift_pack" | "merchandise";
+  price: number | null;
+  descriptionPlain: string;
+  mainImage: {
+    id: string | "";
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+    alt: null;
+  };
+  sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
+  sauceTypes: Array<
+    "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
+  > | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -3220,16 +3316,21 @@ declare module "@sanity/client" {
     '\n  *[_type == "blogIndex"][0]{\n    ...,\n    _id,\n    _type,\n    title,\n    description,\n    "displayFeaturedBlogs" : displayFeaturedBlogs == "yes",\n    "featuredBlogsCount" : featuredBlogsCount,\n    \n  pageBuilder[]{\n    ...,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "hero" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    title,\n    _id,\n    _type,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    link{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    })\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    "subTitle": subTitle[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    "helperText": helperText[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    })\n  }\n\n  }\n,\n    "slug": slug.current,\n    "blogs": *[_type == "blog" && (seoHideFromLists != true)] | order(orderRank asc){\n      \n  _type,\n  _id,\n  title,\n  description,\n  "slug":slug.current,\n  orderRank,\n  \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n  publishedAt,\n  \n  authors[0]->{\n    _id,\n    name,\n    position,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n\n\n    }\n  }\n': QueryBlogIndexPageDataResult;
     '\n  *[_type == "blog" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    \n  authors[0]->{\n    _id,\n    name,\n    position,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n  }\n,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    \n  pageBuilder[]{\n    ...,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "hero" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    title,\n    _id,\n    _type,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    link{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      )\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    })\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    "subTitle": subTitle[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    "helperText": helperText[]{\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n,\n    })\n  }\n\n  }\n\n  }\n': QueryBlogSlugPageDataResult;
     '\n  *[_type == "blog" && defined(slug.current)].slug.current\n': QueryBlogPathsResult;
-    '\n  *[_type == "homePage" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    description\n  )), ""),\n  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n  ': QueryHomePageOGDataResult;
-    '\n  *[_type == "page" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    description\n  )), ""),\n  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QuerySlugPageOGDataResult;
-    '\n  *[_type == "blog" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    description\n  )), ""),\n  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QueryBlogPageOGDataResult;
-    '\n  *[ defined(slug.current) && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    description\n  )), ""),\n  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": image.asset->metadata.palette.dominant.background,\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QueryGenericPageOGDataResult;
+    '\n  *[_type == "homePage" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    _type == "product" => name,\n    _type == "recipe" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    _type == "product" => coalesce(pt::text(description), name),\n    _type == "recipe" => coalesce(pt::text(description), name),\n    description\n  )), ""),\n  // Prefer mainImage (product/recipe) and fall back to image\n  "image": coalesce(\n    mainImage.asset->url,\n    image.asset->url\n  ) + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": coalesce(\n    mainImage.asset->metadata.palette.dominant.background,\n    image.asset->metadata.palette.dominant.background\n  ),\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n  ': QueryHomePageOGDataResult;
+    '\n  *[_type == "page" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    _type == "product" => name,\n    _type == "recipe" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    _type == "product" => coalesce(pt::text(description), name),\n    _type == "recipe" => coalesce(pt::text(description), name),\n    description\n  )), ""),\n  // Prefer mainImage (product/recipe) and fall back to image\n  "image": coalesce(\n    mainImage.asset->url,\n    image.asset->url\n  ) + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": coalesce(\n    mainImage.asset->metadata.palette.dominant.background,\n    image.asset->metadata.palette.dominant.background\n  ),\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QuerySlugPageOGDataResult;
+    '\n  *[_type == "blog" && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    _type == "product" => name,\n    _type == "recipe" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    _type == "product" => coalesce(pt::text(description), name),\n    _type == "recipe" => coalesce(pt::text(description), name),\n    description\n  )), ""),\n  // Prefer mainImage (product/recipe) and fall back to image\n  "image": coalesce(\n    mainImage.asset->url,\n    image.asset->url\n  ) + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": coalesce(\n    mainImage.asset->metadata.palette.dominant.background,\n    image.asset->metadata.palette.dominant.background\n  ),\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QueryBlogPageOGDataResult;
+    '\n  *[ defined(slug.current) && _id == $id][0]{\n    \n  _id,\n  _type,\n  "title": coalesce(string(select(\n    defined(ogTitle) => ogTitle,\n    defined(seoTitle) => seoTitle,\n    _type == "sauce" => name,\n    _type == "product" => name,\n    _type == "recipe" => name,\n    title\n  )), ""),\n  "description": coalesce(string(select(\n    defined(ogDescription) => ogDescription,\n    defined(seoDescription) => seoDescription,\n    _type == "sauce" => pt::text(description),\n    _type == "product" => coalesce(pt::text(description), name),\n    _type == "recipe" => coalesce(pt::text(description), name),\n    description\n  )), ""),\n  // Prefer mainImage (product/recipe) and fall back to image\n  "image": coalesce(\n    mainImage.asset->url,\n    image.asset->url\n  ) + "?w=566&h=566&dpr=2&fit=max",\n  "dominantColor": coalesce(\n    mainImage.asset->metadata.palette.dominant.background,\n    image.asset->metadata.palette.dominant.background\n  ),\n  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",\n  "date": coalesce(date, _createdAt)\n\n  }\n': QueryGenericPageOGDataResult;
     '\n  *[_type == "footer" && _id == "footer"][0]{\n    _id,\n    subtitle,\n    columns[]{\n      _key,\n      title,\n      links[]{\n        _key,\n        name,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        ),\n      }\n    }\n  }\n': QueryFooterDataResult;
     '\n  *[_type == "navbar" && _id == "navbar"][0]{\n    _id,\n    columns[]{\n      _key,\n      _type == "navbarColumn" => {\n        "type": "column",\n        title,\n        links[]{\n          _key,\n          name,\n          icon,\n          description,\n          "openInNewTab": url.openInNewTab,\n          "href": select(\n            url.type == "internal" => url.internal->slug.current,\n            url.type == "external" => url.external,\n            url.href\n          )\n        }\n      },\n      _type == "navbarLink" => {\n        "type": "link",\n        name,\n        description,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    },\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n': QueryNavbarDataResult;
-    '{\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
+    '{\n  "slugPages": *[_type == "page" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "blogPages": *[_type == "blog" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "saucePages": *[_type == "sauce" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "productPages": *[_type == "product" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "recipePages": *[_type == "recipe" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}': QuerySitemapDataResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    addressLines,\n    contactEmail,\n    tollFreePhone,\n    officePhone,\n    socialLinks{\n      linkedin,\n      facebook,\n      twitter,\n      instagram,\n      youtube\n    }\n  }\n': QueryGlobalSeoSettingsResult;
     '\n  *[_type == "settings"][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    "socialLinks": socialLinks,\n    "contactEmail": contactEmail,\n  }\n': QuerySettingsDataResult;
     '\n  *[_type == "sauceIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetSauceIndexPageQueryResult;
-    '\n  *[_type == "sauce" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "descriptionPlain": pt::text(description),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    }\n  }\n': GetAllSaucesForIndexQueryResult;
+    '\n  *[_type == "sauce" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "descriptionPlain": pt::text(description),\n    "mainImage": {\n      "id": mainImage.asset._ref,\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    }\n  }\n': GetAllSaucesForIndexQueryResult;
+    '\n  *[_type == "recipeIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetRecipeIndexPageQueryResult;
+    '\n  *[_type == "recipe" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetAllRecipesForIndexQueryResult;
+    '\n  *[_type == "recipeCategory"] | order(title asc){ _id, title }\n': GetAllRecipeCategoriesQueryResult;
+    '\n  *[_type == "productIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetProductIndexPageQueryResult;
+    '\n  *[_type == "product" && defined(slug.current) && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    // Unique sets of referenced sauce attributes for filtering/badges\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
   }
 }

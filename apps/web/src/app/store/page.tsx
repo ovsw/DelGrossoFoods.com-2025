@@ -1,32 +1,30 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SaucesClient } from "@/components/sauces/sauces-client";
+import { ProductsClient } from "@/components/products/products-client";
+import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
-  getAllSaucesForIndexQuery,
-  getSauceIndexPageQuery,
+  getAllProductsForIndexQuery,
+  getProductIndexPageQuery,
 } from "@/lib/sanity/query";
-import { parseSearchParams, type SauceQueryState } from "@/lib/sauces/url";
 import { getSEOMetadata } from "@/lib/seo";
-import type { SauceIndexPageData, SauceListItem } from "@/types";
+import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
-// import { draftMode } from "next/headers";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
     sanityFetch({
-      query: getSauceIndexPageQuery,
+      query: getProductIndexPageQuery,
     }),
   );
-
-  const data = (result?.data ?? null) as SauceIndexPageData | null;
+  const data = (result?.data ?? null) as ProductIndexPageData | null;
   return getSEOMetadata(
     data
       ? {
           title: data?.title ?? "",
           description: data?.description ?? "",
-          slug: "/sauces",
+          slug: "/store",
           contentId: data?._id,
           contentType: data?._type,
         }
@@ -34,40 +32,42 @@ export async function generateMetadata(): Promise<Metadata> {
           title: "Premium Sauces",
           description:
             "Discover the Heart of Authentic Italian Flavor with Our Original Pasta, Pizza and Sandwich Sauces.",
-          slug: "/sauces",
+          slug: "/store",
         },
   );
 }
 
-async function fetchSauces() {
-  return await handleErrors(sanityFetch({ query: getAllSaucesForIndexQuery }));
+async function fetchProducts() {
+  return await handleErrors(
+    sanityFetch({ query: getAllProductsForIndexQuery }),
+  );
 }
 
 async function fetchIndexCopy() {
-  return await handleErrors(sanityFetch({ query: getSauceIndexPageQuery }));
+  return await handleErrors(sanityFetch({ query: getProductIndexPageQuery }));
 }
 
-export default async function SaucesIndexPage({
+export default async function ProductsIndexPage({
   searchParams,
 }: {
-  // Next.js 15: searchParams is now async and must be awaited
+  // Next.js 15: searchParams is async
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const [saucesRes, copyRes] = await Promise.all([
-    fetchSauces(),
+  const [productsRes, copyRes] = await Promise.all([
+    fetchProducts(),
     fetchIndexCopy(),
   ]);
-  const [saucesData, saucesErr] = saucesRes;
+  const [productsData, productsErr] = productsRes;
   const [copyData] = copyRes;
-  if (saucesErr) notFound();
+  if (productsErr) notFound();
 
-  const indexDoc = (copyData?.data ?? null) as SauceIndexPageData | null;
-  const items = (saucesData?.data ?? []) as SauceListItem[];
+  const indexDoc = (copyData?.data ?? null) as ProductIndexPageData | null;
+  const items = (productsData?.data ?? []) as ProductListItem[];
 
   const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
+  const initialState: ProductQueryState =
+    parseSearchParams(resolvedSearchParams);
 
-  // Fallback copy so the page always shows intro even if CMS data is missing
   const heading = indexDoc?.title ?? "Premium Sauces";
   const intro =
     indexDoc?.description ??
@@ -76,7 +76,6 @@ export default async function SaucesIndexPage({
   return (
     <main>
       <div className="container py-40 md:py-60 mx-auto px-4 md:px-6">
-        {/* Page intro: left-aligned heading + paragraph to match comps */}
         <div className="max-w-3xl text-start">
           <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
             {heading}
@@ -85,9 +84,8 @@ export default async function SaucesIndexPage({
             {intro}
           </p>
         </div>
-
         <div className="mt-16">
-          <SaucesClient items={items} initialState={initialState} />
+          <ProductsClient items={items} initialState={initialState} />
         </div>
       </div>
     </main>

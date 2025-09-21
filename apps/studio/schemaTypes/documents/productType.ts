@@ -15,7 +15,7 @@ export const productType = defineType({
   type: "document",
   icon: PackageIcon, // Or another suitable icon
   groups: [
-    { name: "basic", title: "Basic Info", default: true, icon: PackageIcon },
+    { name: "basic", title: "Basic Info", icon: PackageIcon },
     { name: "shipping", title: "Shipping", icon: ControlsIcon },
     { name: "associations", title: "Associations", icon: TagIcon },
   ],
@@ -50,7 +50,7 @@ export const productType = defineType({
         Rule.custom(
           createSlugValidator({
             documentType: "Product",
-            requiredPrefix: "/products/",
+            requiredPrefix: "/store/",
           }),
         ),
       ],
@@ -135,7 +135,7 @@ export const productType = defineType({
       type: "number",
       group: "basic",
       fieldset: "storeInfo",
-      validation: (Rule) => Rule.precision(2).positive(),
+      validation: (Rule) => Rule.precision(2).min(0),
       components: {
         input: USDPriceInput,
       },
@@ -145,7 +145,7 @@ export const productType = defineType({
       title: "Weight (lb.)",
       type: "number",
       group: "shipping",
-      validation: (Rule) => Rule.required().positive(),
+      validation: (Rule) => Rule.required().greaterThan(0),
     }),
     defineField({
       name: "sauces",

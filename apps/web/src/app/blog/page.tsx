@@ -14,18 +14,21 @@ async function fetchBlogPosts() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: result } = await sanityFetch({
-    query: queryBlogIndexPageData,
-    stega: false,
-  });
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: queryBlogIndexPageData,
+      stega: false,
+    }),
+  );
+  const data = (result?.data ?? null) as QueryBlogIndexPageDataResult | null;
   return getSEOMetadata(
-    result
+    data
       ? {
-          title: result?.title ?? result?.seoTitle ?? "",
-          description: result?.description ?? result?.seoDescription ?? "",
-          slug: result?.slug,
-          contentId: result?._id,
-          contentType: result?._type,
+          title: data?.title ?? data?.seoTitle ?? "",
+          description: data?.description ?? data?.seoDescription ?? "",
+          slug: data?.slug,
+          contentId: data?._id,
+          contentType: data?._type,
         }
       : {},
   );
