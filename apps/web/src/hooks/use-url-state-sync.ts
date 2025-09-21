@@ -23,7 +23,9 @@ export function useUrlStateSync<S>({
     const basePath = pathname ?? window.location.pathname;
     const params = serialize(state);
     const query = params.toString();
-    const url = query ? `${basePath}?${query}` : basePath;
-    window.history.replaceState(window.history.state, "", url);
+    const targetUrl = query ? `${basePath}?${query}` : basePath;
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+    if (targetUrl === currentUrl) return;
+    window.history.replaceState(window.history.state, "", targetUrl);
   }, [pathname, state, serialize]);
 }
