@@ -434,13 +434,14 @@ export const getSauceIndexPageQuery = defineQuery(`
 export const getAllSaucesForIndexQuery = defineQuery(`
   *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){
     _id,
+    _type,
     name,
     "slug": slug.current,
     line,
     category,
     "descriptionPlain": pt::text(description),
     "mainImage": {
-      "id": coalesce(mainImage.asset._ref, ""),
+      "id": mainImage.asset._ref,
       "preview": mainImage.asset->metadata.lqip,
       "hotspot": mainImage.hotspot{ x, y },
       "crop": mainImage.crop{ top, bottom, left, right },

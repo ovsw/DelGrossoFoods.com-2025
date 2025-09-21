@@ -1,9 +1,10 @@
 "use client";
 import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import Link from "next/link";
-import { stegaClean } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
+import { dataset, projectId, studioUrl } from "@/config";
 import type { SanityImageProps as SanityImageData } from "@/types";
 
 // Stable, typed map of semantic crop → Tailwind aspect class.
@@ -35,6 +36,9 @@ type ListCardProps = {
   textAlign?: "center" | "start";
   // Responsive sizes attribute for better bandwidth on mobile
   sizes?: string;
+  sanityDocumentId?: string;
+  sanityDocumentType?: string;
+  sanityFieldPath?: string;
 };
 
 export function ListCard({
@@ -51,6 +55,9 @@ export function ListCard({
   imageHeight,
   textAlign = "center",
   sizes,
+  sanityDocumentId,
+  sanityDocumentType,
+  sanityFieldPath,
 }: ListCardProps) {
   const cleanTitle = stegaClean(title);
   const altText = stegaClean(imageAlt ?? cleanTitle);
@@ -85,6 +92,18 @@ export function ListCard({
     "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" as const;
   const sizesAttr = sizes ?? DEFAULT_SIZES;
 
+  const imageDataAttribute =
+    sanityDocumentId && sanityDocumentType && sanityFieldPath
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: sanityFieldPath,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+
   return (
     <Link
       href={href}
@@ -102,6 +121,7 @@ export function ListCard({
             className={imageClassName}
             mode={imageFit}
             sizes={sizesAttr}
+            data-sanity={imageDataAttribute}
           />
         ) : (
           <div className="h-full w-full bg-muted" />

@@ -5,7 +5,7 @@ import { buildHref } from "@/lib/list/href";
 import type { SauceListItem } from "@/types";
 
 export function SauceCard({ item }: { item: SauceListItem }) {
-  const { name, slug, mainImage, line, category } = item;
+  const { name, slug, mainImage, line, category, _id, _type } = item;
   const lineBadge = getLineBadge(line);
   const typeBadge = getTypeBadge(category);
 
@@ -21,6 +21,9 @@ export function SauceCard({ item }: { item: SauceListItem }) {
         { text: lineBadge.text, variant: lineBadge.variant },
         { text: typeBadge.text, variant: typeBadge.variant },
       ]}
+      sanityDocumentId={_id}
+      sanityDocumentType={_type}
+      sanityFieldPath="mainImage"
     />
   );
 }
