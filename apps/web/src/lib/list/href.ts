@@ -10,5 +10,5 @@ export function buildHref(
   if (!slug) return base;
   const s = String(slug);
   if (s.startsWith("/")) return s; // already absolute
-  return `${base}/${s}`;
+  return base === "/" ? `/${s}` : `${base}/${s}`;
 }
