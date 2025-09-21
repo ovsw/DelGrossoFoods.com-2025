@@ -1,5 +1,28 @@
 # web
 
+## 1.8.0
+
+### Minor Changes
+
+- [#61](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/61) [`a201d5c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/a201d5ce0a3e157addb27c43faad3ee70a7d2e68) Thanks [@ovsw](https://github.com/ovsw)! - Add SSR + client-filterable Recipes index at `/recipes` with filters for Product Line, Recipe Tags, Meat, Category, and search; include `/recipes/[slug]` stub. Reuse shared FilterableListLayout and ListCard, and add recipe queries + types.
+
+- [#61](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/61) [`b24cd5f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/b24cd5f03ba6278533a27327b80ef01bcd1bb74b) Thanks [@ovsw](https://github.com/ovsw)! - Add SSR + client-filterable Store index at `/store` and refactor shared UI for filterable lists.
+  - Implement `/store` with SSR data fetch and client-side filtering for products
+  - Add product queries (`getProductIndexPageQuery`, `getAllProductsForIndexQuery`)
+  - Extract `FilterableListLayout` (shared layout for filters/results/sort) and `ListCard` (shared grid card)
+  - Update Sauces index to reuse shared layout and card
+  - Scaffold `/store/[slug]` placeholder page
+  - UI: export `BadgeVariant` type inferred from `badgeVariants` CVA for safer consumers
+
+  Notes:
+  - Product filters include Search, Packaging (Case/Gift/Other), Product Line, and Sauce Type (including Mix)
+  - Merchandise shows no badges; Mix only matches products with multiple sauce types
+
+### Patch Changes
+
+- Updated dependencies [[`b24cd5f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/b24cd5f03ba6278533a27327b80ef01bcd1bb74b)]:
+  - @workspace/ui@1.8.0
+
 ## 1.7.0
 
 ### Patch Changes
