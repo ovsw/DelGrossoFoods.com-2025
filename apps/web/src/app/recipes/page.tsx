@@ -18,10 +18,12 @@ import type {
 import { handleErrors } from "@/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: result } = await sanityFetch({
-    query: getRecipeIndexPageQuery,
-  });
-  const data = result as RecipeIndexPageData | null;
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getRecipeIndexPageQuery,
+    }),
+  );
+  const data = (result?.data ?? null) as RecipeIndexPageData | null;
   return getSEOMetadata(
     data
       ? {

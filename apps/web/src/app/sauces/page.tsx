@@ -14,11 +14,13 @@ import { handleErrors } from "@/utils";
 // import { draftMode } from "next/headers";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: result } = await sanityFetch({
-    query: getSauceIndexPageQuery,
-  });
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getSauceIndexPageQuery,
+    }),
+  );
 
-  const data = result as SauceIndexPageData | null;
+  const data = (result?.data ?? null) as SauceIndexPageData | null;
   return getSEOMetadata(
     data
       ? {

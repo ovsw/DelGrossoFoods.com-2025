@@ -13,10 +13,12 @@ import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: result } = await sanityFetch({
-    query: getProductIndexPageQuery,
-  });
-  const data = result as ProductIndexPageData | null;
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getProductIndexPageQuery,
+    }),
+  );
+  const data = (result?.data ?? null) as ProductIndexPageData | null;
   return getSEOMetadata(
     data
       ? {
