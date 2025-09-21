@@ -1,5 +1,18 @@
 # studio
 
+## 1.8.0
+
+### Minor Changes
+
+- [#61](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/61) [`91583bd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/91583bd20394fa852c908f9b6168e23bccc4858e) Thanks [@ovsw](https://github.com/ovsw)! - Switch product canonical slugs from `/products` to `/store` in Studio.
+  - Enforce `/store` prefix for `product` documents (was `/products`)
+  - Enforce exact `/store` slug for `productIndex` (was `/products`)
+  - Update field descriptions and slug helper mapping
+  - Improve Alt Text automation input to respect read-only rules and nested source fields
+
+  Migration notes:
+  - Existing product slugs under `/products/...` will need updating to `/store/...` to align with the new frontend route.
+
 ## 1.7.0
 
 ### Minor Changes
