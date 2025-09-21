@@ -8,7 +8,10 @@ export function sortByName<T extends { name: string }>(
   order: SortOrder = "az",
 ): T[] {
   const cmp = (a: T, b: T) =>
-    a.name.localeCompare(b.name, "en-US", { sensitivity: "base" });
+    a.name.localeCompare(b.name, "en-US", {
+      sensitivity: "base",
+      numeric: true,
+    });
   const sorted = [...items].sort(cmp);
   return order === "za" ? sorted.reverse() : sorted;
 }
