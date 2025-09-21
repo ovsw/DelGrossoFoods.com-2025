@@ -27,7 +27,6 @@ export const sauce = defineType({
     {
       name: "basic",
       title: "Basic Info",
-      default: true,
       icon: DocumentTextIcon,
     },
     { name: "images", title: "Images", icon: ImageIcon },

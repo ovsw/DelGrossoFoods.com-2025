@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { StringInputProps } from "sanity";
 import { set, useFormValue } from "sanity";
 
@@ -13,20 +13,39 @@ export function AltTextFromField(props: StringInputProps) {
   const sourceField = options.sourceField || "name";
   const template = options.template || "${value}";
 
-  const { onChange, renderDefault } = props;
+  const { onChange, renderDefault, schemaType, value, elementProps } = props;
 
-  // Get values from other fields (assuming these are root-level fields)
-  const sourceValue = useFormValue([sourceField]) as string | undefined;
+  // Support dotted paths so we can reference nested fields if needed.
+  const sourcePath = useMemo(
+    () => sourceField.split(".").filter((segment) => segment.length > 0),
+    [sourceField],
+  );
+
+  // Pull the source field value from the document form state.
+  const sourceValue = useFormValue(sourcePath) as string | undefined;
+
+  const isReadOnly = Boolean(schemaType.readOnly || elementProps?.readOnly);
 
   useEffect(() => {
-    // Calculate the value using the template
-    const calculatedValue = sourceValue
-      ? template.replace("${value}", sourceValue)
-      : "";
-    // Use the set patch to update the field's value
-    onChange(set(calculatedValue));
-  }, [sourceValue, onChange, template]); // Re-run effect when these dependencies change
+    if (isReadOnly) {
+      return;
+    }
 
-  // Render the default input, which will now show the updated value
+    if (typeof sourceValue !== "string") {
+      return;
+    }
+
+    const trimmedSource = sourceValue.trim();
+    const calculatedValue = trimmedSource
+      ? template.split("${value}").join(trimmedSource)
+      : "";
+
+    if (value === calculatedValue) {
+      return;
+    }
+
+    onChange(set(calculatedValue));
+  }, [isReadOnly, onChange, sourceValue, template, value]);
+
   return renderDefault(props);
 }

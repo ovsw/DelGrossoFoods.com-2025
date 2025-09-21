@@ -15,7 +15,7 @@ export const productType = defineType({
   type: "document",
   icon: PackageIcon, // Or another suitable icon
   groups: [
-    { name: "basic", title: "Basic Info", default: true, icon: PackageIcon },
+    { name: "basic", title: "Basic Info", icon: PackageIcon },
     { name: "shipping", title: "Shipping", icon: ControlsIcon },
     { name: "associations", title: "Associations", icon: TagIcon },
   ],
