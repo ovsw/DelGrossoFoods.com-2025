@@ -28,8 +28,15 @@ export function ProductCard({ item }: { item: ProductListItem }) {
 
   // Subtitle: "{Packaging} – {Price}"
   const packaging = getPackagingText(category);
+  const packagingLabel = packaging.length > 0 ? packaging : null;
   const priceText = formatUSD(price ?? null);
-  const subtitle = [packaging, priceText].filter(Boolean).join(" – ") || null;
+  const secondaryText = packagingLabel
+    ? [packagingLabel, priceText].filter(Boolean).join(" – ")
+    : null;
+  const subtitle = packagingLabel ? null : priceText;
+  const accessibleName = [name, secondaryText ?? priceText]
+    .filter(Boolean)
+    .join(" ");
 
   // Badges: skip entirely for merchandise (other)
   const pkgSlug = toPackagingSlug(category);
@@ -66,9 +73,10 @@ export function ProductCard({ item }: { item: ProductListItem }) {
     <ListCard
       href={href}
       title={name}
-      ariaLabel={`View ${name}`}
+      titleSecondary={secondaryText}
+      ariaLabel={`View ${accessibleName}`}
       image={mainImage}
-      imageAlt={name}
+      imageAlt={accessibleName}
       imageAspect="product"
       imageWidth={800}
       imageHeight={533}
