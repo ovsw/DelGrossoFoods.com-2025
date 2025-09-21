@@ -31,7 +31,6 @@ export const recipeType = defineType({
     {
       name: "basic",
       title: "Basic Info.",
-      default: true,
       icon: DocumentTextIcon,
     },
     { name: "media", title: "Media", icon: ImageIcon },
