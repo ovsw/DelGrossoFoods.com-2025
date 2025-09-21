@@ -32,10 +32,7 @@ export function RadioList({ value, onChange, items, className }: Props) {
             <RadioGroupItem
               id={item.id}
               value={item.value}
-              aria-label={
-                item.ariaLabel ??
-                (typeof item.label === "string" ? item.label : undefined)
-              }
+              {...(item.ariaLabel ? { "aria-label": item.ariaLabel } : {})}
             />
             <span>{item.label}</span>
           </label>
