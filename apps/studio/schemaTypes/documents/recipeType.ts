@@ -31,7 +31,6 @@ export const recipeType = defineType({
     {
       name: "basic",
       title: "Basic Info.",
-      default: true,
       icon: DocumentTextIcon,
     },
     { name: "media", title: "Media", icon: ImageIcon },
@@ -108,6 +107,7 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          weak: true,
         }),
       ],
       group: "dgf-content",
@@ -122,6 +122,7 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          weak: true,
         }),
       ],
       group: "lfd-content",

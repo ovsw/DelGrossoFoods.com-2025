@@ -434,17 +434,86 @@ export const getSauceIndexPageQuery = defineQuery(`
 export const getAllSaucesForIndexQuery = defineQuery(`
   *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){
     _id,
+    _type,
     name,
     "slug": slug.current,
     line,
     category,
     "descriptionPlain": pt::text(description),
     "mainImage": {
-      "id": coalesce(mainImage.asset._ref, ""),
+      "id": mainImage.asset._ref,
       "preview": mainImage.asset->metadata.lqip,
       "hotspot": mainImage.hotspot{ x, y },
       "crop": mainImage.crop{ top, bottom, left, right },
       "alt": mainImage.alt
     }
+  }
+`);
+
+// Recipes index queries
+export const getRecipeIndexPageQuery = defineQuery(`
+  *[_type == "recipeIndex"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current
+  }
+`);
+
+export const getAllRecipesForIndexQuery = defineQuery(`
+  *[_type == "recipe" && !(_id in path('drafts.**'))] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title }),
+    "descriptionPlain": "",
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right }
+    },
+    // Compute unique product lines from both DGF and LFD sauces
+    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
+  }
+`);
+
+export const getAllRecipeCategoriesQuery = defineQuery(`
+  *[_type == "recipeCategory"] | order(title asc){ _id, title }
+`);
+
+// Products index queries
+export const getProductIndexPageQuery = defineQuery(`
+  *[_type == "productIndex"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current
+  }
+`);
+
+export const getAllProductsForIndexQuery = defineQuery(`
+  *[_type == "product" && defined(slug.current) && !(_id in path('drafts.**'))] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    category,
+    price,
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
+    // Unique sets of referenced sauce attributes for filtering/badges
+    "sauceLines": array::unique((sauces[]->line)[defined(@)]),
+    "sauceTypes": array::unique((sauces[]->category)[defined(@)])
   }
 `);
