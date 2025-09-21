@@ -25,7 +25,7 @@ export function SearchField({
   visuallyHideLabel = false,
 }: Props) {
   return (
-    <div>
+    <div role="search" aria-label={ariaLabel ?? label}>
       <label
         htmlFor={id}
         className={visuallyHideLabel ? "sr-only" : "block text-xl font-medium"}
