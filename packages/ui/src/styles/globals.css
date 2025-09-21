@@ -171,9 +171,8 @@
   img {
     display: block;
     max-width: 100%;
-    width: 100%;
     height: auto;
-    border-radius: var(--radius-sm);
+    /* Apply rounding at component scope to avoid affecting logos or inline icons. */
   }
   html {
     scroll-padding-top: calc(196px + 16px);
