@@ -175,7 +175,10 @@
     /* Apply rounding at component scope to avoid affecting logos or inline icons. */
   }
   html {
-    scroll-padding-top: calc(196px + 16px);
+    /* --header-offset can be overridden by the header component per breakpoint. */
+    scroll-padding-top: calc(
+      var(--header-offset, 196px) + 16px + env(safe-area-inset-top, 0px)
+    );
   }
 }
 
