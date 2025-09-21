@@ -79,7 +79,7 @@ export function ListCard({
   // Default dimension presets per semantic crop when explicit values are not provided
   const DEFAULT_DIMS: Record<ImageAspect, { w: number; h: number }> = {
     sauce: { w: 600, h: 800 },
-    product: { w: 800, h: 533 },
+    product: { w: 800, h: 400 },
     recipe: { w: 400, h: 300 },
   } as const;
   const dims = {
