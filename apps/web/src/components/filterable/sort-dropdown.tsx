@@ -35,7 +35,11 @@ export function SortDropdown({
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuRadioGroup
           value={value}
-          onValueChange={(v) => onChange((v as SortOrder) ?? "az")}
+          onValueChange={(next) => {
+            const order = next === "az" || next === "za" ? next : "az";
+
+            onChange(order);
+          }}
         >
           <DropdownMenuRadioItem value="az">A → Z</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="za">Z → A</DropdownMenuRadioItem>
