@@ -1,5 +1,4 @@
 "use client";
-import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 // (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
@@ -15,6 +14,8 @@ import { SauceCard } from "@/components/sauce-card";
 import {
   allLineSlugs,
   allTypeSlugs,
+  getLineBadge,
+  getTypeBadge,
   lineMap,
   type LineSlug,
   typeMap,
@@ -37,13 +38,6 @@ type FiltersFormProps = {
   setSauceType: (v: SauceQueryState["sauceType"]) => void;
   clearProductLine: () => void;
   clearSauceType: () => void;
-};
-
-const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
-  pasta: "pasta",
-  pizza: "pizza",
-  salsa: "salsa",
-  sandwich: "sandwich",
 };
 
 function isSauceType(value: string): value is SauceQueryState["sauceType"] {
@@ -178,6 +172,15 @@ export function SaucesClient({ items, initialState }: Props) {
     sort,
   });
 
+  const activeTypeChip =
+    sauceType !== "all"
+      ? {
+          key: `type-${sauceType as TypeSlug}`,
+          ...getTypeBadge(typeMap[sauceType as TypeSlug].label),
+          onRemove: () => setSauceType("all"),
+        }
+      : null;
+
   function clearAll() {
     setSearch("");
     setProductLine([]);
@@ -219,23 +222,16 @@ export function SaucesClient({ items, initialState }: Props) {
       isAnyActive={filtersActive}
       onClearAll={clearAll}
       activeChips={[
-        ...productLine.map((slug) => ({
-          key: `line-${slug}`,
-          text: lineMap[slug].display,
-          variant: slug,
-          onRemove: () => toggleLine(slug),
-        })),
-        ...(sauceType !== "all"
-          ? [
-              {
-                key: `type-${sauceType}`,
-                text: typeMap[sauceType as keyof typeof typeMap].display,
-                variant:
-                  sauceTypeToBadgeVariant[sauceType as TypeSlug] ?? "neutral",
-                onRemove: () => setSauceType("all"),
-              },
-            ]
-          : []),
+        ...productLine.map((slug) => {
+          const { text, variant } = getLineBadge(lineMap[slug].label);
+          return {
+            key: `line-${slug}`,
+            text,
+            variant,
+            onRemove: () => toggleLine(slug),
+          };
+        }),
+        ...(activeTypeChip ? [activeTypeChip] : []),
       ]}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
