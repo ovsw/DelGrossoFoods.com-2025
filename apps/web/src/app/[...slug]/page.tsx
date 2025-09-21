@@ -29,9 +29,9 @@ async function fetchSlugPagePaths() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const slugString = slug.join("/");
   const { data: pageData } = await fetchSlugPageData(slugString, false);
   return getSEOMetadata(
@@ -54,9 +54,9 @@ export async function generateStaticParams() {
 export default async function SlugPage({
   params,
 }: {
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const slugString = slug.join("/");
   const { data: pageData } = await fetchSlugPageData(slugString);
 
