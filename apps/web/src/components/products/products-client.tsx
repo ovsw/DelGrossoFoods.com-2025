@@ -36,9 +36,9 @@ type FiltersFormProps = {
   search: string;
   setSearch: (v: string) => void;
   packaging: PackagingSlug[];
-  togglePackaging: (p: PackagingSlug) => void;
+  togglePackaging: (p: PackagingSlug, checked: boolean) => void;
   productLine: LineSlug[];
-  toggleLine: (line: LineSlug) => void;
+  toggleLine: (line: LineSlug, checked: boolean) => void;
   sauceType: ProductQueryState["sauceType"];
   setSauceType: (v: ProductQueryState["sauceType"]) => void;
   clearPackaging: () => void;
@@ -96,12 +96,12 @@ function FiltersForm({
             checked: packaging.includes(slug),
             ariaLabel: packagingMap[slug].display,
           }))}
-          onToggle={(id) => {
+          onToggle={(id, checked) => {
             const slug = id.replace(
               `${idPrefix}-packaging-`,
               "",
             ) as PackagingSlug;
-            togglePackaging(slug);
+            togglePackaging(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -121,9 +121,9 @@ function FiltersForm({
             checked: productLine.includes(slug),
             ariaLabel: lineMap[slug].display,
           }))}
-          onToggle={(id) => {
+          onToggle={(id, checked) => {
             const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug);
+            toggleLine(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -243,15 +243,21 @@ export function ProductsClient({ items, initialState }: Props) {
   function clearSauceType() {
     setSauceType("all");
   }
-  function togglePackaging(p: PackagingSlug) {
-    setPackaging((prev) =>
-      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
-    );
+  function togglePackaging(p: PackagingSlug, checked: boolean) {
+    setPackaging((prev) => {
+      if (checked) {
+        return prev.includes(p) ? prev : [...prev, p];
+      }
+      return prev.filter((x) => x !== p);
+    });
   }
-  function toggleLine(line: LineSlug) {
-    setProductLine((prev) =>
-      prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
-    );
+  function toggleLine(line: LineSlug, checked: boolean) {
+    setProductLine((prev) => {
+      if (checked) {
+        return prev.includes(line) ? prev : [...prev, line];
+      }
+      return prev.filter((l) => l !== line);
+    });
   }
 
   return (
@@ -281,13 +287,13 @@ export function ProductsClient({ items, initialState }: Props) {
           key: `pkg-${slug}`,
           text: packagingMap[slug].display,
           variant: "neutral" as const,
-          onRemove: () => togglePackaging(slug),
+          onRemove: () => togglePackaging(slug, false),
         })),
         ...productLine.map((slug) => ({
           key: `line-${slug}`,
           text: lineMap[slug].display,
           variant: slug,
-          onRemove: () => toggleLine(slug),
+          onRemove: () => toggleLine(slug, false),
         })),
         ...(sauceType !== "all" && sauceType !== "mix"
           ? [

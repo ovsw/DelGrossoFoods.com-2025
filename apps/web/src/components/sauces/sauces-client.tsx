@@ -33,7 +33,7 @@ type FiltersFormProps = {
   search: string;
   setSearch: (v: string) => void;
   productLine: LineSlug[];
-  toggleLine: (line: LineSlug) => void;
+  toggleLine: (line: LineSlug, checked: boolean) => void;
   sauceType: SauceQueryState["sauceType"];
   setSauceType: (v: SauceQueryState["sauceType"]) => void;
   clearProductLine: () => void;
@@ -83,9 +83,9 @@ function FiltersForm({
             checked: productLine.includes(slug),
             ariaLabel: lineMap[slug].display,
           }))}
-          onToggle={(id) => {
+          onToggle={(id, checked) => {
             const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug);
+            toggleLine(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -196,10 +196,13 @@ export function SaucesClient({ items, initialState }: Props) {
     setSauceType("all");
   }
 
-  function toggleLine(line: LineSlug) {
-    setProductLine((prev) =>
-      prev.includes(line) ? prev.filter((l) => l !== line) : [...prev, line],
-    );
+  function toggleLine(line: LineSlug, checked: boolean) {
+    setProductLine((prev) => {
+      if (checked) {
+        return prev.includes(line) ? prev : [...prev, line];
+      }
+      return prev.filter((l) => l !== line);
+    });
   }
 
   return (
@@ -228,7 +231,7 @@ export function SaucesClient({ items, initialState }: Props) {
             key: `line-${slug}`,
             text,
             variant,
-            onRemove: () => toggleLine(slug),
+            onRemove: () => toggleLine(slug, false),
           };
         }),
         ...(activeTypeChip ? [activeTypeChip] : []),
