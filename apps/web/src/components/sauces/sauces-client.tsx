@@ -46,6 +46,10 @@ const sauceTypeToBadgeVariant: Record<TypeSlug, BadgeVariant> = {
   sandwich: "sandwich",
 };
 
+function isSauceType(value: string): value is SauceQueryState["sauceType"] {
+  return value === "all" || (allTypeSlugs as readonly string[]).includes(value);
+}
+
 function FiltersForm({
   idPrefix = "filters",
   search,
@@ -70,7 +74,7 @@ function FiltersForm({
         visuallyHideLabel
       />
 
-      <div className="my-4 border-b border-input" />
+      <hr className="my-4 border-input" />
 
       <FilterGroupSection
         title="Product Line"
@@ -92,7 +96,7 @@ function FiltersForm({
         />
       </FilterGroupSection>
 
-      <div className="my-4 border-b border-input" />
+      <hr className="my-4 border-input" />
 
       <FilterGroupSection
         title="Sauce Type"
@@ -102,7 +106,7 @@ function FiltersForm({
       >
         <RadioList
           value={sauceType}
-          onChange={(v) => setSauceType(v as SauceQueryState["sauceType"])}
+          onChange={(v) => setSauceType(isSauceType(v) ? v : "all")}
           items={[
             {
               id: `${idPrefix}-sauce-type-all`,
@@ -166,7 +170,7 @@ export function SaucesClient({ items, initialState }: Props) {
   const totalCount = items.length;
   const resultsCount = effectiveResults.length;
   const filtersActive =
-    Boolean(search) || productLine.length > 0 || sauceType !== "all";
+    Boolean(search.trim()) || productLine.length > 0 || sauceType !== "all";
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
     productLine,
