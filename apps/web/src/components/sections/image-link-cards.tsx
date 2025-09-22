@@ -1,21 +1,34 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
 import { CTACard } from "../image-link-card";
+import { resolveSectionSpacing } from "./section-spacing";
 
-export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards">;
+export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards"> & {
+  readonly isPageTop?: boolean;
+};
 
 export function ImageLinkCards({
   richText,
   title,
   eyebrow,
   cards,
+  spacing,
+  isPageTop = false,
 }: ImageLinkCardsProps) {
+  const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+
   return (
-    <section id="image-link-cards" className="my-16">
+    <Section
+      id="image-link-cards"
+      spacingTop={spacingTop}
+      spacingBottom={spacingBottom}
+      isPageTop={isPageTop}
+    >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
@@ -26,7 +39,6 @@ export function ImageLinkCards({
             <RichText richText={richText} className="text-balance" />
           </div>
 
-          {/* Social Media Grid */}
           {Array.isArray(cards) && cards.length > 0 && (
             <div className="mt-16 grid w-full grid-cols-1 gap-4 lg:gap-1 sm:grid-cols-2 lg:grid-cols-4">
               {cards?.map((card, idx) => (
@@ -46,6 +58,6 @@ export function ImageLinkCards({
           )}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

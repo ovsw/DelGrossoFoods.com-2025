@@ -25,6 +25,19 @@ export const pageBuilderField = defineField({
     "Build your page by adding different sections like text, images, and other content blocks",
 });
 
+export const sectionSpacingField = defineField({
+  name: "spacing",
+  title: "Section spacing",
+  type: "sectionSpacing",
+  description:
+    "Control the padding above and below this section to balance it with neighboring content",
+  initialValue: {
+    spacingTop: "default",
+    spacingBottom: "default",
+  },
+  validation: (Rule) => Rule.required(),
+});
+
 export const iconField = defineField({
   name: "icon",
   title: "Icon",

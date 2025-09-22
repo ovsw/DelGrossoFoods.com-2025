@@ -1,7 +1,7 @@
 import { PhoneIcon } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
-import { buttonsField, richTextField } from "../common";
+import { buttonsField, richTextField, sectionSpacingField } from "../common";
 
 export const cta = defineType({
   name: "cta",
@@ -23,6 +23,7 @@ export const cta = defineType({
     }),
     richTextField,
     buttonsField,
+    sectionSpacingField,
   ],
   preview: {
     select: {

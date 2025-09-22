@@ -2,7 +2,7 @@ import { LayoutGrid } from "lucide-react";
 import { defineField, defineType } from "sanity";
 import { preview } from "sanity-plugin-icon-picker";
 
-import { iconField } from "../common";
+import { iconField, sectionSpacingField } from "../common";
 import { customRichText } from "../definitions/rich-text";
 
 const featureCardIcon = defineField({
@@ -55,6 +55,7 @@ export const featureCardsIcon = defineType({
       description: "The individual feature cards to display in the grid",
       of: [featureCardIcon],
     }),
+    sectionSpacingField,
   ],
   preview: {
     select: {

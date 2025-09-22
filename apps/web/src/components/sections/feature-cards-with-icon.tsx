@@ -1,11 +1,15 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { Section } from "@workspace/ui/components/section";
 
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
 import { SanityIcon } from "../elements/sanity-icon";
+import { resolveSectionSpacing } from "./section-spacing";
 
-type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon">;
+type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon"> & {
+  readonly isPageTop?: boolean;
+};
 
 type FeatureCardProps = {
   card: NonNullable<FeatureCardsWithIconProps["cards"]>[number];
@@ -35,9 +39,18 @@ export function FeatureCardsWithIcon({
   title,
   richText,
   cards,
+  spacing,
+  isPageTop = false,
 }: FeatureCardsWithIconProps) {
+  const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+
   return (
-    <section id="features" className="my-6 md:my-16">
+    <Section
+      id="features"
+      spacingTop={spacingTop}
+      spacingBottom={spacingBottom}
+      isPageTop={isPageTop}
+    >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
@@ -58,6 +71,6 @@ export function FeatureCardsWithIcon({
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

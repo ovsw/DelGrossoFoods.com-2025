@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
-import { buttonsField, richTextField } from "../common";
+import { buttonsField, richTextField, sectionSpacingField } from "../common";
 
 export const hero = defineType({
   name: "hero",
@@ -35,6 +35,7 @@ export const hero = defineType({
       },
     }),
     buttonsField,
+    sectionSpacingField,
   ],
   preview: {
     select: {

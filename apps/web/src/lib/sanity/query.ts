@@ -89,6 +89,13 @@ const buttonsFragment = /* groq */ `
   }
 `;
 
+const sectionSpacingFragment = /* groq */ `
+  "spacing": {
+    "spacingTop": coalesce(spacing.spacingTop, "default"),
+    "spacingBottom": coalesce(spacing.spacingBottom, "default")
+  }
+`;
+
 // Page builder block fragments
 const ctaBlock = /* groq */ `
   _type == "cta" => {
@@ -177,6 +184,7 @@ const featureCardsIconBlock = /* groq */ `
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
+    ${sectionSpacingFragment},
     _type,
     ${ctaBlock},
     ${heroBlock},
