@@ -34,6 +34,9 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Fetch external docs when needed (don’t rely on assumptions). Prefer most up-to-date sources.
 - Do not commit or push unless explicitly asked. Use GitHub CLI only when requested.
 - Iteration default: do not run builds unless explicitly requested. After any code changes, run Prettier on the changed workspace(s) and then lint+typecheck: `pnpm -C <affected> format && pnpm -C <affected> lint:fix && pnpm -C <affected> typecheck`.
+- When the user asks to “store” something in memory for this project, write it in this `AGENTS.md` file so it persists across sessions.
+- Do not roll in refactors or improvements that haven’t been explicitly requested; surface suggestions instead and wait for approval.
+- After every Sanity schema or GROQ query change, immediately run `pnpm -C apps/studio type` so the generated types stay in sync.
 
 ### Coding standards
 
@@ -85,6 +88,10 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
   - Showing "Documents on this page"
   - Click-to-edit overlay/inspector
 - Optional debug only: if needed, use hooks from `next-sanity/hooks` (e.g. `useIsLivePreview`) — avoid legacy preview providers.
+
+#### Sanity Live Data Handling
+
+- Values coming from Sanity in Draft/Live mode may include steganographic metadata; always run `stegaClean` before using them in logic (e.g., spacing tokens, IDs, comparisons).
 
 Sanity Types (tight coupling)
 
@@ -544,21 +551,25 @@ Explicit selection rule to avoid confusion:
 1. Add a changeset with the work done in this conversation
 
 ```bash
-pnpm changeset:add
-# Select only changed workspaces (from the fixed group above)
-# Choose bump: patch | minor | major (see guide below)
-# Write a concise, user-facing summary (be imperative)
-git add .changeset/*.md && git commit -m "chore(changeset): add changeset"
+# Pick a kebab-case slug that describes the change
+cat <<'EOF' > .changeset/<slug>.md
+---
+"web": patch
+# add other changed workspaces (e.g. "studio", "@workspace/ui") and bump levels as needed
+---
+
+Write a concise, user-facing summary (be imperative)
+EOF
+
+git add .changeset/<slug>.md && git commit -m "chore(changeset): add changeset"
 ```
 
 2. Add a changeset for this entire branch
 
 ```bash
-pnpm changeset:add
-# Select all workspaces that changed anywhere on this branch
-# (Do not select all by default—choose only the ones that actually changed)
-# Choose the appropriate bump; prefer patch unless API/UX changes warrant minor/major
-git add .changeset/*.md && git commit -m "chore(changeset): add branch changeset"
+# Repeat the manual file creation above, but include every workspace touched anywhere on the branch
+# Adjust bump levels (patch | minor | major) to match the largest change
+git add .changeset/<slug>.md && git commit -m "chore(changeset): add branch changeset"
 ```
 
 3. Preview pending releases and versions
