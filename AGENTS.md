@@ -91,15 +91,12 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 #### Presentation guardrails
 
-- Keep Sanity stega metadata on DOM-visible text (headings, card labels, etc.); only call `stegaClean` for aria labels, logic, or alt text.
+- Keep Sanity stega metadata on DOM-visible text (headings, card labels, etc.) - everywhere that could be clicked by editors to quickly edit field data on a sanity document.
+- At the same time, you should call `stegaClean` for aria labels, logic, or alt text, or when using them in logic (e.g., spacing tokens, IDs, comparisons) - everywhere that's NOT going to be clickable by an editor - which means in elements that aren't directly visible on the page and that can't be clicked on by an editor viewing the page in preview mode or in Sanity Presentation.
 - When wiring click-to-edit surfaces, prefer wrapping the raw Sanity string or `data-sanity` spans instead of reformatting the value; if formatting is required, wrap substrings to keep individual field paths intact.
 - For custom Studio inputs, always forward `elementProps` (ref and event handlers) and pass through `readOnly` so Presentation can focus fields reliably.
 
-#### Sanity Live Data Handling
-
-- Values coming from Sanity in Draft/Live mode may include steganographic metadata; always run `stegaClean` before using them in logic (e.g., spacing tokens, IDs, comparisons).
-
-Sanity Types (tight coupling)
+### Sanity Types (tight coupling)
 
 - After schema or query edits (in `apps/web/src/lib/sanity/query.ts`), always run Studio typegen:
   - `pnpm -C apps/studio type`
