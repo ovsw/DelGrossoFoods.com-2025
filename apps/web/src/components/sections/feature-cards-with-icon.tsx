@@ -7,7 +7,9 @@ import { RichText } from "../elements/rich-text";
 import { SanityIcon } from "../elements/sanity-icon";
 import { resolveSectionSpacing } from "./section-spacing";
 
-type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon">;
+type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon"> & {
+  readonly isPageTop?: boolean;
+};
 
 type FeatureCardProps = {
   card: NonNullable<FeatureCardsWithIconProps["cards"]>[number];
@@ -38,6 +40,7 @@ export function FeatureCardsWithIcon({
   richText,
   cards,
   spacing,
+  isPageTop = false,
 }: FeatureCardsWithIconProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -46,7 +49,7 @@ export function FeatureCardsWithIcon({
       id="features"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">

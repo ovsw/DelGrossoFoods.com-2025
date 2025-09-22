@@ -8,7 +8,9 @@ import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
 import { resolveSectionSpacing } from "./section-spacing";
 
-type HeroBlockProps = PagebuilderType<"hero">;
+type HeroBlockProps = PagebuilderType<"hero"> & {
+  readonly isPageTop?: boolean;
+};
 
 export function HeroBlock({
   title,
@@ -17,6 +19,7 @@ export function HeroBlock({
   image,
   richText,
   spacing,
+  isPageTop = false,
 }: HeroBlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -25,7 +28,7 @@ export function HeroBlock({
       id="hero"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid items-center gap-8 lg:grid-cols-2">

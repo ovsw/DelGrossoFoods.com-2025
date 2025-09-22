@@ -7,7 +7,9 @@ import { RichText } from "../elements/rich-text";
 import { SanityButtons } from "../elements/sanity-buttons";
 import { resolveSectionSpacing } from "./section-spacing";
 
-export type CTABlockProps = PagebuilderType<"cta">;
+export type CTABlockProps = PagebuilderType<"cta"> & {
+  readonly isPageTop?: boolean;
+};
 
 export function CTABlock({
   richText,
@@ -15,6 +17,7 @@ export function CTABlock({
   eyebrow,
   buttons,
   spacing,
+  isPageTop = false,
 }: CTABlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -23,7 +26,7 @@ export function CTABlock({
       id="cta"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       <div className="container mx-auto px-4 md:px-8">
         <div className="bg-muted py-16 rounded-3xl px-4">

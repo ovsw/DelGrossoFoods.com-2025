@@ -8,7 +8,9 @@ import { RichText } from "../elements/rich-text";
 import { CTACard } from "../image-link-card";
 import { resolveSectionSpacing } from "./section-spacing";
 
-export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards">;
+export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards"> & {
+  readonly isPageTop?: boolean;
+};
 
 export function ImageLinkCards({
   richText,
@@ -16,6 +18,7 @@ export function ImageLinkCards({
   eyebrow,
   cards,
   spacing,
+  isPageTop = false,
 }: ImageLinkCardsProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -24,7 +27,7 @@ export function ImageLinkCards({
       id="image-link-cards"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
