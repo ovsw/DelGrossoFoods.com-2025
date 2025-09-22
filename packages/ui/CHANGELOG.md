@@ -1,5 +1,11 @@
 # @workspace/ui
 
+## 1.9.0
+
+### Minor Changes
+
+- [#64](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/64) [`0f34bce`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/0f34bcee608c336aa0148b1c0b42780826a6cf3e) Thanks [@ovsw](https://github.com/ovsw)! - Introduce shared section spacing controls across Studio schemas, UI, and web sections.
+
 ## 1.8.0
 
 ### Patch Changes
