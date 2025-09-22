@@ -89,6 +89,12 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
   - Click-to-edit overlay/inspector
 - Optional debug only: if needed, use hooks from `next-sanity/hooks` (e.g. `useIsLivePreview`) — avoid legacy preview providers.
 
+#### Presentation guardrails
+
+- Keep Sanity stega metadata on DOM-visible text (headings, card labels, etc.); only call `stegaClean` for aria labels, logic, or alt text.
+- When wiring click-to-edit surfaces, prefer wrapping the raw Sanity string or `data-sanity` spans instead of reformatting the value; if formatting is required, wrap substrings to keep individual field paths intact.
+- For custom Studio inputs, always forward `elementProps` (ref and event handlers) and pass through `readOnly` so Presentation can focus fields reliably.
+
 #### Sanity Live Data Handling
 
 - Values coming from Sanity in Draft/Live mode may include steganographic metadata; always run `stegaClean` before using them in logic (e.g., spacing tokens, IDs, comparisons).
