@@ -26,12 +26,6 @@ export interface PageBuilderProps {
   readonly type: string;
 }
 
-interface PageData {
-  readonly _id: string;
-  readonly _type: string;
-  readonly pageBuilder?: PageBuilderBlock[];
-}
-
 interface SanityDataAttributeConfig {
   readonly id: string;
   readonly type: string;
@@ -39,22 +33,16 @@ interface SanityDataAttributeConfig {
 }
 
 // Strongly typed component mapping with proper component signatures
-const BLOCK_COMPONENTS = {
-  cta: CTABlock as React.ComponentType<PagebuilderType<"cta">>,
-  faqAccordion: FaqAccordion as React.ComponentType<
-    PagebuilderType<"faqAccordion">
-  >,
-  hero: HeroBlock as React.ComponentType<PagebuilderType<"hero">>,
-  featureCardsIcon: FeatureCardsWithIcon as React.ComponentType<
-    PagebuilderType<"featureCardsIcon">
-  >,
-  subscribeNewsletter: SubscribeNewsletter as React.ComponentType<
-    PagebuilderType<"subscribeNewsletter">
-  >,
-  imageLinkCards: ImageLinkCards as React.ComponentType<
-    PagebuilderType<"imageLinkCards">
-  >,
-} as const satisfies Record<PageBuilderBlockTypes, React.ComponentType<any>>;
+const BLOCK_COMPONENTS: {
+  [K in PageBuilderBlockTypes]: React.ComponentType<PagebuilderType<K>>;
+} = {
+  cta: CTABlock,
+  faqAccordion: FaqAccordion,
+  hero: HeroBlock,
+  featureCardsIcon: FeatureCardsWithIcon,
+  subscribeNewsletter: SubscribeNewsletter,
+  imageLinkCards: ImageLinkCards,
+};
 
 /**
  * Helper function to create consistent Sanity data attributes
@@ -130,7 +118,7 @@ function useBlockRenderer(id: string, type: string) {
   );
 
   const renderBlock = useCallback(
-    (block: PageBuilderBlock, index: number) => {
+    (block: PageBuilderBlock) => {
       const Component =
         BLOCK_COMPONENTS[block._type as keyof typeof BLOCK_COMPONENTS];
 
@@ -181,7 +169,7 @@ export function PageBuilder({
 
   return (
     <section
-      className="flex flex-col gap-16 my-16 max-w-7xl mx-auto"
+      className="page-builder max-w-7xl mx-auto w-full"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >

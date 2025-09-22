@@ -370,6 +370,14 @@
             }
           },
           "optional": true
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
         }
       }
     }
@@ -807,6 +815,14 @@
             }
           },
           "optional": true
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
         }
       }
     }
@@ -917,6 +933,14 @@
                 }
               }
             }
+          },
+          "optional": false
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
           },
           "optional": false
         }
@@ -1346,6 +1370,14 @@
             }
           },
           "optional": true
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
         }
       }
     }
@@ -1662,6 +1694,14 @@
             }
           },
           "optional": true
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
         }
       }
     }
@@ -2047,6 +2087,80 @@
             }
           },
           "optional": true
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
+        }
+      }
+    }
+  },
+  {
+    "name": "sectionSpacing",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "sectionSpacing"
+          }
+        },
+        "spacingTop": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "default"
+              },
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": false
+        },
+        "spacingBottom": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "default"
+              },
+              {
+                "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "small"
+              },
+              {
+                "type": "string",
+                "value": "large"
+              }
+            ]
+          },
+          "optional": false
         }
       }
     }

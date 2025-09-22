@@ -115,6 +115,13 @@
   --color-th-red-500: oklch(0.52 0.14 36);
   --color-th-red-600: oklch(0.45 0.13 33);
   --color-th-red-700: oklch(0.39 0.12 27);
+
+  /* Section spacing tokens (padding-based to preserve background seams) */
+  --section-spacing-none: 0rem;
+  --section-spacing-small: 2rem;
+  --section-spacing-default: 4rem;
+  --section-spacing-large: 6rem;
+  --section-spacing-page-top: 8rem;
 }
 
 @theme inline {
@@ -183,6 +190,10 @@
 }
 
 @layer utilities {
+  .page-builder > div:first-of-type > section.pt-section-default {
+    padding-block-start: var(--section-spacing-page-top);
+  }
+
   .filter-scroll-area {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
@@ -206,4 +217,12 @@
   .filter-scroll-area::-webkit-scrollbar-thumb:hover {
     background: color-mix(in oklch, var(--muted-foreground) 65%, transparent);
   }
+}
+
+@utility pt-section-* {
+  padding-block-start: --value(--section-spacing-*);
+}
+
+@utility pb-section-* {
+  padding-block-end: --value(--section-spacing-*);
 }

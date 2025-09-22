@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
+import { Section } from "@workspace/ui/components/section";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
@@ -8,6 +9,7 @@ import { useFormStatus } from "react-dom";
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
+import { resolveSectionSpacing } from "./section-spacing";
 
 // const InteractiveGridPattern = dynamic(
 //   () =>
@@ -55,9 +57,18 @@ export function SubscribeNewsletter({
   title,
   subTitle,
   helperText,
+  spacing,
 }: SubscribeNewsletterProps) {
+  const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+
   return (
-    <section id="subscribe" className="px-4 py-8 sm:py-12 md:py-16">
+    <Section
+      id="subscribe"
+      spacingTop={spacingTop}
+      spacingBottom={spacingBottom}
+      isPageTop={spacingTop === "page-top"}
+      className="px-4"
+    >
       <div className="relative container mx-auto px-4 md:px-8 py-8 sm:py-16 md:py-24 lg:py-32 bg-gray-50 rounded-3xl overflow-hidden">
         <div className="relative z-10 mx-auto text-center">
           <h2 className="mb-4 text-xl font-semibold text-gray-900 sm:text-3xl md:text-5xl text-balance">
@@ -104,6 +115,6 @@ export function SubscribeNewsletter({
           )}
         /> */}
       </div>
-    </section>
+    </Section>
   );
 }
