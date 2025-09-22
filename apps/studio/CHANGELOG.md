@@ -1,5 +1,11 @@
 # studio
 
+## 1.9.1
+
+### Patch Changes
+
+- [#65](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/65) [`6a4fe3f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a4fe3f2e5c6dd614c7defa3a60818320ed16cb9) Thanks [@ovsw](https://github.com/ovsw)! - Restore Sanity Presentation click-to-edit for product listings, recipe cards, and the Studio price editor.
+
 ## 1.9.0
 
 ### Minor Changes
