@@ -1,13 +1,10 @@
-import type {
-  SectionSpacingToken,
-  SectionSpacingTopToken,
-} from "@workspace/ui/components/section";
+import type { SectionSpacingToken } from "@workspace/ui/components/section";
 import { stegaClean } from "next-sanity";
 
 import type { SectionSpacing } from "@/lib/sanity/sanity.types";
 
 interface ResolvedSectionSpacing {
-  readonly spacingTop: SectionSpacingTopToken;
+  readonly spacingTop: SectionSpacingToken;
   readonly spacingBottom: SectionSpacingToken;
 }
 

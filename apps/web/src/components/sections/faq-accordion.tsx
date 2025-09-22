@@ -14,7 +14,9 @@ import type { PagebuilderType } from "@/types";
 import { RichText } from "../elements/rich-text";
 import { resolveSectionSpacing } from "./section-spacing";
 
-type FaqAccordionProps = PagebuilderType<"faqAccordion">;
+type FaqAccordionProps = PagebuilderType<"faqAccordion"> & {
+  readonly isPageTop?: boolean;
+};
 
 export function FaqAccordion({
   eyebrow,
@@ -23,6 +25,7 @@ export function FaqAccordion({
   faqs,
   link,
   spacing,
+  isPageTop = false,
 }: FaqAccordionProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -31,7 +34,7 @@ export function FaqAccordion({
       id="faq"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       {/* <FaqJsonLd faqs={stegaClean(faqs)} /> */}
       <div className="container mx-auto px-4 md:px-6">

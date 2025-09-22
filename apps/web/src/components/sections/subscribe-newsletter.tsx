@@ -21,7 +21,9 @@ import { resolveSectionSpacing } from "./section-spacing";
 //   },
 // );
 
-type SubscribeNewsletterProps = PagebuilderType<"subscribeNewsletter">;
+type SubscribeNewsletterProps = PagebuilderType<"subscribeNewsletter"> & {
+  readonly isPageTop?: boolean;
+};
 export default function SubscribeNewsletterButton() {
   const { pending } = useFormStatus();
   return (
@@ -58,6 +60,7 @@ export function SubscribeNewsletter({
   subTitle,
   helperText,
   spacing,
+  isPageTop = false,
 }: SubscribeNewsletterProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
@@ -66,7 +69,7 @@ export function SubscribeNewsletter({
       id="subscribe"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
-      isPageTop={spacingTop === "page-top"}
+      isPageTop={isPageTop}
     >
       <div className="relative container mx-auto px-4 md:px-8 py-8 sm:py-16 md:py-24 lg:py-32 bg-gray-50 rounded-3xl overflow-hidden">
         <div className="relative z-10 mx-auto text-center">

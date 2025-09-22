@@ -2,7 +2,7 @@
 
 import { useOptimistic } from "@sanity/visual-editing/react";
 import { createDataAttribute } from "next-sanity";
-import { useCallback, useMemo } from "react";
+import { type ComponentType, useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
@@ -32,17 +32,21 @@ interface SanityDataAttributeConfig {
   readonly path: string;
 }
 
+type BlockComponentMap = {
+  [K in PageBuilderBlockTypes]: ComponentType<
+    PagebuilderType<K> & { readonly isPageTop?: boolean }
+  >;
+};
+
 // Strongly typed component mapping with proper component signatures
-const BLOCK_COMPONENTS: {
-  [K in PageBuilderBlockTypes]: React.ComponentType<PagebuilderType<K>>;
-} = {
+const BLOCK_COMPONENTS = {
   cta: CTABlock,
   faqAccordion: FaqAccordion,
   hero: HeroBlock,
   featureCardsIcon: FeatureCardsWithIcon,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
-};
+} satisfies BlockComponentMap;
 
 /**
  * Helper function to create consistent Sanity data attributes
@@ -118,28 +122,71 @@ function useBlockRenderer(id: string, type: string) {
   );
 
   const renderBlock = useCallback(
-    (block: PageBuilderBlock) => {
-      const Component =
-        BLOCK_COMPONENTS[block._type as keyof typeof BLOCK_COMPONENTS];
+    (block: PageBuilderBlock, isFirstBlock: boolean) => {
+      const { _key, _type } = block;
+      const dataAttribute = createBlockDataAttribute(_key);
 
-      if (!Component) {
-        return (
-          <UnknownBlockError
-            key={`${block._type}-${block._key}`}
-            blockType={block._type}
-            blockKey={block._key}
-          />
-        );
+      switch (_type) {
+        case "cta": {
+          const Component = BLOCK_COMPONENTS.cta;
+          return (
+            <div key={`cta-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "faqAccordion": {
+          const Component = BLOCK_COMPONENTS.faqAccordion;
+          return (
+            <div key={`faqAccordion-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "hero": {
+          const Component = BLOCK_COMPONENTS.hero;
+          return (
+            <div key={`hero-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "featureCardsIcon": {
+          const Component = BLOCK_COMPONENTS.featureCardsIcon;
+          return (
+            <div key={`featureCardsIcon-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "subscribeNewsletter": {
+          const Component = BLOCK_COMPONENTS.subscribeNewsletter;
+          return (
+            <div
+              key={`subscribeNewsletter-${_key}`}
+              data-sanity={dataAttribute}
+            >
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "imageLinkCards": {
+          const Component = BLOCK_COMPONENTS.imageLinkCards;
+          return (
+            <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        default:
+          return (
+            <UnknownBlockError
+              key={`${_type}-${_key}`}
+              blockType={_type}
+              blockKey={_key}
+            />
+          );
       }
-
-      return (
-        <div
-          key={`${block._type}-${block._key}`}
-          data-sanity={createBlockDataAttribute(block._key)}
-        >
-          <Component {...(block as any)} />
-        </div>
-      );
     },
     [createBlockDataAttribute],
   );
@@ -173,7 +220,7 @@ export function PageBuilder({
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >
-      {blocks.map(renderBlock)}
+      {blocks.map((block, index) => renderBlock(block, index === 0))}
     </section>
   );
 }
