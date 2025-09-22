@@ -1,6 +1,9 @@
 "use client";
 
+import { createDataAttribute } from "next-sanity";
+
 import { ListCard } from "@/components/list/list-card";
+import { dataset, projectId, studioUrl } from "@/config";
 import {
   getPackagingText,
   getUniqueLineSlug,
@@ -23,8 +26,16 @@ function formatUSD(value: number | null | undefined): string | null {
 }
 
 export function ProductCard({ item }: { item: ProductListItem }) {
-  const { name, slug, mainImage, category, price, sauceLines, sauceTypes } =
-    item;
+  const {
+    _id,
+    name,
+    slug,
+    mainImage,
+    category,
+    price,
+    sauceLines,
+    sauceTypes,
+  } = item;
 
   // Subtitle: "{Packaging} – {Price}"
   const packaging = getPackagingText(category);
@@ -37,6 +48,36 @@ export function ProductCard({ item }: { item: ProductListItem }) {
   const accessibleName = [name, secondaryText ?? priceText]
     .filter(Boolean)
     .join(" ");
+
+  const createFieldAttribute = (path: string) =>
+    createDataAttribute({
+      id: _id,
+      type: "product",
+      path,
+      baseUrl: studioUrl,
+      projectId,
+      dataset,
+    }).toString();
+
+  const categoryAttribute = packagingLabel
+    ? createFieldAttribute("category")
+    : null;
+  const priceAttribute = priceText ? createFieldAttribute("price") : null;
+
+  const secondaryContent = packagingLabel ? (
+    <>
+      <span data-sanity={categoryAttribute ?? undefined}>{packagingLabel}</span>
+      {priceText ? <span aria-hidden="true">&nbsp;–&nbsp;</span> : null}
+      {priceText ? (
+        <span data-sanity={priceAttribute ?? undefined}>{priceText}</span>
+      ) : null}
+    </>
+  ) : null;
+
+  const subtitleContent =
+    !packagingLabel && priceText ? (
+      <span data-sanity={priceAttribute ?? undefined}>{priceText}</span>
+    ) : null;
 
   // Badges: skip entirely for merchandise (other)
   const pkgSlug = toPackagingSlug(category);
@@ -74,6 +115,7 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       href={href}
       title={name}
       titleSecondary={secondaryText}
+      titleSecondaryContent={secondaryContent}
       ariaLabel={`View ${accessibleName}`}
       image={mainImage}
       imageAlt={accessibleName}
@@ -81,7 +123,11 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       imageWidth={800}
       imageHeight={533}
       subtitle={subtitle}
+      subtitleContent={subtitleContent}
       badges={badges}
+      sanityDocumentId={_id}
+      sanityDocumentType="product"
+      sanityFieldPath="mainImage"
     />
   );
 }

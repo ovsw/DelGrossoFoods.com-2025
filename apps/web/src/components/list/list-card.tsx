@@ -2,6 +2,7 @@
 import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import Link from "next/link";
 import { createDataAttribute, stegaClean } from "next-sanity";
+import type { ReactNode } from "react";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
@@ -28,6 +29,7 @@ type ListCardProps = {
   imageAlt?: string | null;
   ariaLabel?: string;
   subtitle?: string | null;
+  subtitleContent?: ReactNode;
   badges?: BadgeSpec[]; // up to two typically
   imageAspect?: ImageAspect;
   imageFit?: "contain" | "cover";
@@ -40,16 +42,19 @@ type ListCardProps = {
   sanityDocumentId?: string;
   sanityDocumentType?: string;
   sanityFieldPath?: string;
+  titleSecondaryContent?: ReactNode;
 };
 
 export function ListCard({
   href,
   title,
   titleSecondary,
+  titleSecondaryContent,
   image,
   ariaLabel,
   imageAlt,
   subtitle,
+  subtitleContent,
   badges = [],
   imageAspect = "sauce",
   imageFit = "contain",
@@ -61,16 +66,25 @@ export function ListCard({
   sanityDocumentType,
   sanityFieldPath,
 }: ListCardProps) {
-  const cleanTitle = stegaClean(title);
-  const cleanSecondary = titleSecondary
-    ? stegaClean(titleSecondary)
-    : undefined;
-  const accessibleTitle = [cleanTitle, cleanSecondary]
-    .filter(Boolean)
+  const secondaryTitleValue =
+    typeof titleSecondary === "string" ? titleSecondary : undefined;
+  const hasSecondaryTitle =
+    typeof secondaryTitleValue === "string" &&
+    secondaryTitleValue.trim().length > 0;
+  const accessibleTitleParts = [stegaClean(title)];
+  if (hasSecondaryTitle) {
+    accessibleTitleParts.push(stegaClean(secondaryTitleValue));
+  }
+  const accessibleTitle = accessibleTitleParts
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0)
     .join(" ")
     .trim();
   const providedAriaLabel = ariaLabel ? stegaClean(ariaLabel) : undefined;
-  const altText = stegaClean(imageAlt ?? accessibleTitle);
+  const altText = stegaClean(imageAlt ?? accessibleTitle ?? "");
+  const linkAriaLabel = (providedAriaLabel ?? accessibleTitle) || undefined;
+  const displayTitle = title;
+  const displaySecondary = hasSecondaryTitle ? secondaryTitleValue : null;
   const aspectClass = ASPECT_CLASS[imageAspect];
   const wrapperClassName =
     imageFit === "cover"
@@ -117,7 +131,7 @@ export function ListCard({
   return (
     <Link
       href={href}
-      aria-label={providedAriaLabel ?? accessibleTitle}
+      aria-label={linkAriaLabel}
       className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl"
     >
       <div className={wrapperClassName}>
@@ -142,19 +156,19 @@ export function ListCard({
         <h3
           className={`text-base font-semibold leading-tight group-hover:underline ${titleAlignClass}`}
         >
-          <span className="block">{cleanTitle}</span>
-          {cleanSecondary ? (
+          <span className="block">{displayTitle}</span>
+          {displaySecondary || titleSecondaryContent ? (
             <span className="mt-0.5 block text-sm font-medium text-muted-foreground">
-              {cleanSecondary}
+              {titleSecondaryContent ?? displaySecondary}
             </span>
           ) : null}
         </h3>
 
-        {subtitle ? (
+        {subtitle || subtitleContent ? (
           <p
             className={`text-sm text-muted-foreground mt-1 ${subtitleAlignClass}`}
           >
-            {subtitle}
+            {subtitleContent ?? subtitle}
           </p>
         ) : null}
 
