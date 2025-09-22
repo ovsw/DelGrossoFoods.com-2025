@@ -5,12 +5,14 @@ import {
   AccordionTrigger,
 } from "@workspace/ui/components/accordion";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { Section } from "@workspace/ui/components/section";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
+import { resolveSectionSpacing } from "./section-spacing";
 
 type FaqAccordionProps = PagebuilderType<"faqAccordion">;
 
@@ -20,9 +22,17 @@ export function FaqAccordion({
   subtitle,
   faqs,
   link,
+  spacing,
 }: FaqAccordionProps) {
+  const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+
   return (
-    <section id="faq" className="my-8">
+    <Section
+      id="faq"
+      spacingTop={spacingTop}
+      spacingBottom={spacingBottom}
+      isPageTop={spacingTop === "page-top"}
+    >
       {/* <FaqJsonLd faqs={stegaClean(faqs)} /> */}
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col items-center">
@@ -34,7 +44,7 @@ export function FaqAccordion({
             </h3>
           </div>
         </div>
-        <div className="my-16 max-w-xl mx-auto">
+        <div className="mt-16 max-w-xl mx-auto">
           <Accordion
             type="single"
             collapsible
@@ -79,6 +89,6 @@ export function FaqAccordion({
           )}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
