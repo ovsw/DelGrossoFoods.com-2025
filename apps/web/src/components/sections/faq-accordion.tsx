@@ -45,12 +45,7 @@ export function FaqAccordion({
           </div>
         </div>
         <div className="mt-16 max-w-xl mx-auto">
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full"
-            defaultValue="3"
-          >
+          <Accordion type="single" collapsible className="w-full">
             {faqs?.map((faq, index) => (
               <AccordionItem
                 value={faq?._id}

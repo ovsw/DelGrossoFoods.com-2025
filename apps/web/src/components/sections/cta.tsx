@@ -20,7 +20,7 @@ export function CTABlock({
 
   return (
     <Section
-      id="features"
+      id="cta"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={spacingTop === "page-top"}

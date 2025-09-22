@@ -67,7 +67,6 @@ export function SubscribeNewsletter({
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={spacingTop === "page-top"}
-      className="px-4"
     >
       <div className="relative container mx-auto px-4 md:px-8 py-8 sm:py-16 md:py-24 lg:py-32 bg-gray-50 rounded-3xl overflow-hidden">
         <div className="relative z-10 mx-auto text-center">

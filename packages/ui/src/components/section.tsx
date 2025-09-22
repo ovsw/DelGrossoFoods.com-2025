@@ -4,20 +4,20 @@ import * as React from "react";
 export type SectionSpacingToken = "none" | "small" | "default" | "large";
 export type SectionSpacingTopToken = SectionSpacingToken | "page-top";
 
-const SECTION_TOP_SPACING_CLASS: Record<SectionSpacingTopToken, string> = {
+const SECTION_TOP_SPACING_CLASS = {
   none: "pt-section-none",
   small: "pt-section-small",
   default: "pt-section-default",
   large: "pt-section-large",
   "page-top": "pt-section-page-top",
-};
+} as const satisfies Record<SectionSpacingTopToken, string>;
 
-const SECTION_BOTTOM_SPACING_CLASS: Record<SectionSpacingToken, string> = {
+const SECTION_BOTTOM_SPACING_CLASS = {
   none: "pb-section-none",
   small: "pb-section-small",
   default: "pb-section-default",
   large: "pb-section-large",
-};
+} as const satisfies Record<SectionSpacingToken, string>;
 
 export interface SectionProps
   extends Omit<React.ComponentPropsWithoutRef<"section">, "children"> {
@@ -48,10 +48,8 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       : spacingTop;
 
     const spacingClasses = cn(
-      SECTION_TOP_SPACING_CLASS[effectiveTopSpacing] ??
-        SECTION_TOP_SPACING_CLASS.default,
-      SECTION_BOTTOM_SPACING_CLASS[spacingBottom] ??
-        SECTION_BOTTOM_SPACING_CLASS.default,
+      SECTION_TOP_SPACING_CLASS[effectiveTopSpacing],
+      SECTION_BOTTOM_SPACING_CLASS[spacingBottom],
       className,
     );
 
