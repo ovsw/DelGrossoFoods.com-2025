@@ -8,11 +8,11 @@ import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
 import { resolveSectionSpacing } from "./section-spacing";
 
-type HeroBlockProps = PagebuilderType<"hero"> & {
+type FeatureBlockProps = PagebuilderType<"feature"> & {
   readonly isPageTop?: boolean;
 };
 
-export function HeroBlock({
+export function FeatureBlock({
   title,
   buttons,
   badge,
@@ -20,12 +20,12 @@ export function HeroBlock({
   richText,
   spacing,
   isPageTop = false,
-}: HeroBlockProps) {
+}: FeatureBlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
   return (
     <Section
-      id="hero"
+      id="feature"
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}

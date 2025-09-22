@@ -122,8 +122,8 @@ const imageLinkCardsBlock = /* groq */ `
   }
 `;
 
-const heroBlock = /* groq */ `
-  _type == "hero" => {
+const featureBlock = /* groq */ `
+  _type == "feature" => {
     ...,
     ${imageFragment},
     ${buttonsFragment},
@@ -187,7 +187,7 @@ const pageBuilderFragment = /* groq */ `
     ${sectionSpacingFragment},
     _type,
     ${ctaBlock},
-    ${heroBlock},
+    ${featureBlock},
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},

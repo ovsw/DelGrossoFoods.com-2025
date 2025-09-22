@@ -21,7 +21,7 @@ export type PagebuilderType<T extends PageBuilderBlockTypes> = Extract<
 >;
 
 export type SanityButtonProps = NonNullable<
-  NonNullable<PagebuilderType<"hero">>["buttons"]
+  NonNullable<PagebuilderType<"feature">>["buttons"]
 >[number];
 
 export type SanityImageProps = NonNullable<QueryImageTypeResult>;
