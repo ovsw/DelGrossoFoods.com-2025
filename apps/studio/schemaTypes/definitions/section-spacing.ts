@@ -1,3 +1,4 @@
+import { BlockElementIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 const sectionSpacingOptions = [
@@ -10,6 +11,9 @@ const sectionSpacingOptions = [
 export const sectionSpacing = defineType({
   name: "sectionSpacing",
   title: "Section Spacing",
+  icon: BlockElementIcon,
+  description:
+    "Choose the padding above and below a section to balance it with neighboring content.",
   type: "object",
   fields: [
     defineField({
