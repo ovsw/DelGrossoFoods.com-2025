@@ -3,4 +3,4 @@
 "studio": patch
 ---
 
-Restore Sanity Presentation click-to-edit for product listings and price editor.
+Restore Sanity Presentation click-to-edit for product listings, recipe cards, and the Studio price editor.
