@@ -10,7 +10,7 @@ import { buildHref } from "@/lib/list/href";
 import type { RecipeListItem } from "@/types";
 
 export function RecipeCard({ item }: { item: RecipeListItem }) {
-  const { name, slug, mainImage, meat, tags } = item;
+  const { _id, name, slug, mainImage, meat, tags } = item;
 
   const href = buildHref("/recipes", slug);
   const meatBadges = (meat ?? []).map((value) => {
@@ -44,6 +44,9 @@ export function RecipeCard({ item }: { item: RecipeListItem }) {
       imageWidth={400}
       imageHeight={300}
       imageFit="cover"
+      sanityDocumentId={_id}
+      sanityDocumentType="recipe"
+      sanityFieldPath="mainImage"
     />
   );
 }
