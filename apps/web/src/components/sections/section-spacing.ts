@@ -23,7 +23,15 @@ function normalizeSpacingToken(value?: string | null): SectionSpacingToken {
     return "default";
   }
 
-  const cleaned = stegaClean(value) as string;
+  const cleanedRaw = stegaClean(value);
+  const cleaned =
+    typeof cleanedRaw === "string"
+      ? cleanedRaw.trim()
+      : String(cleanedRaw).trim();
+
+  if (!cleaned) {
+    return "default";
+  }
 
   if (SECTION_SPACING_VALUES.has(cleaned as SectionSpacingToken)) {
     return cleaned as SectionSpacingToken;
