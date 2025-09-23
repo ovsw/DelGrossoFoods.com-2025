@@ -1,22 +1,20 @@
+import { Button } from "@workspace/ui/components/button";
+import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
+import { Search } from "lucide-react";
+import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
+import { urlFor } from "@/lib/sanity/client";
 import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
+
+import {
+  type NutritionFactRow,
+  NutritionFactsPanel,
+} from "./nutrition-facts-panel";
 
 type SauceNutritionalInfoProps = {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
-};
-
-type NutritionRow = {
-  readonly label: string;
-  readonly value: string | null;
-  readonly dailyValue?: string | null;
-  readonly isBold?: boolean;
-  readonly isIndented?: boolean;
-  readonly hasThickDivider?: boolean;
-  readonly srOnlyDailyText?: string;
-  readonly valuePrefix?: string;
-  readonly valueSuffix?: string;
 };
 
 type NutritionData = NonNullable<
@@ -47,16 +45,26 @@ export function SauceNutritionalInfo({ sauce }: SauceNutritionalInfoProps) {
   const servingSize = clean(nutrition.servingSize);
   const gramsPerServing = clean(nutrition.gramsPerServing);
   const calories = clean(nutrition.calories) || "0";
+  const sauceName = clean(sauce.name);
 
   const ingredients = splitLines(clean(sauce.ingredients ?? ""));
   const allergens = splitLines(clean(sauce.allergens ?? ""));
 
   const servingDescriptionParts = [
     servingSize,
-    gramsPerServing ? `(${gramsPerServing})` : "",
+    gramsPerServing ? `(${gramsPerServing}g)` : "",
   ].filter(Boolean);
 
-  const nutritionRows: NutritionRow[] = [
+  const servingsSummaryText =
+    servingsPerContainer && servingsPerContainer.length > 0
+      ? `About ${servingsPerContainer} servings per container.`
+      : null;
+  const servingDescriptionText =
+    servingDescriptionParts.length > 0
+      ? servingDescriptionParts.join(" ")
+      : null;
+
+  const nutritionRows: NutritionFactRow[] = [
     {
       label: "Total Fat",
       value: clean(nutrition.totalFat),
@@ -142,7 +150,20 @@ export function SauceNutritionalInfo({ sauce }: SauceNutritionalInfoProps) {
     },
   ].filter((row) => row.value);
 
-  const hasNutritionDetails = nutritionRows.length > 0;
+  const dailyValueNote =
+    "* Percent Daily Values are based on a 2,000 calorie diet.";
+  const labelImage = sauce.labelFlatImage;
+  const labelImageUrl = labelImage?.id
+    ? urlFor({ ...labelImage, _id: labelImage.id })
+        .width(2000)
+        .dpr(2)
+        .url()
+    : null;
+  const labelAlt = clean(labelImage?.alt ?? "");
+
+  const labelButtonAriaLabel = labelImageUrl
+    ? `View ${sauceName || "the sauce"} full label`
+    : "";
 
   return (
     <Section
@@ -150,148 +171,95 @@ export function SauceNutritionalInfo({ sauce }: SauceNutritionalInfoProps) {
       spacingBottom="large"
       aria-labelledby="nutritional-info-heading"
     >
-      <div className="container mx-auto grid gap-12 px-4 md:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
-        <div className="space-y-8">
-          <div>
-            <h2
-              id="nutritional-info-heading"
-              className="text-3xl font-semibold text-brand-green"
-            >
-              Nutritional Info
-            </h2>
-            {servingsPerContainer && (
-              <p className="mt-4 text-base text-muted-foreground">
-                About {servingsPerContainer} servings per container.
-              </p>
-            )}
-            {servingDescriptionParts.length > 0 && (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Serving size {servingDescriptionParts.join(" ")}
-              </p>
-            )}
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid items-start gap-8 lg:grid-cols-2">
+          <div className="grid grid-rows-[auto_1fr_auto] gap-6 items-center justify-items-center text-center lg:items-start lg:justify-items-start lg:text-left">
+            <Eyebrow text="Nutrition Facts" />
+
+            <div className="grid w-full max-w-xl gap-8 text-left">
+              <div className="grid gap-4 text-center lg:text-left">
+                <h2
+                  id="nutritional-info-heading"
+                  className="text-4xl font-semibold text-brand-green lg:text-5xl"
+                >
+                  Nutritional Info
+                </h2>
+                {servingsSummaryText ? (
+                  <p className="text-muted-foreground">{servingsSummaryText}</p>
+                ) : null}
+                {servingDescriptionText ? (
+                  <p className="text-sm text-muted-foreground">
+                    Serving size {servingDescriptionText}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="grid gap-6">
+                {ingredients.length > 0 ? (
+                  <div className="grid gap-2 text-left">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      Ingredients
+                    </h3>
+                    <ul className="text-sm text-muted-foreground">
+                      {ingredients.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {allergens.length > 0 ? (
+                  <div className="grid gap-2 text-left">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      Allergens
+                    </h3>
+                    <ul className="text-sm text-muted-foreground">
+                      {allergens.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                <div className="grid gap-2 text-center lg:text-left">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/80">
+                    Daily value guidance
+                  </span>
+                  <p className="text-sm text-muted-foreground">
+                    {dailyValueNote}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {labelImageUrl ? (
+              <Button
+                asChild
+                variant="outline"
+                className="w-full gap-2 sm:w-auto"
+                aria-label={labelButtonAriaLabel}
+              >
+                <Link
+                  href={labelImageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={labelAlt || labelButtonAriaLabel}
+                >
+                  <Search className="size-4" aria-hidden="true" />
+                  <span>View Full Label</span>
+                </Link>
+              </Button>
+            ) : null}
           </div>
 
-          {ingredients.length > 0 && (
-            <div>
-              <h3 className="text-xl font-semibold text-foreground">
-                Ingredients
-              </h3>
-              <ul className="mt-3 list-disc space-y-1 ps-5 text-sm text-muted-foreground">
-                {ingredients.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {allergens.length > 0 && (
-            <div>
-              <h3 className="text-xl font-semibold text-foreground">
-                Allergens
-              </h3>
-              <ul className="mt-3 list-disc space-y-1 ps-5 text-sm text-muted-foreground">
-                {allergens.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <div className="rounded-3xl bg-white p-6 shadow-lg ring-1 ring-black/5">
-          <div className="border-b border-black pb-4 text-sm font-medium text-muted-foreground">
-            <p className="text-muted-foreground">
-              {servingsPerContainer
-                ? `About ${servingsPerContainer} servings per container.`
-                : "Serving details"}
-            </p>
-            <p className="mt-2 text-lg font-semibold text-foreground">
-              Amount per serving
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {servingDescriptionParts.join(" ") || "Per label"}
-            </p>
+          <div className="h-full w-full self-center">
+            <NutritionFactsPanel
+              servingsPerContainerText={servingsSummaryText}
+              servingDescriptionText={servingDescriptionText}
+              calories={calories}
+              rows={nutritionRows}
+            />
           </div>
-
-          <div className="border-b border-black py-4">
-            <div className="flex items-end justify-between text-4xl font-semibold tracking-tight text-foreground">
-              <span>Calories</span>
-              <span>{calories}</span>
-            </div>
-          </div>
-
-          {hasNutritionDetails ? (
-            <table className="mt-4 w-full border-collapse text-sm">
-              <thead>
-                <tr className="text-left font-semibold text-muted-foreground">
-                  <th className="py-2">Per serving</th>
-                  <th className="py-2 text-right">% Daily Value*</th>
-                </tr>
-              </thead>
-              <tbody>
-                {nutritionRows.map(
-                  ({
-                    label,
-                    value,
-                    dailyValue,
-                    isBold,
-                    isIndented,
-                    hasThickDivider,
-                    srOnlyDailyText,
-                    valuePrefix,
-                    valueSuffix,
-                  }) => (
-                    <tr
-                      key={label}
-                      className={[
-                        "border-b border-muted-foreground/40",
-                        hasThickDivider
-                          ? "border-b-4 border-muted-foreground/60"
-                          : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    >
-                      <td
-                        className={[
-                          "py-2 text-foreground",
-                          isIndented ? "ps-6" : "",
-                          isBold ? "font-semibold" : "font-medium",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        <span>{label}</span>
-                        {value && (
-                          <span>
-                            {" "}
-                            {valuePrefix ?? ""}
-                            {value}
-                            {valueSuffix ?? ""}
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-2 text-right text-foreground">
-                        {dailyValue ? (
-                          dailyValue
-                        ) : srOnlyDailyText ? (
-                          <span className="sr-only">{srOnlyDailyText}</span>
-                        ) : null}
-                      </td>
-                    </tr>
-                  ),
-                )}
-              </tbody>
-            </table>
-          ) : (
-            <p className="mt-4 text-sm text-muted-foreground">
-              Nutritional details are coming soon.
-            </p>
-          )}
-
-          <p className="mt-4 text-xs text-muted-foreground">
-            * Percent Daily Values are based on a 2,000 calorie diet.
-          </p>
         </div>
       </div>
     </Section>

@@ -482,6 +482,10 @@ export const getSauceBySlugQuery = defineQuery(`
       ${imageFields},
       "alt": coalesce(alt, "")
     },
+    "labelFlatImage": labelFlatImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
     authorName,
     "authorImage": authorImage{
       ${imageFields},

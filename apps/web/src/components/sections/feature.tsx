@@ -52,14 +52,14 @@ export function FeatureBlock({
           </div>
 
           {image && (
-            <div className="h-96 w-full">
+            <div className="h-96 w-full self-center">
               <SanityImage
                 image={image}
-                loading="eager"
+                // loading="eager"
                 width={800}
                 height={800}
                 alt={typeof title === "string" ? title : ""}
-                className="max-h-96 w-full rounded-3xl object-cover"
+                className="max-h-96 w-full rounded-3xl object-cover h-full"
               />
             </div>
           )}
