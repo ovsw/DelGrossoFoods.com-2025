@@ -45,7 +45,7 @@ export function FeatureBlock({
             </div>
 
             <SanityButtons
-              buttons={buttons}
+              buttons={buttons ?? null}
               buttonClassName="w-full sm:w-auto"
               className="w-full sm:w-fit grid gap-2 sm:grid-flow-col lg:justify-start mb-8"
             />
@@ -58,6 +58,7 @@ export function FeatureBlock({
                 loading="eager"
                 width={800}
                 height={800}
+                alt={typeof title === "string" ? title : ""}
                 className="max-h-96 w-full rounded-3xl object-cover"
               />
             </div>

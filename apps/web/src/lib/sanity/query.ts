@@ -458,6 +458,41 @@ export const getAllSaucesForIndexQuery = defineQuery(`
   }
 `);
 
+export const getSauceBySlugQuery = defineQuery(`
+  *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    line,
+    category,
+    "description": description[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    },
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": mainImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    authorName,
+    "authorImage": authorImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    nutritionalInfo,
+    ingredients,
+    allergens
+  }
+`);
+
 // Recipes index queries
 export const getRecipeIndexPageQuery = defineQuery(`
   *[_type == "recipeIndex"][0]{

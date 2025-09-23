@@ -24,7 +24,7 @@ export default async function RecipeDetailPage({
 }) {
   const { slug } = params;
   return (
-    <main className="bg-background">
+    <main>
       <div className="container my-16 mx-auto px-4 md:px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-bold sm:text-4xl">{slug}</h1>
