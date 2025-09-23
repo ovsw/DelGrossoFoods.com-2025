@@ -51,7 +51,12 @@
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-[Gates determined based on constitution file]
+- **Code Quality**: Plan outlines TypeScript-first changes, reuse of `@workspace/ui`, and avoids out-of-scope refactors unless paired with an approved ADR.
+- **Testing Discipline**: Plan documents red-green-refactor sequencing, required pnpm quality gates, and Sanity type regeneration when schemas or queries change.
+- **User Experience**: Plan confirms light-only theming, accessibility coverage, and retention of Sanity stega metadata for editor-facing copy.
+- **Performance**: Plan states how LCP ≤ 2.5s and INP ≤ 200ms budgets stay protected (caching, query projections, lazy loading).
+- **Implementation Guardrails**: Plan lists any shared utilities or packages touched and the rationale for placement.
+- **Delivery Workflow**: Plan notes evidence to capture (tests, screenshots, performance results) for the eventual PR.
 
 ## Project Structure
 
@@ -226,4 +231,4 @@ _This checklist is updated during execution flow_
 
 ---
 
-_Based on Constitution v2.1.1 - See `/memory/constitution.md`_
+_Based on Constitution v1.0.0 - See `/memory/constitution.md`_

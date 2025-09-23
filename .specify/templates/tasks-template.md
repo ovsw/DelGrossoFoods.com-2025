@@ -8,132 +8,122 @@
 ```
 1. Load plan.md from feature directory
    → If not found: ERROR "No implementation plan found"
-   → Extract: tech stack, libraries, structure
+   → Extract: target workspace(s), affected components, constitution commitments
 2. Load optional design documents:
-   → data-model.md: Extract entities → model tasks
-   → contracts/: Each file → contract test task
-   → research.md: Extract decisions → setup tasks
-3. Generate tasks by category:
-   → Setup: project init, dependencies, linting
-   → Tests: contract tests, integration tests
-   → Core: models, services, CLI commands
-   → Integration: DB, middleware, logging
-   → Polish: unit tests, performance, docs
+   → data-model.md: Extract entities → data or schema tasks
+   → contracts/: Each file → contract or API test task
+   → research.md: Extract decisions → setup tasks or guardrails
+3. Generate tasks grouped by constitution principles:
+   → Code Quality: refactors, shared component updates, ADR follow-up
+   → Testing Discipline: failing tests, type regeneration, linting gates
+   → User Experience: light-theme validation, accessibility checks, Sanity content wiring
+   → Performance: profiling, query shaping, bundle analysis
 4. Apply task rules:
    → Different files = mark [P] for parallel
    → Same file = sequential (no [P])
-   → Tests before implementation (TDD)
+   → Tests and validation precede implementation (TDD)
 5. Number tasks sequentially (T001, T002...)
-6. Generate dependency graph
-7. Create parallel execution examples
-8. Validate task completeness:
-   → All contracts have tests?
-   → All entities have models?
-   → All endpoints implemented?
+6. Generate dependency notes (tests → implementation → polish)
+7. Provide parallel execution examples respecting file isolation
+8. Validate completeness against plan commitments and constitution
 9. Return: SUCCESS (tasks ready for execution)
 ```
 
 ## Format: `[ID] [P?] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
-- Include exact file paths in descriptions
+- Include exact file paths in descriptions; use `<placeholder>` tags that implementers must replace before execution
 
 ## Path Conventions
 
-- **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
-- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- **Web app**: `apps/web/src/...`
+- **Sanity Studio**: `apps/studio/schemaTypes/...`
+- **Shared UI**: `packages/ui/src/...`
+- **Scripts/Configs**: `plans/`, `.specify/`, `configs/`
 
-## Phase 3.1: Setup
+## Phase 3.1: Setup & Guardrails
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T001 Confirm environment prerequisites and required env vars in `apps/web/.env.local` or `apps/studio/.env`
+- [ ] T002 [P] Outline ADR or plan updates if touching shared architecture (`plans/adr-*.md` or new ADR draft)
+- [ ] T003 [P] Prepare Storybook/preview fixtures in `apps/web/src/stories/<feature>.stories.tsx` if UX changes require visual approval
 
 ## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 
-**CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
+**CRITICAL: Tests MUST be authored or updated and MUST FAIL before implementation.**
 
-- [ ] T004 [P] Contract test POST /api/users in tests/contract/test_users_post.py
-- [ ] T005 [P] Contract test GET /api/users/{id} in tests/contract/test_users_get.py
-- [ ] T006 [P] Integration test user registration in tests/integration/test_registration.py
-- [ ] T007 [P] Integration test auth flow in tests/integration/test_auth.py
+- [ ] T004 [P] Add or update unit/component tests in `apps/web/src/<path>/__tests__/<component>.test.tsx` (replace `<path>`)
+- [ ] T005 [P] Add integration/regression scenario in `apps/web/tests/integration/<feature>.test.ts`
+- [ ] T006 [P] Update Sanity schema fixture tests or zod validators in `apps/web/src/lib/sanity/__tests__/<query>.test.ts`
+- [ ] T007 [P] Regenerate Sanity types (`pnpm --filter studio type`) and commit resulting artifacts
 
 ## Phase 3.3: Core Implementation (ONLY after tests are failing)
 
-- [ ] T008 [P] User model in src/models/user.py
-- [ ] T009 [P] UserService CRUD in src/services/user_service.py
-- [ ] T010 [P] CLI --create-user in src/cli/user_commands.py
-- [ ] T011 POST /api/users endpoint
-- [ ] T012 GET /api/users/{id} endpoint
-- [ ] T013 Input validation
-- [ ] T014 Error handling and logging
+- [ ] T008 [P] Implement feature logic in `apps/web/src/<path>/<component>.tsx`
+- [ ] T009 [P] Update supporting utilities in `apps/web/src/lib/<module>.ts`
+- [ ] T010 [P] Align shared UI component in `packages/ui/src/components/<component>/<component>.tsx`
+- [ ] T011 Wire Sanity content/query updates in `apps/web/src/lib/sanity/<query>.ts`
+- [ ] T012 Apply accessibility and copy updates sourced from Sanity documents
 
-## Phase 3.4: Integration
+## Phase 3.4: Performance & Integration
 
-- [ ] T015 Connect UserService to DB
-- [ ] T016 Auth middleware
-- [ ] T017 Request/response logging
-- [ ] T018 CORS and security headers
+- [ ] T013 Profile affected route with `pnpm --filter web lint && pnpm --filter web typecheck` plus Lighthouse run; capture metrics in `plans/<feature>/performance.md`
+- [ ] T014 Optimize data fetching (projection, caching) in `apps/web/src/lib/sanity/<query>.ts`
+- [ ] T015 Review bundle size impact via `pnpm --filter web build` (if approved) or analyze using `next build --analyze` notes in plan
 
-## Phase 3.5: Polish
+## Phase 3.5: Polish & Validation
 
-- [ ] T019 [P] Unit tests for validation in tests/unit/test_validation.py
-- [ ] T020 Performance tests (<200ms)
-- [ ] T021 [P] Update docs/api.md
-- [ ] T022 Remove duplication
-- [ ] T023 Run manual-testing.md
+- [ ] T016 [P] Update visual documentation/assets (screenshots, recordings) stored in `plans/<feature>/evidence/`
+- [ ] T017 [P] Run quality gates: `pnpm --filter <workspace> format`, `pnpm --filter <workspace> lint:fix`, `pnpm --filter <workspace> typecheck`
+- [ ] T018 Verify performance budgets (LCP ≤ 2.5s, INP ≤ 200ms) and document results in plan.md summary
+- [ ] T019 [P] Update user-facing docs if applicable (`README.md`, `apps/web/src/content/...`)
+- [ ] T020 Confirm tests now pass and remove any temporary toggles or flags
 
 ## Dependencies
 
-- Tests (T004-T007) before implementation (T008-T014)
-- T008 blocks T009, T015
-- T016 blocks T018
-- Implementation before polish (T019-T023)
+- Phase 3.2 tasks block Phase 3.3 work
+- Shared UI updates (T010) precede app-level styling tweaks dependent on them
+- Performance validation (T013-T018) occurs after implementation but before final approvals
 
 ## Parallel Example
 
 ```
-# Launch T004-T007 together:
-Task: "Contract test POST /api/users in tests/contract/test_users_post.py"
-Task: "Contract test GET /api/users/{id} in tests/contract/test_users_get.py"
-Task: "Integration test registration in tests/integration/test_registration.py"
-Task: "Integration test auth in tests/integration/test_auth.py"
+# Example parallel block once plan-specific paths are known:
+Task: "T004 [P] Component test for hero in apps/web/src/components/hero/__tests__/hero.test.tsx"
+Task: "T005 [P] Integration test for checkout happy path in apps/web/tests/integration/checkout.test.ts"
+Task: "T006 [P] Sanity query validator updates in apps/web/src/lib/sanity/__tests__/product-query.test.ts"
 ```
 
 ## Notes
 
-- [P] tasks = different files, no dependencies
-- Verify tests fail before implementing
-- Commit after each task
-- Avoid: vague tasks, same file conflicts
+- Replace `<path>`/`<component>` placeholders with concrete values before execution
+- [P] tasks must not touch the same file to preserve independence
+- Tests authored in Phase 3.2 MUST fail prior to implementation to satisfy constitution TDD requirements
+- Document evidence (tests, screenshots, performance metrics) for Delivery Workflow expectations
 
 ## Task Generation Rules
 
 _Applied during main() execution_
 
 1. **From Contracts**:
-   - Each contract file → contract test task [P]
-   - Each endpoint → implementation task
+   - Each contract file → contract or API test task [P]
+   - Each endpoint/query → implementation task mapped to Constitution principles
 2. **From Data Model**:
-   - Each entity → model creation task [P]
-   - Relationships → service layer tasks
+   - Each entity → schema or type task [P]
+   - Relationships → utility/service tasks in web or studio workspaces
 3. **From User Stories**:
    - Each story → integration test [P]
-   - Quickstart scenarios → validation tasks
-
+   - Quickstart scenarios → validation tasks (performance, UX evidence)
 4. **Ordering**:
-   - Setup → Tests → Models → Services → Endpoints → Polish
-   - Dependencies block parallel execution
+   - Setup → Tests → Implementation → Performance → Polish
+   - Dependencies gate parallel execution
 
 ## Validation Checklist
 
 _GATE: Checked by main() before returning_
 
-- [ ] All contracts have corresponding tests
-- [ ] All entities have model tasks
-- [ ] All tests come before implementation
-- [ ] Parallel tasks truly independent
-- [ ] Each task specifies exact file path
-- [ ] No task modifies same file as another [P] task
+- [ ] Every plan commitment maps to at least one task
+- [ ] Tests precede implementation for each code path
+- [ ] Tasks reference exact files or explicit placeholders awaiting expansion
+- [ ] Parallel tasks are file-isolated
+- [ ] Performance validation tasks exist when user-facing work changes
+- [ ] Evidence capture tasks align with Delivery Workflow requirements

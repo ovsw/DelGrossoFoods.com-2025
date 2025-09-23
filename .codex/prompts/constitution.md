@@ -6,7 +6,10 @@ The user input to you can be provided directly by the agent or as a command argu
 
 User input:
 
-$ARGUMENTS
+Create principles focused on code quality, testing standards, user experience consistency, and performance requirements
+Look at the following existing documentation (paths relative to root of project):
+
+- AGENTS.md
 
 You are updating the project constitution at `.specify/memory/constitution.md`. This file is a TEMPLATE containing placeholder tokens in square brackets (e.g. `[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`). Your job is to (a) collect/derive concrete values, (b) fill the template precisely, and (c) propagate any amendments across dependent artifacts.
 
