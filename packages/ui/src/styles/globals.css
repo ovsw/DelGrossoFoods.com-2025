@@ -121,7 +121,7 @@
   --section-spacing-small: 2rem;
   --section-spacing-default: 4rem;
   --section-spacing-large: 6rem;
-  --section-spacing-page-top: 8rem;
+  --section-spacing-page-top: 10rem;
 }
 
 @theme inline {
