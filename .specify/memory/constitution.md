@@ -1,73 +1,75 @@
-# [PROJECT_NAME] Constitution
+<!--
+Sync Impact Report
+Version change: N/A → 1.0.0
+Modified principles:
+- Added Production-Grade Code Quality
+- Added Full-Stack Testing Discipline
+- Added Consistent User Experience
+- Added Performance and Efficiency Guarantees
+Added sections:
+- Implementation Guardrails
+- Delivery Workflow
+Removed sections: None
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md
+- ✅ .specify/templates/spec-template.md
+- ✅ .specify/templates/tasks-template.md
+Follow-up TODOs: None
+-->
 
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# DelGrossoFoods.com 2025 Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
+### Production-Grade Code Quality
 
-<!-- Example: I. Library-First -->
+- All changes MUST be authored in TypeScript with explicit types for exported APIs, observe repository naming conventions (kebab-case files, `.tsx` for components, `.ts` for utilities), and leave the touched files cleaner than they were found.
+- Implementations MUST reuse established architecture primitives—`@workspace/ui` components, Tailwind v4 tokens, Sanity data contracts—and avoid drive-by refactors outside the approved scope unless paired with an ADR recorded in `plans/`.
+- Complex control flow MUST include succinct intent-revealing comments or links to supporting ADRs so future contributors can uphold invariants without guesswork.
 
-[PRINCIPLE_1_DESCRIPTION]
+Rationale: Consistent structure and clarity keep the marketing site shippable on tight timelines while preventing regressions from ad-hoc patterns.
 
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Full-Stack Testing Discipline
 
-### [PRINCIPLE_2_NAME]
+- Every behavioral change MUST ship automated coverage: unit or component tests for logic, integration tests for user flows, and regenerated Sanity types (`pnpm --filter studio type`) whenever schemas or queries change.
+- The quality gate for each workspace MUST run before merge: `pnpm --filter <workspace> format`, `pnpm --filter <workspace> lint:fix`, and `pnpm --filter <workspace> typecheck`; failing checks block deployment until green.
+- Tests MUST follow a red-green-refactor cycle — write or update the test first, observe it fail, then implement the minimal change needed to pass while keeping fixtures fast and deterministic.
 
-<!-- Example: II. CLI Interface -->
+Rationale: Disciplined testing ensures content editors can rely on live preview while engineering iterates safely.
 
-[PRINCIPLE_2_DESCRIPTION]
+### Consistent User Experience
 
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- UI changes MUST preserve the light-only theme, use semantic HTML, include descriptive alt text, and honor accessibility affordances (focus states, aria labels, keyboard paths) with Sanity stega metadata intact on visible text.
+- Visual and interaction patterns MUST be implemented with shared `@workspace/ui` primitives or new components added to that package so the brand experience stays uniform across pages.
+- Content-driven features MUST source copy and imagery from Sanity; hard-coded marketing content is prohibited unless explicitly justified in a plan and mirrored in Sanity within the same iteration.
 
-### [PRINCIPLE_3_NAME]
+Rationale: Consistency keeps the DelGrosso Foods brand trustworthy and enables editors to change experiences without breaking presentation tooling.
 
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
+### Performance and Efficiency Guarantees
 
-[PRINCIPLE_3_DESCRIPTION]
+- Server-rendered routes and Sanity fetches MUST be profiled for over-fetching; queries should project only required fields and leverage fragments to keep payloads lean.
+- Changes MUST maintain Lighthouse Web Vitals budgets: Largest Contentful Paint ≤ 2.5s and Interaction to Next Paint ≤ 200ms on a simulated Fast 3G profile; regressions require documented mitigation before release.
+- Client bundles MUST avoid unnecessary dependencies, prefer server components where possible, and gate heavy analytics or media behind user interaction or lazy loading.
 
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Rationale: Guarding performance prevents funnel drop-off and keeps preview responsiveness high for editors.
 
-### [PRINCIPLE_4_NAME]
+## Implementation Guardrails
 
-<!-- Example: IV. Integration Testing -->
+- Use `pnpm --filter` scoped commands for workspace operations; global scripts are reserved for multi-workspace validation.
+- Secrets and environment variables MUST live in per-workspace `.env` files and never be committed; reviews enforce secret scanning before approval.
+- Every feature request requires a spec and plan that explicitly call out performance impacts, testing approach, and UX implications tied back to these principles.
+- New shared utilities belong in `packages/ui` (components) or dedicated packages; duplication inside apps is treated as a violation unless an ADR documents the exception.
 
-[PRINCIPLE_4_DESCRIPTION]
+## Delivery Workflow
 
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
-
-### [PRINCIPLE_5_NAME]
-
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-
-[PRINCIPLE_5_DESCRIPTION]
-
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Pull requests MUST include evidence of passing quality gates, screenshots or recordings for UX changes, and notes on performance validation when applicable.
+- Code reviews MUST block on constitution compliance; reviewers document any deviations in the PR discussion and ensure remediation before merge.
+- Release candidates MUST document outstanding risks and confirm staging smoke tests that cover primary user journeys (product discovery, content browsing, conversion flows).
 
 ## Governance
 
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+- Amendments require consensus from the maintainers of `apps/web`, `apps/studio`, and `packages/ui`, an updated Sync Impact Report, and propagation to all dependent templates within the same change set.
+- Constitution versioning follows semantic rules: MAJOR for principle removals or conflicting reinterpretations, MINOR for new principles or significant expansions, PATCH for clarifications that do not alter expectations.
+- A quarterly compliance review audits recent merges for adherence to principles, with findings logged in `plans/` and remediation tasks scheduled when gaps are found.
 
-[GOVERNANCE_RULES]
-
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-09-23 | **Last Amended**: 2025-09-23

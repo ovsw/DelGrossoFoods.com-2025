@@ -55,3 +55,4 @@ public/_piny
 .codex/version.json
 .codex/internal_storage.json
 .codex/config.toml
+.codex/history.jsonl

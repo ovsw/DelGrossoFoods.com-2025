@@ -16,7 +16,7 @@
    → Mark with [NEEDS CLARIFICATION: specific question]
 4. Fill User Scenarios & Testing section
    → If no clear user flow: ERROR "Cannot determine user scenarios"
-5. Generate Functional Requirements
+5. Generate Functional Requirements and Experience/Performance commitments
    → Each requirement must be testable
    → Mark ambiguous requirements
 6. Identify Key Entities (if data involved)
@@ -31,6 +31,7 @@
 ## ⚡ Quick Guidelines
 
 - ✅ Focus on WHAT users need and WHY
+- ✅ Capture required UX consistency, accessibility, and performance budgets called out in the constitution
 - ❌ Avoid HOW to implement (no tech stack, APIs, code structure)
 - 👥 Written for business stakeholders, not developers
 
@@ -87,6 +88,18 @@ _Example of marking unclear requirements:_
 
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+
+### Experience & Performance Requirements
+
+- **XR-001**: Experience MUST preserve the light-only theme, reuse `@workspace/ui` primitives, and document accessibility needs (focus order, aria semantics).
+- **XR-002**: Content MUST originate from Sanity with stega metadata intact; outline editor expectations for inline formatting or transformations.
+- **PR-001**: Solution MUST uphold Lighthouse budgets (LCP ≤ 2.5s, INP ≤ 200ms) and specify how verification will occur.
+- **PR-002**: Data fetching MUST avoid over-fetching; describe caching, pagination, or revalidation strategy to keep responses lean.
+
+_Example of marking unclear requirements:_
+
+- **XR-003**: Experience MUST [NEEDS CLARIFICATION: define required Sanity document or field]
+- **PR-003**: Performance MUST [NEEDS CLARIFICATION: confirm acceptable budget or load profile]
 
 ### Key Entities _(include if feature involves data)_
 
