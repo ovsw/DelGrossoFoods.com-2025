@@ -29,17 +29,25 @@ export function useUrlStateSync<S>({
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (suppress) return;
+
     const basePath = pathname ?? window.location.pathname;
     const params = serialize(state);
     const query = params.toString();
     const targetUrl = query ? `${basePath}?${query}` : basePath;
     const currentUrl = `${window.location.pathname}${window.location.search}`;
-    if (targetUrl === currentUrl) return;
 
     if (isFirstRunRef.current) {
+      // Mark that the first non-suppressed run has occurred, regardless of equality
       isFirstRunRef.current = false;
-      window.history.replaceState(window.history.state, "", targetUrl);
-    } else {
+      // Only normalize the URL on first run if it actually differs
+      if (targetUrl !== currentUrl) {
+        window.history.replaceState(window.history.state, "", targetUrl);
+      }
+      return;
+    }
+
+    // Subsequent runs: only push when URL actually changes
+    if (targetUrl !== currentUrl) {
       window.history.pushState(window.history.state, "", targetUrl);
     }
   }, [pathname, state, serialize, suppress]);
