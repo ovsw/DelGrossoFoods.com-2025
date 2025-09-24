@@ -5,6 +5,7 @@ import { cn } from "@workspace/ui/lib/utils";
 import type { PagebuilderType } from "@/types";
 
 import { RichText } from "../elements/rich-text";
+import { SanityButtons } from "../elements/sanity-buttons";
 import { CTACard } from "../image-link-card";
 import { resolveSectionSpacing } from "./section-spacing";
 
@@ -17,6 +18,7 @@ export function ImageLinkCards({
   title,
   eyebrow,
   cards,
+  buttons,
   spacing,
   isPageTop = false,
 }: ImageLinkCardsProps) {
@@ -37,9 +39,16 @@ export function ImageLinkCards({
               {title}
             </h2>
             <RichText richText={richText} className="text-balance" />
+            {buttons?.length ? (
+              <SanityButtons
+                buttons={buttons}
+                className="mt-2 flex flex-col items-center gap-3 sm:flex-row"
+                buttonClassName="w-full sm:w-auto"
+              />
+            ) : null}
           </div>
 
-          {Array.isArray(cards) && cards.length > 0 && (
+          {Array.isArray(cards) && cards.length > 0 ? (
             <div className="mt-16 grid w-full grid-cols-1 gap-4 lg:gap-1 sm:grid-cols-2 lg:grid-cols-4">
               {cards?.map((card, idx) => (
                 <CTACard
@@ -55,7 +64,7 @@ export function ImageLinkCards({
                 />
               ))}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </Section>
