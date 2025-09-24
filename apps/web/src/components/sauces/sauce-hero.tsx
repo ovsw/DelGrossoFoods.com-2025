@@ -47,10 +47,6 @@ export function SauceHero({ sauce }: SauceHeroProps) {
         return author.trim();
       })()
     : null;
-  const heroTitle =
-    isPremiumLine && authorName && sauceName
-      ? `${authorName}'s ${sauceName}`
-      : sauceName || rawName;
 
   const buttons: (SanityButtonProps & { icon?: ReactNode })[] = [
     {
@@ -87,16 +83,43 @@ export function SauceHero({ sauce }: SauceHeroProps) {
         <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
           <div className="flex flex-col justify-center gap-6 text-center lg:text-start">
             <div className="flex flex-col items-center gap-4 lg:items-start">
-              <Eyebrow
-                text={badgeLabel}
-                className="border-brand-green/60 text-brand-green"
-              />
-              <h1 className="text-4xl font-semibold leading-tight text-balance lg:text-6xl">
-                {heroTitle}
-              </h1>
+              <div className="flex gap-4 lg:flex-row lg:items-stretch lg:justify-start">
+                {showAuthor ? (
+                  <div className="rounded-sm">
+                    <SanityImage
+                      image={authorImage}
+                      alt={
+                        authorName
+                          ? `${authorName} portrait`
+                          : "Author portrait"
+                      }
+                      className="w-30 aspect-[137/160]"
+                    />
+                  </div>
+                ) : null}
+
+                {isPremiumLine && showAuthor ? (
+                  <h1 className="flex flex-col gap-y-2 text-left text-4xl leading-tight font-semibold text-balance lg:justify-end ">
+                    <Eyebrow
+                      text={badgeLabel}
+                      className="border-brand-green text-th-dark-900/70"
+                    />
+                    <span className="lg:text-6xl text-[#128f8b] ">
+                      {authorName}
+                    </span>
+                    <span className="lg:text-start lg:text-4xl">
+                      {sauceName}
+                    </span>
+                  </h1>
+                ) : (
+                  <h1 className="text-4xl leading-tight font-semibold text-balance lg:text-start lg:text-6xl">
+                    {sauceName}
+                  </h1>
+                )}
+              </div>
               <RichText
                 richText={sauce.description}
-                className="text-base font-normal text-brand-green/90 md:text-lg"
+                className="text-sm italic text-brand-green/90 md:text-lg"
               />
             </div>
 
@@ -107,28 +130,6 @@ export function SauceHero({ sauce }: SauceHeroProps) {
                 className="grid w-full max-w-md gap-3 sm:w-fit sm:grid-flow-col"
               />
             </div>
-
-            {showAuthor ? (
-              <div className="flex w-full max-w-sm items-center gap-4 self-center rounded-xl bg-white/85 p-4 shadow-sm ring-1 ring-inset ring-black/5 lg:self-start">
-                <div className="size-14 overflow-hidden rounded-full">
-                  <SanityImage
-                    image={authorImage}
-                    alt={`${authorName} portrait`}
-                    width={96}
-                    height={96}
-                    className="size-full object-cover"
-                  />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Crafted by
-                  </p>
-                  <p className="text-lg font-semibold text-foreground">
-                    {authorName}
-                  </p>
-                </div>
-              </div>
-            ) : null}
           </div>
 
           {sauce.mainImage?.id ? (

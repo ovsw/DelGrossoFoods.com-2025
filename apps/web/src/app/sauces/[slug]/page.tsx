@@ -6,13 +6,15 @@ import { stegaClean } from "next-sanity";
 import { SauceHero } from "@/components/sauces/sauce-hero";
 import { SauceNutritionalInfo } from "@/components/sauces/sauce-nutritional-info";
 import { SauceRelatedProducts } from "@/components/sauces/sauce-related-products";
+import { SauceRelatedRecipes } from "@/components/sauces/sauce-related-recipes";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getProductsBySauceIdQuery,
+  getRecipesBySauceIdQuery,
   getSauceBySlugQuery,
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
-import type { SauceProductListItem } from "@/types";
+import type { RecipeListItem, SauceProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchSauce(slug: string) {
@@ -45,6 +47,23 @@ async function fetchRelatedProducts(
   );
 
   return (result?.data ?? []) as SauceProductListItem[];
+}
+
+async function fetchRelatedRecipes(
+  sauceId: string | undefined,
+): Promise<RecipeListItem[]> {
+  if (!sauceId) {
+    return [];
+  }
+
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getRecipesBySauceIdQuery,
+      params: { sauceId },
+    }),
+  );
+
+  return (result?.data ?? []) as RecipeListItem[];
 }
 
 export async function generateMetadata({
@@ -101,7 +120,9 @@ export default async function SauceDetailPage({
   }
 
   const relatedProducts = await fetchRelatedProducts(sauce._id);
+  const relatedRecipes = await fetchRelatedRecipes(sauce._id);
   const hasRelatedProducts = relatedProducts.length > 0;
+  const hasRelatedRecipes = relatedRecipes.length > 0;
   // relatedProducts rendered via SauceRelatedProducts
 
   return (
@@ -110,6 +131,9 @@ export default async function SauceDetailPage({
       <SauceNutritionalInfo sauce={sauce} />
       {hasRelatedProducts ? (
         <SauceRelatedProducts products={relatedProducts} />
+      ) : null}
+      {hasRelatedRecipes ? (
+        <SauceRelatedRecipes recipes={relatedRecipes} />
       ) : null}
     </main>
   );

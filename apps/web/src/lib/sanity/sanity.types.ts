@@ -3435,6 +3435,36 @@ export type GetAllRecipesForIndexQueryResult = Array<{
   };
   sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
 }>;
+// Variable: getRecipesBySauceIdQuery
+// Query: *[    _type == "recipe"    && defined(slug.current)    && !(_id in path('drafts.**'))    && $sauceId != null    && references($sauceId)  ] | order(name asc){    _id,    name,    "slug": slug.current,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title }),    "descriptionPlain": "",    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right }    },    // Compute unique product lines from both DGF and LFD sauces    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))  }
+export type GetRecipesBySauceIdQueryResult = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  tags: Array<string> | null;
+  meat: Array<string> | null;
+  versions: Array<string>;
+  categories: Array<{
+    _id: string;
+    title: string;
+  }> | null;
+  descriptionPlain: "";
+  mainImage: {
+    id: string | "";
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+  };
+  sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
+}>;
 // Variable: getAllRecipeCategoriesQuery
 // Query: *[_type == "recipeCategory"] | order(title asc){ _id, title }
 export type GetAllRecipeCategoriesQueryResult = Array<{
@@ -3534,6 +3564,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": coalesce(alt, "")\n    },\n    "labelFlatImage": labelFlatImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": coalesce(alt, "")\n    },\n    authorName,\n    "authorImage": authorImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": coalesce(alt, "")\n    },\n    nutritionalInfo,\n    ingredients,\n    allergens\n  }\n': GetSauceBySlugQueryResult;
     '\n  *[_type == "recipeIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetRecipeIndexPageQueryResult;
     '\n  *[_type == "recipe" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetAllRecipesForIndexQueryResult;
+    '\n  *[\n    _type == "recipe"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetRecipesBySauceIdQueryResult;
     '\n  *[_type == "recipeCategory"] | order(title asc){ _id, title }\n': GetAllRecipeCategoriesQueryResult;
     '\n  *[_type == "productIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetProductIndexPageQueryResult;
     '\n  *[_type == "product" && defined(slug.current) && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    // Unique sets of referenced sauce attributes for filtering/badges\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
