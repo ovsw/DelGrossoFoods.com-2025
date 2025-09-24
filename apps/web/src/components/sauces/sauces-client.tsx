@@ -2,7 +2,7 @@
 import { Button } from "@workspace/ui/components/button";
 // (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/filterable/filter-group-section";
@@ -25,7 +25,11 @@ import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useFirstPaint } from "@/hooks/use-first-paint";
 import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/sauces/filters";
-import { type SauceQueryState, serializeStateToParams } from "@/lib/sauces/url";
+import {
+  parseSearchParams,
+  type SauceQueryState,
+  serializeStateToParams,
+} from "@/lib/sauces/url";
 import type { SauceListItem, SortOrder } from "@/types";
 
 type FiltersFormProps = {
@@ -138,6 +142,39 @@ export function SaucesClient({ items, initialState }: Props) {
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
+  const applyingPopStateRef = useRef(false);
+
+  // Apply URL -> state on browser back/forward within the listing page
+  useEffect(() => {
+    function handlePopState() {
+      applyingPopStateRef.current = true;
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const params: Record<string, string | string[] | undefined> = {};
+        // collect repeated params as arrays
+        sp.forEach((value, key) => {
+          if (params[key] === undefined) params[key] = value;
+          else
+            params[key] = ([] as string[])
+              .concat(params[key] as string[])
+              .concat(value);
+        });
+        const next = parseSearchParams(params);
+        setSearch(next.search);
+        setProductLine([...next.productLine]);
+        setSauceType(next.sauceType);
+        setSort(next.sort);
+      } finally {
+        // allow one microtask/frame for state to settle before resuming URL sync
+        setTimeout(() => {
+          applyingPopStateRef.current = false;
+        }, 0);
+      }
+    }
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const debouncedSearch = useDebouncedValue(search, 200);
 
   const state: SauceQueryState = useMemo(
@@ -146,7 +183,12 @@ export function SaucesClient({ items, initialState }: Props) {
   );
 
   // Sync URL on state changes without triggering a Next.js navigation
-  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
+  useUrlStateSync({
+    pathname,
+    state,
+    serialize: serializeStateToParams,
+    suppress: applyingPopStateRef.current,
+  });
 
   // Compute filtered and sorted results
   const results = useMemo(

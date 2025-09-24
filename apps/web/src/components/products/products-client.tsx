@@ -3,7 +3,7 @@ import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 // (checkbox/radio rendered via shared primitives)
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/filterable/filter-group-section";
@@ -26,6 +26,7 @@ import { useFirstPaint } from "@/hooks/use-first-paint";
 import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/products/filters";
 import {
+  parseSearchParams,
   type ProductQueryState,
   serializeStateToParams,
 } from "@/lib/products/url";
@@ -185,6 +186,36 @@ export function ProductsClient({ items, initialState }: Props) {
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
+  const applyingPopStateRef = useRef(false);
+  useEffect(() => {
+    function handlePopState() {
+      applyingPopStateRef.current = true;
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const params: Record<string, string | string[] | undefined> = {};
+        sp.forEach((value, key) => {
+          if (params[key] === undefined) params[key] = value;
+          else
+            params[key] = ([] as string[])
+              .concat(params[key] as string[])
+              .concat(value);
+        });
+        const next = parseSearchParams(params);
+        setSearch(next.search);
+        setPackaging([...next.packaging]);
+        setProductLine([...next.productLine]);
+        setSauceType(next.sauceType);
+        setSort(next.sort);
+      } finally {
+        setTimeout(() => {
+          applyingPopStateRef.current = false;
+        }, 0);
+      }
+    }
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const debouncedSearch = useDebouncedValue(search, 200);
 
   const state: ProductQueryState = useMemo(
@@ -198,7 +229,12 @@ export function ProductsClient({ items, initialState }: Props) {
     [debouncedSearch, packaging, productLine, sauceType, sort],
   );
 
-  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
+  useUrlStateSync({
+    pathname,
+    state,
+    serialize: serializeStateToParams,
+    suppress: applyingPopStateRef.current,
+  });
 
   const results = useMemo(
     () => applyFiltersAndSort(items, state),

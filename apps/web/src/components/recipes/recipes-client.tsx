@@ -2,7 +2,7 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CheckboxList } from "@/components/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/filterable/filter-group-section";
@@ -24,6 +24,7 @@ import { useFirstPaint } from "@/hooks/use-first-paint";
 import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
+  parseSearchParams,
   type RecipeQueryState,
   serializeStateToParams,
 } from "@/lib/recipes/url";
@@ -217,6 +218,37 @@ export function RecipesClient({ items, initialState, categories }: Props) {
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
+  const applyingPopStateRef = useRef(false);
+  useEffect(() => {
+    function handlePopState() {
+      applyingPopStateRef.current = true;
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const params: Record<string, string | string[] | undefined> = {};
+        sp.forEach((value, key) => {
+          if (params[key] === undefined) params[key] = value;
+          else
+            params[key] = ([] as string[])
+              .concat(params[key] as string[])
+              .concat(value);
+        });
+        const next = parseSearchParams(params);
+        setSearch(next.search);
+        setProductLine([...next.productLine]);
+        setTags([...next.tags]);
+        setMeats([...next.meats]);
+        setCategoryId(next.categoryId);
+        setSort(next.sort);
+      } finally {
+        setTimeout(() => {
+          applyingPopStateRef.current = false;
+        }, 0);
+      }
+    }
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const debouncedSearch = useDebouncedValue(search, 200);
   const state: RecipeQueryState = useMemo(
     () => ({
@@ -230,7 +262,12 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     [debouncedSearch, productLine, tags, meats, categoryId, sort],
   );
 
-  useUrlStateSync({ pathname, state, serialize: serializeStateToParams });
+  useUrlStateSync({
+    pathname,
+    state,
+    serialize: serializeStateToParams,
+    suppress: applyingPopStateRef.current,
+  });
 
   const results = useMemo(
     () => applyFiltersAndSort(items, state),
