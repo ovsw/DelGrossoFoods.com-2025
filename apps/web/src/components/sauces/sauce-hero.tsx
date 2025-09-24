@@ -15,29 +15,31 @@ interface SauceHeroProps {
 }
 
 export function SauceHero({ sauce }: SauceHeroProps) {
+  // Name: visible uses raw; logic/alt use cleaned
   const rawName = sauce.name ?? "";
   const cleanedName = stegaClean(rawName);
-  const sauceNameRaw =
-    typeof cleanedName === "string" ? cleanedName : String(rawName ?? "");
-  const sauceName = sauceNameRaw.trim();
+  const sauceName = String(rawName).trim();
 
+  // Line/badge: visible uses raw; logic uses cleaned
   const rawLine = sauce.line ?? "";
   const cleanedLine = stegaClean(rawLine);
-  const cleanLineRaw =
-    typeof cleanedLine === "string" ? cleanedLine : String(rawLine ?? "");
-  const cleanLine = cleanLineRaw.trim();
-  const isPremiumLine = cleanLine === "Ultra-Premium";
-  const badgeLabel = isPremiumLine ? "La Famiglia DelGrosso" : cleanLine;
+  const cleanedLineStr =
+    typeof cleanedLine === "string"
+      ? cleanedLine.trim()
+      : String(rawLine).trim();
+  const isPremiumLine = cleanedLineStr === "Ultra-Premium";
+  const badgeLabel = isPremiumLine
+    ? "La Famiglia DelGrosso"
+    : String(rawLine).trim();
 
-  const authorName = sauce.authorName
-    ? (() => {
-        const cleanedAuthor = stegaClean(sauce.authorName);
-        const author =
-          typeof cleanedAuthor === "string"
-            ? cleanedAuthor
-            : String(sauce.authorName);
-        return author.trim();
-      })()
+  // Author name: visible uses raw; alt/logic use cleaned
+  const rawAuthorName = sauce.authorName ?? null;
+  const cleanedAuthor = rawAuthorName ? stegaClean(rawAuthorName) : null;
+  const authorName = rawAuthorName ? String(rawAuthorName).trim() : null;
+  const authorNameForAlt = rawAuthorName
+    ? typeof cleanedAuthor === "string"
+      ? cleanedAuthor.trim()
+      : String(rawAuthorName).trim()
     : null;
 
   const buttons: (SanityButtonProps & { icon?: ReactNode })[] = [
@@ -62,7 +64,7 @@ export function SauceHero({ sauce }: SauceHeroProps) {
   ];
 
   const authorImage = sauce.authorImage;
-  const showAuthor = isPremiumLine && authorName && authorImage?.id;
+  const showAuthor = isPremiumLine && !!authorNameForAlt && authorImage?.id;
 
   return (
     <Section
@@ -81,8 +83,8 @@ export function SauceHero({ sauce }: SauceHeroProps) {
                     <SanityImage
                       image={authorImage}
                       alt={
-                        authorName
-                          ? `${authorName} portrait`
+                        authorNameForAlt
+                          ? `${authorNameForAlt} portrait`
                           : "Author portrait"
                       }
                       className="w-24 lg:w-30 aspect-[137/160]"
@@ -126,7 +128,11 @@ export function SauceHero({ sauce }: SauceHeroProps) {
             <div className="flex w-full justify-center ">
               <SanityImage
                 image={sauce.mainImage}
-                alt={sauceName ? `${sauceName} sauce jar` : "Sauce jar"}
+                alt={
+                  typeof cleanedName === "string" && cleanedName.trim()
+                    ? `${cleanedName.trim()} sauce jar`
+                    : "Sauce jar"
+                }
                 width={420}
                 height={560}
                 respectSanityCrop={false}
