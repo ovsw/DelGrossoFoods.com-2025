@@ -1,6 +1,7 @@
 ---
 "web": patch
 "@workspace/ui": patch
+"studio": patch
 ---
 
 Add Sauce page components and UI tweaks
