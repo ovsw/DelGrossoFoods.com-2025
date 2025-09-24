@@ -529,6 +529,33 @@ export const getAllRecipesForIndexQuery = defineQuery(`
   }
 `);
 
+export const getRecipesBySauceIdQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+    && $sauceId != null
+    && references($sauceId)
+  ] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title }),
+    "descriptionPlain": "",
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right }
+    },
+    // Compute unique product lines from both DGF and LFD sauces
+    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
+  }
+`);
+
 export const getAllRecipeCategoriesQuery = defineQuery(`
   *[_type == "recipeCategory"] | order(title asc){ _id, title }
 `);
