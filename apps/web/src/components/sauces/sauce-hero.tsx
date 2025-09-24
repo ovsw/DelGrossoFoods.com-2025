@@ -14,14 +14,6 @@ interface SauceHeroProps {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
 }
 
-function buildSearchHref(basePath: string, query: string): string {
-  const cleaned = stegaClean(query);
-  const name = typeof cleaned === "string" ? cleaned : String(query);
-  if (!name) return basePath;
-  const encoded = encodeURIComponent(name);
-  return `${basePath}?search=${encoded}`;
-}
-
 export function SauceHero({ sauce }: SauceHeroProps) {
   const rawName = sauce.name ?? "";
   const cleanedName = stegaClean(rawName);
@@ -54,7 +46,7 @@ export function SauceHero({ sauce }: SauceHeroProps) {
       _type: "button" as const,
       text: "Order Online",
       variant: "default" as const,
-      href: buildSearchHref("/store", sauceName),
+      href: "#related-products",
       openInNewTab: false,
       icon: <ShoppingCart className="size-4" aria-hidden="true" />,
     },
@@ -63,7 +55,7 @@ export function SauceHero({ sauce }: SauceHeroProps) {
       _type: "button" as const,
       text: "See Recipes",
       variant: "secondary" as const,
-      href: buildSearchHref("/recipes", sauceName),
+      href: "#related-recipes",
       openInNewTab: false,
       icon: <BookOpen className="size-4" aria-hidden="true" />,
     },
@@ -93,20 +85,18 @@ export function SauceHero({ sauce }: SauceHeroProps) {
                           ? `${authorName} portrait`
                           : "Author portrait"
                       }
-                      className="w-30 aspect-[137/160]"
+                      className="w-24 lg:w-30 aspect-[137/160]"
                     />
                   </div>
                 ) : null}
 
                 {isPremiumLine && showAuthor ? (
-                  <h1 className="flex flex-col gap-y-2 text-left text-4xl leading-tight font-semibold text-balance lg:justify-end ">
+                  <h1 className="flex flex-col text-left text-4xl leading-tight font-semibold text-balance lg:justify-end ">
                     <Eyebrow
                       text={badgeLabel}
-                      className="border-brand-green text-th-dark-900/70"
+                      className="border-brand-green text-th-dark-900/70 mb-4"
                     />
-                    <span className="lg:text-6xl text-[#128f8b] ">
-                      {authorName}
-                    </span>
+                    <span className="lg:text-6xl">{authorName}</span>
                     <span className="lg:text-start lg:text-4xl">
                       {sauceName}
                     </span>
@@ -119,7 +109,7 @@ export function SauceHero({ sauce }: SauceHeroProps) {
               </div>
               <RichText
                 richText={sauce.description}
-                className="text-sm italic text-brand-green/90 md:text-lg"
+                className="text-sm italic text-brand-green/90 md:text-lg max-w-2xl mx-auto lg:max-w-none"
               />
             </div>
 
