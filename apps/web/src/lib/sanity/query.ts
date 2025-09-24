@@ -564,3 +564,29 @@ export const getAllProductsForIndexQuery = defineQuery(`
     "sauceTypes": array::unique((sauces[]->category)[defined(@)])
   }
 `);
+
+export const getProductsBySauceIdQuery = defineQuery(`
+  *[
+    _type == "product"
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+    && $sauceId != null
+    && references($sauceId)
+  ] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    category,
+    price,
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
+    "sauceLines": array::unique((sauces[]->line)[defined(@)]),
+    "sauceTypes": array::unique((sauces[]->category)[defined(@)])
+  }
+`);

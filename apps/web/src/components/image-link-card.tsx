@@ -1,13 +1,27 @@
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 
-import type { PagebuilderType } from "@/types";
-
 import { SanityImage } from "./elements/sanity-image";
 
-type ImageLinkCard = NonNullable<
-  NonNullable<PagebuilderType<"imageLinkCards">["cards"]>
->[number];
+type ImageLinkCard = {
+  _type: "imageLinkCard";
+  _key: string;
+  title: string;
+  description: string;
+  image?: {
+    id: string | null;
+    preview: string | null;
+    hotspot: { x: number; y: number } | null;
+    crop: {
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
+    } | null;
+  } | null;
+  href?: string | null;
+  openInNewTab?: boolean | null;
+};
 
 export type CTACardProps = {
   card: ImageLinkCard;
@@ -24,7 +38,7 @@ export function CTACard({ card, className }: CTACardProps) {
         className,
       )}
     >
-      {image?.id && (
+      {image?.id ? (
         <div className="absolute inset-0 z-[1] mix-blend-multiply">
           <SanityImage
             image={image}
@@ -34,7 +48,7 @@ export function CTACard({ card, className }: CTACardProps) {
             className="object-cover grayscale pointer-events-none group-hover:opacity-100 group-hover:transition-opacity duration-1000 opacity-40"
           />
         </div>
-      )}
+      ) : null}
       <div className="z-[2] pt-64 flex flex-col space-y-2 mb-4 duration-500 xl:absolute xl:top-24 group-hover:top-8 xl:inset-x-8">
         <h3 className="text-xl font-[500] text-[#111827]">{title}</h3>
         <p className="text-sm text-[#374151] xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-300 delay-150">

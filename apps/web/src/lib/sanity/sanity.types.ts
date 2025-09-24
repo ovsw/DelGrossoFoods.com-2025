@@ -3479,6 +3479,35 @@ export type GetAllProductsForIndexQueryResult = Array<{
     "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
   > | null;
 }>;
+// Variable: getProductsBySauceIdQuery
+// Query: *[    _type == "product"    && defined(slug.current)    && !(_id in path('drafts.**'))    && $sauceId != null    && references($sauceId)  ] | order(name asc){    _id,    name,    "slug": slug.current,    category,    price,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "sauceLines": array::unique((sauces[]->line)[defined(@)]),    "sauceTypes": array::unique((sauces[]->category)[defined(@)])  }
+export type GetProductsBySauceIdQueryResult = Array<{
+  _id: string;
+  name: string;
+  slug: string;
+  category: "case_of_12" | "gift_pack" | "merchandise";
+  price: number | null;
+  descriptionPlain: string;
+  mainImage: {
+    id: string | "";
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+    alt: null;
+  };
+  sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
+  sauceTypes: Array<
+    "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
+  > | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -3508,5 +3537,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "recipeCategory"] | order(title asc){ _id, title }\n': GetAllRecipeCategoriesQueryResult;
     '\n  *[_type == "productIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current\n  }\n': GetProductIndexPageQueryResult;
     '\n  *[_type == "product" && defined(slug.current) && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    // Unique sets of referenced sauce attributes for filtering/badges\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
+    '\n  *[\n    _type == "product"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetProductsBySauceIdQueryResult;
   }
 }
