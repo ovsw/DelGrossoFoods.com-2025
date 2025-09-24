@@ -171,8 +171,8 @@ export function SauceNutritionalInfo({ sauce }: SauceNutritionalInfoProps) {
       spacingBottom="large"
       aria-labelledby="nutritional-info-heading"
     >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid items-start gap-8 lg:grid-cols-2">
+      <div className="container max-w-7xl mx-auto px-4 md:px-6">
+        <div className="grid items-start gap-8 lg:grid-cols-2 ">
           <div className="grid grid-rows-[auto_1fr_auto] gap-6 items-center justify-items-center text-center lg:items-start lg:justify-items-start lg:text-left">
             <Eyebrow text="Nutrition Facts" />
 

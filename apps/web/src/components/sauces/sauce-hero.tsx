@@ -83,7 +83,7 @@ export function SauceHero({ sauce }: SauceHeroProps) {
       className="relative isolate overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600.jpg')] bg-cover bg-bottom"
     >
       <div className="absolute inset-0 bg-white/10" aria-hidden="true" />
-      <div className="container relative mx-auto max-w-6xl px-4 md:px-6">
+      <div className="container relative mx-auto max-w-6xl px-4 md:px-0">
         <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
           <div className="flex flex-col justify-center gap-6 text-center lg:text-start">
             <div className="flex flex-col items-center gap-4 lg:items-start">
