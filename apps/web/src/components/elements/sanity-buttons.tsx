@@ -1,8 +1,8 @@
 import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
 import { stegaClean } from "next-sanity";
+import type { ComponentProps, ReactNode } from "react";
 
 import type { SanityButtonProps } from "@/types";
 
