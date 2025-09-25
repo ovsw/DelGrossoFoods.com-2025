@@ -3,6 +3,7 @@ import type {
   GetAllRecipeCategoriesQueryResult,
   GetAllRecipesForIndexQueryResult,
   GetAllSaucesForIndexQueryResult,
+  GetProductBySlugQueryResult,
   GetProductIndexPageQueryResult,
   GetProductsBySauceIdQueryResult,
   GetRecipeIndexPageQueryResult,
@@ -47,6 +48,7 @@ export type SortOrder = "az" | "za";
 export type ProductIndexPageData = NonNullable<GetProductIndexPageQueryResult>;
 export type ProductListItem = GetAllProductsForIndexQueryResult[number];
 export type SauceProductListItem = GetProductsBySauceIdQueryResult[number];
+export type ProductDetailData = NonNullable<GetProductBySlugQueryResult>;
 
 // Recipes index types
 export type RecipeIndexPageData = NonNullable<GetRecipeIndexPageQueryResult>;
