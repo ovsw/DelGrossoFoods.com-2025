@@ -4,6 +4,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Quick facts
 
+- NEVER use tailwind classes like `text-[var(--color-th-dark-700)]` or `border-[var(--color-brand-green)]` for CSS variables that start with `--color-`. instead ALWAYS use the auto-generated utility classes - in this case `text-th-dark-700` or `border-brand-green`.
 - **Workspace layout**: `apps/web` (Next.js 15), `apps/studio` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
 - **Tooling**: pnpm (10.x), Node (>=22.12), Turbo (2.x), Prettier (3.x), ESLint (flat config).
 - **UI**: Use `shadcn` patterns via `packages/ui`. Do not add `shadcn-ui` dependency. Tailwind v4 only.
