@@ -3,9 +3,9 @@ import { defineField, defineType } from "sanity";
 
 import { buttonsField, richTextField, sectionSpacingField } from "../common";
 
-export const hero = defineType({
-  name: "hero",
-  title: "Hero",
+export const feature = defineType({
+  name: "feature",
+  title: "Feature",
   icon: Star,
   type: "object",
   fields: [
@@ -14,14 +14,14 @@ export const hero = defineType({
       type: "string",
       title: "Badge",
       description:
-        "Optional badge text displayed above the title, useful for highlighting new features or promotions",
+        "Optional badge text displayed above the title, useful for highlighting launches or seasonal promotions",
     }),
     defineField({
       name: "title",
       type: "string",
       title: "Title",
       description:
-        "The main heading text for the hero section that captures attention",
+        "The main heading text for the feature section that captures attention",
     }),
     richTextField,
     defineField({
@@ -29,7 +29,7 @@ export const hero = defineType({
       type: "image",
       title: "Image",
       description:
-        "The main hero image - should be high quality and visually impactful",
+        "The primary feature image – should be high quality and visually impactful",
       options: {
         hotspot: true,
       },
@@ -43,7 +43,7 @@ export const hero = defineType({
     },
     prepare: ({ title }) => ({
       title,
-      subtitle: "Hero Block",
+      subtitle: "Feature Block",
     }),
   },
 });

@@ -1707,7 +1707,7 @@
     }
   },
   {
-    "name": "hero",
+    "name": "feature",
     "type": "type",
     "value": {
       "type": "object",
@@ -1716,7 +1716,7 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "hero"
+            "value": "feature"
           }
         },
         "badge": {
@@ -2185,7 +2185,7 @@
             },
             "rest": {
               "type": "inline",
-              "name": "hero"
+              "name": "feature"
             }
           },
           {

@@ -4,6 +4,7 @@ import type {
   GetAllRecipesForIndexQueryResult,
   GetAllSaucesForIndexQueryResult,
   GetProductIndexPageQueryResult,
+  GetProductsBySauceIdQueryResult,
   GetRecipeIndexPageQueryResult,
   GetSauceIndexPageQueryResult,
   QueryBlogSlugPageDataResult,
@@ -21,7 +22,7 @@ export type PagebuilderType<T extends PageBuilderBlockTypes> = Extract<
 >;
 
 export type SanityButtonProps = NonNullable<
-  NonNullable<PagebuilderType<"hero">>["buttons"]
+  NonNullable<PagebuilderType<"feature">>["buttons"]
 >[number];
 
 export type SanityImageProps = NonNullable<QueryImageTypeResult>;
@@ -45,6 +46,7 @@ export type SortOrder = "az" | "za";
 // Products index types
 export type ProductIndexPageData = NonNullable<GetProductIndexPageQueryResult>;
 export type ProductListItem = GetAllProductsForIndexQueryResult[number];
+export type SauceProductListItem = GetProductsBySauceIdQueryResult[number];
 
 // Recipes index types
 export type RecipeIndexPageData = NonNullable<GetRecipeIndexPageQueryResult>;

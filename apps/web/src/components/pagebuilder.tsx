@@ -10,8 +10,8 @@ import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
 
 import { CTABlock } from "./sections/cta";
 import { FaqAccordion } from "./sections/faq-accordion";
+import { FeatureBlock } from "./sections/feature";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
-import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
 
@@ -42,7 +42,7 @@ type BlockComponentMap = {
 const BLOCK_COMPONENTS = {
   cta: CTABlock,
   faqAccordion: FaqAccordion,
-  hero: HeroBlock,
+  feature: FeatureBlock,
   featureCardsIcon: FeatureCardsWithIcon,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
@@ -143,10 +143,10 @@ function useBlockRenderer(id: string, type: string) {
             </div>
           );
         }
-        case "hero": {
-          const Component = BLOCK_COMPONENTS.hero;
+        case "feature": {
+          const Component = BLOCK_COMPONENTS.feature;
           return (
-            <div key={`hero-${_key}`} data-sanity={dataAttribute}>
+            <div key={`feature-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );

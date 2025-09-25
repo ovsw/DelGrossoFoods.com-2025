@@ -8,11 +8,12 @@ import { SanityButtons } from "../elements/sanity-buttons";
 import { SanityImage } from "../elements/sanity-image";
 import { resolveSectionSpacing } from "./section-spacing";
 
-type HeroBlockProps = PagebuilderType<"hero"> & {
+type FeatureBlockProps = PagebuilderType<"feature"> & {
   readonly isPageTop?: boolean;
 };
 
-export function HeroBlock({
+export function FeatureBlock({
+  _key,
   title,
   buttons,
   badge,
@@ -20,12 +21,12 @@ export function HeroBlock({
   richText,
   spacing,
   isPageTop = false,
-}: HeroBlockProps) {
+}: FeatureBlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
 
   return (
     <Section
-      id="hero"
+      id={`feature-${_key}`}
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}
@@ -45,20 +46,21 @@ export function HeroBlock({
             </div>
 
             <SanityButtons
-              buttons={buttons}
+              buttons={buttons ?? null}
               buttonClassName="w-full sm:w-auto"
               className="w-full sm:w-fit grid gap-2 sm:grid-flow-col lg:justify-start mb-8"
             />
           </div>
 
           {image && (
-            <div className="h-96 w-full">
+            <div className="h-96 w-full self-center">
               <SanityImage
                 image={image}
-                loading="eager"
+                // loading="eager"
                 width={800}
                 height={800}
-                className="max-h-96 w-full rounded-3xl object-cover"
+                alt={typeof title === "string" ? title : ""}
+                className="max-h-96 w-full rounded-3xl object-cover h-full"
               />
             </div>
           )}

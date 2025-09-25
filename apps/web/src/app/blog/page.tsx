@@ -84,7 +84,7 @@ export default async function BlogIndexPage() {
     : allBlogs;
 
   return (
-    <main className="bg-background">
+    <main>
       <div className="container my-16 mx-auto px-4 md:px-6">
         <BlogHeader title={title} description={description} />
 

@@ -46,3 +46,15 @@ npm-debug.log*
 #piny
 apps/web/public/_piny
 public/_piny
+
+# codex
+.codex/log
+.codex/sessions
+.codex/auth.json
+.codex/config.json
+.codex/version.json
+.codex/internal_storage.json
+.codex/config.toml
+.codex/history.jsonl
+
+engine.bin
