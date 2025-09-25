@@ -122,8 +122,8 @@ const imageLinkCardsBlock = /* groq */ `
   }
 `;
 
-const heroBlock = /* groq */ `
-  _type == "hero" => {
+const featureBlock = /* groq */ `
+  _type == "feature" => {
     ...,
     ${imageFragment},
     ${buttonsFragment},
@@ -187,7 +187,7 @@ const pageBuilderFragment = /* groq */ `
     ${sectionSpacingFragment},
     _type,
     ${ctaBlock},
-    ${heroBlock},
+    ${featureBlock},
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
@@ -458,6 +458,45 @@ export const getAllSaucesForIndexQuery = defineQuery(`
   }
 `);
 
+export const getSauceBySlugQuery = defineQuery(`
+  *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    line,
+    category,
+    "description": description[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    },
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": mainImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    "labelFlatImage": labelFlatImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    authorName,
+    "authorImage": authorImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    nutritionalInfo,
+    ingredients,
+    allergens
+  }
+`);
+
 // Recipes index queries
 export const getRecipeIndexPageQuery = defineQuery(`
   *[_type == "recipeIndex"][0]{
@@ -471,6 +510,33 @@ export const getRecipeIndexPageQuery = defineQuery(`
 
 export const getAllRecipesForIndexQuery = defineQuery(`
   *[_type == "recipe" && !(_id in path('drafts.**'))] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title }),
+    "descriptionPlain": "",
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right }
+    },
+    // Compute unique product lines from both DGF and LFD sauces
+    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
+  }
+`);
+
+export const getRecipesBySauceIdQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+    && $sauceId != null
+    && references($sauceId)
+  ] | order(name asc){
     _id,
     name,
     "slug": slug.current,
@@ -521,6 +587,32 @@ export const getAllProductsForIndexQuery = defineQuery(`
       "alt": mainImage.alt
     },
     // Unique sets of referenced sauce attributes for filtering/badges
+    "sauceLines": array::unique((sauces[]->line)[defined(@)]),
+    "sauceTypes": array::unique((sauces[]->category)[defined(@)])
+  }
+`);
+
+export const getProductsBySauceIdQuery = defineQuery(`
+  *[
+    _type == "product"
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+    && $sauceId != null
+    && references($sauceId)
+  ] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    category,
+    price,
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
     "sauceLines": array::unique((sauces[]->line)[defined(@)]),
     "sauceTypes": array::unique((sauces[]->category)[defined(@)])
   }

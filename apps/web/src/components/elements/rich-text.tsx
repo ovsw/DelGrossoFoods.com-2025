@@ -1,5 +1,4 @@
 "use client";
-import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import {
   PortableText,
@@ -9,6 +8,7 @@ import {
 
 import { parseChildrenToSlug } from "@/utils";
 
+import { Prose } from "./prose";
 import { SanityImage } from "./sanity-image";
 
 const components: Partial<PortableTextReactComponents> = {
@@ -79,6 +79,7 @@ const components: Partial<PortableTextReactComponents> = {
           prefetch={false}
           aria-label={`Link to ${value?.href}`}
           target={value.openInNewTab ? "_blank" : "_self"}
+          rel={value.openInNewTab ? "noopener noreferrer" : undefined}
         >
           {children}
         </Link>
@@ -118,19 +119,19 @@ export function RichText<T>({
   if (!richText) return null;
 
   return (
-    <div
-      className={cn(
-        "prose prose-zinc prose-headings:scroll-m-24 prose-headings:text-opacity-90 prose-p:text-opacity-80 prose-a:decoration-dotted prose-ol:text-opacity-80 prose-ul:text-opacity-80 prose-h2:border-b prose-h2:pb-2 prose-h2:text-3xl prose-h2:font-semibold prose-h2:first:mt-0 max-w-none",
-        className,
-      )}
-    >
+    <Prose className={className}>
       <PortableText
+        // The next-sanity PortableText expects PortableTextBlock[] by default.
+        // Our generated GROQ types allow some fields to be optional/null, which
+        // is compatible at runtime but stricter in TypeScript. Cast to the
+        // runtime-compatible type to satisfy the compiler without weakening
+        // upstream types across the codebase.
         value={richText as unknown as PortableTextBlock[]}
         components={components}
         onMissingComponent={(_, { nodeType, type }) =>
           console.log("missing component", nodeType, type)
         }
       />
-    </div>
+    </Prose>
   );
 }

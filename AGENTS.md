@@ -19,7 +19,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
   - `pnpm format` / `pnpm format:check`
 - Per package (run from repo root):
   - Web: `pnpm -C apps/web dev|build|start|lint|lint:fix|typecheck|check`
-  - Studio: `pnpm -C apps/studio dev|build|deploy|lint|lint:fix|type|check`
+  - Studio: `pnpm --filter studio dev|build|deploy|lint|lint:fix|type|check`
 
 ### Environment and secrets
 
@@ -33,10 +33,11 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Prefer semantic code search; use exact grep when you know the symbol. Parallelize independent searches.
 - Fetch external docs when needed (don’t rely on assumptions). Prefer most up-to-date sources.
 - Do not commit or push unless explicitly asked. Use GitHub CLI only when requested.
-- Iteration default: do not run builds unless explicitly requested. After any code changes, run Prettier on the changed workspace(s) and then lint+typecheck: `pnpm -C <affected> format && pnpm -C <affected> lint:fix && pnpm -C <affected> typecheck`.
+- Iteration default: do not run builds unless explicitly requested. After any code changes, run Prettier on the changed workspace(s) and then lint+typecheck: `pnpm --filter <affected> format && pnpm --filter <affected> lint:fix && pnpm --filter <affected> typecheck`.
+- When running pnpm for a specific workspace, prefer `pnpm --filter <workspace> ...` over `-C`/`--dir` so the commands work across pnpm versions.
 - When the user asks to “store” something in memory for this project, write it in this `AGENTS.md` file so it persists across sessions.
 - Do not roll in refactors or improvements that haven’t been explicitly requested; surface suggestions instead and wait for approval.
-- After every Sanity schema or GROQ query change, immediately run `pnpm -C apps/studio type` so the generated types stay in sync.
+- After every Sanity schema or GROQ query change, immediately run `pnpm --filter studio type` so the generated types stay in sync.
 
 ### Coding standards
 
@@ -71,7 +72,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 - Schemas under `studio/schemaTypes/**`. Always use `defineType` and `defineField`.
 - After schema changes or updating/adding queries in `apps/web/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
-  - Studio: `pnpm -C apps/studio run type` (extract + generate)
+  - Studio: `pnpm --filter studio run type` (extract + generate)
   - Then re-run web typecheck/build.
   - Keep web tightly coupled to generated types; derive UI types from generated query results where feasible.
 
@@ -123,7 +124,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 - Iteration (agents): `pnpm -C apps/web format && pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck` (skip build unless asked).
 - Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
-- For studio changes: `pnpm -C apps/studio lint:fix && pnpm -C apps/studio check`.
+- For studio changes: `pnpm --filter studio lint:fix && pnpm --filter studio check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
 
 ### Common task recipes
@@ -138,7 +139,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 - Add a Sanity schema
   - Create under `apps/studio/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
-  - Run `pnpm -C apps/studio type`, then adjust web query/types as needed.
+  - Run `pnpm --filter studio type`, then adjust web query/types as needed.
 
 - Add a Next.js route/page
   - Create folder under `apps/web/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
@@ -276,7 +277,7 @@ This is a rough idea of how to structure folders and files, ensuring you always 
     │   │   │   │   ├── cta.ts
     │   │   │   │   ├── faq-accordion.ts
     │   │   │   │   ├── feature-cards-icon.ts
-    │   │   │   │   ├── hero.ts
+    │   │   │   │   ├── feature.ts
     │   │   │   │   ├── image-link-cards.ts
     │   │   │   │   ├── index.ts
     │   │   │   │   └── subscribe-newsletter.ts
@@ -308,7 +309,7 @@ This is an example of how the blocks index file would be structured, you would c
 
 ```typescript
 import { callToAction } from "./call-to-action";
-import { exploreHero } from "./explore-hero";
+import { exploreFeature } from "./explore-feature";
 import { faqList } from "./faq-list";
 import { htmlEmbed } from "./html-embed";
 import { iconGrid } from "./icon-grid";
@@ -335,7 +336,7 @@ export const pagebuilderBlocks = [
   quinstreetEmbed,
   statsCard,
   iconGrid,
-  exploreHero,
+  exploreFeature,
   splitForm,
   richTextBlock,
   calculator,

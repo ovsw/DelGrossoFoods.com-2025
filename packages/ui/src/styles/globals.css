@@ -19,7 +19,7 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.456 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -121,7 +121,7 @@
   --section-spacing-small: 2rem;
   --section-spacing-default: 4rem;
   --section-spacing-large: 6rem;
-  --section-spacing-page-top: 8rem;
+  --section-spacing-page-top: 10rem;
 }
 
 @theme inline {
@@ -186,6 +186,13 @@
     scroll-padding-top: calc(
       var(--header-offset, 196px) + 16px + env(safe-area-inset-top, 0px)
     );
+  }
+
+  /* Enable smooth scrolling for in-page anchors while respecting user motion preferences */
+  @media (prefers-reduced-motion: no-preference) {
+    html:focus-within {
+      scroll-behavior: smooth;
+    }
   }
 }
 
