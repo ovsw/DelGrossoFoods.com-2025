@@ -1,5 +1,4 @@
 "use client";
-import type { ReactElement } from "react";
 import Link from "next/link";
 import {
   PortableText,
@@ -110,19 +109,24 @@ const components: Partial<PortableTextReactComponents> = {
   hardBreak: () => <br />,
 };
 
-export function RichText({
+export function RichText<T>({
   richText,
   className,
 }: {
-  richText?: PortableTextBlock[] | null;
+  richText?: T | null;
   className?: string;
-}): ReactElement | null {
+}) {
   if (!richText) return null;
 
   return (
     <Prose className={className}>
       <PortableText
-        value={richText}
+        // The next-sanity PortableText expects PortableTextBlock[] by default.
+        // Our generated GROQ types allow some fields to be optional/null, which
+        // is compatible at runtime but stricter in TypeScript. Cast to the
+        // runtime-compatible type to satisfy the compiler without weakening
+        // upstream types across the codebase.
+        value={richText as unknown as PortableTextBlock[]}
         components={components}
         onMissingComponent={(_, { nodeType, type }) =>
           console.log("missing component", nodeType, type)
