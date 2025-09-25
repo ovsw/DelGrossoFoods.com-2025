@@ -2,6 +2,7 @@ import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { stegaClean } from "next-sanity";
 
 import type { SanityButtonProps } from "@/types";
 
@@ -36,8 +37,9 @@ function SanityButton({
       <Link
         href={href || "#"}
         target={openInNewTab ? "_blank" : "_self"}
-        aria-label={`Navigate to ${text}`}
-        title={`Click to visit ${text}`}
+        rel={openInNewTab ? "noopener noreferrer" : undefined}
+        aria-label={text ? `Navigate to ${stegaClean(text)}` : undefined}
+        title={text ? `Click to visit ${stegaClean(text)}` : undefined}
         className="flex items-center gap-2"
       >
         {icon ? (
