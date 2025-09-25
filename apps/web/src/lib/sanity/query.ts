@@ -617,3 +617,46 @@ export const getProductsBySauceIdQuery = defineQuery(`
     "sauceTypes": array::unique((sauces[]->category)[defined(@)])
   }
 `);
+
+export const getProductBySlugQuery = defineQuery(`
+  *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    sku,
+    category,
+    shippingCategory,
+    price,
+    weight,
+    "description": description[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    },
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": mainImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    "sauces": array::compact(sauces[]->{
+      _id,
+      _type,
+      name,
+      line,
+      category,
+      "slug": slug.current,
+      "descriptionPlain": coalesce(pt::text(description), ""),
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
+    })
+  }
+`);
