@@ -163,7 +163,7 @@ export default async function ProductDetailPage({
     <main>
       <ProductHero product={product} />
 
-      <Section spacingTop="large" spacingBottom="large">
+      <Section spacingBottom="large">
         <div className="container mx-auto max-w-6xl px-4 md:px-0">
           <div className="mb-6 flex justify-center lg:justify-start">
             <BackLink href="/store" label="All Products" />
