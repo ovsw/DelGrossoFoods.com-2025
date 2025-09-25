@@ -18,13 +18,13 @@ const Checkbox = React.forwardRef<
       className={cn(
         "size-4 shrink-0 rounded-sm border border-input bg-white/70",
         "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "data-[state=checked]:bg-[var(--color-brand-green)] data-[state=checked]:border-[var(--color-brand-green)]",
+        "data-[state=checked]:bg-brand-green data-[state=checked]:border-brand-green",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className="grid place-items-center text-[var(--color-brand-green-text)]">
+      <CheckboxPrimitive.Indicator className="grid place-items-center text-brand-green-text">
         <Check className="size-3.5" />
       </CheckboxPrimitive.Indicator>
       {children}

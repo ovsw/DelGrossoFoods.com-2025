@@ -29,7 +29,7 @@ const RadioGroupItem = React.forwardRef<
       className={cn(
         "size-4 rounded-full border border-input bg-white/70",
         "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "data-[state=checked]:border-[var(--color-brand-green)]",
+        "data-[state=checked]:border-brand-green",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
@@ -38,7 +38,7 @@ const RadioGroupItem = React.forwardRef<
       <RadioGroupPrimitive.Indicator
         className={cn(
           "relative grid place-items-center",
-          "after:block after:size-2.5 after:rounded-full after:bg-[var(--color-brand-green)]",
+          "after:block after:size-2.5 after:rounded-full after:bg-color-brand-green",
         )}
       />
       {children}
