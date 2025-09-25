@@ -13,6 +13,7 @@ type FeatureBlockProps = PagebuilderType<"feature"> & {
 };
 
 export function FeatureBlock({
+  _key,
   title,
   buttons,
   badge,
@@ -25,7 +26,7 @@ export function FeatureBlock({
 
   return (
     <Section
-      id="feature"
+      id={`feature-${_key}`}
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}

@@ -1,4 +1,5 @@
 "use client";
+import type { ReactElement } from "react";
 import Link from "next/link";
 import {
   PortableText,
@@ -79,6 +80,7 @@ const components: Partial<PortableTextReactComponents> = {
           prefetch={false}
           aria-label={`Link to ${value?.href}`}
           target={value.openInNewTab ? "_blank" : "_self"}
+          rel={value.openInNewTab ? "noopener noreferrer" : undefined}
         >
           {children}
         </Link>
@@ -108,19 +110,19 @@ const components: Partial<PortableTextReactComponents> = {
   hardBreak: () => <br />,
 };
 
-export function RichText<T>({
+export function RichText({
   richText,
   className,
 }: {
-  richText?: T | null;
+  richText?: PortableTextBlock[] | null;
   className?: string;
-}) {
+}): ReactElement | null {
   if (!richText) return null;
 
   return (
     <Prose className={className}>
       <PortableText
-        value={richText as unknown as PortableTextBlock[]}
+        value={richText}
         components={components}
         onMissingComponent={(_, { nodeType, type }) =>
           console.log("missing component", nodeType, type)
