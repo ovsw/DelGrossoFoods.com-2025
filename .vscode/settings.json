@@ -46,6 +46,5 @@
       "routes": ["/", "/blog"],
       "current_route": "/"
     }
-  },
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  }
 }

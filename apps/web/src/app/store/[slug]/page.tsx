@@ -54,20 +54,24 @@ function formatWeight(value: number | null | undefined): string | null {
   }).format(value)} lb`;
 }
 
-function isSauceListItem(
-  sauce: ProductDetailData["sauces"][number] | null | undefined,
-): sauce is SauceListItem {
-  if (!sauce) return false;
-  return (
-    typeof sauce._id === "string" &&
-    typeof sauce._type === "string" &&
-    typeof sauce.name === "string" &&
-    typeof sauce.slug === "string" &&
-    typeof sauce.line === "string" &&
-    typeof sauce.category === "string" &&
-    typeof sauce.descriptionPlain === "string" &&
-    Boolean(sauce.mainImage?.id)
-  );
+type ProductSauce = NonNullable<ProductDetailData["sauces"]>[number];
+
+function toSauceListItem(
+  sauce: ProductSauce | null | undefined,
+): SauceListItem | null {
+  if (!sauce?.mainImage) {
+    return null;
+  }
+
+  const mainImage = sauce.mainImage;
+
+  return {
+    ...sauce,
+    mainImage: {
+      ...mainImage,
+      alt: mainImage.alt || null,
+    },
+  };
 }
 
 async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
@@ -75,8 +79,8 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
     ? slug.replace(/^\/store\//, "")
     : slug;
   const prefixedSlug = `/store/${normalizedSlug}`;
-  const [result] = await handleErrors(
-    sanityFetch<GetProductBySlugQueryResult>({
+  const [result] = await handleErrors<{ data: GetProductBySlugQueryResult }>(
+    sanityFetch({
       query: getProductBySlugQuery,
       params: { slug: normalizedSlug, prefixedSlug },
     }),
@@ -156,7 +160,9 @@ export default async function ProductDetailPage({
     product.shippingCategory,
   ) as keyof typeof shippingCategoryCopy;
   const shippingText = shippingCategoryCopy[shippingKey] ?? null;
-  const associatedSauces = (product.sauces ?? []).filter(isSauceListItem);
+  const associatedSauces = (product.sauces ?? [])
+    .map(toSauceListItem)
+    .filter((sauce): sauce is SauceListItem => sauce !== null);
 
   return (
     <main>

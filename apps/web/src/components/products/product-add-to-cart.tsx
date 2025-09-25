@@ -30,8 +30,7 @@ export function ProductSummary({
     typeof product.price === "number" && !Number.isNaN(product.price)
       ? product.price
       : null;
-
-  const subtotal = unitPrice ? unitPrice * quantity : null;
+  const subtotal = unitPrice != null ? unitPrice * quantity : null;
   const quantityFieldId = React.useId();
 
   function decrement() {
@@ -73,7 +72,7 @@ export function ProductSummary({
         </div>
 
         <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="grid gap-8 text-center lg:text-left">
+          <div className="grid gap-6 text-center lg:text-left">
             <h1 className="text-4xl font-semibold text-brand-green text-balance lg:text-5xl">
               {product.name}
             </h1>
@@ -85,52 +84,44 @@ export function ProductSummary({
             ) : null}
 
             {/* Product details moved to the left column */}
-            <div className="mx-auto mt-8 w-full max-w-2xl border-t border-brand-green/15 pt-6 text-left lg:mx-0">
+            <div className="mx-auto mt-6 w-full max-w-2xl border-t border-brand-green/15 pt-6 text-left lg:mx-0">
               <dl
                 className="mt-2 space-y-4 grid lg:grid-cols-2"
                 data-c="sauce_info"
               >
                 {product.sku ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
                       SKU
                     </dt>
-                    <dd className="mt-1 text-lg font-medium leading-6 text-brand-green">
-                      {product.sku}
-                    </dd>
+                    <dd className="mt-1 text-lg leading-6">{product.sku}</dd>
                   </div>
                 ) : null}
 
                 {packagingLabel ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
                       Pack size
                     </dt>
-                    <dd className="mt-1 text-lg font-medium leading-6 text-brand-green">
-                      {packagingLabel}
-                    </dd>
+                    <dd className="mt-1 text-lg leading-6">{packagingLabel}</dd>
                   </div>
                 ) : null}
 
                 {weightText ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
                       Weight
                     </dt>
-                    <dd className="mt-1 text-lg font-medium leading-6 text-brand-green">
-                      {weightText}
-                    </dd>
+                    <dd className="mt-1 text-lg leading-6">{weightText}</dd>
                   </div>
                 ) : null}
 
                 {shippingText ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
                       Shipping category
                     </dt>
-                    <dd className="mt-1 text-lg font-medium leading-6 text-brand-green">
-                      {shippingText}
-                    </dd>
+                    <dd className="mt-1 text-lg leading-6">{shippingText}</dd>
                   </div>
                 ) : null}
               </dl>
@@ -154,7 +145,7 @@ export function ProductSummary({
                       {priceText ?? "—"}
                     </p>
                   </div>
-                  {subtotal != null ? (
+                  {subtotal != null && unitPrice != null ? (
                     <div className="text-end">
                       <p className="text-xs uppercase tracking-wide text-muted-foreground">
                         Total
@@ -164,7 +155,7 @@ export function ProductSummary({
                         aria-live="polite"
                         aria-atomic="true"
                       >
-                        {(unitPrice * quantity).toLocaleString("en-US", {
+                        {subtotal.toLocaleString("en-US", {
                           style: "currency",
                           currency: "USD",
                           minimumFractionDigits:
@@ -203,7 +194,7 @@ export function ProductSummary({
                       value={quantity}
                       onChange={onQuantityInputChange}
                       aria-label="Quantity"
-                      className="w-full flex-1 bg-transparent text-center text-base font-medium text-brand-green outline-none"
+                      className="w-full flex-1 bg-transparent text-center text-base text-brand-green outline-none"
                       aria-live="polite"
                     />
                     <button
