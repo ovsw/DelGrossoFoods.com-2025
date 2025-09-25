@@ -1,5 +1,14 @@
 # @workspace/ui
 
+## 1.10.0
+
+### Patch Changes
+
+- [#68](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/68) [`c8b14cb`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c8b14cb36269521e6535d7b1356d00ba31d5e68a) Thanks [@ovsw](https://github.com/ovsw)! - Add Sauce page components and UI tweaks
+  - Add Sauce Hero, Nutrition, Related Products, and Related Recipes components
+  - Wire new components into Sauce pages and refine rich text rendering
+  - Tweak shared UI (Button, Eyebrow) and global styles for consistency
+
 ## 1.9.1
 
 ## 1.9.0
