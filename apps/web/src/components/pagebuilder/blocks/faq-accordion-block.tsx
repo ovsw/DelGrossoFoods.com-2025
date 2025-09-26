@@ -9,16 +9,17 @@ import { Section } from "@workspace/ui/components/section";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-import type { PagebuilderType } from "@/types";
+import { RichText } from "../../elements/rich-text";
+import type { PageBuilderBlockProps } from "../types";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
-import { RichText } from "../elements/rich-text";
-import { resolveSectionSpacing } from "./section-spacing";
+type FaqAccordionProps = PageBuilderBlockProps<"faqAccordion">;
 
-type FaqAccordionProps = PagebuilderType<"faqAccordion"> & {
-  readonly isPageTop?: boolean;
-};
-
-export function FaqAccordion({
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
+export function FaqAccordionBlock({
+  _key,
   eyebrow,
   title,
   subtitle,
@@ -28,10 +29,11 @@ export function FaqAccordion({
   isPageTop = false,
 }: FaqAccordionProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const sectionId = _key ? `faq-${_key}` : "faq";
 
   return (
     <Section
-      id="faq"
+      id={sectionId}
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}
@@ -49,23 +51,27 @@ export function FaqAccordion({
         </div>
         <div className="mt-16 max-w-xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
-            {faqs?.map((faq, index) => (
-              <AccordionItem
-                value={faq?._id}
-                key={`AccordionItem-${faq?._id}-${index}`}
-                className="py-2"
-              >
-                <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline group">
-                  {faq?.title}
-                </AccordionTrigger>
-                <AccordionContent className="pb-2 text-muted-foreground">
-                  <RichText
-                    richText={faq?.richText ?? []}
-                    className="text-sm md:text-base"
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+            {faqs?.map((faq, index) => {
+              const itemId = faq?._id ?? `faq-${index}`;
+
+              return (
+                <AccordionItem
+                  value={itemId}
+                  key={`AccordionItem-${itemId}`}
+                  className="py-2"
+                >
+                  <AccordionTrigger className="py-2 text-[15px] leading-6 hover:no-underline group">
+                    {faq?.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-2 text-muted-foreground">
+                    <RichText
+                      richText={faq?.richText ?? []}
+                      className="text-sm md:text-base"
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
 
           {link?.href && (
@@ -74,6 +80,7 @@ export function FaqAccordion({
               <Link
                 href={link.href ?? "#"}
                 target={link.openInNewTab ? "_blank" : "_self"}
+                rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                 className="flex items-center gap-2"
               >
                 <p className="text-[15px] font-[500] leading-6">

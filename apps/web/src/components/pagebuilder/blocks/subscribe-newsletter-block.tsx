@@ -6,10 +6,9 @@ import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
 // import { newsletterSubmission } from "@/action/newsletter-submission";
-import type { PagebuilderType } from "@/types";
-
-import { RichText } from "../elements/rich-text";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import type { PageBuilderBlockProps } from "../types";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 // const InteractiveGridPattern = dynamic(
 //   () =>
@@ -21,9 +20,7 @@ import { resolveSectionSpacing } from "./section-spacing";
 //   },
 // );
 
-type SubscribeNewsletterProps = PagebuilderType<"subscribeNewsletter"> & {
-  readonly isPageTop?: boolean;
-};
+type SubscribeNewsletterProps = PageBuilderBlockProps<"subscribeNewsletter">;
 export default function SubscribeNewsletterButton() {
   const { pending } = useFormStatus();
   return (
@@ -55,7 +52,10 @@ export default function SubscribeNewsletterButton() {
   );
 }
 
-export function SubscribeNewsletter({
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
+export function SubscribeNewsletterBlock({
   title,
   subTitle,
   helperText,

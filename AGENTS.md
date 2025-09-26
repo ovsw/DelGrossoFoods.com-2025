@@ -4,6 +4,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Quick facts
 
+- NEVER use tailwind classes like `text-[var(--color-th-dark-700)]` or `border-[var(--color-brand-green)]` for CSS variables that start with `--color-`. instead ALWAYS use the auto-generated utility classes - in this case `text-th-dark-700` or `border-brand-green`.
 - **Workspace layout**: `apps/web` (Next.js 15), `apps/studio` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
 - **Tooling**: pnpm (10.x), Node (>=22.12), Turbo (2.x), Prettier (3.x), ESLint (flat config).
 - **UI**: Use `shadcn` patterns via `packages/ui`. Do not add `shadcn-ui` dependency. Tailwind v4 only.
@@ -52,6 +53,17 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Tailwind v4 only. Global CSS sourced from `packages/ui/src/styles/globals.css` in web’s `components.json`.
 - Use components from `@workspace/ui`. If a component doesn’t exist, add it in `packages/ui`.
 - Never introduce `shadcn-ui`. Follow existing `shadcn` patterns and tokens from `packages/ui`.
+
+### Blocks vs. Sections (naming + placement)
+
+- Use Section suffix for route/domain UI that owns the `<Section>` wrapper and page spacing.
+  - Lives under domain folders like `components/sauces`, `components/products`, `components/recipes`.
+  - Examples: `ProductHeroSection`, `ProductSummarySection`, `SauceHeroSection`, `SauceRelatedProductsSection`, `RelatedRecipesSection`, `SauceNutritionalInfoSection`.
+- Use Block suffix for CMS page‑builder components driven by Sanity data.
+  - Lives under `components/pagebuilder/blocks`; accepts `PagebuilderType<T>` props; rendered only by the PageBuilder.
+  - Examples: `CTABlock`, `FaqAccordionBlock`, `FeatureBlock`, `FeatureCardsWithIconBlock`, `ImageLinkCardsBlock`, `SubscribeNewsletterBlock`.
+- Utilities used only by page‑builder blocks live under `components/pagebuilder/utils` (e.g., `section-spacing.ts`).
+- Building blocks that do not own `<Section>` keep descriptive names without the Section suffix (e.g., `...Card`, `...Grid`, `...Panel`).
 
 ### Theming (important)
 
@@ -126,6 +138,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
 - For studio changes: `pnpm --filter studio lint:fix && pnpm --filter studio check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
+- Audible completion: `say -v Daniel -r 175 "Task finished"` (or use MCP server `say` → tool `speak`).
 
 ### Common task recipes
 
@@ -620,3 +633,10 @@ Bullets (optional, keep short):
 - Workspaces: `apps/*`, `packages/*` (pnpm)
 - Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
+
+### Audible task completion (agent memory)
+
+- At the end of each task, speak an audible completion message on macOS.
+- Exact command to run (fastest path): `say -v Daniel -r 175 "Task finished"`
+  - Use the built-in "Daniel" voice at 175 wpm ("Alex" is not installed on this machine).
+- If using the MCP server named `say`, the equivalent tool call is: `{ "text": "Task finished", "voice": "Daniel", "rate": 175, "background": false }` for tool `speak`.

@@ -58,10 +58,11 @@ const dominantColorSeoImageRender = ({
 }: DominantColorSeoImageRenderProps) => {
   return (
     <div
-      tw={`bg-[${
-        dominantColor ?? "#12061F"
-      }] flex flex-row overflow-hidden relative w-full`}
-      style={{ fontFamily: "Inter" }}
+      tw="flex flex-row overflow-hidden relative w-full"
+      style={{
+        fontFamily: "Inter",
+        backgroundColor: dominantColor ?? "#12061F",
+      }}
     >
       <svg
         width="100%"
@@ -79,7 +80,7 @@ const dominantColorSeoImageRender = ({
       </svg>
 
       <div
-        tw="flex-1 p-10 flex flex-col justify-between relative z-10"
+        tw="flex-1 p-10 flex flex-col justify-between relative"
         style={{ display: "flex", flexDirection: "column" }}
       >
         <div
@@ -90,11 +91,14 @@ const dominantColorSeoImageRender = ({
             alignItems: "flex-start",
           }}
         >
-          <div tw="flex items-center gap-4">
+          <div tw="flex items-center" style={{ gap: 16 }}>
             {/* Inline SVG logo; Tailwind classes not applied in OG, so rely on style */}
             <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
           </div>
-          <div tw="bg-white flex bg-opacity-20 text-white px-4 py-2 rounded-full text-sm font-medium">
+          <div
+            tw="flex text-white px-4 py-2 rounded-full text-sm font-medium"
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+          >
             {new Date(date ?? new Date()).toLocaleDateString("en-US", {
               month: "long",
               day: "numeric",
@@ -103,32 +107,53 @@ const dominantColorSeoImageRender = ({
           </div>
         </div>
 
-        <h1 tw="text-5xl font-bold leading-tight max-w-[90%] text-white">
+        <h1
+          tw="text-5xl font-bold leading-tight text-white"
+          style={{ maxWidth: "90%" }}
+        >
           {title}
         </h1>
         {description && <p tw="text-lg text-white">{description}</p>}
         {_type && (
           <div
-            tw={`bg-white text-[${
-              dominantColor ?? "#12061F"
-            }] flex px-5 py-2 rounded-full text-base font-semibold self-start`}
+            tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
+            style={{
+              backgroundColor: "#ffffff",
+              color: dominantColor ?? "#12061F",
+            }}
           >
             {getTitleCase(_type)}
           </div>
         )}
       </div>
 
-      <div tw="w-[630px] h-[630px] flex items-center justify-center p-8 relative z-10">
-        <div tw="w-[566px] h-[566px] bg-white bg-opacity-20 flex flex-col justify-center items-center rounded-3xl shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03),0_4px_6px_-1px_rgba(0,0,0,0.05),0_8px_10px_-1px_rgba(0,0,0,0.05)] overflow-hidden">
+      <div
+        tw="flex items-center justify-center p-8 relative"
+        style={{ width: 630, height: 630 }}
+      >
+        <div
+          tw="flex flex-col justify-center items-center overflow-hidden"
+          style={{
+            width: 566,
+            height: 566,
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            borderRadius: 24,
+            boxShadow:
+              "0 0 0 1px rgba(255,255,255,0.05), 0 2px 4px -1px rgba(0,0,0,0.03), 0 4px 6px -1px rgba(0,0,0,0.05), 0 8px 10px -1px rgba(0,0,0,0.05)",
+          }}
+        >
           <div tw="flex relative w-full h-full">
             {image ? (
               <img
                 src={image}
-                tw="w-full h-full rounded-3xl shadow-2xl"
                 width={566}
                 height={566}
                 alt="Content preview"
                 style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 24,
+                  boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
                   objectFit: "cover",
                 }}
               />
