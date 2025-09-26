@@ -13,6 +13,9 @@ export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards"> & {
   readonly isPageTop?: boolean;
 };
 
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function ImageLinkCardsBlock({
   richText,
   title,

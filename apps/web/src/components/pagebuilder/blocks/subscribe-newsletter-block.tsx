@@ -55,6 +55,9 @@ export default function SubscribeNewsletterButton() {
   );
 }
 
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function SubscribeNewsletterBlock({
   title,
   subTitle,

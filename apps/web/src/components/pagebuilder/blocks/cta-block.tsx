@@ -11,6 +11,9 @@ export type CTABlockProps = PagebuilderType<"cta"> & {
   readonly isPageTop?: boolean;
 };
 
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function CTABlock({
   richText,
   title,

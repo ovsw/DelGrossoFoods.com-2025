@@ -34,6 +34,9 @@ function FeatureCard({ card }: FeatureCardProps) {
   );
 }
 
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function FeatureCardsWithIconBlock({
   eyebrow,
   title,
