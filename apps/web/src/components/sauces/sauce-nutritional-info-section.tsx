@@ -13,7 +13,7 @@ import {
   NutritionFactsPanel,
 } from "./nutrition-facts-panel";
 
-type SauceNutritionalInfoProps = {
+type SauceNutritionalInfoSectionProps = {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
 };
 
@@ -39,7 +39,9 @@ function splitLines(value: string | null): string[] {
     .filter(Boolean);
 }
 
-export function SauceNutritionalInfo({ sauce }: SauceNutritionalInfoProps) {
+export function SauceNutritionalInfoSection({
+  sauce,
+}: SauceNutritionalInfoSectionProps) {
   const nutrition: Partial<NutritionData> = sauce.nutritionalInfo ?? {};
   const servingsPerContainer = clean(nutrition.servingsPerContainer);
   const servingSize = clean(nutrition.servingSize);

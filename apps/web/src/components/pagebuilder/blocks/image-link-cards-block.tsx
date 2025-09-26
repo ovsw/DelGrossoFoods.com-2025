@@ -2,18 +2,18 @@ import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 
-import type { PagebuilderType } from "@/types";
+import { RichText } from "../../elements/rich-text";
+import { SanityButtons } from "../../elements/sanity-buttons";
+import { CTACard } from "../../image-link-card";
+import type { PageBuilderBlockProps } from "../types";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
-import { RichText } from "../elements/rich-text";
-import { SanityButtons } from "../elements/sanity-buttons";
-import { CTACard } from "../image-link-card";
-import { resolveSectionSpacing } from "./section-spacing";
+export type ImageLinkCardsProps = PageBuilderBlockProps<"imageLinkCards">;
 
-export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards"> & {
-  readonly isPageTop?: boolean;
-};
-
-export function ImageLinkCards({
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
+export function ImageLinkCardsBlock({
   richText,
   title,
   eyebrow,

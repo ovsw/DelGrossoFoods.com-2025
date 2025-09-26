@@ -1,15 +1,12 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 
-import type { PagebuilderType } from "@/types";
+import { RichText } from "../../elements/rich-text";
+import { SanityIcon } from "../../elements/sanity-icon";
+import type { PageBuilderBlockProps } from "../types";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
-import { RichText } from "../elements/rich-text";
-import { SanityIcon } from "../elements/sanity-icon";
-import { resolveSectionSpacing } from "./section-spacing";
-
-type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon"> & {
-  readonly isPageTop?: boolean;
-};
+type FeatureCardsWithIconProps = PageBuilderBlockProps<"featureCardsIcon">;
 
 type FeatureCardProps = {
   card: NonNullable<FeatureCardsWithIconProps["cards"]>[number];
@@ -34,7 +31,11 @@ function FeatureCard({ card }: FeatureCardProps) {
   );
 }
 
-export function FeatureCardsWithIcon({
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
+export function FeatureCardsWithIconBlock({
+  _key,
   eyebrow,
   title,
   richText,
@@ -43,10 +44,11 @@ export function FeatureCardsWithIcon({
   isPageTop = false,
 }: FeatureCardsWithIconProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const sectionId = _key ? `features-${_key}` : "features";
 
   return (
     <Section
-      id="features"
+      id={sectionId}
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}

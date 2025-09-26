@@ -8,10 +8,8 @@ const eyebrowVariants = cva(
   {
     variants: {
       variant: {
-        onLight:
-          "border-[var(--color-th-neutral-300)] text-[var(--color-th-dark-700)]",
-        onDark:
-          "border-[var(--color-th-light-100)] text-[var(--color-th-light-100)]",
+        onLight: "border-th-neutral-300 text-th-dark-700",
+        onDark: "border-th-light-100 text-th-light-100",
       },
     },
     defaultVariants: {

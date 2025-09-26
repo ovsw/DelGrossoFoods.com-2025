@@ -556,6 +556,34 @@ export const getRecipesBySauceIdQuery = defineQuery(`
   }
 `);
 
+export const getRecipesBySauceIdsQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+    && $sauceIds != null
+    && count($sauceIds) > 0
+    && count((coalesce(dgfSauces[]._ref, []) + coalesce(lfdSauces[]._ref, []))[@ in $sauceIds]) > 0
+  ] | order(name asc){
+    _id,
+    name,
+    "slug": slug.current,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title }),
+    "descriptionPlain": "",
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right }
+    },
+    // Compute unique product lines from both DGF and LFD sauces
+    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
+  }
+`);
+
 export const getAllRecipeCategoriesQuery = defineQuery(`
   *[_type == "recipeCategory"] | order(title asc){ _id, title }
 `);
@@ -615,5 +643,48 @@ export const getProductsBySauceIdQuery = defineQuery(`
     },
     "sauceLines": array::unique((sauces[]->line)[defined(@)]),
     "sauceTypes": array::unique((sauces[]->category)[defined(@)])
+  }
+`);
+
+export const getProductBySlugQuery = defineQuery(`
+  *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    sku,
+    category,
+    shippingCategory,
+    price,
+    weight,
+    "description": description[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    },
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": mainImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    },
+    "sauces": array::compact(sauces[]->{
+      _id,
+      _type,
+      name,
+      line,
+      category,
+      "slug": slug.current,
+      "descriptionPlain": coalesce(pt::text(description), ""),
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
+    })
   }
 `);

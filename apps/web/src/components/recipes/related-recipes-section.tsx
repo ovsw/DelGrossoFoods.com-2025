@@ -4,11 +4,11 @@ import { Section } from "@workspace/ui/components/section";
 import { RecipeCard } from "@/components/recipes/recipe-card";
 import type { RecipeListItem } from "@/types";
 
-interface SauceRelatedRecipesProps {
+interface RelatedRecipesSectionProps {
   readonly recipes: RecipeListItem[];
 }
 
-export function SauceRelatedRecipes({ recipes }: SauceRelatedRecipesProps) {
+export function RelatedRecipesSection({ recipes }: RelatedRecipesSectionProps) {
   if (recipes.length === 0) return null;
 
   const count = recipes.length;

@@ -1,17 +1,17 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 
-import type { PagebuilderType } from "@/types";
+import { RichText } from "../../elements/rich-text";
+import { SanityButtons } from "../../elements/sanity-buttons";
+import { SanityImage } from "../../elements/sanity-image";
+import type { PageBuilderBlockProps } from "../types";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
-import { RichText } from "../elements/rich-text";
-import { SanityButtons } from "../elements/sanity-buttons";
-import { SanityImage } from "../elements/sanity-image";
-import { resolveSectionSpacing } from "./section-spacing";
+type FeatureBlockProps = PageBuilderBlockProps<"feature">;
 
-type FeatureBlockProps = PagebuilderType<"feature"> & {
-  readonly isPageTop?: boolean;
-};
-
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function FeatureBlock({
   _key,
   title,
