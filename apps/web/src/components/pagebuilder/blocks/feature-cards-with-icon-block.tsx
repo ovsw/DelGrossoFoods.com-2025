@@ -35,6 +35,7 @@ function FeatureCard({ card }: FeatureCardProps) {
  * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
  */
 export function FeatureCardsWithIconBlock({
+  _key,
   eyebrow,
   title,
   richText,
@@ -43,10 +44,11 @@ export function FeatureCardsWithIconBlock({
   isPageTop = false,
 }: FeatureCardsWithIconProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const sectionId = _key ? `features-${_key}` : "features";
 
   return (
     <Section
-      id="features"
+      id={sectionId}
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}
