@@ -14,7 +14,10 @@ export default [
         {
           patterns: [
             {
-              group: ["@/components/pagebuilder/**"],
+              group: [
+                "@/components/pagebuilder/**",
+                "**/components/pagebuilder/**",
+              ],
               message:
                 "Pagebuilder blocks are CMS-managed. Render them via PageBuilder instead of importing directly.",
             },
