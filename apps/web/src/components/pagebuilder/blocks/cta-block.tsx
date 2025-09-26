@@ -3,9 +3,9 @@ import { Section } from "@workspace/ui/components/section";
 
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { SanityButtons } from "../elements/sanity-buttons";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { SanityButtons } from "../../elements/sanity-buttons";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 export type CTABlockProps = PagebuilderType<"cta"> & {
   readonly isPageTop?: boolean;

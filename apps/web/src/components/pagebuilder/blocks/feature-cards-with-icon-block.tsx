@@ -3,9 +3,9 @@ import { Section } from "@workspace/ui/components/section";
 
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { SanityIcon } from "../elements/sanity-icon";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { SanityIcon } from "../../elements/sanity-icon";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon"> & {
   readonly isPageTop?: boolean;
@@ -34,7 +34,7 @@ function FeatureCard({ card }: FeatureCardProps) {
   );
 }
 
-export function FeatureCardsWithIcon({
+export function FeatureCardsWithIconBlock({
   eyebrow,
   title,
   richText,

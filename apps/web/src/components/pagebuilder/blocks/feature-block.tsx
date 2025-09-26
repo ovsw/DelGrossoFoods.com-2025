@@ -3,10 +3,10 @@ import { Section } from "@workspace/ui/components/section";
 
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { SanityButtons } from "../elements/sanity-buttons";
-import { SanityImage } from "../elements/sanity-image";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { SanityButtons } from "../../elements/sanity-buttons";
+import { SanityImage } from "../../elements/sanity-image";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 type FeatureBlockProps = PagebuilderType<"feature"> & {
   readonly isPageTop?: boolean;

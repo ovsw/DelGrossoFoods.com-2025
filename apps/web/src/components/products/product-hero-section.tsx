@@ -4,7 +4,7 @@ import { stegaClean } from "next-sanity";
 import { SanityImage } from "@/components/elements/sanity-image";
 import type { ProductDetailData } from "@/types";
 
-type ProductHeroProps = {
+type ProductHeroSectionProps = {
   readonly product: ProductDetailData;
 };
 
@@ -18,7 +18,7 @@ function toCleanString(value: unknown): string {
   return rawValue.trim();
 }
 
-export function ProductHero({ product }: ProductHeroProps) {
+export function ProductHeroSection({ product }: ProductHeroSectionProps) {
   const image = product.mainImage;
   if (!image?.id) return null;
 
