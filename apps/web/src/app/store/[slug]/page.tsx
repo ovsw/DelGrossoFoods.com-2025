@@ -7,13 +7,18 @@ import { stegaClean } from "next-sanity";
 import { ProductSummary } from "@/components/products/product-add-to-cart";
 import { ProductHero } from "@/components/products/product-hero";
 import { SauceCard } from "@/components/sauce-card";
+import { SauceRelatedRecipes } from "@/components/sauces/sauce-related-recipes";
 import { SingleSauceFeature } from "@/components/single-sauce-feature";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
-import { getProductBySlugQuery } from "@/lib/sanity/query";
+import {
+  getProductBySlugQuery,
+  getRecipesBySauceIdQuery,
+  getRecipesBySauceIdsQuery,
+} from "@/lib/sanity/query";
 import type { GetProductBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
-import type { ProductDetailData, SauceListItem } from "@/types";
+import type { ProductDetailData, RecipeListItem, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 const shippingCategoryCopy: Record<
@@ -94,6 +99,36 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
   return product;
 }
 
+async function fetchRelatedRecipesBySauces(
+  sauceIds: readonly string[] | undefined,
+): Promise<RecipeListItem[]> {
+  const ids = (sauceIds ?? []).filter(
+    (id): id is string => typeof id === "string" && id.length > 0,
+  );
+  if (ids.length === 0) {
+    return [];
+  }
+
+  // Fast path: single-id query is well-tested on sauce pages
+  if (ids.length === 1) {
+    const [single] = await handleErrors(
+      sanityFetch({
+        query: getRecipesBySauceIdQuery,
+        params: { sauceId: ids[0] },
+      }),
+    );
+    return (single?.data ?? []) as RecipeListItem[];
+  }
+
+  const [multi] = await handleErrors(
+    sanityFetch({
+      query: getRecipesBySauceIdsQuery,
+      params: { sauceIds: ids },
+    }),
+  );
+  return (multi?.data ?? []) as RecipeListItem[];
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -161,12 +196,25 @@ export default async function ProductDetailPage({
     product.shippingCategory,
   ) as keyof typeof shippingCategoryCopy;
   const shippingText = shippingCategoryCopy[shippingKey] ?? null;
-  const associatedSauces = (product.sauces ?? [])
+  const rawSauces = product.sauces ?? [];
+  const associatedSauces = rawSauces
     .map(toSauceListItem)
     .filter((sauce): sauce is SauceListItem => sauce !== null);
 
   const hasOneSauce = associatedSauces.length === 1;
   const hasManySauces = associatedSauces.length > 1;
+
+  // Derive published sauce IDs (drop drafts) for querying related recipes
+  const sauceIds = Array.from(
+    new Set(
+      rawSauces
+        .map((s) => s?._id)
+        .filter((id): id is string => typeof id === "string" && id.length > 0)
+        .map((id) => id.replace(/^drafts\./, "")),
+    ),
+  );
+  const relatedRecipes = await fetchRelatedRecipesBySauces(sauceIds);
+  const hasRelatedRecipes = relatedRecipes.length > 0;
 
   return (
     <main>
@@ -207,6 +255,10 @@ export default async function ProductDetailPage({
             ) : null}
           </div>
         </Section>
+      ) : null}
+
+      {hasRelatedRecipes ? (
+        <SauceRelatedRecipes recipes={relatedRecipes} />
       ) : null}
     </main>
   );
