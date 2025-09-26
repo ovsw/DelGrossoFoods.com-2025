@@ -6,8 +6,8 @@ import { stegaClean } from "next-sanity";
 
 import { ProductSummary } from "@/components/products/product-add-to-cart";
 import { ProductHero } from "@/components/products/product-hero";
+import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
 import { SauceCard } from "@/components/sauce-card";
-import { SauceRelatedRecipes } from "@/components/sauces/sauce-related-recipes";
 import { SingleSauceFeature } from "@/components/single-sauce-feature";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
@@ -258,7 +258,7 @@ export default async function ProductDetailPage({
       ) : null}
 
       {hasRelatedRecipes ? (
-        <SauceRelatedRecipes recipes={relatedRecipes} />
+        <RelatedRecipesSection recipes={relatedRecipes} />
       ) : null}
     </main>
   );
