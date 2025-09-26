@@ -18,6 +18,9 @@ type FaqAccordionProps = PagebuilderType<"faqAccordion"> & {
   readonly isPageTop?: boolean;
 };
 
+/**
+ * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
+ */
 export function FaqAccordionBlock({
   eyebrow,
   title,
