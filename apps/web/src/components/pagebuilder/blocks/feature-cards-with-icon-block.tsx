@@ -1,15 +1,12 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 
-import type { PagebuilderType } from "@/types";
-
 import { RichText } from "../../elements/rich-text";
 import { SanityIcon } from "../../elements/sanity-icon";
+import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 
-type FeatureCardsWithIconProps = PagebuilderType<"featureCardsIcon"> & {
-  readonly isPageTop?: boolean;
-};
+type FeatureCardsWithIconProps = PageBuilderBlockProps<"featureCardsIcon">;
 
 type FeatureCardProps = {
   card: NonNullable<FeatureCardsWithIconProps["cards"]>[number];
