@@ -11,14 +11,14 @@ import Link from "next/link";
 
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 type FaqAccordionProps = PagebuilderType<"faqAccordion"> & {
   readonly isPageTop?: boolean;
 };
 
-export function FaqAccordion({
+export function FaqAccordionBlock({
   eyebrow,
   title,
   subtitle,

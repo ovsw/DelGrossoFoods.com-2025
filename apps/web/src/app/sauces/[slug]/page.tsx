@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
-import { SauceHero } from "@/components/sauces/sauce-hero";
+import { SauceHeroSection } from "@/components/sauces/sauce-hero-section";
 import { SauceNutritionalInfoSection } from "@/components/sauces/sauce-nutritional-info-section";
-import { SauceRelatedProducts } from "@/components/sauces/sauce-related-products";
+import { SauceRelatedProductsSection } from "@/components/sauces/sauce-related-products-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getProductsBySauceIdQuery,
@@ -127,10 +127,10 @@ export default async function SauceDetailPage({
 
   return (
     <main>
-      <SauceHero sauce={sauce} />
+      <SauceHeroSection sauce={sauce} />
       <SauceNutritionalInfoSection sauce={sauce} />
       {hasRelatedProducts ? (
-        <SauceRelatedProducts products={relatedProducts} />
+        <SauceRelatedProductsSection products={relatedProducts} />
       ) : null}
       {hasRelatedRecipes ? (
         <RelatedRecipesSection recipes={relatedRecipes} />

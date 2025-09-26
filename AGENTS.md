@@ -54,6 +54,17 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Use components from `@workspace/ui`. If a component doesn’t exist, add it in `packages/ui`.
 - Never introduce `shadcn-ui`. Follow existing `shadcn` patterns and tokens from `packages/ui`.
 
+### Blocks vs. Sections (naming + placement)
+
+- Use Section suffix for route/domain UI that owns the `<Section>` wrapper and page spacing.
+  - Lives under domain folders like `components/sauces`, `components/products`, `components/recipes`.
+  - Examples: `ProductHeroSection`, `ProductSummarySection`, `SauceHeroSection`, `SauceRelatedProductsSection`, `RelatedRecipesSection`, `SauceNutritionalInfoSection`.
+- Use Block suffix for CMS page‑builder components driven by Sanity data.
+  - Lives under `components/pagebuilder/blocks`; accepts `PagebuilderType<T>` props; rendered only by the PageBuilder.
+  - Examples: `CTABlock`, `FaqAccordionBlock`, `FeatureBlock`, `FeatureCardsWithIconBlock`, `ImageLinkCardsBlock`, `SubscribeNewsletterBlock`.
+- Utilities used only by page‑builder blocks live under `components/pagebuilder/utils` (e.g., `section-spacing.ts`).
+- Building blocks that do not own `<Section>` keep descriptive names without the Section suffix (e.g., `...Card`, `...Grid`, `...Panel`).
+
 ### Theming (important)
 
 - The web app is light-only. There is no runtime theme switching.

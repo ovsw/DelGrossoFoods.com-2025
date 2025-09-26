@@ -5,11 +5,13 @@ import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { ProductCard } from "@/components/products/product-card";
 import type { SanityButtonProps, SauceProductListItem } from "@/types";
 
-interface SauceRelatedProductsProps {
+interface SauceRelatedProductsSectionProps {
   readonly products: SauceProductListItem[];
 }
 
-export function SauceRelatedProducts({ products }: SauceRelatedProductsProps) {
+export function SauceRelatedProductsSection({
+  products,
+}: SauceRelatedProductsSectionProps) {
   if (products.length === 0) return null;
 
   const relatedCopy = "Pick a bundle and stock up straight from our store.";

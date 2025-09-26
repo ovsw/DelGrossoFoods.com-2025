@@ -10,7 +10,7 @@ import { BackLink } from "@/components/elements/back-link";
 import { RichText } from "@/components/elements/rich-text";
 import type { ProductDetailData } from "@/types";
 
-interface ProductSummaryProps {
+interface ProductSummarySectionProps {
   readonly product: ProductDetailData;
   readonly packagingLabel: string | null;
   readonly priceText: string | null;
@@ -18,13 +18,13 @@ interface ProductSummaryProps {
   readonly shippingText: string | null;
 }
 
-export function ProductSummary({
+export function ProductSummarySection({
   product,
   packagingLabel,
   priceText,
   weightText,
   shippingText,
-}: ProductSummaryProps) {
+}: ProductSummarySectionProps) {
   const [quantity, setQuantity] = React.useState<number>(1);
   const unitPrice =
     typeof product.price === "number" && !Number.isNaN(product.price)

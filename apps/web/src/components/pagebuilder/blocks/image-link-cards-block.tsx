@@ -4,16 +4,16 @@ import { cn } from "@workspace/ui/lib/utils";
 
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { SanityButtons } from "../elements/sanity-buttons";
-import { CTACard } from "../image-link-card";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { SanityButtons } from "../../elements/sanity-buttons";
+import { CTACard } from "../../image-link-card";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 export type ImageLinkCardsProps = PagebuilderType<"imageLinkCards"> & {
   readonly isPageTop?: boolean;
 };
 
-export function ImageLinkCards({
+export function ImageLinkCardsBlock({
   richText,
   title,
   eyebrow,

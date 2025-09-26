@@ -8,12 +8,12 @@ import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
 
-import { CTABlock } from "./sections/cta";
-import { FaqAccordion } from "./sections/faq-accordion";
-import { FeatureBlock } from "./sections/feature";
-import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
-import { ImageLinkCards } from "./sections/image-link-cards";
-import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
+import { CTABlock } from "./pagebuilder/blocks/cta-block";
+import { FaqAccordionBlock } from "./pagebuilder/blocks/faq-accordion-block";
+import { FeatureBlock } from "./pagebuilder/blocks/feature-block";
+import { FeatureCardsWithIconBlock } from "./pagebuilder/blocks/feature-cards-with-icon-block";
+import { ImageLinkCardsBlock } from "./pagebuilder/blocks/image-link-cards-block";
+import { SubscribeNewsletterBlock } from "./pagebuilder/blocks/subscribe-newsletter-block";
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
@@ -41,11 +41,11 @@ type BlockComponentMap = {
 // Strongly typed component mapping with proper component signatures
 const BLOCK_COMPONENTS = {
   cta: CTABlock,
-  faqAccordion: FaqAccordion,
+  faqAccordion: FaqAccordionBlock,
   feature: FeatureBlock,
-  featureCardsIcon: FeatureCardsWithIcon,
-  subscribeNewsletter: SubscribeNewsletter,
-  imageLinkCards: ImageLinkCards,
+  featureCardsIcon: FeatureCardsWithIconBlock,
+  subscribeNewsletter: SubscribeNewsletterBlock,
+  imageLinkCards: ImageLinkCardsBlock,
 } satisfies BlockComponentMap;
 
 /**

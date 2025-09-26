@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
-import { ProductSummary } from "@/components/products/product-add-to-cart";
-import { ProductHero } from "@/components/products/product-hero";
+import { ProductHeroSection } from "@/components/products/product-hero-section";
+import { ProductSummarySection } from "@/components/products/product-summary-section";
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
 import { SauceCard } from "@/components/sauce-card";
 import { SingleSauceFeature } from "@/components/single-sauce-feature";
@@ -218,9 +218,9 @@ export default async function ProductDetailPage({
 
   return (
     <main>
-      <ProductHero product={product} />
+      <ProductHeroSection product={product} />
 
-      <ProductSummary
+      <ProductSummarySection
         product={product}
         packagingLabel={packagingLabel}
         priceText={priceText}

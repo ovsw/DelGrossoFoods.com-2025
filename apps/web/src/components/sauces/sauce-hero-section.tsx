@@ -11,11 +11,11 @@ import { SanityImage } from "@/components/elements/sanity-image";
 import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import type { SanityButtonProps } from "@/types";
 
-interface SauceHeroProps {
+interface SauceHeroSectionProps {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
 }
 
-export function SauceHero({ sauce }: SauceHeroProps) {
+export function SauceHeroSection({ sauce }: SauceHeroSectionProps) {
   // Name: visible uses raw; logic/alt use cleaned
   const rawName = sauce.name ?? "";
   const cleanedName = stegaClean(rawName);

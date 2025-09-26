@@ -8,8 +8,8 @@ import { useFormStatus } from "react-dom";
 // import { newsletterSubmission } from "@/action/newsletter-submission";
 import type { PagebuilderType } from "@/types";
 
-import { RichText } from "../elements/rich-text";
-import { resolveSectionSpacing } from "./section-spacing";
+import { RichText } from "../../elements/rich-text";
+import { resolveSectionSpacing } from "../utils/section-spacing";
 
 // const InteractiveGridPattern = dynamic(
 //   () =>
@@ -55,7 +55,7 @@ export default function SubscribeNewsletterButton() {
   );
 }
 
-export function SubscribeNewsletter({
+export function SubscribeNewsletterBlock({
   title,
   subTitle,
   helperText,
