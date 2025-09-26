@@ -9,14 +9,11 @@ import { Section } from "@workspace/ui/components/section";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-import type { PagebuilderType } from "@/types";
-
 import { RichText } from "../../elements/rich-text";
+import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 
-type FaqAccordionProps = PagebuilderType<"faqAccordion"> & {
-  readonly isPageTop?: boolean;
-};
+type FaqAccordionProps = PageBuilderBlockProps<"faqAccordion">;
 
 /**
  * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
