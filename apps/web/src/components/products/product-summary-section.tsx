@@ -51,6 +51,9 @@ export function ProductSummarySection({
 
   function handleAddToCart(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (unitPrice == null) {
+      return;
+    }
     const detail = {
       id: product._id,
       sku: product.sku ?? null,
