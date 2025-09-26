@@ -138,6 +138,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
 - For studio changes: `pnpm --filter studio lint:fix && pnpm --filter studio check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
+- Audible completion: `say -v Daniel -r 175 "Task finished"` (or use MCP server `say` → tool `speak`).
 
 ### Common task recipes
 
@@ -632,3 +633,10 @@ Bullets (optional, keep short):
 - Workspaces: `apps/*`, `packages/*` (pnpm)
 - Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
+
+### Audible task completion (agent memory)
+
+- At the end of each task, speak an audible completion message on macOS.
+- Exact command to run (fastest path): `say -v Daniel -r 175 "Task finished"`
+  - Use the built-in "Daniel" voice at 175 wpm ("Alex" is not installed on this machine).
+- If using the MCP server named `say`, the equivalent tool call is: `{ "text": "Task finished", "voice": "Daniel", "rate": 175, "background": false }` for tool `speak`.
