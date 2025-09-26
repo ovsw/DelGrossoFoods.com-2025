@@ -75,7 +75,7 @@ function toSauceListItem(
     ...sauce,
     mainImage: {
       ...mainImage,
-      alt: mainImage.alt || null,
+      alt: mainImage.alt ?? "",
     },
   };
 }
