@@ -7,6 +7,7 @@ import { stegaClean } from "next-sanity";
 import { ProductSummary } from "@/components/products/product-add-to-cart";
 import { ProductHero } from "@/components/products/product-hero";
 import { SauceCard } from "@/components/sauce-card";
+import { SingleSauceFeature } from "@/components/single-sauce-feature";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getProductBySlugQuery } from "@/lib/sanity/query";
@@ -164,6 +165,9 @@ export default async function ProductDetailPage({
     .map(toSauceListItem)
     .filter((sauce): sauce is SauceListItem => sauce !== null);
 
+  const hasOneSauce = associatedSauces.length === 1;
+  const hasManySauces = associatedSauces.length > 1;
+
   return (
     <main>
       <ProductHero product={product} />
@@ -179,22 +183,28 @@ export default async function ProductDetailPage({
       {associatedSauces.length > 0 ? (
         <Section spacingTop="large" spacingBottom="large" id="related-sauces">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center">
-              <Eyebrow text="Pairs well with" />
-              <h2 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
-                Complementary sauces
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                Build your next meal with these favorites from La Famiglia
-                DelGrosso.
-              </p>
-            </div>
+            {hasOneSauce ? (
+              <SingleSauceFeature item={associatedSauces[0]!} />
+            ) : hasManySauces ? (
+              <>
+                <div className="text-center">
+                  <Eyebrow text="Pairs well with" />
+                  <h2 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
+                    Complementary sauces
+                  </h2>
+                  <p className="mt-4 text-muted-foreground">
+                    Build your next meal with these favorites from La Famiglia
+                    DelGrosso.
+                  </p>
+                </div>
 
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {associatedSauces.map((sauce) => (
-                <SauceCard key={sauce._id} item={sauce} />
-              ))}
-            </div>
+                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {associatedSauces.map((sauce) => (
+                    <SauceCard key={sauce._id} item={sauce} />
+                  ))}
+                </div>
+              </>
+            ) : null}
           </div>
         </Section>
       ) : null}

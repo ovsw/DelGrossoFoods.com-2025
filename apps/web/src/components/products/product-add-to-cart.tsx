@@ -65,26 +65,26 @@ export function ProductSummary({
   }
 
   return (
-    <Section spacingTop="large" spacingBottom="large">
-      <div className="container mx-auto max-w-6xl px-4 md:px-0">
-        <div className="mb-6 flex justify-center lg:justify-start">
+    <Section spacingTop="large" spacingBottom="default">
+      <div className="container mx-auto max-w-6xl px-4 md:px-6">
+        <div className="mb-6 flex justify-center md:justify-start">
           <BackLink href="/store" label="All Products" />
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="grid gap-6 text-center lg:text-left">
+        <div className="grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <div className="grid gap-6 text-center md:text-left">
             <h1 className="text-4xl font-semibold text-brand-green text-balance lg:text-5xl">
               {product.name}
             </h1>
             {product.description?.length ? (
               <RichText
                 richText={product.description}
-                className="mx-auto max-w-2xl text-brand-green/90 lg:mx-0"
+                className="mx-auto max-w-2xl text-brand-green/90 md:mx-0"
               />
             ) : null}
 
             {/* Product details moved to the left column */}
-            <div className="mx-auto mt-6 w-full max-w-2xl border-t border-brand-green/15 pt-6 text-left lg:mx-0">
+            <div className="mx-auto mt-6 w-full max-w-md md:max-w-2xl border-t border-brand-green/15 pt-6 text-left lg:mx-0">
               <dl
                 className="mt-2 space-y-4 grid lg:grid-cols-2"
                 data-c="sauce_info"
@@ -128,7 +128,7 @@ export function ProductSummary({
             </div>
           </div>
 
-          <aside className="lg:pl-8">
+          <aside className="lg:pl-8 mx-auto ">
             <div className="rounded-lg border border-brand-green/20 bg-white/80 p-6 shadow-sm backdrop-blur-sm">
               <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-green/70">
                 Add to Cart
