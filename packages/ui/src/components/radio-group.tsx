@@ -38,7 +38,7 @@ const RadioGroupItem = React.forwardRef<
       <RadioGroupPrimitive.Indicator
         className={cn(
           "relative grid place-items-center",
-          "after:block after:size-2.5 after:rounded-full after:bg-color-brand-green",
+          "after:block after:size-2.5 after:rounded-full after:bg-brand-green",
         )}
       />
       {children}
