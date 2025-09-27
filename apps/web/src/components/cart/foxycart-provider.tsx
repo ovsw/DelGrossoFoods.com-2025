@@ -129,10 +129,7 @@ export function FoxycartProvider() {
       addHiddenInput(form, "quantity", quantity);
       addHiddenInput(form, "code", sku);
 
-      // Category and weight are optional but recommended if store is configured for them
-      if (detail.shippingCategory) {
-        addHiddenInput(form, "category", detail.shippingCategory);
-      }
+      // Temporarily omit category to bypass invalid category errors during testing
       if (typeof detail.weight === "number" && !Number.isNaN(detail.weight)) {
         addHiddenInput(form, "weight", detail.weight);
       }

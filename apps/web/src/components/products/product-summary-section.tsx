@@ -4,10 +4,13 @@ import { Button } from "@workspace/ui/components/button";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import { BackLink } from "@/components/elements/back-link";
 import { RichText } from "@/components/elements/rich-text";
+import { resolveFoxyConfig } from "@/lib/foxy/config";
+import { urlFor } from "@/lib/sanity/client";
 import type { ProductDetailData } from "@/types";
 
 interface ProductSummarySectionProps {
@@ -33,6 +36,114 @@ export function ProductSummarySection({
   const subtotal = unitPrice != null ? unitPrice * quantity : null;
   const quantityFieldId = React.useId();
 
+  const foxyConfig = React.useMemo(
+    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN),
+    [],
+  );
+
+  React.useEffect(() => {
+    if (!foxyConfig) {
+      console.error(
+        "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is not set; add-to-cart form disabled.",
+      );
+    }
+  }, [foxyConfig]);
+
+  const sku = React.useMemo(() => {
+    const raw = product.sku ?? "";
+    const cleaned = stegaClean(raw);
+    if (typeof cleaned === "string" && cleaned.trim().length > 0) {
+      return cleaned.trim();
+    }
+    return raw.trim();
+  }, [product.sku]);
+
+  const productNameForCart = React.useMemo(() => {
+    const raw = product.name ?? "";
+    const cleaned = stegaClean(raw);
+    if (typeof cleaned === "string" && cleaned.trim().length > 0) {
+      return cleaned.trim();
+    }
+    if (typeof raw === "string" && raw.trim().length > 0) {
+      return raw.trim();
+    }
+    return "";
+  }, [product.name]);
+
+  const normalizedSlug = React.useMemo(() => {
+    const rawSlug = product.slug ?? "";
+    const cleaned = stegaClean(rawSlug);
+    const slug =
+      typeof cleaned === "string" && cleaned.trim().length > 0
+        ? cleaned.trim()
+        : rawSlug.trim();
+    if (!slug) {
+      return null;
+    }
+    const trimmed = slug.replace(/^\/+|\/+$/g, "");
+    if (!trimmed) {
+      return null;
+    }
+    return trimmed.startsWith("store/") ? trimmed : `store/${trimmed}`;
+  }, [product.slug]);
+
+  const [productUrl, setProductUrl] = React.useState<string | null>(() =>
+    normalizedSlug ? `/${normalizedSlug}` : null,
+  );
+
+  React.useEffect(() => {
+    if (!normalizedSlug) {
+      setProductUrl(null);
+      return;
+    }
+    try {
+      setProductUrl(`${window.location.origin}/${normalizedSlug}`);
+    } catch {
+      setProductUrl(`/${normalizedSlug}`);
+    }
+  }, [normalizedSlug]);
+
+  const priceValue = React.useMemo(() => {
+    if (unitPrice == null) {
+      return null;
+    }
+    return (Math.round(unitPrice * 100) / 100).toFixed(2);
+  }, [unitPrice]);
+
+  const weightValue = React.useMemo(() => {
+    if (typeof product.weight !== "number" || Number.isNaN(product.weight)) {
+      return null;
+    }
+    return String(product.weight);
+  }, [product.weight]);
+
+  const imageUrl = React.useMemo(() => {
+    const assetId = product.mainImage?.id;
+    if (!assetId) {
+      return null;
+    }
+    try {
+      const built = urlFor({ _ref: assetId })
+        .width(600)
+        .height(600)
+        .dpr(2)
+        .url();
+      return typeof built === "string" ? built : null;
+    } catch {
+      return null;
+    }
+  }, [product.mainImage?.id]);
+
+  const cartAction = React.useMemo(() => {
+    if (!foxyConfig) {
+      return undefined;
+    }
+    return `https://${foxyConfig.cartDomain}/cart`;
+  }, [foxyConfig]);
+
+  const isAddToCartDisabled =
+    unitPrice == null || sku.length === 0 || !foxyConfig;
+
   function decrement() {
     setQuantity((q) => (q > 1 ? q - 1 : 1));
   }
@@ -47,28 +158,6 @@ export function ProductSummarySection({
       const clamped = Math.min(99, Math.max(1, val));
       setQuantity(clamped);
     }
-  }
-
-  function handleAddToCart(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (unitPrice == null) {
-      return;
-    }
-    const detail = {
-      id: product._id,
-      sku: product.sku ?? null,
-      name: product.name ?? "",
-      quantity,
-      unitPrice,
-      packagingLabel,
-      weightText,
-      slug: product.slug ?? null,
-      shippingCategory: product.shippingCategory ?? null,
-      weight: typeof product.weight === "number" ? product.weight : null,
-      imageAssetId: product.mainImage?.id ?? null,
-    };
-    // Fire a custom event so a cart integration can hook in centrally
-    document.dispatchEvent(new CustomEvent("product:add-to-cart", { detail }));
   }
 
   return (
@@ -141,7 +230,30 @@ export function ProductSummarySection({
                 Add to Cart
               </h2>
 
-              <form onSubmit={handleAddToCart} className="mt-4 grid gap-4">
+              <form
+                action={cartAction}
+                method="post"
+                className="mt-4 grid gap-4 foxycart"
+              >
+                <input
+                  type="hidden"
+                  name="name"
+                  value={(productNameForCart || sku) ?? ""}
+                />
+                {priceValue != null ? (
+                  <input type="hidden" name="price" value={priceValue} />
+                ) : null}
+                <input type="hidden" name="code" value={sku} />
+                {productUrl ? (
+                  <input type="hidden" name="url" value={productUrl} />
+                ) : null}
+                {imageUrl ? (
+                  <input type="hidden" name="image" value={imageUrl} />
+                ) : null}
+                {weightValue != null ? (
+                  <input type="hidden" name="weight" value={weightValue} />
+                ) : null}
+
                 {/* Pricing row */}
                 <div className="flex items-baseline justify-between">
                   <div>
@@ -198,6 +310,8 @@ export function ProductSummarySection({
                       name="quantity"
                       inputMode="numeric"
                       pattern="[0-9]*"
+                      min={1}
+                      max={99}
                       value={quantity}
                       onChange={onQuantityInputChange}
                       aria-label="Quantity"
@@ -227,8 +341,8 @@ export function ProductSummarySection({
                     size="lg"
                     className="w-full"
                     aria-label={`Add ${quantity} to cart`}
-                    disabled={unitPrice == null || !product.sku}
-                    data-sku={product.sku ?? undefined}
+                    disabled={isAddToCartDisabled}
+                    data-sku={sku || undefined}
                     data-product-id={product._id}
                     data-quantity={quantity}
                   >
