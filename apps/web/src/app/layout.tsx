@@ -10,11 +10,13 @@ import Script from "next/script";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
+import { FoxycartProvider } from "@/components/cart/foxycart-provider";
 import { FooterServer, FooterSkeleton } from "@/components/footer";
 import { Header } from "@/components/header";
 import { CombinedJsonLd } from "@/components/json-ld";
 import { PreviewBar } from "@/components/preview-bar";
 import { Providers } from "@/components/providers";
+import { resolveFoxyConfig } from "@/lib/foxy/config";
 import { SanityLive } from "@/lib/sanity/live";
 
 const fontSerif = Libre_Baskerville({
@@ -40,6 +42,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const foxyConfig = resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN);
+
   return (
     <html
       lang="en"
@@ -66,6 +70,8 @@ export default async function RootLayout({
           </Suspense>
           <SanityLive />
           <CombinedJsonLd includeWebsite includeOrganization />
+          {/* FoxyCart Sidecart global listener */}
+          <FoxycartProvider />
           {(await draftMode()).isEnabled && (
             <>
               <PreviewBar />
@@ -78,6 +84,13 @@ export default async function RootLayout({
             <Script src="/_piny/piny.phone.js" strategy="beforeInteractive" />
           )}{" "}
         {/* <-- conditionally include the Piny script */}
+        {/* FoxyCart Sidecart loader: loads jQuery if needed and intercepts forms/links */}
+        {foxyConfig ? (
+          <Script
+            src={`https://cdn.foxycart.com/${foxyConfig.loaderSlug}/loader.js`}
+            strategy="beforeInteractive"
+          />
+        ) : null}
       </body>
     </html>
   );
