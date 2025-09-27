@@ -62,6 +62,10 @@ export function ProductSummarySection({
       unitPrice,
       packagingLabel,
       weightText,
+      slug: product.slug ?? null,
+      shippingCategory: product.shippingCategory ?? null,
+      weight: typeof product.weight === "number" ? product.weight : null,
+      imageAssetId: product.mainImage?.id ?? null,
     };
     // Fire a custom event so a cart integration can hook in centrally
     document.dispatchEvent(new CustomEvent("product:add-to-cart", { detail }));
@@ -223,7 +227,7 @@ export function ProductSummarySection({
                     size="lg"
                     className="w-full"
                     aria-label={`Add ${quantity} to cart`}
-                    disabled={unitPrice == null}
+                    disabled={unitPrice == null || !product.sku}
                     data-sku={product.sku ?? undefined}
                     data-product-id={product._id}
                     data-quantity={quantity}
