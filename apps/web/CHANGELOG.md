@@ -1,5 +1,14 @@
 # web
 
+## 1.11.1
+
+### Patch Changes
+
+- [`c46bab1`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c46bab15a3f2b50f59a070a57e2231cd7476a1b0) Thanks [@ovsw](https://github.com/ovsw)! - Await Next.js async route params in blog and recipe detail pages.
+
+- Updated dependencies []:
+  - @workspace/ui@1.11.1
+
 ## 1.11.0
 
 ### Minor Changes
