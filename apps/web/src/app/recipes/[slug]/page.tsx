@@ -6,9 +6,9 @@ import { getSEOMetadata } from "@/lib/seo";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   return getSEOMetadata({
     title: `Recipe: ${slug}`,
     description: "Recipe details coming soon.",
@@ -20,9 +20,9 @@ export async function generateMetadata({
 export default async function RecipeDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   return (
     <main>
       <div className="container my-16 mx-auto px-4 md:px-6">
