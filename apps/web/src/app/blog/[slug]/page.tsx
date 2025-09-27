@@ -31,9 +31,9 @@ async function fetchBlogPaths() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const { data } = await fetchBlogSlugPageData(slug, false);
   return getSEOMetadata(
     data
@@ -56,9 +56,9 @@ export async function generateStaticParams() {
 export default async function BlogSlugPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const { data } = await fetchBlogSlugPageData(slug);
   if (!data) return notFound();
   const { title, description, image, richText } = data ?? {};
