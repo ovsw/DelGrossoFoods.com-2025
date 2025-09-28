@@ -7,9 +7,17 @@ interface UseScrollVisibilityOptions {
   sidecartCooldownMs?: number;
 }
 
+export interface UseScrollVisibilityResult {
+  isScrolled: boolean;
+  isVisible: boolean;
+  suppressTransitions: boolean;
+}
+
 // Restores straightforward direction-based visibility with a Sidecart guard so
 // we avoid flicker when Foxy restores the scroll position.
-export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
+export function useScrollVisibility(
+  options?: UseScrollVisibilityOptions,
+): UseScrollVisibilityResult {
   const { scrollThreshold = 100, sidecartCooldownMs = 250 } = options || {};
 
   const lastScrollYRef = useRef(0);
@@ -71,7 +79,7 @@ export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
     setIsScrolled(lastScrollYRef.current > 0);
 
     const evaluate = () => {
-      const currentY = window.scrollY || 0;
+      const currentY = Math.max(0, window.scrollY || 0);
       setIsScrolled(currentY > 0);
 
       if (sidecartActiveRef.current) {
@@ -135,9 +143,12 @@ export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
     });
 
     try {
-      observer.observe(document.documentElement, {
+      observer.observe(document.body, {
         attributes: true,
         attributeFilter: ["class"],
+      });
+      // Secondary observer for sidecart mount/unmount without scanning entire document
+      observer.observe(document.body, {
         childList: true,
         subtree: true,
       });
