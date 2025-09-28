@@ -6,7 +6,7 @@ import { type ComponentType, useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
-import type { PageBuilderBlockTypes, PagebuilderType } from "@/types";
+import type { PageBuilderBlockTypes } from "@/types";
 
 import { CTABlock } from "./pagebuilder/blocks/cta-block";
 import { FaqAccordionBlock } from "./pagebuilder/blocks/faq-accordion-block";
@@ -95,11 +95,17 @@ function useOptimisticPageBuilder(
   initialBlocks: PageBuilderBlock[],
   documentId: string,
 ) {
-  return useOptimistic<PageBuilderBlock[], any>(
+  return useOptimistic<PageBuilderBlock[], { id: string; document?: unknown }>(
     initialBlocks,
     (currentBlocks, action) => {
-      if (action.id === documentId && action.document?.pageBuilder) {
-        return action.document.pageBuilder;
+      if (
+        action.id === documentId &&
+        action.document &&
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (action.document as any).pageBuilder
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return (action.document as any).pageBuilder;
       }
       return currentBlocks;
     },

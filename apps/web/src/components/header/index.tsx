@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import LogoSvg from "@/components/elements/logo";
-import { useScrollVisibility } from "@/hooks/useScrollVisibility";
+import { useScrollVisibility } from "@/hooks/use-scroll-visibility";
 
 import { CartButton } from "./CartButton";
 import { DesktopActions } from "./DesktopActions";
@@ -17,7 +17,7 @@ import { RecipesButton } from "./RecipesButton";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isVisible } = useScrollVisibility();
+  const { isVisible, suppressTransitions } = useScrollVisibility();
   const pathname = usePathname();
 
   const navigationLinks = [
@@ -45,7 +45,8 @@ export function Header() {
       <div
         role="banner"
         className={cn(
-          "nav_wrap fixed top-0 right-0 left-0 z-50 transform px-4 transition-all will-change-auto sm:px-6 lg:px-8",
+          "nav_wrap fixed top-0 right-0 left-0 z-50 transform px-4 sm:px-6 lg:px-8",
+          suppressTransitions ? "transition-none duration-0" : "transition-all",
           isVisible
             ? "translate-y-0 opacity-100 duration-300 ease-out"
             : "-translate-y-full opacity-0 duration-200 ease-in",
