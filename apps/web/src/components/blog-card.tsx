@@ -28,39 +28,6 @@ function BlogImage({ image, title }: BlogImageProps) {
   );
 }
 
-interface AuthorImageProps {
-  author: Blog["authors"];
-}
-
-function AuthorImage({ author }: AuthorImageProps) {
-  if (!author?.image) return null;
-
-  return (
-    <SanityImage
-      image={author.image}
-      width={40}
-      height={40}
-      alt={author.name ?? "Author image"}
-      className="size-8 flex-none rounded-full bg-gray-50"
-    />
-  );
-}
-
-interface BlogAuthorProps {
-  author: Blog["authors"];
-}
-
-export function BlogAuthor({ author }: BlogAuthorProps) {
-  if (!author) return null;
-
-  return (
-    <div className="flex items-center gap-x-2.5 text-sm/6 font-semibold text-gray-900">
-      <AuthorImage author={author} />
-      {author.name}
-    </div>
-  );
-}
-
 interface BlogCardProps {
   blog: Blog;
 }
@@ -112,26 +79,8 @@ function BlogContent({
   );
 }
 
-function AuthorSection({ authors }: { authors: Blog["authors"] }) {
-  if (!authors) return null;
-
-  return (
-    <div className="mt-6 flex border-t border-gray-900/5 pt-6">
-      <div className="relative flex items-center gap-x-4">
-        <AuthorImage author={authors} />
-        <div className="text-sm leading-6">
-          <p className="font-semibold">
-            <span className="absolute inset-0" />
-            {authors.name}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function FeaturedBlogCard({ blog }: BlogCardProps) {
-  const { title, publishedAt, slug, authors, description, image } = blog ?? {};
+  const { title, publishedAt, slug, description, image } = blog ?? {};
 
   return (
     <article className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
@@ -164,7 +113,7 @@ export function BlogCard({ blog }: BlogCardProps) {
     );
   }
 
-  const { title, publishedAt, slug, authors, description, image } = blog;
+  const { title, publishedAt, slug, description, image } = blog;
 
   return (
     <article className="grid grid-cols-1 gap-4 w-full">

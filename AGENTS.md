@@ -46,6 +46,20 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Control flow: prefer early returns; handle errors meaningfully; avoid deep nesting.
 - Naming: descriptive, full words; kebab-case filenames; `.tsx` for components, `.ts` for utils.
 - Accessibility: semantic HTML, alt text, keyboard/contrast sanity checks, no div-as-button.
+  - Live announcements (standard):
+    - Do not use Next's App Router Announcer for non-navigation events.
+    - Use the global A11y Live Announcer pattern for "active" messages (e.g., add-to-cart, errors).
+    - Preferred API: `announce(message, politeness?)` from `apps/web/src/lib/a11y/announce.ts`.
+    - Under the hood this dispatches: `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`.
+    - Keep messages short and human-readable; prefer `politeness: "polite"`; reserve `"assertive"` for errors.
+    - **Important**: Any message sourced from Sanity content must be wrapped with `stegaClean(message)` before calling `announce(...)` to strip out stega metadata and prevent it from reaching screen readers.
+    - "Passive" status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy's `data-fc-id` markers; don't elevate those to the global announcer.
+    - Implementation references:
+      - Mount: `apps/web/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
+      - Announcer: `apps/web/src/components/a11y/live-announcer.tsx` (listens for `a11y:announce`).
+      - Helper: `apps/web/src/lib/a11y/announce.ts`.
+      - Example usage (add-to-cart): `apps/web/src/components/cart/foxycart-provider.tsx`.
+    - Stability: a guard keeps Next’s route announcer anchored (`AnnouncerGuard`) and a dev-only DOM tolerance prevents NotFoundError from third-party reparenting.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
 
 ### UI system and Tailwind
@@ -79,6 +93,10 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Sanity client and queries live under `src/lib/sanity/`.
 - Images: Next image remote patterns are configured for Sanity CDN; prefer Sanity-aware image helpers.
 - The root `layout.tsx` renders `<html className="light" style={{ colorScheme: "light" }}>` and wraps children with a no-op `Providers`. Don’t introduce color-scheme negotiation or cookies for theme.
+- Accessibility announcers:
+  - `<A11yLiveAnnouncer />` is mounted once (after `<SanityLive />`) and listens for `a11y:announce`. Use it for all active, ephemeral announcements.
+  - `<AnnouncerGuard />` ensures Next’s internal route announcer remains under `<body>`.
+  - Development-only DOM tolerance (`DevDomRemoveTolerance`) is mounted to suppress NotFoundError caused by third-party DOM reparenting in dev.
 
 ### Sanity studio (apps/studio)
 

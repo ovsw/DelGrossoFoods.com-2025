@@ -154,7 +154,7 @@ export function FooterSkeleton() {
 }
 
 function Footer({ data, settingsData }: FooterProps) {
-  const { subtitle, columns } = data;
+  const { columns } = data;
   const {
     siteTitle,
     socialLinks,
