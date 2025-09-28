@@ -21,7 +21,10 @@ Additionally, Next’s internal App Router Announcer appends a shadow-root conta
    - Add `AnnouncerGuard` (client component) that observes DOM mutations and re-attaches `<next-route-announcer>` to `document.body` if it’s moved.
 
 2. Suppress dev-only NotFoundError noise from third-party DOM re-parenting.
-   - Add `DevDomRemoveTolerance` (development only) that wraps `Node.prototype.insertBefore`, `replaceChild`, and `removeChild` to be tolerant when the reference/child node isn’t actually a child of the current node (fallback to `appendChild` or no-op removal). This prevents React’s commit phase from failing when Sidecart has already moved/replaced nodes.
+   - Add `DevDomRemoveTolerance` with both compile-time and runtime guards:
+     - **Compile-time**: Component is only rendered in development builds (`process.env.NODE_ENV === "development"`)
+     - **Runtime**: Component includes internal check `if (process.env.NODE_ENV !== "development") return;`
+   - Wraps `Node.prototype.insertBefore`, `replaceChild`, and `removeChild` to be tolerant when the reference/child node isn't actually a child of the current node (fallback to `appendChild` or no-op removal). This prevents React's commit phase from failing when Sidecart has already moved/replaced nodes.
 
 Mount order in `apps/web/src/app/layout.tsx`:
 
