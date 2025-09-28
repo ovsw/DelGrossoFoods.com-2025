@@ -79,10 +79,10 @@ export default async function RootLayout({
             </>
           )}
         </Providers>
-        {process.env.NODE_ENV === "development" &&
+        {/* {process.env.NODE_ENV === "development" &&
           process.env.PINY_VISUAL_SELECT === "true" && (
             <Script src="/_piny/piny.phone.js" strategy="beforeInteractive" />
-          )}{" "}
+          )}{" "} */}
         {/* <-- conditionally include the Piny script */}
         {/* FoxyCart Sidecart loader: loads jQuery if needed and intercepts forms/links */}
         {foxyConfig ? (

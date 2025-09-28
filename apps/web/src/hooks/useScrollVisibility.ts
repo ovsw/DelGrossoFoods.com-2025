@@ -1,39 +1,141 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseScrollVisibilityOptions {
+  // Always show near the top of the page
   scrollThreshold?: number;
+  // Cooldown after the Foxy Sidecart closes to ignore programmatic scroll
+  sidecartCooldownMs?: number;
 }
 
+// Restores straightforward direction-based visibility with a Sidecart guard so
+// we avoid flicker when Foxy restores the scroll position.
 export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
-  const { scrollThreshold = 100 } = options || {};
+  const { scrollThreshold = 100, sidecartCooldownMs = 250 } = options || {};
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const lastScrollYRef = useRef(0);
+  const isVisibleRef = useRef(true);
+  const tickingRef = useRef(false);
+  const rafIdRef = useRef<number | null>(null);
+  const sidecartActiveRef = useRef(false);
+  const sidecartCooldownUntilRef = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Determine if element should be visible based on scroll direction and threshold
-      if (currentScrollY < lastScrollY || currentScrollY < scrollThreshold) {
-        // Scrolling up or near top - show element
-        setIsVisible(true);
-      } else if (
-        currentScrollY > lastScrollY &&
-        currentScrollY > scrollThreshold
-      ) {
-        // Scrolling down and past threshold - hide element
-        setIsVisible(false);
+    const getNow = () => {
+      try {
+        return performance.now();
+      } catch {
+        return Date.now();
       }
-
-      setIsScrolled(currentScrollY > 0);
-      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, scrollThreshold]);
+    const syncBaseline = () => {
+      try {
+        lastScrollYRef.current = window.scrollY || 0;
+      } catch {
+        lastScrollYRef.current = 0;
+      }
+    };
 
-  return { isScrolled, isVisible };
+    const setVisibility = (next: boolean) => {
+      if (isVisibleRef.current === next) return;
+      isVisibleRef.current = next;
+      setIsVisible(next);
+    };
+
+    const isSidecartActive = () => {
+      try {
+        const body = document.body;
+        if (!body) return false;
+        if (body.classList.contains("cart-visible")) return true;
+        return Boolean(document.querySelector("[data-fc-store-page]"));
+      } catch {
+        return false;
+      }
+    };
+
+    syncBaseline();
+    setIsScrolled(lastScrollYRef.current > 0);
+
+    const evaluate = () => {
+      const currentY = window.scrollY || 0;
+      setIsScrolled(currentY > 0);
+
+      if (sidecartActiveRef.current) {
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
+      if (getNow() < sidecartCooldownUntilRef.current) {
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
+      if (currentY <= scrollThreshold) {
+        setVisibility(true);
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
+      if (currentY > lastScrollYRef.current && currentY > scrollThreshold) {
+        setVisibility(false);
+      } else if (currentY < lastScrollYRef.current) {
+        setVisibility(true);
+      }
+
+      lastScrollYRef.current = currentY;
+    };
+
+    const onScroll = () => {
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+      rafIdRef.current = window.requestAnimationFrame(() => {
+        tickingRef.current = false;
+        evaluate();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    evaluate();
+
+    const observer = new MutationObserver(() => {
+      const active = isSidecartActive();
+      const changed = active !== sidecartActiveRef.current;
+      sidecartActiveRef.current = active;
+      if (changed && active) {
+        syncBaseline();
+      } else if (changed && !active) {
+        sidecartCooldownUntilRef.current = getNow() + sidecartCooldownMs;
+        syncBaseline();
+      }
+    });
+
+    try {
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+        childList: true,
+        subtree: true,
+      });
+    } catch {
+      observer.disconnect();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafIdRef.current != null) {
+        window.cancelAnimationFrame(rafIdRef.current);
+      }
+      observer.disconnect();
+    };
+  }, [scrollThreshold, sidecartCooldownMs]);
+
+  const suppressTransitions =
+    sidecartActiveRef.current ||
+    (typeof performance !== "undefined" &&
+      performance.now() < sidecartCooldownUntilRef.current);
+
+  return { isScrolled, isVisible, suppressTransitions };
 }
