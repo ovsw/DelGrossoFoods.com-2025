@@ -212,9 +212,10 @@ export function FoxycartProvider() {
 
       // Env checks
       if (!foxyConfig) {
-        console.error(
-          "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is not set; skipping add-to-cart.",
-        );
+        const errorMessage =
+          "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is not set; skipping add-to-cart.";
+        console.error(errorMessage);
+        announce(errorMessage, "assertive");
         return;
       }
 
@@ -226,14 +227,18 @@ export function FoxycartProvider() {
       const quantity = clampQuantity(detail.quantity ?? 1);
 
       if (!sku || typeof sku !== "string" || sku.trim().length === 0) {
-        console.error("Foxycart: Missing SKU for product; cannot add to cart.");
+        const errorMessage =
+          "Foxycart: Missing SKU for product; cannot add to cart.";
+        console.error(errorMessage);
+        announce(errorMessage, "assertive");
         return;
       }
 
       if (price == null) {
-        console.error(
-          "Foxycart: Invalid price for product; cannot add to cart.",
-        );
+        const errorMessage =
+          "Foxycart: Invalid price for product; cannot add to cart.";
+        console.error(errorMessage);
+        announce(errorMessage, "assertive");
         return;
       }
 
