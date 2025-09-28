@@ -86,13 +86,40 @@ export function A11yLiveAnnouncer(): null {
 
       // Bump a seq to ensure screen readers re-announce identical messages
       seqRef.current = (seqRef.current + 1) % 1000;
-      const suffix = ` ${seqRef.current}`; // visually hidden
+      const seq = seqRef.current;
 
       try {
-        target.textContent = `${d.message}${suffix}`;
+        // Clear any existing suffix span first
+        const existingSuffix = target.querySelector("[data-suffix]");
+        if (existingSuffix) {
+          existingSuffix.remove();
+        }
+
+        // Set the main message
+        target.textContent = d.message;
+
+        // Create and append the suffix span with aria-hidden
+        const suffixSpan = document.createElement("span");
+        suffixSpan.textContent = ` ${seq}`;
+        suffixSpan.setAttribute("aria-hidden", "true");
+        suffixSpan.setAttribute("data-suffix", "true");
+        suffixSpan.style.cssText =
+          "position:absolute;border:0;height:1px;margin:-1px;padding:0;width:1px;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap;word-wrap:normal";
+
+        target.appendChild(suffixSpan);
+
         // Clear after a short delay to allow repeated announcements later
         window.setTimeout(() => {
-          if (target.textContent?.endsWith(suffix)) target.textContent = "";
+          try {
+            const suffixToRemove = target.querySelector("[data-suffix]");
+            if (suffixToRemove) {
+              suffixToRemove.remove();
+            } else {
+              target.textContent = "";
+            }
+          } catch {
+            // ignore
+          }
         }, 1500);
       } catch {
         // ignore
