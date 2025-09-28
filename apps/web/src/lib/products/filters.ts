@@ -3,7 +3,6 @@ import type { IFuseOptions } from "fuse.js";
 import type { PackagingSlug } from "@/config/product-taxonomy";
 import { toPackagingSlug } from "@/config/product-taxonomy";
 import {
-  fromLineSlug,
   type LineSlug,
   toLineSlug,
   toTypeSlug,

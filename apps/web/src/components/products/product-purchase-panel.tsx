@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import * as React from "react";

@@ -137,15 +137,25 @@ export function FoxycartProvider() {
   React.useEffect(() => {
     const checkReady = () => {
       try {
-        if (
-          typeof (window as any).FC !== "undefined" &&
-          (window as any).FC.client
-        ) {
-          (window as any).FC.client.on("ready.done", () => {
+        // Type definition for FoxyCart global
+        interface FoxyCartGlobal {
+          client: {
+            on(event: string, callback: () => void): void;
+            ready: boolean;
+          };
+        }
+
+        interface WindowWithFoxyCart extends Window {
+          FC?: FoxyCartGlobal;
+        }
+
+        const windowWithFC = window as WindowWithFoxyCart;
+        if (windowWithFC.FC?.client) {
+          windowWithFC.FC.client.on("ready.done", () => {
             setIsLoaderReady(true);
           });
           // Also check if already ready
-          if ((window as any).FC.client.ready) {
+          if (windowWithFC.FC.client.ready) {
             setIsLoaderReady(true);
           }
         }
