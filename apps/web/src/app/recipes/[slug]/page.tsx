@@ -72,9 +72,16 @@ export async function generateMetadata({
   ).trim();
 
   // Get first few sentences of ingredients or directions as description
-  const description =
+  const descriptionSource =
     recipe.dgfIngredients?.[0]?.children?.[0]?.text ||
-    recipe.lfdIngredients?.[0]?.children?.[0]?.text ||
+    recipe.lfdIngredients?.[0]?.children?.[0]?.text;
+
+  const descriptionClean = descriptionSource
+    ? stegaClean(descriptionSource).trim()
+    : null;
+
+  const description =
+    descriptionClean ||
     `Learn how to make ${name} with La Famiglia DelGrosso sauces.`;
 
   return getSEOMetadata({
