@@ -102,7 +102,9 @@ export default async function RootLayout({
             strategy="beforeInteractive"
           />
         ) : null}
-        <SanityLive />
+        <Suspense fallback={null}>
+          <SanityLive />
+        </Suspense>
       </body>
     </html>
   );
