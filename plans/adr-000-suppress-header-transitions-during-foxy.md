@@ -1,4 +1,4 @@
-# ADR-003: Suppress Header Transitions During Foxy Sidecart Open/Close
+# ADR-000: Suppress Header Transitions During Foxy Sidecart Open/Close
 
 - Status: Accepted
 - Date: 2025-09-28
