@@ -162,6 +162,11 @@ export function ProductPurchasePanel({
           action={cartAction}
           method="post"
           className="mt-4 grid gap-4 foxycart"
+          onSubmit={(e) => {
+            if (!foxyConfig) {
+              e.preventDefault();
+            }
+          }}
         >
           <input
             type="hidden"
