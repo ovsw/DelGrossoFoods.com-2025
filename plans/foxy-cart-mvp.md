@@ -107,9 +107,9 @@ Readiness:
 
 ## Error Handling
 
-- Missing env or loader not loaded → `console.error` with actionable message, no submission.
-- Missing `sku` or invalid `price`/`quantity` → `console.error`, no submission.
-- Script errors should not break the page; catch and fail safely.
+- Missing env or loader not loaded → `console.error` with actionable message + assertive announcement to screen readers, no submission.
+- Missing `sku` or invalid `price`/`quantity` → `console.error` + assertive announcement to screen readers, no submission.
+- Script errors should not break the page; catch and fail safely with user-friendly error announcements.
 
 ## QA (Sandbox Store)
 

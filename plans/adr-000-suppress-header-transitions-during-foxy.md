@@ -22,12 +22,12 @@ Keep the refined slide/fade animation during normal scrolling, but explicitly di
 ## Implementation
 
 - Hook enhancement exports a `suppressTransitions` flag:
-  - `apps/web/src/hooks/useScrollVisibility.ts:12` — Provides direction-based visibility with guards for the sidecart lifecycle.
-  - `apps/web/src/hooks/useScrollVisibility.ts:135` — Computes `suppressTransitions` when the sidecart is open (`body.cart-visible` or `[data-fc-store-page]`) or within a 250ms cooldown after close.
+  - `useScrollVisibility` hook in `apps/web/src/hooks/useScrollVisibility.ts` — Provides direction-based visibility with guards for the sidecart lifecycle.
+  - Computes `suppressTransitions` when the sidecart is open (`body.cart-visible` or `[data-fc-store-page]`) or within a 250ms cooldown after close.
 
 - Header consumes the flag to toggle transitions:
-  - `apps/web/src/components/header/index.tsx:20` — `const { isVisible, suppressTransitions } = useScrollVisibility();`
-  - `apps/web/src/components/header/index.tsx:47` — Applies `transition-none duration-0` when `suppressTransitions` is true; otherwise uses `transition-all` with translate/opacity classes for the slide/fade.
+  - Header component in `apps/web/src/components/header/index.tsx` — Consumes `suppressTransitions` from `useScrollVisibility()` hook.
+  - Applies `transition-none duration-0` when `suppressTransitions` is true; otherwise uses `transition-all` with translate/opacity classes for the slide/fade animation.
 
 - Cooldown: 250ms (`sidecartCooldownMs`) to cover DOM cleanup and scroll restoration.
 
