@@ -12,15 +12,26 @@ interface UseScrollVisibilityOptions {
 export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
   const { scrollThreshold = 100, sidecartCooldownMs = 250 } = options || {};
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-
   const lastScrollYRef = useRef(0);
   const isVisibleRef = useRef(true);
   const tickingRef = useRef(false);
   const rafIdRef = useRef<number | null>(null);
   const sidecartActiveRef = useRef(false);
   const sidecartCooldownUntilRef = useRef(0);
+  const cooldownTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Initialize suppressTransitions state based on current conditions
+  const initialSuppressTransitions =
+    sidecartActiveRef.current ||
+    (typeof performance !== "undefined" &&
+      performance.now() < sidecartCooldownUntilRef.current);
+
+  const [suppressTransitions, setSuppressTransitions] = useState(
+    initialSuppressTransitions,
+  );
 
   useEffect(() => {
     const getNow = () => {
@@ -104,11 +115,22 @@ export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
       const active = isSidecartActive();
       const changed = active !== sidecartActiveRef.current;
       sidecartActiveRef.current = active;
+
       if (changed && active) {
         syncBaseline();
+        setSuppressTransitions(true);
       } else if (changed && !active) {
         sidecartCooldownUntilRef.current = getNow() + sidecartCooldownMs;
         syncBaseline();
+        setSuppressTransitions(true);
+
+        // Set up cooldown timer to turn off suppressTransitions after delay
+        if (cooldownTimerRef.current) {
+          clearTimeout(cooldownTimerRef.current);
+        }
+        cooldownTimerRef.current = setTimeout(() => {
+          setSuppressTransitions(false);
+        }, sidecartCooldownMs);
       }
     });
 
@@ -128,14 +150,12 @@ export function useScrollVisibility(options?: UseScrollVisibilityOptions) {
       if (rafIdRef.current != null) {
         window.cancelAnimationFrame(rafIdRef.current);
       }
+      if (cooldownTimerRef.current) {
+        clearTimeout(cooldownTimerRef.current);
+      }
       observer.disconnect();
     };
   }, [scrollThreshold, sidecartCooldownMs]);
-
-  const suppressTransitions =
-    sidecartActiveRef.current ||
-    (typeof performance !== "undefined" &&
-      performance.now() < sidecartCooldownUntilRef.current);
 
   return { isScrolled, isVisible, suppressTransitions };
 }
