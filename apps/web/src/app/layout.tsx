@@ -50,6 +50,7 @@ export default async function RootLayout({
     <html
       lang="en"
       className="light"
+      data-scroll-behavior="smooth"
       style={{ colorScheme: "light" } as React.CSSProperties}
     >
       <body
