@@ -72,7 +72,6 @@ export default async function RootLayout({
           <Suspense fallback={<FooterSkeleton />}>
             <FooterServer />
           </Suspense>
-          <SanityLive />
           {/* Keep Next's route announcer anchored under <body> */}
           <AnnouncerGuard />
           {/* App-level A11y live region for custom announcements (polite/assertive) */}
@@ -101,6 +100,7 @@ export default async function RootLayout({
             strategy="beforeInteractive"
           />
         ) : null}
+        <SanityLive />
       </body>
     </html>
   );
