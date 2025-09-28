@@ -10,7 +10,9 @@ import Script from "next/script";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
+import { AnnouncerGuard } from "@/components/a11y/announcer-guard";
 import { FoxycartProvider } from "@/components/cart/foxycart-provider";
+import { DevDomRemoveTolerance } from "@/components/dev/dom-remove-tolerance";
 import { FooterServer, FooterSkeleton } from "@/components/footer";
 import { Header } from "@/components/header";
 import { CombinedJsonLd } from "@/components/json-ld";
@@ -69,6 +71,10 @@ export default async function RootLayout({
             <FooterServer />
           </Suspense>
           <SanityLive />
+          {/* Keep Next's route announcer anchored under <body> */}
+          <AnnouncerGuard />
+          {/* Dev-only: suppress removeChild NotFoundError noise from third-party reparenting */}
+          <DevDomRemoveTolerance />
           <CombinedJsonLd includeWebsite includeOrganization />
           {/* FoxyCart Sidecart global listener */}
           <FoxycartProvider />
