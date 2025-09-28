@@ -114,16 +114,15 @@ export function ProductPurchasePanel({
       return null;
     }
     try {
-      const built = urlFor({ _ref: assetId })
-        .width(600)
-        .height(600)
-        .dpr(2)
-        .url();
+      const imageSource = product.mainImage
+        ? { ...product.mainImage, _id: assetId, asset: { _ref: assetId } }
+        : { _ref: assetId };
+      const built = urlFor(imageSource).width(600).height(600).dpr(2).url();
       return typeof built === "string" ? built : null;
     } catch {
       return null;
     }
-  }, [product.mainImage?.id]);
+  }, [product.mainImage]);
 
   const cartAction = React.useMemo(() => {
     if (!foxyConfig) {
@@ -224,43 +223,37 @@ export function ProductPurchasePanel({
               Quantity
             </label>
             <div className="flex rounded-md border border-brand-green/20 bg-white/60">
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={decrement}
-                className={cn(
-                  "inline-flex items-center justify-center px-3 py-2 cursor-pointer",
-                  "text-brand-green hover:bg-brand-green/10",
-                  "focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:border-ring",
-                )}
+                className="px-3 py-2 text-brand-green hover:bg-brand-green/10"
                 aria-label="Decrease quantity"
               >
                 <Minus className="size-4" aria-hidden="true" />
-              </button>
+              </Button>
               <input
                 id={quantityFieldId}
                 name="quantity"
+                type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
-                min={1}
-                max={99}
                 value={quantity}
                 onChange={onQuantityInputChange}
                 aria-label="Quantity"
                 className="w-full flex-1 bg-transparent text-center text-base text-brand-green outline-none"
-                aria-live="polite"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={increment}
-                className={cn(
-                  "inline-flex items-center justify-center px-3 py-2 cursor-pointer",
-                  "text-brand-green hover:bg-brand-green/10",
-                  "focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:border-ring",
-                )}
+                className="px-3 py-2 text-brand-green hover:bg-brand-green/10"
                 aria-label="Increase quantity"
               >
                 <Plus className="size-4" aria-hidden="true" />
-              </button>
+              </Button>
             </div>
           </div>
 
