@@ -2,7 +2,6 @@
 import { stegaClean } from "next-sanity";
 
 import {
-  lineMap,
   type LineSlug,
   toLineSlug,
   typeMap,
