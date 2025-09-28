@@ -121,9 +121,9 @@ export function A11yLiveAnnouncer(): null {
             const suffixToRemove = target.querySelector("[data-suffix]");
             if (suffixToRemove) {
               suffixToRemove.remove();
-            } else {
-              target.textContent = "";
             }
+            // Clear the main text content so identical announcements are spoken again
+            target.textContent = "";
           } catch {
             // ignore
           }
