@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import LogoSvg from "@/components/elements/logo";
-import { useScrollVisibility } from "@/hooks/useScrollVisibility";
+import { useScrollVisibility } from "@/hooks/use-scroll-visibility";
 
 import { CartButton } from "./CartButton";
 import { DesktopActions } from "./DesktopActions";
