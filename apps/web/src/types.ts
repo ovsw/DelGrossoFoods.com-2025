@@ -6,6 +6,7 @@ import type {
   GetProductBySlugQueryResult,
   GetProductIndexPageQueryResult,
   GetProductsBySauceIdQueryResult,
+  GetRecipeBySlugQueryResult,
   GetRecipeIndexPageQueryResult,
   GetSauceIndexPageQueryResult,
   QueryBlogSlugPageDataResult,
@@ -54,3 +55,4 @@ export type ProductDetailData = NonNullable<GetProductBySlugQueryResult>;
 export type RecipeIndexPageData = NonNullable<GetRecipeIndexPageQueryResult>;
 export type RecipeListItem = GetAllRecipesForIndexQueryResult[number];
 export type RecipeCategoryOption = GetAllRecipeCategoriesQueryResult[number];
+export type RecipeDetailData = NonNullable<GetRecipeBySlugQueryResult>;
