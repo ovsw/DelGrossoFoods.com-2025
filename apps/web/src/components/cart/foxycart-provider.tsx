@@ -263,7 +263,18 @@ export function FoxycartProvider() {
           "polite",
         );
         document.body.appendChild(form);
-        form.submit();
+
+        // Use requestSubmit() to properly trigger submit events for FoxyCart interceptors
+        // Fallback to manual event dispatch + submit() for older browsers
+        if ("requestSubmit" in form) {
+          (
+            form as HTMLFormElement & { requestSubmit: () => void }
+          ).requestSubmit();
+        } else {
+          const ev = new Event("submit", { bubbles: true, cancelable: true });
+          if (!(form as HTMLFormElement).dispatchEvent(ev)) return;
+          (form as HTMLFormElement).submit();
+        }
       } catch (err) {
         console.error("Foxycart: Form submission failed", err);
         announce("Sorry, could not add to cart", "assertive");
