@@ -14,7 +14,7 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
   // Name: visible uses raw; logic/alt use cleaned
   const rawName = recipe.name ?? "";
   const cleanedName = stegaClean(rawName);
-  const recipeName = String(rawName).trim();
+  const recipeName = rawName && rawName !== "" ? rawName : cleanedName;
 
   // Categories for eyebrow
   const categories = recipe.categories ?? [];
