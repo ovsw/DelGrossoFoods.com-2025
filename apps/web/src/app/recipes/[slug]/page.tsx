@@ -117,7 +117,10 @@ export default async function RecipeDetailPage({
   const allSauceIds = Array.from(new Set([...dgfSauceIds, ...lfdSauceIds]));
 
   const relatedRecipes = await fetchRelatedRecipes(allSauceIds);
-  const hasRelatedRecipes = relatedRecipes.length > 0;
+  const filteredRelatedRecipes = relatedRecipes.filter(
+    (r) => r._id !== recipe._id,
+  );
+  const hasRelatedRecipes = filteredRelatedRecipes.length > 0;
 
   return (
     <main>
@@ -134,7 +137,7 @@ export default async function RecipeDetailPage({
       </div>
 
       {hasRelatedRecipes ? (
-        <RelatedRecipesSection recipes={relatedRecipes} />
+        <RelatedRecipesSection recipes={filteredRelatedRecipes} />
       ) : null}
     </main>
   );
