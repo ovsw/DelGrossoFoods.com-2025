@@ -1,5 +1,30 @@
 # web
 
+## 1.11.2
+
+### Patch Changes
+
+- [#74](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/74) [`c8d602c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c8d602ce3eedebb81446f1affee040e417337910) Thanks [@ovsw](https://github.com/ovsw)! - Open Foxy Sidecart from the header Cart button; document env and loader script
+  - Include FoxyCart loader (`loader.js`) in the root layout with `beforeInteractive` so forms/links are intercepted and the Sidecart opens without navigation.
+  - Use `NEXT_PUBLIC_FOXY_DOMAIN` with `resolveFoxyConfig` to build the cart URL.
+  - Update header `CartButton` to link to `https://<store>.foxycart.com/cart?cart=view` so the loader opens Sidecart; fall back to full cart navigation if the loader isn't available.
+  - Add a FoxyCart form on product pages that opens the Sidecart when a product is added.
+  - Note: HMAC/webhooks are not included in this MVP; the quantity badge updates via Foxy loader (`data-fc-id`).
+
+- [#74](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/74) [`7ad1630`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7ad1630357a5c6465b1d99ce427c9178697b1f0a) Thanks [@ovsw](https://github.com/ovsw)! - Guard Next.js App Router announcer from third‑party DOM reparenting and add development‑only DOM mutation tolerance to stabilize FoxyCart Sidecart interactions.
+  - Add `AnnouncerGuard` to keep `<next-route-announcer>` anchored under `<body>` so Next’s cleanup doesn’t throw when overlays move nodes.
+  - Add `DevDomRemoveTolerance` (development only) to make `insertBefore`, `replaceChild`, and `removeChild` tolerant when reference/child nodes have been reparented by the Sidecart.
+  - Mount both in root layout after `<SanityLive />`, before the Foxy provider.
+  - Add `A11yLiveAnnouncer` and standardize active announcements via `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`. Refactor `FoxycartProvider` to use the global announcer (remove local sr-only live region).
+  - Add `announce(message, politeness?)` helper in `apps/web/src/lib/a11y/announce.ts` so developers import a single function instead of hand-crafting `CustomEvent`s.
+
+  Notes
+  - Production behavior is unchanged; the tolerance runs only in `NODE_ENV=development`.
+  - This eliminates NotFoundError noise (removeChild/insertBefore) seen when changing Sidecart quantity, focusing country select, or tabbing away while the Sidecart is open.
+
+- Updated dependencies []:
+  - @workspace/ui@1.11.2
+
 ## 1.11.1
 
 ### Patch Changes
