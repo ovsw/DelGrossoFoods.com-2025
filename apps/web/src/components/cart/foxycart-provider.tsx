@@ -100,6 +100,32 @@ export function FoxycartProvider() {
   );
   // Using global announce helper from lib/a11y/announce
 
+  // Temporal dedupe state to prevent duplicate announcements
+  const lastAnnouncementRef = React.useRef<{
+    message: string;
+    timestamp: number;
+  } | null>(null);
+
+  // Helper to check and update announcement dedupe
+  const shouldAnnounce = React.useCallback(
+    (message: string, thresholdMs = 400): boolean => {
+      const now = Date.now();
+      const last = lastAnnouncementRef.current;
+
+      if (
+        last &&
+        last.message === message &&
+        now - last.timestamp < thresholdMs
+      ) {
+        return false; // Skip duplicate announcement
+      }
+
+      lastAnnouncementRef.current = { message, timestamp: now };
+      return true;
+    },
+    [],
+  );
+
   React.useEffect(() => {
     const successEvents = [
       "fc-cart-item-add",
@@ -156,7 +182,9 @@ export function FoxycartProvider() {
         message = "Item added to your cart.";
       }
 
-      announce(message, "polite");
+      if (shouldAnnounce(message)) {
+        announce(message, "polite");
+      }
     }
 
     successEvents.forEach((eventName) => {
@@ -174,6 +202,7 @@ export function FoxycartProvider() {
         );
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -258,10 +287,11 @@ export function FoxycartProvider() {
       try {
         // Announce intention immediately for SR users
         const readableName = name || sku;
-        announce(
-          `Adding ${quantity} ${readableName}${quantity > 1 ? "s" : ""} to cart`,
-          "polite",
-        );
+        const addingMessage = `Adding ${quantity} ${readableName}${quantity > 1 ? "s" : ""} to cart`;
+
+        if (shouldAnnounce(addingMessage)) {
+          announce(addingMessage, "polite");
+        }
         document.body.appendChild(form);
 
         // Use requestSubmit() to properly trigger submit events for FoxyCart interceptors
@@ -277,7 +307,10 @@ export function FoxycartProvider() {
         }
       } catch (err) {
         console.error("Foxycart: Form submission failed", err);
-        announce("Sorry, could not add to cart", "assertive");
+        const errorMessage = "Sorry, could not add to cart";
+        if (shouldAnnounce(errorMessage)) {
+          announce(errorMessage, "assertive");
+        }
       } finally {
         // Cleanup asap
         if (form.parentNode) {
@@ -296,6 +329,7 @@ export function FoxycartProvider() {
         onAddToCart as EventListener,
       );
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foxyConfig]);
 
   return null;
