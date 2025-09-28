@@ -47,12 +47,13 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Naming: descriptive, full words; kebab-case filenames; `.tsx` for components, `.ts` for utils.
 - Accessibility: semantic HTML, alt text, keyboard/contrast sanity checks, no div-as-button.
   - Live announcements (standard):
-    - Do not use Next’s App Router Announcer for non-navigation events.
-    - Use the global A11y Live Announcer pattern for “active” messages (e.g., add-to-cart, errors).
+    - Do not use Next's App Router Announcer for non-navigation events.
+    - Use the global A11y Live Announcer pattern for "active" messages (e.g., add-to-cart, errors).
     - Preferred API: `announce(message, politeness?)` from `apps/web/src/lib/a11y/announce.ts`.
     - Under the hood this dispatches: `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`.
     - Keep messages short and human-readable; prefer `politeness: "polite"`; reserve `"assertive"` for errors.
-    - “Passive” status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy’s `data-fc-id` markers; don’t elevate those to the global announcer.
+    - **Important**: Any message sourced from Sanity content must be wrapped with `stegaClean(message)` before calling `announce(...)` to strip out stega metadata and prevent it from reaching screen readers.
+    - "Passive" status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy's `data-fc-id` markers; don't elevate those to the global announcer.
     - Implementation references:
       - Mount: `apps/web/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
       - Announcer: `apps/web/src/components/a11y/live-announcer.tsx` (listens for `a11y:announce`).
