@@ -588,6 +588,51 @@ export const getAllRecipeCategoriesQuery = defineQuery(`
   *[_type == "recipeCategory"] | order(title asc){ _id, title }
 `);
 
+export const getRecipeBySlugQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && slug.current in [$slug, $prefixedSlug]
+    && !(_id in path('drafts.**'))
+  ][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    serves,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title }),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
+    dgfIngredients,
+    dgfDirections,
+    dgfNotes,
+    lfdIngredients,
+    lfdDirections,
+    lfdNotes,
+    dgfSauces[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      line,
+      mainImage
+    },
+    lfdSauces[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      line,
+      mainImage
+    }
+  }
+`);
+
 // Products index queries
 export const getProductIndexPageQuery = defineQuery(`
   *[_type == "productIndex"][0]{
