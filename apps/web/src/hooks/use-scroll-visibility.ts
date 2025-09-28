@@ -26,7 +26,7 @@ export function useScrollVisibility(
   const rafIdRef = useRef<number | null>(null);
   const sidecartActiveRef = useRef(false);
   const sidecartCooldownUntilRef = useRef(0);
-  const cooldownTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const cooldownTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -133,8 +133,9 @@ export function useScrollVisibility(
         setSuppressTransitions(true);
 
         // Set up cooldown timer to turn off suppressTransitions after delay
-        if (cooldownTimerRef.current) {
+        if (cooldownTimerRef.current !== null) {
           clearTimeout(cooldownTimerRef.current);
+          cooldownTimerRef.current = null;
         }
         cooldownTimerRef.current = setTimeout(() => {
           setSuppressTransitions(false);
@@ -161,8 +162,9 @@ export function useScrollVisibility(
       if (rafIdRef.current != null) {
         window.cancelAnimationFrame(rafIdRef.current);
       }
-      if (cooldownTimerRef.current) {
+      if (cooldownTimerRef.current !== null) {
         clearTimeout(cooldownTimerRef.current);
+        cooldownTimerRef.current = null;
       }
       observer.disconnect();
     };
