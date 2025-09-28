@@ -3,24 +3,27 @@ import { getAllRecipesForIndexQuery } from "@/lib/sanity/query";
 import { handleErrors } from "@/utils";
 
 export async function GET() {
-  try {
-    const [result] = await handleErrors(
-      sanityFetch({
-        query: getAllRecipesForIndexQuery,
-      }),
-    );
+  const [result, errorMessage] = await handleErrors(
+    sanityFetch({
+      query: getAllRecipesForIndexQuery,
+    }),
+  );
 
-    return Response.json({
-      success: true,
-      data: result?.data || [],
-      count: result?.data?.length || 0,
-    });
-  } catch (error) {
-    return Response.json({
-      success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
+  if (errorMessage) {
+    return Response.json(
+      {
+        success: false,
+        error: errorMessage,
+      },
+      { status: 500 },
+    );
   }
+
+  return Response.json({
+    success: true,
+    data: result?.data || [],
+    count: result?.data?.length || 0,
+  });
 }
 
 export async function POST(request: Request) {
@@ -35,7 +38,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const [result] = await handleErrors(
+    const [result, errorMessage] = await handleErrors(
       sanityFetch({
         query: `
           *[
@@ -51,6 +54,16 @@ export async function POST(request: Request) {
         params: { slug },
       }),
     );
+
+    if (errorMessage) {
+      return Response.json(
+        {
+          success: false,
+          error: errorMessage,
+        },
+        { status: 500 },
+      );
+    }
 
     return Response.json({
       success: true,
