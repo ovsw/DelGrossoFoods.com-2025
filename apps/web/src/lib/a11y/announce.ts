@@ -1,5 +1,7 @@
 export type Politeness = "polite" | "assertive";
 
+export const A11Y_ANNOUNCE_EVENT = "a11y:announce" as const;
+
 export interface AnnouncementDetail {
   readonly message: string;
   readonly politeness?: Politeness;
@@ -18,7 +20,7 @@ export function announce(
     if (typeof document === "undefined") return;
     const detail: AnnouncementDetail = { message, politeness };
     document.dispatchEvent(
-      new CustomEvent<AnnouncementDetail>("a11y:announce", { detail }),
+      new CustomEvent<AnnouncementDetail>(A11Y_ANNOUNCE_EVENT, { detail }),
     );
   } catch {
     // no-op in non-browser contexts
