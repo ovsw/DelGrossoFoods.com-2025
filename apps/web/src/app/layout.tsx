@@ -77,7 +77,9 @@ export default async function RootLayout({
           {/* App-level A11y live region for custom announcements (polite/assertive) */}
           <A11yLiveAnnouncer />
           {/* Dev-only: suppress removeChild NotFoundError noise from third-party reparenting */}
-          <DevDomRemoveTolerance />
+          {process.env.NODE_ENV === "development" && DevDomRemoveTolerance && (
+            <DevDomRemoveTolerance />
+          )}
           <CombinedJsonLd includeWebsite includeOrganization />
           {/* FoxyCart Sidecart global listener */}
           <FoxycartProvider />
