@@ -49,13 +49,12 @@ export function resolveFoxyConfig(
     ? hostname.slice(0, -FOXY_DOMAIN_SUFFIX.length)
     : hostname;
 
-  if (!loaderSlug) {
+  if (!loaderSlug || !/^[a-z0-9-]+$/.test(loaderSlug)) {
     return null;
   }
 
-  const cartDomain = hostname.includes(".")
-    ? hostname
-    : `${hostname}${FOXY_DOMAIN_SUFFIX}`;
+  const base = hostname.replace(/\.+$/, "");
+  const cartDomain = base.includes(".") ? base : `${base}${FOXY_DOMAIN_SUFFIX}`;
 
   return {
     cartDomain,

@@ -70,8 +70,12 @@ function formatPriceUSD(value: unknown): string | null {
 function buildImageUrl(imageAssetId?: string | null): string | null {
   if (!imageAssetId) return null;
   try {
+    const id = stegaClean(imageAssetId) as string | null;
+    const ref = (typeof id === "string" ? id.trim() : "").length
+      ? id
+      : imageAssetId;
     // urlFor accepts a ref via {_ref}
-    const u = urlFor({ _ref: imageAssetId })
+    const u = urlFor({ _ref: ref as string })
       .width(600)
       .height(600)
       .dpr(2)
@@ -106,6 +110,9 @@ export function FoxycartProvider() {
     timestamp: number;
   } | null>(null);
 
+  // FoxyCart loader readiness state
+  const [isLoaderReady, setIsLoaderReady] = React.useState(false);
+
   // Helper to check and update announcement dedupe
   const shouldAnnounce = React.useCallback(
     (message: string, thresholdMs = 400): boolean => {
@@ -125,6 +132,36 @@ export function FoxycartProvider() {
     },
     [],
   );
+
+  // Listen for FoxyCart loader readiness
+  React.useEffect(() => {
+    const checkReady = () => {
+      try {
+        if (
+          typeof (window as any).FC !== "undefined" &&
+          (window as any).FC.client
+        ) {
+          (window as any).FC.client.on("ready.done", () => {
+            setIsLoaderReady(true);
+          });
+          // Also check if already ready
+          if ((window as any).FC.client.ready) {
+            setIsLoaderReady(true);
+          }
+        }
+      } catch {
+        // FoxyCart not available yet, will retry
+      }
+    };
+
+    // Check immediately
+    checkReady();
+
+    // Also check after a short delay to catch late loading
+    const timer = setTimeout(checkReady, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   React.useEffect(() => {
     const successEvents = [
@@ -254,7 +291,9 @@ export function FoxycartProvider() {
       let returnUrl: string | null = null;
       try {
         const origin = window.location.origin;
-        const slug = (detail.slug ?? "").replace(/^\/+|\/+$/g, "");
+        const raw = (detail.slug ?? "").replace(/^\/+|\/+$/g, "");
+        const segs = raw.split("/").filter(Boolean).map(encodeURIComponent);
+        const slug = segs.join("/");
         const path = slug.startsWith("store/") ? `/${slug}` : `/store/${slug}`;
         returnUrl = `${origin}${path}`;
       } catch {
@@ -299,16 +338,32 @@ export function FoxycartProvider() {
         }
         document.body.appendChild(form);
 
-        // Use requestSubmit() to properly trigger submit events for FoxyCart interceptors
-        // Fallback to manual event dispatch + submit() for older browsers
-        if ("requestSubmit" in form) {
-          (
-            form as HTMLFormElement & { requestSubmit: () => void }
-          ).requestSubmit();
+        // Wait for FoxyCart loader to be ready before submitting
+        const submitForm = () => {
+          if ("requestSubmit" in form) {
+            (
+              form as HTMLFormElement & { requestSubmit: () => void }
+            ).requestSubmit();
+          } else {
+            const ev = new Event("submit", { bubbles: true, cancelable: true });
+            if (!(form as HTMLFormElement).dispatchEvent(ev)) return;
+            (form as HTMLFormElement).submit();
+          }
+        };
+
+        if (isLoaderReady) {
+          // Loader is ready, submit immediately
+          submitForm();
         } else {
-          const ev = new Event("submit", { bubbles: true, cancelable: true });
-          if (!(form as HTMLFormElement).dispatchEvent(ev)) return;
-          (form as HTMLFormElement).submit();
+          // Wait for loader to be ready
+          const readyCheck = () => {
+            if (isLoaderReady) {
+              submitForm();
+            } else {
+              setTimeout(readyCheck, 50);
+            }
+          };
+          setTimeout(readyCheck, 50);
         }
       } catch (err) {
         console.error("Foxycart: Form submission failed", err);
