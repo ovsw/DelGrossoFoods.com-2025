@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { stegaClean } from "next-sanity";
+import { useEffect, useRef } from "react";
 
 export type A11yAnnouncementDetail = {
   message: string;
@@ -16,9 +17,8 @@ export type A11yAnnouncementDetail = {
  *   document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness: "polite" } }));
  */
 export function A11yLiveAnnouncer(): null {
-  const [hostEl, setHostEl] = useState<HTMLElement | null>(null);
-  const politeRef = useRef<HTMLElement | null>(null);
-  const assertiveRef = useRef<HTMLElement | null>(null);
+  const politeRef = useRef<HTMLDivElement | null>(null);
+  const assertiveRef = useRef<HTMLDivElement | null>(null);
   const seqRef = useRef(0);
 
   useEffect(() => {
@@ -44,7 +44,6 @@ export function A11yLiveAnnouncer(): null {
     shadow.appendChild(assertive);
     document.body.appendChild(container);
 
-    setHostEl(container);
     politeRef.current = polite;
     assertiveRef.current = assertive;
 
@@ -80,9 +79,17 @@ export function A11yLiveAnnouncer(): null {
       const d = e.detail;
       if (!d || !d.message) return;
       const politeness = d.politeness ?? "polite";
+      const atomic = d.atomic ?? true;
       const target =
         politeness === "assertive" ? assertiveRef.current : politeRef.current;
       if (!target) return;
+
+      // Set aria-atomic based on the message's atomic flag
+      try {
+        target.setAttribute("aria-atomic", String(atomic));
+      } catch {
+        /* noop */
+      }
 
       // Bump a seq to ensure screen readers re-announce identical messages
       seqRef.current = (seqRef.current + 1) % 1000;
@@ -95,8 +102,8 @@ export function A11yLiveAnnouncer(): null {
           existingSuffix.remove();
         }
 
-        // Set the main message
-        target.textContent = d.message;
+        // Set the main message (clean stega metadata first)
+        target.textContent = stegaClean(d.message);
 
         // Create and append the suffix span with aria-hidden
         const suffixSpan = document.createElement("span");
@@ -133,7 +140,7 @@ export function A11yLiveAnnouncer(): null {
         onAnnounce as EventListener,
       );
     };
-  }, [hostEl]);
+  }, []);
 
   return null;
 }
