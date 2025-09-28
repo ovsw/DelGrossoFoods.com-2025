@@ -92,7 +92,7 @@ Responsibilities:
 - Wait for `product:add-to-cart`.
 - Validate `NEXT_PUBLIC_FOXY_DOMAIN`, `sku`, and `unitPrice`.
 - Build a hidden `<form action="https://<FOXY_DOMAIN>/cart" method="post" class="foxycart">` and append hidden inputs for the mapped fields.
-- Append to `document.body`, call `form.submit()`, then remove the node. The loader intercepts and opens Sidecart; no navigation occurs.
+- Append to `document.body`, call `form.requestSubmit()` (with fallback for older browsers), then remove the node. The loader intercepts and opens Sidecart; no navigation occurs.
 - If loader not present or validation fails, log a clear error and no‑op (keep the user on the page).
 
 Readiness:
