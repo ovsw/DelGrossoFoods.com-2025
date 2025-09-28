@@ -37,7 +37,11 @@ export function CartButton({
         size={size}
         className={cn("relative group cursor-pointer", className)}
       >
-        <a href={href} aria-label={ariaLabel ?? "Open cart"}>
+        <a
+          href={href}
+          aria-labelledby="header-cart-quantity-label"
+          aria-label={ariaLabel}
+        >
           <span
             className={cn(
               "relative flex h-5 w-5 items-center justify-center",
@@ -61,7 +65,12 @@ export function CartButton({
             <span data-fc-id="minicart-quantity">0</span>
           </span>
           {/* Accessible name with live-updating quantity */}
-          <span className="sr-only" aria-live="polite" aria-atomic="true">
+          <span
+            id="header-cart-quantity-label"
+            className="sr-only"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             Cart, <span data-fc-id="minicart-quantity">0</span> items
           </span>
         </a>
@@ -72,6 +81,7 @@ export function CartButton({
   // Fallback if env is missing or invalid: keep button, no navigation
   return (
     <Button
+      type="button"
       variant={variant}
       size={size}
       className={cn("relative group cursor-pointer", className)}
@@ -106,7 +116,12 @@ export function CartButton({
         <span data-fc-id="minicart-quantity">0</span>
       </span>
       {/* Accessible name with live-updating quantity */}
-      <span className="sr-only" aria-live="polite" aria-atomic="true">
+      <span
+        id="header-cart-quantity-label"
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         Cart, <span data-fc-id="minicart-quantity">0</span> items
       </span>
     </Button>
