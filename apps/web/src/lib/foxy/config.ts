@@ -21,12 +21,16 @@ function extractHostname(rawValue: string | undefined): string | null {
   if (withProtocol) return withProtocol.toLowerCase();
 
   // Fallback: remove protocol-like prefixes and trailing paths manually
-  const sanitized = trimmed
-    .replace(/^https?:\/\//i, "")
-    .split("/")[0]!
-    .trim()
-    .toLowerCase();
+  const withoutProtocol = trimmed.replace(/^https?:\/\//i, "");
+  const segments = withoutProtocol
+    .split("/")
+    .filter((segment) => segment.length > 0);
 
+  if (segments.length === 0) {
+    return null;
+  }
+
+  const sanitized = segments[0]!.trim().toLowerCase();
   return sanitized.length > 0 ? sanitized : null;
 }
 
