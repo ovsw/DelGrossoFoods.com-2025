@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-interface UseScrollVisibilityOptions {
+export interface UseScrollVisibilityOptions {
   // Always show near the top of the page
   scrollThreshold?: number;
   // Cooldown after the Foxy Sidecart closes to ignore programmatic scroll
