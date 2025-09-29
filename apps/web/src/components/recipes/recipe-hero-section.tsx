@@ -99,13 +99,6 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
           </div>
         </div>
       </div>
-
-      {/* Navigation section */}
-      <Section spacingTop="default" spacingBottom="default">
-        <div className="container mx-auto px-4 md:px-6">
-          <BackLink href="/recipes" label="All Recipes" />
-        </div>
-      </Section>
     </>
   );
 }
