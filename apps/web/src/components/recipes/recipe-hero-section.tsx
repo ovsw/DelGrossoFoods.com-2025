@@ -1,9 +1,16 @@
+import { Badge } from "@workspace/ui/components/badge";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { stegaClean } from "next-sanity";
 
 import { BackLink } from "@/components/elements/back-link";
 import { SanityImage } from "@/components/elements/sanity-image";
+import {
+  meatMap,
+  tagMap,
+  toMeatSlug,
+  toRecipeTagSlug,
+} from "@/config/recipe-taxonomy";
 import type { RecipeDetailData } from "@/types";
 
 interface RecipeHeroSectionProps {
@@ -22,11 +29,32 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
   const eyebrowText =
     categoryNames.length > 0 ? categoryNames.join(", ") : "Recipe";
 
+  // Create badges for meat and tags using the same logic as recipe cards
+  const meatBadges = (recipe.meat ?? []).map((value) => {
+    const slugValue = toMeatSlug(value);
+    if (slugValue) {
+      const cfg = meatMap[slugValue];
+      return { text: cfg.display, variant: "meat" as const };
+    }
+    return { text: String(value) };
+  });
+
+  const tagBadges = (recipe.tags ?? []).map((value) => {
+    const slugValue = toRecipeTagSlug(value);
+    if (slugValue) {
+      const cfg = tagMap[slugValue];
+      return { text: cfg.display, variant: cfg.badgeVariant };
+    }
+    return { text: String(value) };
+  });
+
+  const allBadges = [...meatBadges, ...tagBadges];
+
   return (
     <>
       {/* Large hero image section */}
       <div className="relative">
-        <div className="aspect-[16/9] w-full overflow-hidden bg-muted">
+        <div className="relative max-h-[85svh] min-h-[80vh] w-full overflow-hidden bg-muted">
           {recipe.mainImage?.id ? (
             <SanityImage
               image={recipe.mainImage}
@@ -36,16 +64,17 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
                   : "Recipe image"
               }
               width={1920}
-              height={1080}
-              className="h-full w-full object-cover"
+              height={1200}
+              className="absolute inset-0 h-full w-full object-cover"
+              mode="cover"
             />
           ) : (
-            <div className="h-full w-full bg-muted flex items-center justify-center">
+            <div className="flex h-full w-full items-center justify-center bg-muted">
               <div className="text-muted-foreground text-lg">Recipe Image</div>
             </div>
           )}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-th-dark-900/70 via-th-dark-900/30  to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="container mx-auto">
             <div className="mb-4">
@@ -55,11 +84,17 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
             {recipe.serves && (
               <p className="mt-2 text-lg">Serves: {recipe.serves}</p>
             )}
-            {recipe.meat && recipe.meat.length > 0 && (
-              <p className="mt-2 text-lg">Meat: {recipe.meat.join(", ")}</p>
-            )}
-            {recipe.tags && recipe.tags.length > 0 && (
-              <p className="mt-2 text-lg">Tags: {recipe.tags.join(", ")}</p>
+            {allBadges.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {allBadges.map((badge, index) => (
+                  <Badge
+                    key={`${badge.text}-${index}`}
+                    text={badge.text}
+                    variant={badge.variant}
+                    className="text-sm"
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>
