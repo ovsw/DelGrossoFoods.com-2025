@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
+import { RecipeDetailsSection } from "@/components/recipes/recipe-details-section";
 import { RecipeHeroSection } from "@/components/recipes/recipe-hero-section";
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
 import { sanityFetch } from "@/lib/sanity/live";
@@ -126,15 +127,7 @@ export default async function RecipeDetailPage({
     <main>
       <RecipeHeroSection recipe={recipe} />
 
-      {/* Recipe content sections will go here */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Recipe details will be added in the next steps */}
-        <div className="max-w-4xl mx-auto">
-          <p className="text-muted-foreground">
-            Recipe detail sections will be implemented next.
-          </p>
-        </div>
-      </div>
+      <RecipeDetailsSection recipe={recipe} />
 
       {hasRelatedRecipes ? (
         <RelatedRecipesSection recipes={filteredRelatedRecipes} />
