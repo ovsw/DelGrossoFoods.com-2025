@@ -7,6 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@workspace/ui/components/tabs";
+import { cn } from "@workspace/ui/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
@@ -69,27 +70,29 @@ function useVariantState(available: VariantKey[]) {
 function BrandTabLabel({ variant }: { variant: VariantKey }) {
   if (variant === "premium") {
     return (
-      <span className="inline-flex items-center gap-2">
-        <span className="relative block h-5 w-[76px] overflow-hidden">
+      <span className="inline-flex flex-col items-start gap-1 text-start leading-tight">
+        <span className="relative block h-6 w-[112px] overflow-hidden">
           <Image
             src="/images/logos/lfd-logo-light-short-p-500.png"
-            alt="La Famiglia DelGrosso"
+            alt=""
             fill
-            sizes="96px"
-            className="object-contain"
+            sizes="140px"
+            className="object-contain object-left"
             priority={false}
           />
         </span>
-        <span className="sr-only">La Famiglia</span>
-        <span aria-hidden>La Famiglia</span>
+        <span aria-hidden className="text-sm">
+          La Famiglia DelGrosso
+        </span>
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-2">
-      <LogoSvg className="h-5 w-auto" aria-hidden />
-      <span className="sr-only">Original</span>
-      <span aria-hidden>Original</span>
+    <span className="inline-flex flex-col items-start gap-1 text-start leading-tight">
+      <LogoSvg className="h-6 w-auto self-start" aria-hidden />
+      <span aria-hidden className="text-sm">
+        DelGrosso Original
+      </span>
     </span>
   );
 }
@@ -202,35 +205,58 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
 
   // We intentionally preserve stega metadata in visible rich text below.
 
+  const baseTriggerClasses =
+    "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4";
+
   return (
     <Section spacingTop="default" spacingBottom="large">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_320px]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           {/* Left: Variant content */}
-          <div>
+          <div className="order-2 md:order-1 md:col-span-7 lg:col-span-8">
             {available.length > 1 ? (
               <Tabs
                 value={variant}
                 onValueChange={(v) => setVariant(v as VariantKey)}
                 className="w-full"
               >
-                <TabsList className="flex items-center gap-2">
-                  <TabsTrigger value="original">
+                <TabsList className="flex items-end gap-0 -mb-px min-h-24">
+                  <TabsTrigger
+                    value="original"
+                    className={cn(
+                      baseTriggerClasses,
+                      "rounded-tl-sm border-brand-green/80 bg-brand-green/90 text-brand-green-text hover:bg-brand-green aria-selected:border-brand-green aria-selected:bg-brand-green aria-selected:text-brand-green-text aria-selected:rounded-tr-sm",
+                    )}
+                  >
                     <BrandTabLabel variant="original" />
                   </TabsTrigger>
-                  <TabsTrigger value="premium">
+                  <TabsTrigger
+                    value="premium"
+                    className={cn(
+                      baseTriggerClasses,
+                      "rounded-tr-sm border-l-0 border-th-dark-900/80 bg-th-dark-900/90 text-th-light-100 hover:bg-th-dark-900 aria-selected:border-th-dark-900 aria-selected:bg-th-dark-900 aria-selected:text-th-light-100 aria-selected:rounded-tl-sm",
+                    )}
+                  >
                     <BrandTabLabel variant="premium" />
                   </TabsTrigger>
                 </TabsList>
-                <div className="mt-6 space-y-10">
-                  <TabsContent value="original" lazyMount>
+                <div className="space-y-10">
+                  <TabsContent
+                    value="original"
+                    lazyMount
+                    className="rounded-md bg-th-light-100 p-6"
+                  >
                     <VariantContent
                       ingredients={recipe.dgfIngredients}
                       directions={recipe.dgfDirections}
                       notes={recipe.dgfNotes}
                     />
                   </TabsContent>
-                  <TabsContent value="premium" lazyMount>
+                  <TabsContent
+                    value="premium"
+                    lazyMount
+                    className="rounded-md bg-th-light-100 p-6"
+                  >
                     <VariantContent
                       ingredients={recipe.lfdIngredients}
                       directions={recipe.lfdDirections}
@@ -240,7 +266,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 </div>
               </Tabs>
             ) : (
-              <div className="space-y-10">
+              <div className="rounded-md bg-th-light-100 p-6">
                 <VariantContent
                   ingredients={
                     available[0] === "premium"
@@ -263,10 +289,10 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
           </div>
 
           {/* Right: Info panel */}
-          <aside className="md:sticky md:top-24">
-            <div className="rounded-lg border bg-white p-5 shadow-sm">
+          <aside className="order-1 md:order-2 md:col-span-5 lg:col-span-4 md:self-start md:sticky md:top-36">
+            <div className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2">
               <h3 className="text-lg font-semibold">Recipe Info</h3>
-              <div className="mt-4 grid gap-5">
+              <div className="mt-4 grid gap-5 md:grid-cols-2">
                 {recipe.serves ? (
                   <div>
                     <div className="text-sm font-medium text-th-dark-700">
@@ -289,13 +315,15 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 ) : null}
 
                 {(dgfSauceBadges.length > 0 || lfdSauceBadges.length > 0) && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 md:col-span-2">
                     <div className="text-sm font-medium text-th-dark-700">
                       Sauces
                     </div>
                     {dgfSauceBadges.length > 0 ? (
                       <div>
-                        <div className="text-xs text-th-dark-600">Original</div>
+                        <div className="text-xs text-th-dark-600">
+                          DelGrosso Original Sauces:
+                        </div>
                         <div className="mt-2 flex flex-wrap gap-2">
                           {dgfSauceBadges}
                         </div>
@@ -304,7 +332,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                     {lfdSauceBadges.length > 0 ? (
                       <div>
                         <div className="text-xs text-th-dark-600">
-                          La Famiglia
+                          La Famiglia DelGrosso sauces:
                         </div>
                         <div className="mt-2 flex flex-wrap gap-2">
                           {lfdSauceBadges}
@@ -335,25 +363,52 @@ function VariantContent({
     <div className="space-y-10">
       {/* Ingredients */}
       {hasBlocks(ingredients) ? (
-        <section id="ingredients">
-          <h2 className="text-2xl font-semibold">Ingredients</h2>
-          <RichText richText={ingredients} className="mt-4" />
+        <section
+          id="ingredients"
+          className="space-y-4"
+          aria-labelledby="ingredients-heading"
+        >
+          <h2
+            id="ingredients-heading"
+            className="scroll-m-20 border-b border-muted-foreground/30 pb-2 text-3xl font-semibold first:mt-0"
+          >
+            Ingredients
+          </h2>
+          <RichText richText={ingredients} className="mt-0" />
         </section>
       ) : null}
 
       {/* Directions */}
       {hasBlocks(directions) ? (
-        <section id="directions">
-          <h2 className="text-2xl font-semibold">Directions</h2>
-          <RichText richText={directions} className="mt-4" />
+        <section
+          id="directions"
+          className="space-y-4"
+          aria-labelledby="directions-heading"
+        >
+          <h2
+            id="directions-heading"
+            className="scroll-m-20 border-b border-muted-foreground/30 pb-2 text-3xl font-semibold first:mt-0"
+          >
+            Directions
+          </h2>
+          <RichText richText={directions} className="mt-0" />
         </section>
       ) : null}
 
       {/* Notes */}
       {hasBlocks(notes) ? (
-        <section id="notes">
-          <h2 className="text-2xl font-semibold">Notes</h2>
-          <RichText richText={notes} className="mt-4" />
+        <section
+          id="notes"
+          className="space-y-4"
+          aria-labelledby="notes-heading"
+        >
+          <h2
+            id="notes-heading"
+            className="scroll-m-20 border-b border-muted-foreground/30 pb-2 text-3xl font-semibold first:mt-0"
+          >
+            Notes
+          </h2>
+          <RichText richText={notes} className="mt-0" />
         </section>
       ) : null}
     </div>
