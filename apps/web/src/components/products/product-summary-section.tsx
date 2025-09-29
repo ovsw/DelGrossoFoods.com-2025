@@ -1,5 +1,6 @@
 "use client";
 
+import { InfoLabel } from "@workspace/ui/components/info-label";
 import { Section } from "@workspace/ui/components/section";
 
 import { BackLink } from "@/components/elements/back-link";
@@ -48,36 +49,36 @@ export function ProductSummarySection({
               >
                 {product.sku ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
-                      SKU
-                    </dt>
+                    <InfoLabel asChild>
+                      <dt>SKU</dt>
+                    </InfoLabel>
                     <dd className="mt-1 text-lg leading-6">{product.sku}</dd>
                   </div>
                 ) : null}
 
                 {packagingLabel ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
-                      Pack size
-                    </dt>
+                    <InfoLabel asChild>
+                      <dt>Pack size</dt>
+                    </InfoLabel>
                     <dd className="mt-1 text-lg leading-6">{packagingLabel}</dd>
                   </div>
                 ) : null}
 
                 {weightText ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
-                      Weight
-                    </dt>
+                    <InfoLabel asChild>
+                      <dt>Weight</dt>
+                    </InfoLabel>
                     <dd className="mt-1 text-lg leading-6">{weightText}</dd>
                   </div>
                 ) : null}
 
                 {shippingText ? (
                   <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-th-red-700/60">
-                      Shipping category
-                    </dt>
+                    <InfoLabel asChild>
+                      <dt>Shipping category</dt>
+                    </InfoLabel>
                     <dd className="mt-1 text-lg leading-6">{shippingText}</dd>
                   </div>
                 ) : null}
