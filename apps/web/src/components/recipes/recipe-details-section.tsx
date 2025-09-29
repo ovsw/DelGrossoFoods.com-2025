@@ -1,5 +1,6 @@
 "use client";
 import { Badge } from "@workspace/ui/components/badge";
+import { InfoLabel } from "@workspace/ui/components/info-label";
 import { Section } from "@workspace/ui/components/section";
 import {
   Tabs,
@@ -9,11 +10,14 @@ import {
 } from "@workspace/ui/components/tabs";
 import { cn } from "@workspace/ui/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import LogoSvg from "@/components/elements/logo";
 import { RichText } from "@/components/elements/rich-text";
+import { SanityImage } from "@/components/elements/sanity-image";
 import {
   meatMap,
   tagMap,
@@ -21,9 +25,195 @@ import {
   toRecipeTagSlug,
 } from "@/config/recipe-taxonomy";
 import { announce } from "@/lib/a11y/announce";
-import type { RecipeDetailData } from "@/types";
+import {
+  DEFAULT_STATE,
+  type RecipeQueryState,
+  serializeStateToParams,
+} from "@/lib/recipes/url";
+import type {
+  RecipeDetailData,
+  SanityImageProps as SanityImageData,
+} from "@/types";
 
 type VariantKey = "original" | "premium";
+
+type RecipeSauce = NonNullable<
+  NonNullable<RecipeDetailData["dgfSauces"]>[number]
+>;
+
+type SauceDisplayItem = {
+  id: string;
+  name: string;
+  href: string | null;
+  image: SanityImageData | null;
+  alt: string;
+};
+
+function buildRecipesFilterLink(partial: Partial<RecipeQueryState>): string {
+  const params = serializeStateToParams({
+    ...DEFAULT_STATE,
+    ...partial,
+  });
+  const query = params.toString();
+  return query ? `/recipes?${query}` : "/recipes";
+}
+
+function normalizeSauceHref(slug: string | null | undefined): string | null {
+  if (!slug) return null;
+  const cleaned = slug.trim();
+  if (!cleaned) return null;
+  const withoutLeadingSlash = cleaned.replace(/^\/+/, "");
+  const path = withoutLeadingSlash.startsWith("sauces/")
+    ? withoutLeadingSlash
+    : `sauces/${withoutLeadingSlash}`;
+  return `/${path}`;
+}
+
+function toSanityImageData(
+  image: RecipeSauce["mainImage"],
+): SanityImageData | null {
+  if (!image || typeof image !== "object") return null;
+  const assetRef = image.asset?._ref;
+  if (!assetRef || typeof assetRef !== "string") return null;
+
+  const hotspot =
+    image.hotspot &&
+    typeof image.hotspot.x === "number" &&
+    typeof image.hotspot.y === "number"
+      ? { x: image.hotspot.x, y: image.hotspot.y }
+      : null;
+
+  const crop =
+    image.crop &&
+    typeof image.crop.top === "number" &&
+    typeof image.crop.bottom === "number" &&
+    typeof image.crop.left === "number" &&
+    typeof image.crop.right === "number"
+      ? {
+          top: image.crop.top,
+          bottom: image.crop.bottom,
+          left: image.crop.left,
+          right: image.crop.right,
+        }
+      : null;
+
+  return {
+    id: assetRef,
+    preview: null,
+    hotspot,
+    crop,
+  };
+}
+
+function mapSaucesToDisplay(
+  sauces: RecipeDetailData["dgfSauces"],
+): SauceDisplayItem[] {
+  return (sauces ?? [])
+    .map((sauce) => {
+      if (!sauce) return null;
+
+      const name = sauce.name ?? "Sauce";
+      const cleanedName = stegaClean(name);
+      const accessibleName =
+        typeof cleanedName === "string" && cleanedName.trim().length > 0
+          ? cleanedName.trim()
+          : name;
+      const rawAlt = sauce.mainImage?.alt;
+      const cleanedAlt = rawAlt ? stegaClean(rawAlt) : accessibleName;
+      const altText =
+        typeof cleanedAlt === "string" && cleanedAlt.trim().length > 0
+          ? cleanedAlt.trim()
+          : accessibleName;
+
+      const rawSlug = sauce.slug ?? null;
+      const slugValue =
+        typeof rawSlug === "string" && rawSlug.length > 0
+          ? (stegaClean(rawSlug) ?? rawSlug)
+          : rawSlug;
+      const slugString =
+        typeof slugValue === "string" && slugValue.length > 0
+          ? slugValue
+          : null;
+
+      return {
+        id: sauce._id,
+        name,
+        href: normalizeSauceHref(slugString),
+        image: toSanityImageData(sauce.mainImage ?? null),
+        alt: altText,
+      } satisfies SauceDisplayItem;
+    })
+    .filter(Boolean) as SauceDisplayItem[];
+}
+
+function SauceList({
+  title,
+  items,
+}: {
+  title: string;
+  items: SauceDisplayItem[];
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <div>
+      <div className="text-xs text-th-dark-600">{title}</div>
+      <ul className="mt-2 space-y-3">
+        {items.map((item) => (
+          <li key={item.id}>
+            <SauceLink item={item} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SauceLink({ item }: { item: SauceDisplayItem }) {
+  const fallbackInitial = item.alt.charAt(0)?.toUpperCase() || "S";
+
+  const content = (
+    <>
+      {item.image ? (
+        <SanityImage
+          image={item.image}
+          alt={item.alt}
+          width={80}
+          height={80}
+          className="h-12 w-12 rounded-sm object-cover"
+          sizes="48px"
+          loading="lazy"
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="flex h-12 w-12 items-center justify-center rounded-sm bg-th-light-200 text-xs font-semibold text-th-dark-600"
+        >
+          {fallbackInitial}
+        </div>
+      )}
+      <span className="text-sm font-medium text-th-dark-900">{item.name}</span>
+    </>
+  );
+
+  if (item.href) {
+    return (
+      <Link
+        href={item.href}
+        aria-label={`View sauce ${item.alt}`}
+        className="group inline-flex w-full items-center gap-3 rounded-md border border-brand-green/20 bg-white/70 px-3 py-2 transition-colors hover:bg-brand-green/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="inline-flex w-full items-center gap-3 rounded-md border border-muted-foreground/20 bg-white/60 px-3 py-2">
+      {content}
+    </div>
+  );
+}
 
 function hasBlocks(blocks: unknown[] | null | undefined): boolean {
   return Array.isArray(blocks) && blocks.length > 0;
@@ -100,14 +290,22 @@ function BrandTabLabel({ variant }: { variant: VariantKey }) {
 function InfoRow({
   title,
   children,
+  valueClassName,
+  className,
 }: {
   title: string;
   children: React.ReactNode;
+  valueClassName?: string;
+  className?: string;
 }) {
   return (
-    <div>
-      <div className="text-sm font-medium text-th-dark-700">{title}</div>
-      <div className="mt-2 flex flex-wrap gap-2">{children}</div>
+    <div className={className}>
+      <InfoLabel asChild>
+        <dt>{title}</dt>
+      </InfoLabel>
+      <dd className={cn(valueClassName ?? "mt-2 flex flex-wrap gap-2")}>
+        {children}
+      </dd>
     </div>
   );
 }
@@ -142,11 +340,15 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
       const slugValue = toMeatSlug(value);
       if (!slugValue) return null;
       const cfg = meatMap[slugValue];
+      const href = buildRecipesFilterLink({ meats: [slugValue] });
       return (
         <Badge
-          key={`${cfg.display}-${String(value)}`}
+          key={`${slugValue}-${String(value)}`}
           text={cfg.display}
           variant="meat"
+          className="text-sm"
+          href={href}
+          aria-label={`View recipes featuring ${cfg.display}`}
         />
       );
     })
@@ -157,56 +359,46 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
       const slugValue = toRecipeTagSlug(value);
       if (!slugValue) return null;
       const cfg = tagMap[slugValue];
+      const href = buildRecipesFilterLink({ tags: [slugValue] });
       return (
         <Badge
-          key={`${cfg.display}-${String(value)}`}
+          key={`${slugValue}-${String(value)}`}
           text={cfg.display}
           variant={cfg.badgeVariant}
+          className="text-sm"
+          href={href}
+          aria-label={`View ${cfg.display} recipes`}
         />
       );
     })
     .filter(Boolean);
 
   const categoryBadges = (recipe.categories ?? [])
-    .map((cat) =>
-      cat?.title ? (
-        <Badge key={cat._id} text={cat.title} variant="outline" />
-      ) : null,
-    )
+    .map((cat) => {
+      if (!cat?.title) return null;
+      const cleanedTitle = stegaClean(cat.title);
+      const accessibleTitle =
+        typeof cleanedTitle === "string" && cleanedTitle.trim().length > 0
+          ? cleanedTitle.trim()
+          : cat.title;
+      const href = buildRecipesFilterLink({ categoryId: cat._id });
+      return (
+        <Badge
+          key={cat._id}
+          text={cat.title}
+          variant="outline"
+          className="text-sm"
+          href={href}
+          aria-label={`View recipes in ${accessibleTitle}`}
+        />
+      );
+    })
     .filter(Boolean);
 
-  const dgfSauceBadges = (recipe.dgfSauces ?? [])
-    .map((s) =>
-      s?.slug ? (
-        <Badge
-          key={s._id}
-          text={s.name ?? "Sauce"}
-          variant="original"
-          href={`/sauces/${s.slug}`}
-          aria-label={`View ${s.name ?? "sauce"} (Original line)`}
-        />
-      ) : null,
-    )
-    .filter(Boolean);
-
-  const lfdSauceBadges = (recipe.lfdSauces ?? [])
-    .map((s) =>
-      s?.slug ? (
-        <Badge
-          key={s._id}
-          text={s.name ?? "Sauce"}
-          variant="premium"
-          href={`/sauces/${s.slug}`}
-          aria-label={`View ${s.name ?? "sauce"} (La Famiglia line)`}
-        />
-      ) : null,
-    )
-    .filter(Boolean);
+  const originalSauces = mapSaucesToDisplay(recipe.dgfSauces);
+  const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
 
   // We intentionally preserve stega metadata in visible rich text below.
-
-  const baseTriggerClasses =
-    "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4";
 
   return (
     <Section spacingTop="default" spacingBottom="large">
@@ -224,7 +416,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                   <TabsTrigger
                     value="original"
                     className={cn(
-                      baseTriggerClasses,
+                      "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
                       "rounded-tl-sm border-brand-green/80 bg-brand-green/90 text-brand-green-text hover:bg-brand-green aria-selected:border-brand-green aria-selected:bg-brand-green aria-selected:text-brand-green-text aria-selected:rounded-tr-sm",
                     )}
                   >
@@ -233,7 +425,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                   <TabsTrigger
                     value="premium"
                     className={cn(
-                      baseTriggerClasses,
+                      "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
                       "rounded-tr-sm border-l-0 border-th-dark-900/80 bg-th-dark-900/90 text-th-light-100 hover:bg-th-dark-900 aria-selected:border-th-dark-900 aria-selected:bg-th-dark-900 aria-selected:text-th-light-100 aria-selected:rounded-tl-sm",
                     )}
                   >
@@ -292,14 +484,11 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
           <aside className="order-1 md:order-2 md:col-span-5 lg:col-span-4 md:self-start md:sticky md:top-36">
             <div className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2">
               <h3 className="text-lg font-semibold">Recipe Info</h3>
-              <div className="mt-4 grid gap-5 md:grid-cols-2">
+              <dl className="mt-4 grid gap-5 md:grid-cols-2">
                 {recipe.serves ? (
-                  <div>
-                    <div className="text-sm font-medium text-th-dark-700">
-                      Serves
-                    </div>
-                    <div className="mt-1">{recipe.serves}</div>
-                  </div>
+                  <InfoRow title="Serves" valueClassName="mt-1">
+                    {recipe.serves}
+                  </InfoRow>
                 ) : null}
 
                 {meatBadges.length > 0 ? (
@@ -314,34 +503,24 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                   <InfoRow title="Tags">{tagBadges}</InfoRow>
                 ) : null}
 
-                {(dgfSauceBadges.length > 0 || lfdSauceBadges.length > 0) && (
-                  <div className="space-y-4 md:col-span-2">
-                    <div className="text-sm font-medium text-th-dark-700">
-                      Sauces
-                    </div>
-                    {dgfSauceBadges.length > 0 ? (
-                      <div>
-                        <div className="text-xs text-th-dark-600">
-                          DelGrosso Original Sauces:
-                        </div>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {dgfSauceBadges}
-                        </div>
-                      </div>
-                    ) : null}
-                    {lfdSauceBadges.length > 0 ? (
-                      <div>
-                        <div className="text-xs text-th-dark-600">
-                          La Famiglia DelGrosso sauces:
-                        </div>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {lfdSauceBadges}
-                        </div>
-                      </div>
-                    ) : null}
+                {(originalSauces.length > 0 || premiumSauces.length > 0) && (
+                  <div className="md:col-span-2">
+                    <InfoLabel asChild>
+                      <dt>Sauces</dt>
+                    </InfoLabel>
+                    <dd className="mt-2 space-y-6">
+                      <SauceList
+                        title="DelGrosso Original Sauces:"
+                        items={originalSauces}
+                      />
+                      <SauceList
+                        title="La Famiglia DelGrosso sauces:"
+                        items={premiumSauces}
+                      />
+                    </dd>
                   </div>
                 )}
-              </div>
+              </dl>
             </div>
           </aside>
         </div>
