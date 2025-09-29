@@ -117,9 +117,11 @@ export function SauceList({
   if (items.length === 0) return null;
 
   return (
-    <div>
-      <div className="text-xs text-th-dark-600">{title}</div>
-      <ul className="mt-2 space-y-3">
+    <div data-html="c-sauce-list">
+      <div className="text-xs text-th-dark-600" data-html="c-sauce-list-title">
+        {title}
+      </div>
+      <ul className="mt-2 space-y-3" data-html="c-sauce-list-items">
         {items.map((item) => (
           <li key={item.id}>
             <SauceLink item={item} />
@@ -144,16 +146,23 @@ export function SauceLink({ item }: { item: SauceDisplayItem }) {
           className="h-12 w-12 rounded-sm object-cover"
           sizes="48px"
           loading="lazy"
+          data-html="c-sauce-image"
         />
       ) : (
         <div
           aria-hidden="true"
           className="flex h-12 w-12 items-center justify-center rounded-sm bg-th-light-200 text-xs font-semibold text-th-dark-600"
+          data-html="c-sauce-fallback"
         >
           {fallbackInitial}
         </div>
       )}
-      <span className="text-sm font-medium text-th-dark-900">{item.name}</span>
+      <span
+        className="text-sm font-medium text-th-dark-900"
+        data-html="c-sauce-name"
+      >
+        {item.name}
+      </span>
     </>
   );
 
@@ -163,6 +172,7 @@ export function SauceLink({ item }: { item: SauceDisplayItem }) {
         href={item.href}
         aria-label={`View sauce ${item.alt}`}
         className="group inline-flex w-full items-center gap-3 rounded-md border border-brand-green/20 bg-white/70 px-3 py-2 transition-colors hover:bg-brand-green/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        data-html="c-sauce-link"
       >
         {content}
       </Link>
@@ -170,7 +180,10 @@ export function SauceLink({ item }: { item: SauceDisplayItem }) {
   }
 
   return (
-    <div className="inline-flex w-full items-center gap-3 rounded-md border border-muted-foreground/20 bg-white/60 px-3 py-2">
+    <div
+      className="inline-flex w-full items-center gap-3 rounded-md border border-muted-foreground/20 bg-white/60 px-3 py-2"
+      data-html="c-sauce-no-link"
+    >
       {content}
     </div>
   );

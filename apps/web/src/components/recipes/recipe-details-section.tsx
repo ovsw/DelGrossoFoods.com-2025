@@ -58,8 +58,14 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
 
   return (
     <Section spacingTop="default" spacingBottom="large">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+      <div
+        className="container mx-auto px-4 md:px-6"
+        data-html="c-recipe-details-section"
+      >
+        <div
+          className="grid grid-cols-1 gap-10 md:grid-cols-12"
+          data-html="c-recipe-details-grid"
+        >
           {/* Left: Variant content */}
           <div className="order-2 md:order-1 md:col-span-7 lg:col-span-8">
             {available.length > 1 ? (
@@ -67,14 +73,19 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 value={variant}
                 onValueChange={(v) => setVariant(v as VariantKey)}
                 className="w-full"
+                data-html="c-recipe-tabs"
               >
-                <TabsList className="flex items-end gap-0 -mb-px min-h-24">
+                <TabsList
+                  className="pl-2 flex items-end gap-0 -mb-px min-h-24"
+                  data-html="c-recipe-tabs-list"
+                >
                   <TabsTrigger
                     value="original"
                     className={cn(
                       "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
                       "rounded-tl-sm border-brand-green/80 bg-brand-green/90 text-brand-green-text hover:bg-brand-green aria-selected:border-brand-green aria-selected:bg-brand-green aria-selected:text-brand-green-text aria-selected:rounded-tr-sm",
                     )}
+                    data-html="c-recipe-tabs-trigger-original"
                   >
                     <BrandTabLabel variant="original" />
                   </TabsTrigger>
@@ -84,15 +95,20 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                       "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
                       "rounded-tr-sm border-l-0 border-th-dark-900/80 bg-th-dark-900/90 text-th-light-100 hover:bg-th-dark-900 aria-selected:border-th-dark-900 aria-selected:bg-th-dark-900 aria-selected:text-th-light-100 aria-selected:rounded-tl-sm",
                     )}
+                    data-html="c-recipe-tabs-trigger-premium"
                   >
                     <BrandTabLabel variant="premium" />
                   </TabsTrigger>
                 </TabsList>
-                <div className="space-y-10">
+                <div
+                  className="space-y-10"
+                  data-html="c-recipe-tabs-content-wrapper"
+                >
                   <TabsContent
                     value="original"
                     lazyMount
                     className="rounded-md bg-th-light-100 p-6"
+                    data-html="c-recipe-tabs-content-original"
                   >
                     <VariantContent
                       ingredients={recipe.dgfIngredients}
@@ -104,6 +120,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                     value="premium"
                     lazyMount
                     className="rounded-md bg-th-light-100 p-6"
+                    data-html="c-recipe-tabs-content-premium"
                   >
                     <VariantContent
                       ingredients={recipe.lfdIngredients}
@@ -114,7 +131,10 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 </div>
               </Tabs>
             ) : (
-              <div className="rounded-md bg-th-light-100 p-6">
+              <div
+                className="rounded-md bg-th-light-100 p-6"
+                data-html="c-recipe-single-variant"
+              >
                 <VariantContent
                   ingredients={
                     available[0] === "premium"
@@ -137,10 +157,24 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
           </div>
 
           {/* Right: Info panel */}
-          <aside className="order-1 md:order-2 md:col-span-5 lg:col-span-4 md:self-start md:sticky md:top-36">
-            <div className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2">
-              <h3 className="text-lg font-semibold">Recipe Info</h3>
-              <dl className="mt-4 grid gap-5 md:grid-cols-2">
+          <aside
+            className="order-1 md:order-2 md:col-span-5 lg:col-span-4 md:self-start md:sticky md:top-36"
+            data-html="c-recipe-info-panel"
+          >
+            <div
+              className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2"
+              data-html="c-recipe-info-scroll"
+            >
+              <h3
+                className="text-lg font-semibold"
+                data-html="c-recipe-info-heading"
+              >
+                Recipe Info
+              </h3>
+              <dl
+                className="mt-4 grid gap-5 md:grid-cols-2"
+                data-html="c-recipe-info-list"
+              >
                 {recipe.serves ? (
                   <InfoRow title="Serves" valueClassName="mt-1">
                     {recipe.serves}
