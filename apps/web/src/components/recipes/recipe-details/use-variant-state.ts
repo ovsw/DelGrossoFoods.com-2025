@@ -20,6 +20,7 @@ export function useVariantState(available: VariantKey[]) {
     const normalized = rawParam.replace(/\s+/g, "").toLowerCase();
     if (normalized === "original") return "original";
     if (normalized === "lafamigliadelgrosso") return "premium";
+    if (normalized === "lafamiliadelgrosso") return "premium"; // backward compatibility for misspelled URLs
     return null;
   }, [rawParam]);
   const defaultValue = React.useMemo<VariantKey>(() => {
@@ -37,7 +38,7 @@ export function useVariantState(available: VariantKey[]) {
     (next: VariantKey) => {
       setValue(next);
       const sp = new URLSearchParams(search.toString());
-      sp.set("line", next === "premium" ? "LaFamiliaDelGrosso" : "original");
+      sp.set("line", next === "premium" ? "LaFamigliaDelGrosso" : "original");
       router.replace(`${pathname}?${sp.toString()}`, { scroll: false });
       const label =
         next === "premium" ? "La Famiglia version" : "Original version";
