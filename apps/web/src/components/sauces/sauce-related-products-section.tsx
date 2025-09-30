@@ -1,9 +1,21 @@
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
+import Link from "next/link";
+import { stegaClean } from "next-sanity";
 
 import { SanityButtons } from "@/components/elements/sanity-buttons";
+import { SanityImage } from "@/components/elements/sanity-image";
 import { ProductCard } from "@/components/products/product-card";
-import type { SanityButtonProps, SauceProductListItem } from "@/types";
+import { SauceCard } from "@/components/sauce-card";
+import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
+import { buildHref } from "@/lib/list/href";
+import type {
+  SanityButtonProps,
+  SauceListItem,
+  SauceProductListItem,
+} from "@/types";
 
 interface SauceRelatedProductsSectionProps {
   readonly products: SauceProductListItem[];
@@ -72,8 +84,6 @@ export function SauceRelatedProductsSection({
 }
 
 // New component for recipe-related sauces
-import { SauceCard } from "@/components/sauce-card";
-import type { SauceListItem } from "@/types";
 
 interface RecipeRelatedSaucesSectionProps {
   readonly sauces: SauceListItem[];
@@ -102,9 +112,69 @@ export function RecipeRelatedSaucesSection({
         </div>
 
         {count === 1 ? (
-          <div className="mt-16 grid items-center gap-8">
-            <div className="mx-auto w-full max-w-xl">
-              <SauceCard item={sauces[0]!} />
+          <div className="mt-16">
+            <div className="grid items-center gap-8 md:gap-10 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-5 flex justify-center lg:justify-start">
+                <div className="aspect-[33/40] relative overflow-hidden mx-auto w-full max-w-[360px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-none">
+                  {sauces[0]!.mainImage?.id ? (
+                    <SanityImage
+                      image={sauces[0]!.mainImage}
+                      respectSanityCrop
+                      width={800}
+                      height={968}
+                      alt={stegaClean(
+                        sauces[0]!.mainImage.alt ||
+                          `${stegaClean(sauces[0]!.name)} sauce`,
+                      )}
+                      className="absolute inset-0 h-full w-full object-contain"
+                      sizes="(max-width: 640px) 80vw, (max-width: 1024px) 60vw, 40vw"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-muted" />
+                  )}
+                </div>
+              </div>
+
+              <div className="lg:col-span-7">
+                <div className="text-start">
+                  <Eyebrow text="Featured sauce" />
+
+                  <h3 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
+                    {stegaClean(sauces[0]!.name)}
+                  </h3>
+
+                  <div className="my-6 flex flex-wrap items-center gap-1.5">
+                    <Badge
+                      text={getLineBadge(sauces[0]!.line).text}
+                      variant={getLineBadge(sauces[0]!.line).variant}
+                      className="text-xs"
+                    />
+                    <Badge
+                      text={getTypeBadge(sauces[0]!.category).text}
+                      variant={getTypeBadge(sauces[0]!.category).variant}
+                      className="text-xs"
+                    />
+                  </div>
+
+                  <p className="mt-4">
+                    {stegaClean(sauces[0]!.descriptionPlain) &&
+                    stegaClean(sauces[0]!.descriptionPlain).trim().length > 0
+                      ? stegaClean(sauces[0]!.descriptionPlain)
+                      : "Build your next meal with this family favorite from La Famiglia DelGrosso."}
+                  </p>
+
+                  <div className="mt-6">
+                    <Button asChild variant="outline">
+                      <Link
+                        href={buildHref("/sauces", sauces[0]!.slug)}
+                        aria-label={`View ${stegaClean(sauces[0]!.name)} sauce`}
+                      >
+                        View sauce
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ) : (
