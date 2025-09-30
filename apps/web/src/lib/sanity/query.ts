@@ -458,6 +458,27 @@ export const getAllSaucesForIndexQuery = defineQuery(`
   }
 `);
 
+export const getSaucesByIdsQuery = defineQuery(`
+  *[
+    _type == "sauce"
+    && _id in $sauceIds
+    && defined(slug.current)
+    && !(_id in path('drafts.**'))
+  ] | order(name asc){
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    line,
+    category,
+    "descriptionPlain": coalesce(pt::text(description), ""),
+    "mainImage": mainImage{
+      ${imageFields},
+      "alt": coalesce(alt, "")
+    }
+  }
+`);
+
 export const getSauceBySlugQuery = defineQuery(`
   *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{
     _id,
