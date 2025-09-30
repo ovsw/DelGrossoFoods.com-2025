@@ -1,9 +1,7 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
-import { Section } from "@workspace/ui/components/section";
 import { stegaClean } from "next-sanity";
 
-import { BackLink } from "@/components/elements/back-link";
 import { SanityImage } from "@/components/elements/sanity-image";
 import {
   meatMap,
