@@ -9,6 +9,7 @@ import {
   toMeatSlug,
   toRecipeTagSlug,
 } from "@/config/recipe-taxonomy";
+import { getCategorySlug } from "@/lib/recipes/url";
 import type { RecipeDetailData } from "@/types";
 
 import { buildRecipesFilterLink } from "./utils";
@@ -87,7 +88,7 @@ export function RecipeBadges({ recipe }: { recipe: RecipeDetailData }) {
           ? cleanedTitle.trim()
           : cat.title;
       const href = buildRecipesFilterLink({
-        categorySlug: cat.slug?.current || cat._id,
+        categorySlug: getCategorySlug(cat),
       });
       return (
         <Badge

@@ -7,12 +7,32 @@ import {
 import { allLineSlugs, type LineSlug } from "@/config/sauce-taxonomy";
 import type { SortOrder } from "@/types";
 
+// Utility function to generate slug from title
+export function generateSlugFromTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single
+    .trim()
+    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+}
+
+// Helper function to get category slug (existing slug or generated from title)
+export function getCategorySlug(category: {
+  _id: string;
+  title: string;
+  slug?: { current?: string };
+}): string {
+  return category.slug?.current || generateSlugFromTitle(category.title);
+}
+
 export interface RecipeQueryState {
   readonly search: string;
   readonly productLine: LineSlug[];
   readonly tags: RecipeTagSlug[];
   readonly meats: MeatSlug[];
-  readonly categorySlug: string | "all";
+  readonly category: string | "all";
   readonly sort: SortOrder;
 }
 
@@ -23,7 +43,7 @@ const DEFAULT_STATE: RecipeQueryState = {
   productLine: [],
   tags: [],
   meats: [],
-  categorySlug: "all",
+  category: "all",
   sort: "az",
 } as const;
 
