@@ -1,5 +1,12 @@
 # studio
 
+## 1.12.0
+
+### Minor Changes
+
+- [#76](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/76) [`343f2cc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/343f2cc682b0840da123b8a133fc33a4e0d1f3ca) Thanks [@ovsw](https://github.com/ovsw)! - Added individual recipe page.
+  Some fixes to the way filtering works via category as well.
+
 ## 1.11.2
 
 ## 1.11.1
