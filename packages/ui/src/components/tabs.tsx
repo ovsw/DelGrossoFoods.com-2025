@@ -4,11 +4,9 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@workspace/ui/lib/utils";
 import * as React from "react";
 
-type Orientation = "horizontal" | "vertical";
-
 interface TabsProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
-  orientation?: Orientation;
+  orientation?: "horizontal" | "vertical";
 }
 
 const Tabs = React.forwardRef<
@@ -24,20 +22,16 @@ const Tabs = React.forwardRef<
 ));
 Tabs.displayName = TabsPrimitive.Root.displayName;
 
-interface TabsListProps
-  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
-  orientation?: Orientation;
-}
-
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  TabsListProps
->(({ className, orientation = "horizontal", ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
     className={cn(
       "flex gap-2",
-      orientation === "vertical" ? "flex-col" : "flex-row",
+      // Use data attribute set by Radix UI instead of separate prop
+      "data-[orientation=vertical]:flex-col data-[orientation=horizontal]:flex-row",
       className,
     )}
     {...props}
