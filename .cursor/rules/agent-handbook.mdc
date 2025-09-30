@@ -22,6 +22,7 @@ alwaysApply: true
 - Per package (run from repo root):
   - Web: `pnpm -C apps/web dev|build|start|lint|lint:fix|typecheck|check`
   - Studio: `pnpm -C apps/studio dev|build|deploy|lint|lint:fix|type|check`
+  - UIL `pnpm -C packages/ui lint:fix`
 
 ### Environment and secrets
 
@@ -44,6 +45,9 @@ alwaysApply: true
 - Naming: descriptive, full words; kebab-case filenames; `.tsx` for components, `.ts` for utils.
 - Accessibility: semantic HTML, alt text, keyboard/contrast sanity checks, no div-as-button.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
+- After completing each task, you MUST:
+      1. ✅ ALWAYS: linting (pnpm --filter web lint:fix) and formatting (pnpm --filter web format)
+      2. ❌ NEVER: full builds (pnpm --filter web build) unless specifically requested
 
 ### UI system and Tailwind
 
@@ -126,3 +130,4 @@ alwaysApply: true
 - SEO: titles, meta, structured data, sitemap/robots updates if relevant.
 - Env: required variables documented and present locally/CI.
 - i18n/RTL: apply directional utilities only when asked; follow the existing table.
+
