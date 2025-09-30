@@ -34,7 +34,7 @@
     "slugify": "^1.6.6"
   },
   "devDependencies": {
-    "@types/node": "^20.19.9",
+    "@types/node": "^20.19.18",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
     "@workspace/eslint-config": "workspace:^",
