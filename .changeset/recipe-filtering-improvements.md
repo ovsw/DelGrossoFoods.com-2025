@@ -5,4 +5,4 @@
 ---
 
 Added individual recipe page.
-Some fixes to the way filtering works via category as well. 
+Some fixes to the way filtering works via category as well.
