@@ -9,18 +9,25 @@ export function SauceCard({ item }: { item: SauceListItem }) {
   const lineBadge = getLineBadge(line);
   const typeBadge = getTypeBadge(category);
 
+  // Enhanced styling for more prominent display
+  const isPremiumLine = line === "Ultra-Premium";
+  const lineDisplayName = isPremiumLine
+    ? "La Famiglia DelGrosso"
+    : lineBadge.text;
+
   return (
     <ListCard
       href={buildHref("/sauces", slug)}
       title={name}
+      titleSecondary={lineDisplayName}
       ariaLabel={`View ${name} sauce`}
       image={mainImage}
       imageAlt={`${name} sauce`}
       imageAspect="sauce"
-      badges={[
-        { text: lineBadge.text, variant: lineBadge.variant },
-        { text: typeBadge.text, variant: typeBadge.variant },
-      ]}
+      imageWidth={400}
+      imageHeight={480}
+      textAlign="center"
+      badges={[{ text: typeBadge.text, variant: typeBadge.variant }]}
       sanityDocumentId={_id}
       sanityDocumentType={_type}
       sanityFieldPath="mainImage"
