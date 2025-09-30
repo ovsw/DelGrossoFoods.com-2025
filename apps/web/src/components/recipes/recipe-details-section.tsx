@@ -59,7 +59,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
   return (
     <Section spacingTop="default" spacingBottom="large">
       <div
-        className="container mx-auto px-4 md:px-6"
+        className="container mx-auto px-4 md:px-6 lg:max-w-6xl xl:max-w-5xl"
         data-html="c-recipe-details-section"
       >
         <div

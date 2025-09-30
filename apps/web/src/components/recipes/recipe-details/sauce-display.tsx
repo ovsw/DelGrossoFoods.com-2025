@@ -141,17 +141,17 @@ export function SauceLink({ item }: { item: SauceDisplayItem }) {
         <SanityImage
           image={item.image}
           alt={item.alt}
-          width={80}
-          height={80}
-          className="h-12 w-12 rounded-sm object-cover"
-          sizes="48px"
+          width={100}
+          height={120}
+          className="h-20 w-16 rounded-sm object-contain"
+          sizes="64px"
           loading="lazy"
           data-html="c-sauce-image"
         />
       ) : (
         <div
           aria-hidden="true"
-          className="flex h-12 w-12 items-center justify-center rounded-sm bg-th-light-200 text-xs font-semibold text-th-dark-600"
+          className="flex h-20 w-16 items-center justify-center rounded-sm bg-th-light-200 text-sm font-semibold text-th-dark-600"
           data-html="c-sauce-fallback"
         >
           {fallbackInitial}

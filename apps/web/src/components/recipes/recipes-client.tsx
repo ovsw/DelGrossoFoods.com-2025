@@ -41,8 +41,8 @@ type FiltersFormProps = {
   toggleTag: (t: RecipeTagSlug, checked: boolean) => void;
   meats: MeatSlug[];
   toggleMeat: (m: MeatSlug) => void;
-  categorySlug: string | "all";
-  setCategorySlug: (slug: string | "all") => void;
+  category: string | "all";
+  setCategory: (category: string | "all") => void;
   clearProductLine: () => void;
   clearTags: () => void;
   clearMeats: () => void;
@@ -60,8 +60,8 @@ function FiltersForm({
   toggleTag,
   meats,
   toggleMeat,
-  categorySlug,
-  setCategorySlug,
+  category,
+  setCategory,
   clearProductLine,
   clearTags,
   clearMeats,
@@ -169,7 +169,7 @@ function FiltersForm({
 
       <FilterGroupSection
         title="Category"
-        showClear={categorySlug !== "all"}
+        showClear={category !== "all"}
         onClear={clearCategory}
         contentClassName=""
       >
@@ -178,8 +178,8 @@ function FiltersForm({
             <select
               id={`${idPrefix}-category-select`}
               className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              value={categorySlug}
-              onChange={(e) => setCategorySlug(e.currentTarget.value || "all")}
+              value={category}
+              onChange={(e) => setCategory(e.currentTarget.value || "all")}
               aria-label="Category"
             >
               <option value="all">Select</option>
@@ -214,8 +214,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
   ]);
   const [tags, setTags] = useState<RecipeTagSlug[]>([...initialState.tags]);
   const [meats, setMeats] = useState<MeatSlug[]>([...initialState.meats]);
-  const [categorySlug, setCategorySlug] = useState<string | "all">(
-    initialState.categorySlug,
+  const [category, setCategory] = useState<string | "all">(
+    initialState.category,
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
@@ -238,7 +238,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         setProductLine([...next.productLine]);
         setTags([...next.tags]);
         setMeats([...next.meats]);
-        setCategorySlug(next.categorySlug);
+        setCategory(next.category);
         setSort(next.sort);
       } finally {
         setTimeout(() => {
@@ -257,10 +257,10 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       productLine,
       tags,
       meats,
-      categorySlug,
+      category,
       sort,
     }),
-    [debouncedSearch, productLine, tags, meats, categorySlug, sort],
+    [debouncedSearch, productLine, tags, meats, category, sort],
   );
 
   useUrlStateSync({
@@ -287,7 +287,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     productLine.length > 0 ||
     tags.length > 0 ||
     meats.length > 0 ||
-    categorySlug !== "all";
+    category !== "all";
 
   // Key to trigger shared layout scroll behavior
   const resultsAnchorId = "recipes-results-top";
@@ -296,7 +296,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     productLine,
     tags,
     meats,
-    categorySlug,
+    category,
     sort,
   });
 
@@ -305,13 +305,13 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     setProductLine([]);
     setTags([]);
     setMeats([]);
-    setCategorySlug("all");
+    setCategory("all");
     setSort("az");
   }
   const clearProductLine = () => setProductLine([]);
   const clearTags = () => setTags([]);
   const clearMeats = () => setMeats([]);
-  const clearCategory = () => setCategorySlug("all");
+  const clearCategory = () => setCategory("all");
   const toggleLine = (l: LineSlug, checked: boolean) =>
     setProductLine((prev) => {
       if (checked) {
@@ -344,8 +344,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           toggleTag={toggleTag}
           meats={meats}
           toggleMeat={toggleMeat}
-          categorySlug={categorySlug}
-          setCategorySlug={setCategorySlug}
+          category={category}
+          setCategory={setCategory}
           clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}

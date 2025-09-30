@@ -88,7 +88,7 @@ export function RecipeBadges({ recipe }: { recipe: RecipeDetailData }) {
           ? cleanedTitle.trim()
           : cat.title;
       const href = buildRecipesFilterLink({
-        categorySlug: getCategorySlug(cat),
+        category: getCategorySlug(cat),
       });
       return (
         <Badge

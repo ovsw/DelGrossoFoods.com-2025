@@ -72,27 +72,26 @@ export function parseSearchParams(
     (allMeatSlugs as readonly string[]).includes(v),
   ) as MeatSlug[];
 
-  const categorySlug =
-    typeof params.categorySlug === "string" ? params.categorySlug : "all";
+  const category =
+    typeof params.category === "string" ? params.category : "all";
 
   const sortRaw = typeof params.sort === "string" ? params.sort : undefined;
   const sort: SortOrder = sortRaw === "za" ? "za" : "az";
 
-  return { search, productLine, tags, meats, categorySlug, sort };
+  return { search, productLine, tags, meats, category, sort };
 }
 
 export function serializeStateToParams(
   state: RecipeQueryState,
 ): URLSearchParams {
   const sp = new URLSearchParams();
-  const { search, productLine, tags, meats, categorySlug, sort } = state;
+  const { search, productLine, tags, meats, category, sort } = state;
 
   if (search?.trim()) sp.set("search", search.trim());
   for (const l of productLine) sp.append("productLine", l);
   for (const t of tags) sp.append("tags", t);
   for (const m of meats) sp.append("meats", m);
-  if (categorySlug && categorySlug !== "all")
-    sp.set("categorySlug", categorySlug);
+  if (category && category !== "all") sp.set("category", category);
   if (sort && sort !== "az") sp.set("sort", sort);
   return sp;
 }
