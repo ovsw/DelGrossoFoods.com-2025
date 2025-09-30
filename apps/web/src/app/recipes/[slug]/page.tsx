@@ -3,15 +3,18 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
+import { RecipeDetailsSection } from "@/components/recipes/recipe-details-section";
 import { RecipeHeroSection } from "@/components/recipes/recipe-hero-section";
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
+import { RecipeRelatedSaucesSection } from "@/components/sauces/sauce-related-products-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getRecipeBySlugQuery,
   getRecipesBySauceIdsQuery,
+  getSaucesByIdsQuery,
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
-import type { RecipeDetailData, RecipeListItem } from "@/types";
+import type { RecipeDetailData, RecipeListItem, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchRecipe(slug: string): Promise<RecipeDetailData | null> {
@@ -46,6 +49,25 @@ async function fetchRelatedRecipes(
     }),
   );
   return (result?.data ?? []) as RecipeListItem[];
+}
+
+async function fetchRelatedSauces(
+  sauceIds: readonly string[] | undefined,
+): Promise<SauceListItem[]> {
+  const ids = (sauceIds ?? []).filter(
+    (id): id is string => typeof id === "string" && id.length > 0,
+  );
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getSaucesByIdsQuery,
+      params: { sauceIds: ids },
+    }),
+  );
+  return (result?.data ?? []) as SauceListItem[];
 }
 
 export async function generateMetadata({
@@ -122,19 +144,18 @@ export default async function RecipeDetailPage({
   );
   const hasRelatedRecipes = filteredRelatedRecipes.length > 0;
 
+  const relatedSauces = await fetchRelatedSauces(allSauceIds);
+  const hasRelatedSauces = relatedSauces.length > 0;
+
   return (
     <main>
       <RecipeHeroSection recipe={recipe} />
 
-      {/* Recipe content sections will go here */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Recipe details will be added in the next steps */}
-        <div className="max-w-4xl mx-auto">
-          <p className="text-muted-foreground">
-            Recipe detail sections will be implemented next.
-          </p>
-        </div>
-      </div>
+      <RecipeDetailsSection recipe={recipe} />
+
+      {hasRelatedSauces ? (
+        <RecipeRelatedSaucesSection sauces={relatedSauces} />
+      ) : null}
 
       {hasRelatedRecipes ? (
         <RelatedRecipesSection recipes={filteredRelatedRecipes} />

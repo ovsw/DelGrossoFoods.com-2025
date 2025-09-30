@@ -67,6 +67,21 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 - Tailwind v4 only. Global CSS sourced from `packages/ui/src/styles/globals.css` in web’s `components.json`.
 - Use components from `@workspace/ui`. If a component doesn’t exist, add it in `packages/ui`.
 - Never introduce `shadcn-ui`. Follow existing `shadcn` patterns and tokens from `packages/ui`.
+- **Tailwind IntelliSense**: When storing Tailwind classes in string variables (not directly in `className`), use direct template literals in `cn()` calls to maintain full IntelliSense support:
+
+  ```typescript
+  // ❌ No IntelliSense for classes in string variables
+  const baseClasses = "flex items-center gap-2";
+  className={cn(baseClasses, "other-classes")}
+
+  // ✅ Full IntelliSense with direct template literals
+  className={cn(
+    "flex items-center gap-2",
+    "other-classes"
+  )}
+  ```
+
+  **Note**: The `tw` tagged template literal from Tailwind v4 is only available during CSS processing, not at runtime.
 
 ### Blocks vs. Sections (naming + placement)
 

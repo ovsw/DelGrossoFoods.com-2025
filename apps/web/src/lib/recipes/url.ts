@@ -7,12 +7,32 @@ import {
 import { allLineSlugs, type LineSlug } from "@/config/sauce-taxonomy";
 import type { SortOrder } from "@/types";
 
+// Utility function to generate slug from title
+export function generateSlugFromTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single
+    .trim()
+    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+}
+
+// Helper function to get category slug (existing slug or generated from title)
+export function getCategorySlug(category: {
+  _id: string;
+  title: string;
+  slug?: { current?: string };
+}): string {
+  return category.slug?.current || generateSlugFromTitle(category.title);
+}
+
 export interface RecipeQueryState {
   readonly search: string;
   readonly productLine: LineSlug[];
   readonly tags: RecipeTagSlug[];
   readonly meats: MeatSlug[];
-  readonly categoryId: string | "all";
+  readonly category: string | "all";
   readonly sort: SortOrder;
 }
 
@@ -23,7 +43,7 @@ const DEFAULT_STATE: RecipeQueryState = {
   productLine: [],
   tags: [],
   meats: [],
-  categoryId: "all",
+  category: "all",
   sort: "az",
 } as const;
 
@@ -52,26 +72,26 @@ export function parseSearchParams(
     (allMeatSlugs as readonly string[]).includes(v),
   ) as MeatSlug[];
 
-  const categoryId =
-    typeof params.categoryId === "string" ? params.categoryId : "all";
+  const category =
+    typeof params.category === "string" ? params.category : "all";
 
   const sortRaw = typeof params.sort === "string" ? params.sort : undefined;
   const sort: SortOrder = sortRaw === "za" ? "za" : "az";
 
-  return { search, productLine, tags, meats, categoryId, sort };
+  return { search, productLine, tags, meats, category, sort };
 }
 
 export function serializeStateToParams(
   state: RecipeQueryState,
 ): URLSearchParams {
   const sp = new URLSearchParams();
-  const { search, productLine, tags, meats, categoryId, sort } = state;
+  const { search, productLine, tags, meats, category, sort } = state;
 
   if (search?.trim()) sp.set("search", search.trim());
   for (const l of productLine) sp.append("productLine", l);
   for (const t of tags) sp.append("tags", t);
   for (const m of meats) sp.append("meats", m);
-  if (categoryId && categoryId !== "all") sp.set("categoryId", categoryId);
+  if (category && category !== "all") sp.set("category", category);
   if (sort && sort !== "az") sp.set("sort", sort);
   return sp;
 }
