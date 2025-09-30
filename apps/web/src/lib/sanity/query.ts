@@ -537,7 +537,7 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     tags,
     meat,
     versions,
-    "categories": array::compact(categories[]->{ _id, title }),
+    "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
@@ -564,7 +564,7 @@ export const getRecipesBySauceIdQuery = defineQuery(`
     tags,
     meat,
     versions,
-    "categories": array::compact(categories[]->{ _id, title }),
+    "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
@@ -592,7 +592,7 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
     tags,
     meat,
     versions,
-    "categories": array::compact(categories[]->{ _id, title }),
+    "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
@@ -606,7 +606,7 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
 `);
 
 export const getAllRecipeCategoriesQuery = defineQuery(`
-  *[_type == "recipeCategory"] | order(title asc){ _id, title }
+  *[_type == "recipeCategory"] | order(title asc){ _id, title, slug }
 `);
 
 export const getRecipeBySlugQuery = defineQuery(`
@@ -623,7 +623,7 @@ export const getRecipeBySlugQuery = defineQuery(`
     tags,
     meat,
     versions,
-    "categories": array::compact(categories[]->{ _id, title }),
+    "categories": array::compact(categories[]->{ _id, title, slug }),
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
       "preview": mainImage.asset->metadata.lqip,

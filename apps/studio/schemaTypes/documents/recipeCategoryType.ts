@@ -16,17 +16,18 @@ export const recipeCategoryType = defineType({
       description:
         "The name of the recipe category (e.g., Appetizer, Main Course, Dessert).",
     }),
-    // You could add a slug field here if these categories will have their own pages/routes
-    // defineField({
-    //   name: 'slug',
-    //   title: 'Slug',
-    //   type: 'slug',
-    //   options: {
-    //     source: 'title',
-    //     maxLength: 96,
-    //   },
-    //   validation: (Rule) => Rule.required(),
-    // }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+      description:
+        "URL-friendly version of the category name for filtering recipes",
+    }),
   ],
   preview: {
     select: {
