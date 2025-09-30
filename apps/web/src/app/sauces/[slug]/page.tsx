@@ -3,18 +3,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
+import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/related-products-section";
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
 import { SauceHeroSection } from "@/components/sauces/sauce-hero-section";
 import { SauceNutritionalInfoSection } from "@/components/sauces/sauce-nutritional-info-section";
-import { SauceRelatedProductsSection } from "@/components/sauces/sauce-related-products-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
-  getProductsBySauceIdQuery,
   getRecipesBySauceIdQuery,
   getSauceBySlugQuery,
 } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
-import type { RecipeListItem, SauceProductListItem } from "@/types";
+import type { RecipeListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchSauce(slug: string) {
@@ -30,23 +29,6 @@ async function fetchSauce(slug: string) {
   );
 
   return result?.data ?? null;
-}
-
-async function fetchRelatedProducts(
-  sauceId: string | undefined,
-): Promise<SauceProductListItem[]> {
-  if (!sauceId) {
-    return [];
-  }
-
-  const [result] = await handleErrors(
-    sanityFetch({
-      query: getProductsBySauceIdQuery,
-      params: { sauceId },
-    }),
-  );
-
-  return (result?.data ?? []) as SauceProductListItem[];
 }
 
 async function fetchRelatedRecipes(
@@ -119,19 +101,14 @@ export default async function SauceDetailPage({
     notFound();
   }
 
-  const relatedProducts = await fetchRelatedProducts(sauce._id);
   const relatedRecipes = await fetchRelatedRecipes(sauce._id);
-  const hasRelatedProducts = relatedProducts.length > 0;
   const hasRelatedRecipes = relatedRecipes.length > 0;
-  // relatedProducts rendered via SauceRelatedProducts
 
   return (
     <main>
       <SauceHeroSection sauce={sauce} />
       <SauceNutritionalInfoSection sauce={sauce} />
-      {hasRelatedProducts ? (
-        <SauceRelatedProductsSection products={relatedProducts} />
-      ) : null}
+      <SauceRelatedProductsSection sauceId={sauce._id} />
       {hasRelatedRecipes ? (
         <RelatedRecipesSection recipes={relatedRecipes} />
       ) : null}
