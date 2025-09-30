@@ -24,7 +24,7 @@ export function BrandTabLabel({ variant }: { variant: VariantKey }) {
             priority={false}
           />
         </span>
-        <span aria-hidden className="text-sm" data-html="c-brand-tab-text">
+        <span className="text-sm" data-html="c-brand-tab-text">
           La Famiglia DelGrosso
         </span>
       </span>
@@ -40,7 +40,7 @@ export function BrandTabLabel({ variant }: { variant: VariantKey }) {
         aria-hidden
         data-html="c-brand-tab-logo"
       />
-      <span aria-hidden className="text-sm" data-html="c-brand-tab-text">
+      <span className="text-sm" data-html="c-brand-tab-text">
         DelGrosso Original
       </span>
     </span>
