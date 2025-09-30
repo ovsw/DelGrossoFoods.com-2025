@@ -123,8 +123,7 @@ export function RecipeRelatedSaucesSection({
                       width={800}
                       height={968}
                       alt={stegaClean(
-                        sauces[0]!.mainImage.alt ||
-                          `${stegaClean(sauces[0]!.name)} sauce`,
+                        sauces[0]!.mainImage.alt || `${sauces[0]!.name} sauce`,
                       )}
                       className="absolute inset-0 h-full w-full object-contain"
                       sizes="(max-width: 640px) 80vw, (max-width: 1024px) 60vw, 40vw"
