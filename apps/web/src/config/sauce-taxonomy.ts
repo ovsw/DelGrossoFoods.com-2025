@@ -24,6 +24,7 @@ export interface BadgeConfig {
 interface LineConfigItem {
   readonly label: LineLabel;
   readonly display: string;
+  readonly displayName?: string;
 }
 
 interface TypeConfigItem {
@@ -50,6 +51,7 @@ export const lineMap: Record<LineSlug, LineConfigItem> = {
   premium: {
     label: "Ultra-Premium",
     display: "Premium",
+    displayName: "La Famiglia DelGrosso",
   },
 } as const;
 
@@ -189,6 +191,26 @@ export function getLineBadge(label: unknown): BadgeConfig {
     text: cfg.display,
     variant: slug ?? "neutral",
   };
+}
+
+/**
+ * Get the display name for a product line.
+ *
+ * Returns the enhanced display name if available (e.g., for premium line cards),
+ * otherwise falls back to the standard badge text.
+ *
+ * Examples:
+ * - getLineDisplayName("Ultra-Premium") -> "La Famiglia DelGrosso"
+ * - getLineDisplayName("Organic") -> "Organic"
+ * - getLineDisplayName("Unknown Line") -> "Unknown Line"
+ */
+export function getLineDisplayName(label: unknown): string {
+  const slug = toLineSlug(label);
+  const cfg = slug ? lineMap[slug] : undefined;
+  if (!cfg) {
+    return typeof label === "string" && label ? label : "Unknown";
+  }
+  return cfg.displayName ?? cfg.display;
 }
 
 /**
