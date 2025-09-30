@@ -642,14 +642,20 @@ export const getRecipeByIdQuery = defineQuery(`
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     },
     lfdSauces[]->{
       _id,
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     }
   }
 `);
@@ -687,14 +693,20 @@ export const getRecipeBySlugQuery = defineQuery(`
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     },
     lfdSauces[]->{
       _id,
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     }
   }
 `);

@@ -23,8 +23,10 @@ export async function RecipeRelatedSaucesSection({
   if (!recipe) return null;
 
   // Extract sauce IDs from both DGF and LFD sauces arrays
-  const dgfSauceIds = recipe.dgfSauces?.map((sauce) => sauce._id) ?? [];
-  const lfdSauceIds = recipe.lfdSauces?.map((sauce) => sauce._id) ?? [];
+  const dgfSauceIds =
+    recipe.dgfSauces?.map((sauce: { _id: string }) => sauce._id) ?? [];
+  const lfdSauceIds =
+    recipe.lfdSauces?.map((sauce: { _id: string }) => sauce._id) ?? [];
   const sauceIds = [...dgfSauceIds, ...lfdSauceIds];
 
   // Return early if no related sauces
