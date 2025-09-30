@@ -26,9 +26,11 @@ export function InfoRow({
   className?: string;
 }) {
   return (
-    <div className={className} data-html="c-info-row">
+    <>
       <InfoLabel asChild>
-        <dt data-html="c-info-row-title">{title}</dt>
+        <dt className={className} data-html="c-info-row-title">
+          {title}
+        </dt>
       </InfoLabel>
       <dd
         className={cn(valueClassName ?? "mt-2 flex flex-wrap gap-2")}
@@ -36,7 +38,7 @@ export function InfoRow({
       >
         {children}
       </dd>
-    </div>
+    </>
   );
 }
 
