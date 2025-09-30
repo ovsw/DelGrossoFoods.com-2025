@@ -6,6 +6,11 @@ import { announce } from "@/lib/a11y/announce";
 type VariantKey = "original" | "premium";
 
 export function useVariantState(available: VariantKey[]) {
+  // Guard against empty available array to prevent crashes
+  if (available.length === 0) {
+    throw new Error("available must contain at least one VariantKey");
+  }
+
   const router = useRouter();
   const pathname = usePathname();
   const search = useSearchParams();
@@ -19,7 +24,7 @@ export function useVariantState(available: VariantKey[]) {
   }, [rawParam]);
   const defaultValue = React.useMemo<VariantKey>(() => {
     if (param && available.includes(param)) return param;
-    return available[0]!;
+    return available[0]!; // Safe after length check above
   }, [param, available]);
   const [value, setValue] = React.useState<VariantKey>(defaultValue);
   React.useEffect(() => {
