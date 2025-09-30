@@ -1,19 +1,15 @@
 "use client";
 import { ListCard } from "@/components/list/list-card";
-import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
+import { getLineDisplayName, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
 import type { SauceListItem } from "@/types";
 
 export function SauceCard({ item }: { item: SauceListItem }) {
   const { name, slug, mainImage, line, category, _id, _type } = item;
-  const lineBadge = getLineBadge(line);
   const typeBadge = getTypeBadge(category);
 
-  // Enhanced styling for more prominent display
-  const isPremiumLine = line === "Ultra-Premium";
-  const lineDisplayName = isPremiumLine
-    ? "La Famiglia DelGrosso"
-    : lineBadge.text;
+  // Get the display name from configuration (supports enhanced names like "La Famiglia DelGrosso")
+  const lineDisplayName = getLineDisplayName(line);
 
   return (
     <ListCard
