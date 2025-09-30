@@ -40,8 +40,8 @@ type FiltersFormProps = {
   toggleTag: (t: RecipeTagSlug, checked: boolean) => void;
   meats: MeatSlug[];
   toggleMeat: (m: MeatSlug) => void;
-  categoryId: string | "all";
-  setCategoryId: (id: string | "all") => void;
+  categorySlug: string | "all";
+  setCategorySlug: (slug: string | "all") => void;
   clearProductLine: () => void;
   clearTags: () => void;
   clearMeats: () => void;
@@ -59,8 +59,8 @@ function FiltersForm({
   toggleTag,
   meats,
   toggleMeat,
-  categoryId,
-  setCategoryId,
+  categorySlug,
+  setCategorySlug,
   clearProductLine,
   clearTags,
   clearMeats,
@@ -168,7 +168,7 @@ function FiltersForm({
 
       <FilterGroupSection
         title="Category"
-        showClear={categoryId !== "all"}
+        showClear={categorySlug !== "all"}
         onClear={clearCategory}
         contentClassName=""
       >
@@ -177,13 +177,13 @@ function FiltersForm({
             <select
               id={`${idPrefix}-category-select`}
               className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.currentTarget.value || "all")}
+              value={categorySlug}
+              onChange={(e) => setCategorySlug(e.currentTarget.value || "all")}
               aria-label="Category"
             >
               <option value="all">Select</option>
               {categoryOptions.map((c) => (
-                <option key={c._id} value={c._id}>
+                <option key={c._id} value={c.slug?.current || c._id}>
                   {c.title}
                 </option>
               ))}
@@ -213,8 +213,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
   ]);
   const [tags, setTags] = useState<RecipeTagSlug[]>([...initialState.tags]);
   const [meats, setMeats] = useState<MeatSlug[]>([...initialState.meats]);
-  const [categoryId, setCategoryId] = useState<string | "all">(
-    initialState.categoryId,
+  const [categorySlug, setCategorySlug] = useState<string | "all">(
+    initialState.categorySlug,
   );
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
@@ -237,7 +237,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         setProductLine([...next.productLine]);
         setTags([...next.tags]);
         setMeats([...next.meats]);
-        setCategoryId(next.categoryId);
+        setCategorySlug(next.categorySlug);
         setSort(next.sort);
       } finally {
         setTimeout(() => {
@@ -256,10 +256,10 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       productLine,
       tags,
       meats,
-      categoryId,
+      categorySlug,
       sort,
     }),
-    [debouncedSearch, productLine, tags, meats, categoryId, sort],
+    [debouncedSearch, productLine, tags, meats, categorySlug, sort],
   );
 
   useUrlStateSync({
@@ -286,7 +286,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     productLine.length > 0 ||
     tags.length > 0 ||
     meats.length > 0 ||
-    categoryId !== "all";
+    categorySlug !== "all";
 
   // Key to trigger shared layout scroll behavior
   const resultsAnchorId = "recipes-results-top";
@@ -295,7 +295,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     productLine,
     tags,
     meats,
-    categoryId,
+    categorySlug,
     sort,
   });
 
@@ -304,13 +304,13 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     setProductLine([]);
     setTags([]);
     setMeats([]);
-    setCategoryId("all");
+    setCategorySlug("all");
     setSort("az");
   }
   const clearProductLine = () => setProductLine([]);
   const clearTags = () => setTags([]);
   const clearMeats = () => setMeats([]);
-  const clearCategory = () => setCategoryId("all");
+  const clearCategory = () => setCategorySlug("all");
   const toggleLine = (l: LineSlug, checked: boolean) =>
     setProductLine((prev) => {
       if (checked) {
@@ -343,8 +343,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           toggleTag={toggleTag}
           meats={meats}
           toggleMeat={toggleMeat}
-          categoryId={categoryId}
-          setCategoryId={setCategoryId}
+          categorySlug={categorySlug}
+          setCategorySlug={setCategorySlug}
           clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}

@@ -12,7 +12,7 @@ export interface RecipeQueryState {
   readonly productLine: LineSlug[];
   readonly tags: RecipeTagSlug[];
   readonly meats: MeatSlug[];
-  readonly categoryId: string | "all";
+  readonly categorySlug: string | "all";
   readonly sort: SortOrder;
 }
 
@@ -23,7 +23,7 @@ const DEFAULT_STATE: RecipeQueryState = {
   productLine: [],
   tags: [],
   meats: [],
-  categoryId: "all",
+  categorySlug: "all",
   sort: "az",
 } as const;
 
@@ -52,26 +52,27 @@ export function parseSearchParams(
     (allMeatSlugs as readonly string[]).includes(v),
   ) as MeatSlug[];
 
-  const categoryId =
-    typeof params.categoryId === "string" ? params.categoryId : "all";
+  const categorySlug =
+    typeof params.categorySlug === "string" ? params.categorySlug : "all";
 
   const sortRaw = typeof params.sort === "string" ? params.sort : undefined;
   const sort: SortOrder = sortRaw === "za" ? "za" : "az";
 
-  return { search, productLine, tags, meats, categoryId, sort };
+  return { search, productLine, tags, meats, categorySlug, sort };
 }
 
 export function serializeStateToParams(
   state: RecipeQueryState,
 ): URLSearchParams {
   const sp = new URLSearchParams();
-  const { search, productLine, tags, meats, categoryId, sort } = state;
+  const { search, productLine, tags, meats, categorySlug, sort } = state;
 
   if (search?.trim()) sp.set("search", search.trim());
   for (const l of productLine) sp.append("productLine", l);
   for (const t of tags) sp.append("tags", t);
   for (const m of meats) sp.append("meats", m);
-  if (categoryId && categoryId !== "all") sp.set("categoryId", categoryId);
+  if (categorySlug && categorySlug !== "all")
+    sp.set("categorySlug", categorySlug);
   if (sort && sort !== "az") sp.set("sort", sort);
   return sp;
 }
