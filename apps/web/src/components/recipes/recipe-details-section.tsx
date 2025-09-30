@@ -49,6 +49,11 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
 
   const [variant, setVariant] = useVariantState(available);
 
+  // If neither variant has any content, don't render the section
+  if (!hasOriginal && !hasPremium) {
+    return null;
+  }
+
   const { meatBadges, tagBadges, categoryBadges } = RecipeBadges({ recipe });
 
   const originalSauces = mapSaucesToDisplay(recipe.dgfSauces);
