@@ -4,7 +4,7 @@ import * as React from "react";
 
 // Badge style variants: background, foreground, and border colors via CVA
 export const badgeVariants = cva(
-  `inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-sm border border-[#c4c4c4] px-2 py-1 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&>svg]:pointer-events-none [&>svg]:size-3`,
+  `inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-sm border border-[#c4c4c4] px-2 py-1 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&>svg]:pointer-events-none [&>svg]:size-3 [&:is(a)]:cursor-pointer`,
   {
     variants: {
       variant: {
@@ -34,7 +34,7 @@ export const badgeVariants = cva(
         meat: "bg-th-dark-900 text-th-light-100 [a&]:hover:brightness-125",
         // Generic outline pill for unselected filters
         outline:
-          "bg-transparent text-th-dark-900 border-th-dark-900 [a&]:hover:bg-transparent",
+          "bg-transparent text-th-dark-900 border-th-dark-900 [a&]:hover:bg-th-dark-900/5 [a&]:hover:border-th-dark-900/80",
         // Accent pill (used e.g. for mobile active filter chips)
         accent:
           "bg-brand-red text-brand-red-text border-transparent [a&]:hover:brightness-95 text-md px-2 py-1 rounded-md min-h-8",

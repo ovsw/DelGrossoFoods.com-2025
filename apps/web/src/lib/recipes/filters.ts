@@ -13,7 +13,11 @@ import {
 } from "@/lib/list/shared-filters";
 import type { RecipeListItem, SortOrder } from "@/types";
 
-import type { RecipeQueryState } from "./url";
+import {
+  generateSlugFromTitle,
+  getCategorySlug,
+  type RecipeQueryState,
+} from "./url";
 
 const fuseOptions: IFuseOptions<RecipeListItem> = {
   keys: ["name"],
@@ -82,11 +86,15 @@ export function filterByMeats(
 
 export function filterByCategory(
   items: RecipeListItem[],
-  categoryId: string | "all",
+  categorySlug: string | "all",
 ): RecipeListItem[] {
-  if (!categoryId || categoryId === "all") return items;
+  if (!categorySlug || categorySlug === "all") return items;
   return items.filter((it) =>
-    (it.categories ?? []).some((c) => c?._id === categoryId),
+    (it.categories ?? []).some(
+      (c) =>
+        getCategorySlug(c) === categorySlug ||
+        generateSlugFromTitle(c.title) === categorySlug,
+    ),
   );
 }
 
@@ -98,6 +106,6 @@ export function applyFiltersAndSort(
   const afterLine = filterByProductLine(afterSearch, state.productLine);
   const afterTags = filterByTags(afterLine, state.tags);
   const afterMeats = filterByMeats(afterTags, state.meats);
-  const afterCategory = filterByCategory(afterMeats, state.categoryId);
+  const afterCategory = filterByCategory(afterMeats, state.category);
   return sortByName(afterCategory, state.sort);
 }
