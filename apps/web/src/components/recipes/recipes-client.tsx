@@ -24,6 +24,7 @@ import { useFirstPaint } from "@/hooks/use-first-paint";
 import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
+  getCategorySlug,
   parseSearchParams,
   type RecipeQueryState,
   serializeStateToParams,
@@ -183,7 +184,7 @@ function FiltersForm({
             >
               <option value="all">Select</option>
               {categoryOptions.map((c) => (
-                <option key={c._id} value={c.slug?.current || c._id}>
+                <option key={c._id} value={getCategorySlug(c)}>
                   {c.title}
                 </option>
               ))}

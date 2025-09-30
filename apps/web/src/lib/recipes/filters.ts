@@ -13,7 +13,11 @@ import {
 } from "@/lib/list/shared-filters";
 import type { RecipeListItem, SortOrder } from "@/types";
 
-import type { RecipeQueryState } from "./url";
+import {
+  generateSlugFromTitle,
+  getCategorySlug,
+  type RecipeQueryState,
+} from "./url";
 
 const fuseOptions: IFuseOptions<RecipeListItem> = {
   keys: ["name"],
@@ -86,7 +90,11 @@ export function filterByCategory(
 ): RecipeListItem[] {
   if (!categorySlug || categorySlug === "all") return items;
   return items.filter((it) =>
-    (it.categories ?? []).some((c) => c?.slug?.current === categorySlug),
+    (it.categories ?? []).some(
+      (c) =>
+        getCategorySlug(c) === categorySlug ||
+        generateSlugFromTitle(c.title) === categorySlug,
+    ),
   );
 }
 
