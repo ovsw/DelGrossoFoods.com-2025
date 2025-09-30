@@ -19,8 +19,8 @@ export type SauceDisplayItem = {
 };
 
 type SanityImageProps = {
-  id: string;
-  preview: null;
+  id: string | null;
+  preview: string | null;
   hotspot: { x: number; y: number } | null;
   crop: {
     top: number;
@@ -34,33 +34,17 @@ function toSanityImageData(
   image: RecipeSauce["mainImage"],
 ): SanityImageProps | null {
   if (!image || typeof image !== "object") return null;
-  const assetRef = image.asset?._ref;
+
+  // Handle new imageFields structure
+  const assetRef = image.id;
   if (!assetRef || typeof assetRef !== "string") return null;
 
-  const hotspot =
-    image.hotspot &&
-    typeof image.hotspot.x === "number" &&
-    typeof image.hotspot.y === "number"
-      ? { x: image.hotspot.x, y: image.hotspot.y }
-      : null;
-
-  const crop =
-    image.crop &&
-    typeof image.crop.top === "number" &&
-    typeof image.crop.bottom === "number" &&
-    typeof image.crop.left === "number" &&
-    typeof image.crop.right === "number"
-      ? {
-          top: image.crop.top,
-          bottom: image.crop.bottom,
-          left: image.crop.left,
-          right: image.crop.right,
-        }
-      : null;
+  const hotspot = image.hotspot || null;
+  const crop = image.crop || null;
 
   return {
     id: assetRef,
-    preview: null,
+    preview: image.preview || null,
     hotspot,
     crop,
   };
