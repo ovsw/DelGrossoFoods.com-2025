@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
+import { SauceHeroSection } from "@/components/page-sections/sauce-page/hero-section";
 import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/related-products-section";
 import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
-import { SauceHeroSection } from "@/components/sauces/sauce-hero-section";
 import { SauceNutritionalInfoSection } from "@/components/sauces/sauce-nutritional-info-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
