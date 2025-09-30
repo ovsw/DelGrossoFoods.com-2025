@@ -26,7 +26,7 @@ export function InfoRow({
   className?: string;
 }) {
   return (
-    <>
+    <div>
       <InfoLabel asChild>
         <dt className={className} data-html="c-info-row-title">
           {title}
@@ -38,7 +38,7 @@ export function InfoRow({
       >
         {children}
       </dd>
-    </>
+    </div>
   );
 }
 
