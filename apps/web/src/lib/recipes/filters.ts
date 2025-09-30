@@ -106,6 +106,6 @@ export function applyFiltersAndSort(
   const afterLine = filterByProductLine(afterSearch, state.productLine);
   const afterTags = filterByTags(afterLine, state.tags);
   const afterMeats = filterByMeats(afterTags, state.meats);
-  const afterCategory = filterByCategory(afterMeats, state.categorySlug);
+  const afterCategory = filterByCategory(afterMeats, state.category);
   return sortByName(afterCategory, state.sort);
 }

@@ -12,7 +12,7 @@ export function BrandTabLabel({ variant }: { variant: VariantKey }) {
         data-html="c-brand-tab-label"
       >
         <span
-          className="relative block h-6 w-[112px] overflow-hidden"
+          className="relative block h-6 w-full overflow-hidden"
           data-html="c-brand-tab-logo"
         >
           <Image
