@@ -165,10 +165,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
               className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2"
               data-html="c-recipe-info-scroll"
             >
-              <h3
-                className="text-lg font-semibold"
-                data-html="c-recipe-info-heading"
-              >
+              <h3 className="sr-only" data-html="c-recipe-info-heading">
                 Recipe Info
               </h3>
               <dl
@@ -198,7 +195,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                     <InfoLabel asChild>
                       <dt>Sauces</dt>
                     </InfoLabel>
-                    <dd className="mt-2 space-y-6">
+                    <dd className="mt-2 space-y-3">
                       <SauceList
                         title="DelGrosso Original Sauces:"
                         items={originalSauces}
