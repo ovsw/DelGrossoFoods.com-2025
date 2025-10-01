@@ -1,8 +1,9 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 
-import { RichText } from "../../elements/rich-text";
-import { SanityButtons } from "../../elements/sanity-buttons";
+import { RichText } from "@/components/elements/rich-text";
+import { SanityButtons } from "@/components/elements/sanity-buttons";
+
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 

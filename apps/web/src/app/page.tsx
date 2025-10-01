@@ -1,8 +1,8 @@
-// import { PageBuilder } from "@/components/pagebuilder";
+// import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import type { Metadata } from "next";
 
 import { HomeSlideshow } from "@/components/HomeSlideshow";
-import { PageBuilder } from "@/components/pagebuilder";
+import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHomePageData } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";

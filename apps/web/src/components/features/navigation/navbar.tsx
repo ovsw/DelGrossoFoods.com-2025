@@ -1,3 +1,4 @@
+import LogoSvg from "@/components/elements/logo";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryGlobalSeoSettings, queryNavbarData } from "@/lib/sanity/query";
 import type {
@@ -5,7 +6,6 @@ import type {
   QueryNavbarDataResult,
 } from "@/lib/sanity/sanity.types";
 
-import LogoSvg from "./elements/logo";
 import { NavbarClient, NavbarSkeletonResponsive } from "./navbar-client";
 
 export async function NavbarServer() {

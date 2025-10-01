@@ -9,7 +9,8 @@ import { Section } from "@workspace/ui/components/section";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-import { RichText } from "../../elements/rich-text";
+import { RichText } from "@/components/elements/rich-text";
+
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 

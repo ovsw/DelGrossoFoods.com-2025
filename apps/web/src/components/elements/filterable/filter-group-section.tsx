@@ -2,7 +2,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import type { ReactNode } from "react";
 
-import { ClearSection } from "@/components/filterable/clear-section";
+import { ClearSection } from "./clear-section";
 
 type Props = {
   title: string;

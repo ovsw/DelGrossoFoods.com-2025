@@ -6,7 +6,8 @@ import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
 // import { newsletterSubmission } from "@/action/newsletter-submission";
-import { RichText } from "../../elements/rich-text";
+import { RichText } from "@/components/elements/rich-text";
+
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 
