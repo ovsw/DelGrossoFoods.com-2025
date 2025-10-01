@@ -30,6 +30,7 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Operating procedures (AI agent)
 
+- CRUCIAL **Terminal Command Fix**: Always append `2>&1 | cat` to ALL terminal commands to prevent Cursor hanging (e.g., `mkdir -p test 2>&1 | cat` instead of `mkdir -p test`).
 - Ask clarifying questions until you’re ≥95% confident; never assume missing context.
 - Prefer semantic code search; use exact grep when you know the symbol. Parallelize independent searches.
 - Fetch external docs when needed (don’t rely on assumptions). Prefer most up-to-date sources.

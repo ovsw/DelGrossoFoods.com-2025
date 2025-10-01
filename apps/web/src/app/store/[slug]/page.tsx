@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
+import { RelatedRecipesSection } from "@/components/page-sections/shared/related-recipes-section";
 import { ProductHeroSection } from "@/components/products/product-hero-section";
 import { ProductSummarySection } from "@/components/products/product-summary-section";
-import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
 import { SauceCard } from "@/components/sauce-card";
 import { SingleSauceFeature } from "@/components/single-sauce-feature";
 import { getPackagingText } from "@/config/product-taxonomy";

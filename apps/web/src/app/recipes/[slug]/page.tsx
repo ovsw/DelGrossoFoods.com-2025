@@ -6,7 +6,7 @@ import { stegaClean } from "next-sanity";
 import { RecipeDetailsSection } from "@/components/page-sections/recipe-page/details-section";
 import { RecipeHeroSection } from "@/components/page-sections/recipe-page/hero-section";
 import { RecipeRelatedSaucesSection } from "@/components/page-sections/recipe-page/related-sauces-section";
-import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
+import { RelatedRecipesSection } from "@/components/page-sections/shared/related-recipes-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getRecipeBySlugQuery,

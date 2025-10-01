@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
 import { SauceHeroSection } from "@/components/page-sections/sauce-page/hero-section";
+import { SauceNutritionalInfoSection } from "@/components/page-sections/sauce-page/nutritional-info-section";
 import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/related-products-section";
-import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
-import { SauceNutritionalInfoSection } from "@/components/sauces/sauce-nutritional-info-section";
+import { RelatedRecipesSection } from "@/components/page-sections/shared/related-recipes-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getRecipesBySauceIdQuery,
