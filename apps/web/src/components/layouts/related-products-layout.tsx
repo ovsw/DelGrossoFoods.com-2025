@@ -1,3 +1,4 @@
+import { Button } from "@workspace/ui/components/button";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
@@ -45,12 +46,9 @@ export function RelatedProductsLayout({
               </p>
             ) : null}
             {primaryCta ? (
-              <Link
-                href={primaryCta.href}
-                className="mt-6 inline-flex items-center rounded-md bg-brand-green px-4 py-2 text-brand-green-text hover:opacity-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                {primaryCta.text}
-              </Link>
+              <Button asChild className="mt-6">
+                <Link href={primaryCta.href}>{primaryCta.text}</Link>
+              </Button>
             ) : null}
           </div>
         )}

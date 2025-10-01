@@ -8,12 +8,9 @@ import { RecipeHeroSection } from "@/components/page-sections/recipe-page/recipe
 import { RecipeRelatedRecipesSection } from "@/components/page-sections/recipe-page/recipe-related-recipes-section";
 import { RecipeRelatedSaucesSection } from "@/components/page-sections/recipe-page/recipe-related-sauces-section";
 import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getRecipeBySlugQuery,
-  getRecipesBySauceIdsQuery,
-} from "@/lib/sanity/query";
+import { getRecipeBySlugQuery } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
-import type { RecipeDetailData, RecipeListItem } from "@/types";
+import type { RecipeDetailData } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchRecipe(slug: string): Promise<RecipeDetailData | null> {
@@ -93,13 +90,6 @@ export default async function RecipeDetailPage({
   if (!recipe) {
     notFound();
   }
-
-  // Get all sauce IDs from both DGF and LFD versions
-  const dgfSauceIds =
-    recipe.dgfSauces?.map((sauce) => sauce._id).filter(Boolean) ?? [];
-  const lfdSauceIds =
-    recipe.lfdSauces?.map((sauce) => sauce._id).filter(Boolean) ?? [];
-  const allSauceIds = Array.from(new Set([...dgfSauceIds, ...lfdSauceIds]));
 
   // Related recipes are fetched within the page section
 

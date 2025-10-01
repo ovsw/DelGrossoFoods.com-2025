@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getRecipesBySauceIdQuery } from "@/lib/sanity/query";
@@ -10,7 +12,7 @@ interface SauceRelatedRecipesSectionProps {
 
 export async function SauceRelatedRecipesSection({
   sauceId,
-}: SauceRelatedRecipesSectionProps) {
+}: SauceRelatedRecipesSectionProps): Promise<JSX.Element | null> {
   if (!sauceId) return null;
 
   const [result] = await handleErrors(
