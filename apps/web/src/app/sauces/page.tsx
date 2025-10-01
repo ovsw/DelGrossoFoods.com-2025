@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SaucesClient } from "@/components/sauces/sauces-client";
+import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getAllSaucesForIndexQuery,
@@ -86,9 +86,7 @@ export default async function SaucesIndexPage({
           </p>
         </div>
 
-        <div className="mt-16">
-          <SaucesClient items={items} initialState={initialState} />
-        </div>
+        <SaucesCatalogSection items={items} initialState={initialState} />
       </div>
     </main>
   );

@@ -58,3 +58,7 @@ public/_piny
 .codex/history.jsonl
 
 engine.bin
+
+
+.cursor/rules/kluster-code-verify.mdc
+.kluster
