@@ -20,69 +20,78 @@ export async function ProductRelatedRecipesSection({
   );
   if (ids.length === 0) return null;
 
-  const [result, error] = await handleErrors(
+  const [result] = await handleErrors<{
+    data: Array<{
+      _id: string;
+      name: string;
+      slug: string;
+      tags: string[] | null;
+      meat: string[] | null;
+      versions: string[];
+      categories: Array<{
+        _id: string;
+        title: string;
+        slug: { current: string };
+      }> | null;
+      descriptionPlain: "";
+      mainImage: {
+        id: string;
+        preview: string | null;
+        hotspot: { x: number; y: number } | null;
+        crop: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+        } | null;
+      } | null;
+      sauceLines: string[] | null;
+    }>;
+  }>(
     sanityFetch({
       query: getRecipesBySauceIdsQuery,
       params: { sauceIds: ids },
     }),
   );
 
-  if (error) {
-    console.error(
-      "ProductRelatedRecipesSection: Failed to fetch recipes",
-      error,
-    );
-    return null;
-  }
+  if (!result?.data) return null;
 
-  // Runtime validation for the fetched payload
-  const rawData = result?.data ?? [];
-  if (!Array.isArray(rawData)) {
-    console.error(
-      "ProductRelatedRecipesSection: Expected array but got",
-      typeof rawData,
-    );
-    return null;
-  }
+  const items = result.data.filter((item): item is RecipeListItem => {
+    // Validate required properties
+    if (!item || typeof item !== "object") {
+      console.error(
+        "ProductRelatedRecipesSection: Invalid item - not an object",
+        item,
+      );
+      return false;
+    }
 
-  const items: RecipeListItem[] = rawData.filter(
-    (item): item is RecipeListItem => {
-      // Validate required RecipeListItem properties
-      if (!item || typeof item !== "object") {
-        console.error(
-          "ProductRelatedRecipesSection: Invalid item - not an object",
-          item,
-        );
-        return false;
-      }
+    if (typeof item._id !== "string" || item._id.length === 0) {
+      console.error(
+        "ProductRelatedRecipesSection: Invalid item - missing or invalid _id",
+        item._id,
+      );
+      return false;
+    }
 
-      if (typeof item._id !== "string" || item._id.length === 0) {
-        console.error(
-          "ProductRelatedRecipesSection: Invalid item - missing or invalid _id",
-          item._id,
-        );
-        return false;
-      }
+    if (typeof item.name !== "string" || item.name.length === 0) {
+      console.error(
+        "ProductRelatedRecipesSection: Invalid item - missing or invalid name",
+        item.name,
+      );
+      return false;
+    }
 
-      if (typeof item.name !== "string" || item.name.length === 0) {
-        console.error(
-          "ProductRelatedRecipesSection: Invalid item - missing or invalid name",
-          item.name,
-        );
-        return false;
-      }
+    if (typeof item.slug !== "string" || item.slug.length === 0) {
+      console.error(
+        "ProductRelatedRecipesSection: Invalid item - missing or invalid slug",
+        item.slug,
+      );
+      return false;
+    }
 
-      if (typeof item.slug !== "string" || item.slug.length === 0) {
-        console.error(
-          "ProductRelatedRecipesSection: Invalid item - missing or invalid slug",
-          item.slug,
-        );
-        return false;
-      }
-
-      return true;
-    },
-  );
+    return true;
+  });
 
   if (items.length === 0) return null;
 
