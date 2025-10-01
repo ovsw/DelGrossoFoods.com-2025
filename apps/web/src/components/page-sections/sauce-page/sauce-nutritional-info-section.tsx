@@ -8,7 +8,7 @@ import { stegaClean } from "next-sanity";
 import {
   type NutritionFactRow,
   NutritionFactsPanel,
-} from "@/components/sauces/nutrition-facts-panel";
+} from "@/components/elements/nutrition-facts-panel";
 import { urlFor } from "@/lib/sanity/client";
 import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
 

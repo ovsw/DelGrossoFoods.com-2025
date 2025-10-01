@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SaucesClient } from "@/components/sauces/sauces-client";
+import { SaucesClient } from "@/components/features/catalog/sauces-client";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getAllSaucesForIndexQuery,

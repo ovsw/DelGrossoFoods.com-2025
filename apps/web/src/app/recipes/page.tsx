@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { RecipesClient } from "@/components/recipes/recipes-client";
+import { RecipesClient } from "@/components/features/catalog/recipes-client";
 import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {

@@ -6,9 +6,9 @@ import { stegaClean } from "next-sanity";
 
 import { SauceCard } from "@/components/elements/sauce-card";
 import { SingleSauceFeature } from "@/components/features/single-sauce-feature";
-import { RelatedRecipesSection } from "@/components/page-sections/shared/related-recipes-section";
-import { ProductHeroSection } from "@/components/products/product-hero-section";
-import { ProductSummarySection } from "@/components/products/product-summary-section";
+import { ProductHeroSection } from "@/components/page-sections/product-page/product-hero-section";
+import { ProductRelatedRecipesSection } from "@/components/page-sections/product-page/product-related-recipes-section";
+import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -213,8 +213,7 @@ export default async function ProductDetailPage({
         .map((id) => id.replace(/^drafts\./, "")),
     ),
   );
-  const relatedRecipes = await fetchRelatedRecipesBySauces(sauceIds);
-  const hasRelatedRecipes = relatedRecipes.length > 0;
+  // Related recipes are fetched within the page section
 
   return (
     <main>
@@ -257,9 +256,7 @@ export default async function ProductDetailPage({
         </Section>
       ) : null}
 
-      {hasRelatedRecipes ? (
-        <RelatedRecipesSection recipes={relatedRecipes} />
-      ) : null}
+      <ProductRelatedRecipesSection sauceIds={sauceIds} />
     </main>
   );
 }

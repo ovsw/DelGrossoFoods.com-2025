@@ -6,9 +6,9 @@ import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
+import { ProductCard } from "@/components/elements/product-card";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { SauceCard } from "@/components/elements/sauce-card";
-import { ProductCard } from "@/components/products/product-card";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
 import type {
