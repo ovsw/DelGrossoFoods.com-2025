@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ProductsClient } from "@/components/features/catalog/products-client";
+import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -84,9 +84,7 @@ export default async function ProductsIndexPage({
             {intro}
           </p>
         </div>
-        <div className="mt-16">
-          <ProductsClient items={items} initialState={initialState} />
-        </div>
+        <ProductsCatalogSection items={items} initialState={initialState} />
       </div>
     </main>
   );

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { RecipesClient } from "@/components/features/catalog/recipes-client";
+import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
 import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -95,13 +95,11 @@ export default async function RecipesIndexPage({
             {intro}
           </p>
         </div>
-        <div className="mt-16">
-          <RecipesClient
-            items={items}
-            initialState={initialState}
-            categories={categories}
-          />
-        </div>
+        <RecipesCatalogSection
+          items={items}
+          initialState={initialState}
+          categories={categories}
+        />
       </div>
     </main>
   );
