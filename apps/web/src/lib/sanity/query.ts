@@ -609,6 +609,57 @@ export const getAllRecipeCategoriesQuery = defineQuery(`
   *[_type == "recipeCategory"] | order(title asc){ _id, title, slug }
 `);
 
+export const getRecipeByIdQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && _id == $id
+    && !(_id in path('drafts.**'))
+  ][0]{
+    _id,
+    _type,
+    name,
+    "slug": slug.current,
+    serves,
+    tags,
+    meat,
+    versions,
+    "categories": array::compact(categories[]->{ _id, title, slug }),
+    "mainImage": {
+      "id": coalesce(mainImage.asset._ref, ""),
+      "preview": mainImage.asset->metadata.lqip,
+      "hotspot": mainImage.hotspot{ x, y },
+      "crop": mainImage.crop{ top, bottom, left, right },
+      "alt": mainImage.alt
+    },
+    dgfIngredients,
+    dgfDirections,
+    dgfNotes,
+    lfdIngredients,
+    lfdDirections,
+    lfdNotes,
+    dgfSauces[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      line,
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
+    },
+    lfdSauces[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      line,
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
+    }
+  }
+`);
+
 export const getRecipeBySlugQuery = defineQuery(`
   *[
     _type == "recipe"
@@ -642,14 +693,20 @@ export const getRecipeBySlugQuery = defineQuery(`
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     },
     lfdSauces[]->{
       _id,
       name,
       "slug": slug.current,
       line,
-      mainImage
+      "mainImage": mainImage{
+        ${imageFields},
+        "alt": coalesce(alt, "")
+      }
     }
   }
 `);

@@ -4,21 +4,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
-import { ProductHeroSection } from "@/components/products/product-hero-section";
-import { ProductSummarySection } from "@/components/products/product-summary-section";
-import { RelatedRecipesSection } from "@/components/recipes/related-recipes-section";
-import { SauceCard } from "@/components/sauce-card";
-import { SingleSauceFeature } from "@/components/single-sauce-feature";
+import { SauceCard } from "@/components/elements/sauce-card";
+import { SingleSauceFeature } from "@/components/features/single-sauce-feature";
+import { ProductHeroSection } from "@/components/page-sections/product-page/product-hero-section";
+import { ProductRelatedRecipesSection } from "@/components/page-sections/product-page/product-related-recipes-section";
+import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getProductBySlugQuery,
-  getRecipesBySauceIdQuery,
-  getRecipesBySauceIdsQuery,
-} from "@/lib/sanity/query";
+import { getProductBySlugQuery } from "@/lib/sanity/query";
 import type { GetProductBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
-import type { ProductDetailData, RecipeListItem, SauceListItem } from "@/types";
+import type { ProductDetailData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 const shippingCategoryCopy: Record<
@@ -97,36 +93,6 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
     return null;
   }
   return product;
-}
-
-async function fetchRelatedRecipesBySauces(
-  sauceIds: readonly string[] | undefined,
-): Promise<RecipeListItem[]> {
-  const ids = (sauceIds ?? []).filter(
-    (id): id is string => typeof id === "string" && id.length > 0,
-  );
-  if (ids.length === 0) {
-    return [];
-  }
-
-  // Fast path: single-id query is well-tested on sauce pages
-  if (ids.length === 1) {
-    const [single] = await handleErrors(
-      sanityFetch({
-        query: getRecipesBySauceIdQuery,
-        params: { sauceId: ids[0] },
-      }),
-    );
-    return (single?.data ?? []) as RecipeListItem[];
-  }
-
-  const [multi] = await handleErrors(
-    sanityFetch({
-      query: getRecipesBySauceIdsQuery,
-      params: { sauceIds: ids },
-    }),
-  );
-  return (multi?.data ?? []) as RecipeListItem[];
 }
 
 export async function generateMetadata({
@@ -213,8 +179,7 @@ export default async function ProductDetailPage({
         .map((id) => id.replace(/^drafts\./, "")),
     ),
   );
-  const relatedRecipes = await fetchRelatedRecipesBySauces(sauceIds);
-  const hasRelatedRecipes = relatedRecipes.length > 0;
+  // Related recipes are fetched within the page section
 
   return (
     <main>
@@ -257,9 +222,7 @@ export default async function ProductDetailPage({
         </Section>
       ) : null}
 
-      {hasRelatedRecipes ? (
-        <RelatedRecipesSection recipes={relatedRecipes} />
-      ) : null}
+      <ProductRelatedRecipesSection sauceIds={sauceIds} />
     </main>
   );
 }
