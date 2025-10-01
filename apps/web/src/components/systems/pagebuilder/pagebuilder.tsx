@@ -8,13 +8,13 @@ import { dataset, projectId, studioUrl } from "@/config";
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import type { PageBuilderBlockTypes } from "@/types";
 
-import { CTABlock } from "./pagebuilder/blocks/cta-block";
-import { FaqAccordionBlock } from "./pagebuilder/blocks/faq-accordion-block";
-import { FeatureBlock } from "./pagebuilder/blocks/feature-block";
-import { FeatureCardsWithIconBlock } from "./pagebuilder/blocks/feature-cards-with-icon-block";
-import { ImageLinkCardsBlock } from "./pagebuilder/blocks/image-link-cards-block";
-import { SubscribeNewsletterBlock } from "./pagebuilder/blocks/subscribe-newsletter-block";
-import type { PageBuilderBlockProps } from "./pagebuilder/types";
+import { CTABlock } from "./blocks/cta-block";
+import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
+import { FeatureBlock } from "./blocks/feature-block";
+import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
+import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
+import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
+import type { PageBuilderBlockProps } from "./types";
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<

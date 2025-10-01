@@ -10,15 +10,15 @@ import Script from "next/script";
 import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
-import { AnnouncerGuard } from "@/components/a11y/announcer-guard";
-import { A11yLiveAnnouncer } from "@/components/a11y/live-announcer";
-import { FoxycartProvider } from "@/components/cart/foxycart-provider";
-import { DevDomRemoveTolerance } from "@/components/dev/dom-remove-tolerance";
-import { FooterServer, FooterSkeleton } from "@/components/footer";
-import { Header } from "@/components/header";
+import { AnnouncerGuard } from "@/components/elements/a11y/announcer-guard";
+import { A11yLiveAnnouncer } from "@/components/elements/a11y/live-announcer";
+import { FoxycartProvider } from "@/components/features/cart/foxycart-provider";
+import { FooterServer, FooterSkeleton } from "@/components/features/footer";
+import { Header } from "@/components/features/header";
 import { CombinedJsonLd } from "@/components/json-ld";
-import { PreviewBar } from "@/components/preview-bar";
 import { Providers } from "@/components/providers";
+import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-tolerance";
+import { PreviewBar } from "@/components/systems/preview/preview-bar";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
 import { SanityLive } from "@/lib/sanity/live";
 

@@ -2,9 +2,10 @@ import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 
-import { RichText } from "../../elements/rich-text";
-import { SanityButtons } from "../../elements/sanity-buttons";
-import { CTACard } from "../../image-link-card";
+import { RichText } from "@/components/elements/rich-text";
+import { SanityButtons } from "@/components/elements/sanity-buttons";
+import { CTACard } from "@/components/image-link-card";
+
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 

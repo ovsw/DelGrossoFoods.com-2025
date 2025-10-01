@@ -4,12 +4,12 @@ import { Button } from "@workspace/ui/components/button";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { CheckboxList } from "@/components/filterable/checkbox-list";
-import { FilterGroupSection } from "@/components/filterable/filter-group-section";
-import { FilterableListLayout } from "@/components/filterable/filterable-list-layout";
-import { RadioList } from "@/components/filterable/radio-list";
-import { SearchField } from "@/components/filterable/search-field";
-import { SortDropdown } from "@/components/filterable/sort-dropdown";
+import { CheckboxList } from "@/components/elements/filterable/checkbox-list";
+import { FilterGroupSection } from "@/components/elements/filterable/filter-group-section";
+import { FilterableListLayout } from "@/components/elements/filterable/filterable-list-layout";
+import { RadioList } from "@/components/elements/filterable/radio-list";
+import { SearchField } from "@/components/elements/filterable/search-field";
+import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
 import { SauceCard } from "@/components/sauce-card";
 import {
   allLineSlugs,

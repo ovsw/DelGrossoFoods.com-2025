@@ -12,7 +12,7 @@ import {
 import { Filter } from "lucide-react";
 import React from "react";
 
-import { ClearSection } from "@/components/filterable/clear-section";
+import { ClearSection } from "./clear-section";
 
 type FiltersRenderer = (args: { idPrefix: string }) => React.ReactNode;
 

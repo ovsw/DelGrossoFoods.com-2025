@@ -1,20 +1,19 @@
 import Link from "next/link";
 
-import { sanityFetch } from "@/lib/sanity/live";
-import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
-import type {
-  QueryFooterDataResult,
-  QueryGlobalSeoSettingsResult,
-} from "@/lib/sanity/sanity.types";
-
-import LogoSvg from "./elements/logo";
+import LogoSvg from "@/components/elements/logo";
 import {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
   XIcon,
   YoutubeIcon,
-} from "./social-icons";
+} from "@/components/social-icons";
+import { sanityFetch } from "@/lib/sanity/live";
+import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
+import type {
+  QueryFooterDataResult,
+  QueryGlobalSeoSettingsResult,
+} from "@/lib/sanity/sanity.types";
 
 interface SocialLinksProps {
   data: NonNullable<QueryGlobalSeoSettingsResult>["socialLinks"];

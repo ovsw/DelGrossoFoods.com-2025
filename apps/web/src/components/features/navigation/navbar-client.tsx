@@ -28,14 +28,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
+import LogoSvg from "@/components/elements/logo";
+import { SanityButtons } from "@/components/elements/sanity-buttons";
+import { SanityIcon } from "@/components/elements/sanity-icon";
 import type {
   QueryGlobalSeoSettingsResult,
   QueryNavbarDataResult,
 } from "@/lib/sanity/sanity.types";
-
-import LogoSvg from "./elements/logo";
-import { SanityButtons } from "./elements/sanity-buttons";
-import { SanityIcon } from "./elements/sanity-icon";
 
 interface MenuItem {
   title: string;
