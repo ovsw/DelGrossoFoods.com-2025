@@ -103,12 +103,26 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
       - `SauceRelatedProductsSection` → `sauce-related-products-section.tsx`
       - Shared (truly global): `SharedNewsletterSection` → `shared-newsletter-section.tsx`
 
-  - Shared sections (`components/page-sections/shared/...`)
-    - Use only for identical, cross-page sections that render “as-is.”
-    - Must not depend on the host page’s entity (no sauce/product/recipe context).
-    - Reads global/static data or accepts minimal generic props.
-    - Examples: newsletter signup, site-wide contact CTA, promo banner.
-    - Do not place entity-related sections here (e.g., related-to-current item).
+- Shared page sections (`components/page-sections/shared/...`)
+  - Use only for identical, cross-page sections that render “as-is.”
+  - Must not depend on the host page’s entity (no sauce/product/recipe context).
+  - Reads global/static data or accepts minimal generic props.
+  - Examples: newsletter signup, site-wide contact CTA, promo banner.
+  - Do not place entity-related sections here (e.g., related-to-current item).
+
+#### Section Internals (collocation for complex sections)
+
+- When a page section grows complex, collocate its private building blocks in a subfolder under the page folder to signal non‑reusability.
+  - Example structure: `components/page-sections/recipe-page/recipe-details/` used only by `RecipeDetailsSection`.
+- Scope and exports:
+  - Treat everything inside this subfolder as “private.” Export only the Section component itself for consumption by pages.
+  - Do not import these internals from other sections/pages. If a piece becomes reused in multiple places, promote it to `components/elements/` with generic props.
+- Naming:
+  - Internals use descriptive filenames without the `Section` suffix (e.g., `brand-tab-label.tsx`, `variant-content.tsx`, `sauce-display.tsx`).
+  - Keep kebab-case, `.tsx` for components, `.ts` for utils/hooks.
+- Boundaries:
+  - No cross-imports between different section-internals folders.
+  - Keep data fetching and page-specific orchestration in the Section file; internals remain presentational or narrowly scoped helpers.
 
 - Elements (`components/elements/...`)
   - Definition: Reusable UI building blocks that are page-agnostic and presentational.

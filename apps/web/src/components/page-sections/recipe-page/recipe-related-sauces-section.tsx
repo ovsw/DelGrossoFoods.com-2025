@@ -1,4 +1,5 @@
-import { RelatedItemsLayout } from "@/components/layouts/related-items-layout";
+import { RelatedSaucesLayout } from "@/components/layouts/related-sauces-layout";
+import { SingleRelatedSauceLayout } from "@/components/layouts/single-related-sauce-layout";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getRecipeByIdQuery, getSaucesByIdsQuery } from "@/lib/sanity/query";
 import type { GetSaucesByIdsQueryResult } from "@/lib/sanity/sanity.types";
@@ -60,19 +61,16 @@ export async function RecipeRelatedSaucesSection({
   // Return early if no sauces have images to avoid rendering empty layout
   if (saucesWithImages.length === 0) return null;
 
+  const count = saucesWithImages.length;
+  if (count === 1) {
+    return <SingleRelatedSauceLayout item={saucesWithImages[0]!} />;
+  }
   return (
-    <RelatedItemsLayout
+    <RelatedSaucesLayout
       items={saucesWithImages}
-      type="sauce"
-      variant="single-item-prominent"
-      title={saucesWithImages.length > 1 ? "Sauces for this recipe" : undefined}
-      eyebrow={saucesWithImages.length > 1 ? "Featured sauces" : undefined}
-      description={
-        saucesWithImages.length > 1
-          ? "These sauces pair perfectly with this recipe."
-          : "This sauce pairs perfectly with this recipe."
-      }
-      showHeader={saucesWithImages.length > 1}
+      title={"Sauces for this recipe"}
+      eyebrow={"Featured sauces"}
+      description={"These sauces pair perfectly with this recipe."}
     />
   );
 }

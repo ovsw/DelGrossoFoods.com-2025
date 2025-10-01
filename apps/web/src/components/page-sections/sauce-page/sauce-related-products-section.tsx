@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { RelatedItemsLayout } from "@/components/layouts/related-items-layout";
+import { RelatedProductsLayout } from "@/components/layouts/related-products-layout";
+import { SingleRelatedProductLayout } from "@/components/layouts/single-related-product-layout";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getProductsBySauceIdQuery } from "@/lib/sanity/query";
 import type { GetProductsBySauceIdQueryResult } from "@/lib/sanity/sanity.types";
@@ -51,10 +52,20 @@ export async function SauceRelatedProductsSection({
   // Filter out products without mainImage since layout expects non-null mainImage
   const productsWithImages = products.filter(isProductWithImage);
 
+  const count = productsWithImages.length;
+  if (count === 1) {
+    return (
+      <SingleRelatedProductLayout
+        item={productsWithImages[0]!}
+        title="Bring DelGrosso sauces to your pantry"
+        eyebrow="Order online"
+        description="Pick a bundle and stock up straight from our store."
+      />
+    );
+  }
   return (
-    <RelatedItemsLayout
+    <RelatedProductsLayout
       items={productsWithImages}
-      type="product"
       title="Bring DelGrosso sauces to your pantry"
       eyebrow="Order online"
       description="Pick a bundle and stock up straight from our store."
