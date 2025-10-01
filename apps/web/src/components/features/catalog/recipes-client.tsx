@@ -9,7 +9,7 @@ import { FilterGroupSection } from "@/components/elements/filterable/filter-grou
 import { FilterableListLayout } from "@/components/elements/filterable/filterable-list-layout";
 import { SearchField } from "@/components/elements/filterable/search-field";
 import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
-import { RecipeCard } from "@/components/recipes/recipe-card";
+import { RecipeCard } from "@/components/elements/recipe-card";
 import {
   allMeatSlugs,
   allRecipeTagSlugs,

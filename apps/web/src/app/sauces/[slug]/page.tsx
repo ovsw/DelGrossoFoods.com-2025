@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
 
-import { SauceHeroSection } from "@/components/page-sections/sauce-page/hero-section";
-import { SauceNutritionalInfoSection } from "@/components/page-sections/sauce-page/nutritional-info-section";
-import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/related-products-section";
-import { RelatedRecipesSection } from "@/components/page-sections/shared/related-recipes-section";
+import { SauceHeroSection } from "@/components/page-sections/sauce-page/sauce-hero-section";
+import { SauceNutritionalInfoSection } from "@/components/page-sections/sauce-page/sauce-nutritional-info-section";
+import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/sauce-related-products-section";
+import { SauceRelatedRecipesSection } from "@/components/page-sections/sauce-page/sauce-related-recipes-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getRecipesBySauceIdQuery,
@@ -101,17 +101,14 @@ export default async function SauceDetailPage({
     notFound();
   }
 
-  const relatedRecipes = await fetchRelatedRecipes(sauce._id);
-  const hasRelatedRecipes = relatedRecipes.length > 0;
+  // Related recipes are fetched within the page section
 
   return (
     <main>
       <SauceHeroSection sauce={sauce} />
       <SauceNutritionalInfoSection sauce={sauce} />
       <SauceRelatedProductsSection sauceId={sauce._id} />
-      {hasRelatedRecipes ? (
-        <RelatedRecipesSection recipes={relatedRecipes} />
-      ) : null}
+      <SauceRelatedRecipesSection sauceId={sauce._id} />
     </main>
   );
 }

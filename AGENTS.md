@@ -56,9 +56,9 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
     - "Passive" status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy's `data-fc-id` markers; don't elevate those to the global announcer.
     - Implementation references:
       - Mount: `apps/web/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
-      - Announcer: `apps/web/src/components/a11y/live-announcer.tsx` (listens for `a11y:announce`).
+      - Announcer: `apps/web/src/components/elements/a11y/live-announcer.tsx` (listens for `a11y:announce`).
       - Helper: `apps/web/src/lib/a11y/announce.ts`.
-      - Example usage (add-to-cart): `apps/web/src/components/cart/foxycart-provider.tsx`.
+      - Example usage (add-to-cart): `apps/web/src/components/features/cart/foxycart-provider.tsx`.
     - Stability: a guard keeps Next’s route announcer anchored (`AnnouncerGuard`) and a dev-only DOM tolerance prevents NotFoundError from third-party reparenting.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
 
@@ -83,16 +83,55 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
   **Note**: The `tw` tagged template literal from Tailwind v4 is only available during CSS processing, not at runtime.
 
-### Blocks vs. Sections (naming + placement)
+### Component Organization (naming + placement)
 
-- Use Section suffix for route/domain UI that owns the `<Section>` wrapper and page spacing.
-  - Lives under domain folders like `components/sauces`, `components/products`, `components/recipes`.
-  - Examples: `ProductHeroSection`, `ProductSummarySection`, `SauceHeroSection`, `SauceRelatedProductsSection`, `RelatedRecipesSection`, `SauceNutritionalInfoSection`.
-- Use Block suffix for CMS page‑builder components driven by Sanity data.
-  - Lives under `components/pagebuilder/blocks`; accepts `PagebuilderType<T>` props; rendered only by the PageBuilder.
-  - Examples: `CTABlock`, `FaqAccordionBlock`, `FeatureBlock`, `FeatureCardsWithIconBlock`, `ImageLinkCardsBlock`, `SubscribeNewsletterBlock`.
-- Utilities used only by page‑builder blocks live under `components/pagebuilder/utils` (e.g., `section-spacing.ts`).
-- Building blocks that do not own `<Section>` keep descriptive names without the Section suffix (e.g., `...Card`, `...Grid`, `...Panel`).
+- Page Sections (`components/page-sections/...`)
+  - Definition: Components that implement `<Section>` and orchestrate complete page areas.
+  - Purpose: Page-specific data orchestration + layout/spacing ownership.
+  - Placement: `components/page-sections/<page>/`.
+  - Naming (strict):
+    - Component: `PascalCase` with `Section` suffix (e.g., `ProductHeroSection`).
+    - File: `<page-name>-<section-descriptor>-section.tsx` (kebab-case), where `<page-name>` is the folder’s page (e.g., `product`, `recipe`, `sauce`, `home`, `shared`).
+    - Examples:
+      - `ProductHeroSection` → `product-hero-section.tsx`
+      - `ProductSummarySection` → `product-summary-section.tsx`
+      - `RecipeHeroSection` → `recipe-hero-section.tsx`
+      - `RecipeDetailsSection` → `recipe-details-section.tsx`
+      - `RecipeRelatedSaucesSection` → `recipe-related-sauces-section.tsx`
+      - `SauceHeroSection` → `sauce-hero-section.tsx`
+      - `SauceNutritionalInfoSection` → `sauce-nutritional-info-section.tsx`
+      - `SauceRelatedProductsSection` → `sauce-related-products-section.tsx`
+      - Shared (truly global): `SharedNewsletterSection` → `shared-newsletter-section.tsx`
+
+  - Shared sections (`components/page-sections/shared/...`)
+    - Use only for identical, cross-page sections that render “as-is.”
+    - Must not depend on the host page’s entity (no sauce/product/recipe context).
+    - Reads global/static data or accepts minimal generic props.
+    - Examples: newsletter signup, site-wide contact CTA, promo banner.
+    - Do not place entity-related sections here (e.g., related-to-current item).
+
+- Elements (`components/elements/...`)
+  - Definition: Reusable UI building blocks that are page-agnostic and presentational.
+  - Purpose: Encapsulate complex UI patterns for maintainability; no business logic.
+  - Key trait: Never implements `<Section>`; always used inside sections or features.
+  - Examples: `ProductCard`, `RecipeCard`, `NutritionFactsPanel`, `SanityImage`.
+
+- Features (`components/features/...`)
+  - Definition: Domain/business feature composites and integrations.
+  - Purpose: Encapsulate flows, side effects, or integration logic (cart, auth, preview, search, listings).
+  - Placement: `components/features/<feature>/` (e.g., `cart/product-purchase-panel.tsx`, `catalog/*-client.tsx`).
+  - Key trait: Not broadly reusable UI; does not own page spacing; sits inside sections.
+
+- Systems (`components/systems/...`)
+  - Definition: Cross-cutting systems and dev tools (e.g., pagebuilder, preview, dev tooling).
+
+- Layouts (`components/layouts/...`)
+  - Definition: Reusable presentation/layout skeletons (e.g., `hero-layout.tsx`, `related-items-layout.tsx`).
+
+- CMS Page‑Builder Blocks
+  - Use the Block suffix for CMS-driven page‑builder components.
+  - Placement: `components/pagebuilder/blocks/`; accepts `PagebuilderType<T>` props; rendered only by the PageBuilder.
+  - Utilities used only by blocks live under `components/pagebuilder/utils/`.
 
 ### Theming (important)
 

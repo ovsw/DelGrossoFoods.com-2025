@@ -11,7 +11,7 @@ import { FilterableListLayout } from "@/components/elements/filterable/filterabl
 import { RadioList } from "@/components/elements/filterable/radio-list";
 import { SearchField } from "@/components/elements/filterable/search-field";
 import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
-import { ProductCard } from "@/components/products/product-card";
+import { ProductCard } from "@/components/elements/product-card";
 import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
 import {
   allLineSlugs,

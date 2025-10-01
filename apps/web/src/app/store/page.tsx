@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ProductsClient } from "@/components/products/products-client";
+import { ProductsClient } from "@/components/features/catalog/products-client";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {

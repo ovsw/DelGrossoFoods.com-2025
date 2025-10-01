@@ -5,7 +5,7 @@ import { Section } from "@workspace/ui/components/section";
 
 import { BackLink } from "@/components/elements/back-link";
 import { RichText } from "@/components/elements/rich-text";
-import { ProductPurchasePanel } from "@/components/products/product-purchase-panel";
+import { ProductPurchasePanel } from "@/components/features/cart/product-purchase-panel";
 import type { ProductDetailData } from "@/types";
 
 interface ProductSummarySectionProps {
