@@ -1,7 +1,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 
-import { SanityImage } from "./elements/sanity-image";
+import { SanityImage } from "@/components/elements/sanity-image";
 
 type ImageLinkCard = {
   _type: "imageLinkCard";

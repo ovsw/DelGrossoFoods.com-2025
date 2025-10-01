@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { BlogCard, BlogHeader, FeaturedBlogCard } from "@/components/blog-card";
+import {
+  BlogCard,
+  BlogHeader,
+  FeaturedBlogCard,
+} from "@/components/elements/blog-card";
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryBlogIndexPageData } from "@/lib/sanity/query";

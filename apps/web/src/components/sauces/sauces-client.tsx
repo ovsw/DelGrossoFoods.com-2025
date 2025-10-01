@@ -10,7 +10,7 @@ import { FilterableListLayout } from "@/components/elements/filterable/filterabl
 import { RadioList } from "@/components/elements/filterable/radio-list";
 import { SearchField } from "@/components/elements/filterable/search-field";
 import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
-import { SauceCard } from "@/components/sauce-card";
+import { SauceCard } from "@/components/elements/sauce-card";
 import {
   allLineSlugs,
   allTypeSlugs,

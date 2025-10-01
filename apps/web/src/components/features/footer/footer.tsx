@@ -7,7 +7,7 @@ import {
   LinkedinIcon,
   XIcon,
   YoutubeIcon,
-} from "@/components/social-icons";
+} from "@/components/elements/social-icons";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
 import type {
