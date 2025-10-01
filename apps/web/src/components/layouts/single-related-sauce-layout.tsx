@@ -3,6 +3,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
+import type { ReactElement } from "react";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
@@ -15,14 +16,15 @@ export interface SingleRelatedSauceLayoutProps {
 
 export function SingleRelatedSauceLayout({
   item,
-}: SingleRelatedSauceLayoutProps) {
+}: SingleRelatedSauceLayoutProps): ReactElement {
   const lineBadge = getLineBadge(item.line);
   const typeBadge = getTypeBadge(item.category);
   const href = buildHref("/sauces", item.slug);
 
   const name = stegaClean(item.name);
   const alt = stegaClean(item.mainImage?.alt || `${name} sauce`);
-  const description = stegaClean(item.descriptionPlain || "");
+  const descriptionVisible = item.descriptionPlain || "";
+  const cleanedDescription = stegaClean(descriptionVisible);
 
   return (
     <div className="mt-16">
@@ -67,8 +69,8 @@ export function SingleRelatedSauceLayout({
             </div>
 
             <p className="mt-4">
-              {description && description.trim().length > 0
-                ? description
+              {cleanedDescription && cleanedDescription.trim().length > 0
+                ? descriptionVisible
                 : "Build your next meal with this family favorite from La Famiglia DelGrosso."}
             </p>
 

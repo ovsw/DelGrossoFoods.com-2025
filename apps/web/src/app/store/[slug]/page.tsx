@@ -11,14 +11,10 @@ import { ProductRelatedRecipesSection } from "@/components/page-sections/product
 import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
 import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getProductBySlugQuery,
-  getRecipesBySauceIdQuery,
-  getRecipesBySauceIdsQuery,
-} from "@/lib/sanity/query";
+import { getProductBySlugQuery } from "@/lib/sanity/query";
 import type { GetProductBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
-import type { ProductDetailData, RecipeListItem, SauceListItem } from "@/types";
+import type { ProductDetailData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 const shippingCategoryCopy: Record<
@@ -97,36 +93,6 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
     return null;
   }
   return product;
-}
-
-async function fetchRelatedRecipesBySauces(
-  sauceIds: readonly string[] | undefined,
-): Promise<RecipeListItem[]> {
-  const ids = (sauceIds ?? []).filter(
-    (id): id is string => typeof id === "string" && id.length > 0,
-  );
-  if (ids.length === 0) {
-    return [];
-  }
-
-  // Fast path: single-id query is well-tested on sauce pages
-  if (ids.length === 1) {
-    const [single] = await handleErrors(
-      sanityFetch({
-        query: getRecipesBySauceIdQuery,
-        params: { sauceId: ids[0] },
-      }),
-    );
-    return (single?.data ?? []) as RecipeListItem[];
-  }
-
-  const [multi] = await handleErrors(
-    sanityFetch({
-      query: getRecipesBySauceIdsQuery,
-      params: { sauceIds: ids },
-    }),
-  );
-  return (multi?.data ?? []) as RecipeListItem[];
 }
 
 export async function generateMetadata({

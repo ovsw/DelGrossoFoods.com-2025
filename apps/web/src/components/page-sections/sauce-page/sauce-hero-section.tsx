@@ -1,6 +1,7 @@
 import { BookOpen, ShoppingCart } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import type { ReactNode } from "react";
+import type { JSX } from "react";
 
 import { BackLink } from "@/components/elements/back-link";
 import { RichText } from "@/components/elements/rich-text";
@@ -13,7 +14,9 @@ interface SauceHeroSectionProps {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
 }
 
-export function SauceHeroSection({ sauce }: SauceHeroSectionProps) {
+export function SauceHeroSection({
+  sauce,
+}: SauceHeroSectionProps): JSX.Element {
   // Name: visible uses raw; logic/alt use cleaned
   const rawName = sauce.name ?? "";
   const cleanedName = stegaClean(rawName);

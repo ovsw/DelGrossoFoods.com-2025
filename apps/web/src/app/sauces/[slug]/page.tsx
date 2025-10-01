@@ -8,12 +8,8 @@ import { SauceNutritionalInfoSection } from "@/components/page-sections/sauce-pa
 import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/sauce-related-products-section";
 import { SauceRelatedRecipesSection } from "@/components/page-sections/sauce-page/sauce-related-recipes-section";
 import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getRecipesBySauceIdQuery,
-  getSauceBySlugQuery,
-} from "@/lib/sanity/query";
+import { getSauceBySlugQuery } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
-import type { RecipeListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchSauce(slug: string) {
@@ -29,23 +25,6 @@ async function fetchSauce(slug: string) {
   );
 
   return result?.data ?? null;
-}
-
-async function fetchRelatedRecipes(
-  sauceId: string | undefined,
-): Promise<RecipeListItem[]> {
-  if (!sauceId) {
-    return [];
-  }
-
-  const [result] = await handleErrors(
-    sanityFetch({
-      query: getRecipesBySauceIdQuery,
-      params: { sauceId },
-    }),
-  );
-
-  return (result?.data ?? []) as RecipeListItem[];
 }
 
 export async function generateMetadata({
