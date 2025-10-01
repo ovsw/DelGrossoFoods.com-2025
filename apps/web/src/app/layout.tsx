@@ -12,13 +12,13 @@ import { Suspense } from "react";
 
 import { AnnouncerGuard } from "@/components/elements/a11y/announcer-guard";
 import { A11yLiveAnnouncer } from "@/components/elements/a11y/live-announcer";
+import { CombinedJsonLd } from "@/components/elements/json-ld";
 import { FoxycartProvider } from "@/components/features/cart/foxycart-provider";
 import { FooterServer, FooterSkeleton } from "@/components/features/footer";
 import { Header } from "@/components/features/header";
-import { CombinedJsonLd } from "@/components/json-ld";
-import { Providers } from "@/components/providers";
 import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-tolerance";
 import { PreviewBar } from "@/components/systems/preview/preview-bar";
+import { Providers } from "@/components/systems/providers";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
 import { SanityLive } from "@/lib/sanity/live";
 

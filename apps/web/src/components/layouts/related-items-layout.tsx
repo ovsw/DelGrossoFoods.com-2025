@@ -7,8 +7,8 @@ import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
+import { SauceCard } from "@/components/elements/sauce-card";
 import { ProductCard } from "@/components/products/product-card";
-import { SauceCard } from "@/components/sauce-card";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
 import type {

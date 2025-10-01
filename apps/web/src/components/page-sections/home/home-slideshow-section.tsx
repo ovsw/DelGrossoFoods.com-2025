@@ -62,7 +62,7 @@ const slides: Slide[] = [
 
 const SLIDE_DURATION = 6000; // milliseconds
 
-export function HomeSlideshow() {
+export function HomeSlideshowSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
