@@ -103,6 +103,19 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
       - `SauceRelatedProductsSection` → `sauce-related-products-section.tsx`
       - Shared (truly global): `SharedNewsletterSection` → `shared-newsletter-section.tsx`
 
+  - Index Catalog Sections (filterable)
+    - For index pages that host a filterable catalog (filters, chips, sort, grid), add thin wrapper sections that own `<Section>` and compose the feature clients.
+    - Placement: `components/page-sections/<domain>-index-page/` (e.g., `sauces-index-page/`).
+    - Naming: `<domain>-catalog-section.tsx` with component `<Domain>CatalogSection`.
+    - Examples:
+      - `SaucesCatalogSection` → `components/page-sections/sauces-index-page/sauces-catalog-section.tsx`
+      - `ProductsCatalogSection` → `components/page-sections/products-index-page/products-catalog-section.tsx`
+      - `RecipesCatalogSection` → `components/page-sections/recipes-index-page/recipes-catalog-section.tsx`
+    - Responsibilities:
+      - Own page spacing (`<Section>`) and container; do not duplicate filter logic.
+      - Render the feature clients from `components/features/catalog/*-client.tsx`.
+      - Keep client state/URL-sync in features; pages should not mount clients directly.
+
 - Shared page sections (`components/page-sections/shared/...`)
   - Use only for identical, cross-page sections that render “as-is.”
   - Must not depend on the host page’s entity (no sauce/product/recipe context).
