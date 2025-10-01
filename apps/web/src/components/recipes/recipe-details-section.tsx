@@ -64,7 +64,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
   return (
     <Section spacingTop="default" spacingBottom="large">
       <div
-        className="container mx-auto px-4 md:px-6 lg:max-w-6xl xl:max-w-5xl"
+        className="container mx-auto px-4 md:px-6 lg:max-w-7xl xl:max-w-6xl 2xl:max-w-8xl"
         data-html="c-recipe-details-section"
       >
         <div
@@ -174,7 +174,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 Recipe Info
               </h3>
               <dl
-                className="mt-4 grid gap-5 md:grid-cols-2"
+                className="mt-4 grid gap-5 md:grid-cols-1 lg:grid-cols-2"
                 data-html="c-recipe-info-list"
               >
                 {recipe.serves ? (

@@ -74,7 +74,7 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-th-dark-900/70 via-th-dark-900/30  to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-          <div className="container mx-auto lg:max-w-6xl xl:max-w-5xl">
+          <div className="container mx-auto lg:max-w-6xl">
             <div className="mb-4">
               <Eyebrow text={eyebrowText} className="text-white/80" />
             </div>
