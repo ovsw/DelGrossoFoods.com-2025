@@ -5,13 +5,12 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
-import { urlFor } from "@/lib/sanity/client";
-import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
-
 import {
   type NutritionFactRow,
   NutritionFactsPanel,
-} from "./nutrition-facts-panel";
+} from "@/components/sauces/nutrition-facts-panel";
+import { urlFor } from "@/lib/sanity/client";
+import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
 
 type SauceNutritionalInfoSectionProps = {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
