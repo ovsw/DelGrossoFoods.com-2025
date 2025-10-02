@@ -15,8 +15,7 @@ interface RecipeHeroSectionProps {
 
 export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
   // Name: visible uses raw; logic/alt use cleaned
-  const rawName = recipe.name ?? "";
-  const recipeName = rawName;
+  const recipeName = recipe.name ?? "";
 
   // Categories for eyebrow
   const categories = recipe.categories ?? [];
