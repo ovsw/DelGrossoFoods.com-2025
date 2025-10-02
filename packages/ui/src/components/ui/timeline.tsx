@@ -4,11 +4,25 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
   title: string;
-  content: React.ReactNode;
+  subtitle?: string;
+  content: React.ReactElement | null;
   image?: {
-    src: string;
-    alt: string;
-  };
+    src?: string;
+    alt?: string;
+    id?: string;
+    hotspot?: { x: number; y: number } | null;
+    crop?: { top: number; bottom: number; left: number; right: number } | null;
+    preview?: string | null;
+    [key: string]: unknown;
+  } | null;
+}
+
+interface TimelineProps {
+  data: TimelineEntry[];
+  renderImage?: (
+    image: NonNullable<TimelineEntry["image"]>,
+    className?: string,
+  ) => React.ReactNode;
 }
 
 const TomatoMarker = () => {
@@ -36,7 +50,7 @@ const TomatoMarker = () => {
   );
 };
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({ data, renderImage }: TimelineProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -69,25 +83,46 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               <div className="flex-shrink-0">
                 <TomatoMarker />
               </div>
-              <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
-                {item.title}
-              </h3>
+              <div className="hidden md:block md:pl-20">
+                <h3 className="text-xl md:text-5xl font-bold text-neutral-500 dark:text-neutral-500">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p className="text-lg md:text-2xl font-medium text-neutral-400 dark:text-neutral-400 mt-2">
+                    {item.subtitle}
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
-                {item.title}
-              </h3>
+              <div className="md:hidden">
+                <h3 className="text-2xl mb-2 text-left font-bold text-neutral-500 dark:text-neutral-500">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p className="text-lg mb-4 text-left font-medium text-neutral-400 dark:text-neutral-400">
+                    {item.subtitle}
+                  </p>
+                )}
+              </div>
               <div className="prose prose-lg max-w-none mb-8">
-                {item.content}
+                {item.content || null}
               </div>
               {item.image && (
                 <div className="mt-8">
-                  <img
-                    src={item.image.src}
-                    alt={item.image.alt}
-                    className="w-full max-w-md rounded-lg shadow-md"
-                  />
+                  {renderImage ? (
+                    renderImage(
+                      item.image,
+                      "w-full max-w-md rounded-lg shadow-md",
+                    )
+                  ) : (
+                    <img
+                      src={item.image.src}
+                      alt={item.image.alt}
+                      className="w-full max-w-md rounded-lg shadow-md"
+                    />
+                  )}
                 </div>
               )}
             </div>

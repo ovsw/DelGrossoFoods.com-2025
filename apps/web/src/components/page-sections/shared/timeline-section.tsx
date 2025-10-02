@@ -3,6 +3,8 @@
 import { Timeline } from "@workspace/ui/components";
 import { Section } from "@workspace/ui/components/section";
 
+import { SanityImage } from "@/components/elements/sanity-image";
+
 // Historical timeline data for DelGrosso Foods
 const historyTimelineData = [
   {
@@ -147,14 +149,63 @@ const historyTimelineData = [
 interface TimelineSectionProps {
   title?: string;
   subtitle?: string;
+  timelineData?: Array<{
+    title: string;
+    subtitle?: string;
+    content: React.ReactElement | null;
+    image?: {
+      id?: string;
+      alt?: string;
+      hotspot?: { x: number; y: number } | null;
+      crop?: {
+        top: number;
+        bottom: number;
+        left: number;
+        right: number;
+      } | null;
+      preview?: string | null;
+      src?: string;
+    } | null;
+  }>;
   className?: string;
 }
 
 export function TimelineSection({
   title = "Our Rich Heritage",
   subtitle = "Discover the story behind America's oldest family sauce-maker and our commitment to authentic Italian flavors since 1914",
+  timelineData = historyTimelineData,
   className,
 }: TimelineSectionProps) {
+  const renderImage = (
+    image: NonNullable<TimelineSectionProps["timelineData"]>[0]["image"],
+    className?: string,
+  ) => {
+    // Handle Sanity images (with id)
+    if (image?.id && typeof image.id === "string") {
+      return (
+        <SanityImage
+          image={{
+            id: image.id,
+            hotspot: image.hotspot || null,
+            crop: image.crop || null,
+            preview: image.preview || null,
+          }}
+          alt={image.alt || ""}
+          className={className}
+        />
+      );
+    }
+
+    // Handle regular images (with src) - fallback
+    if (image?.src && typeof image.src === "string") {
+      return (
+        <img src={image.src} alt={image.alt || ""} className={className} />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Section
       isPageTop
@@ -172,7 +223,7 @@ export function TimelineSection({
         </div>
 
         {/* Timeline */}
-        <Timeline data={historyTimelineData} />
+        <Timeline data={timelineData} renderImage={renderImage} />
       </div>
     </Section>
   );
