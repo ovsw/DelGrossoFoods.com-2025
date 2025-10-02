@@ -12,11 +12,9 @@ export const metadata: Metadata = getSEOMetadata({
 
 export default function HistoryPage() {
   return (
-    <main>
-      <TimelineSection
-        title="Our Rich Heritage"
-        subtitle="Discover the story behind America's oldest family sauce-maker and our commitment to authentic Italian flavors since 1914"
-      />
-    </main>
+    <TimelineSection
+      title="Our Rich Heritage"
+      subtitle="Discover the story behind America's oldest family sauce-maker and our commitment to authentic Italian flavors since 1914"
+    />
   );
 }
