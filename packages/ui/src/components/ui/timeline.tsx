@@ -11,6 +11,31 @@ interface TimelineEntry {
   };
 }
 
+const TomatoMarker = () => {
+  const markerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: markerRef,
+    offset: ["start end", "center center"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <motion.div
+      ref={markerRef}
+      className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-white dark:bg-black flex items-center justify-center shadow-lg"
+      style={{ scale }}
+    >
+      <img
+        src="/images/tomato-image-small.png"
+        alt="Timeline marker"
+        className="h-10 w-10 md:h-12 md:w-12 object-contain"
+      />
+    </motion.div>
+  );
+};
+
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,22 +61,20 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       className="w-full mx-auto max-w-7xl dark:bg-neutral-950 font-sans md:px-10"
       ref={containerRef}
     >
+      <div className="mb-16 text-center lg:mb-24">
+        <h2 className="mb-4 text-3xl font-bold text-gray-900 lg:text-4xl">
+          Our Rich Heritage
+        </h2>
+        <p className="mx-auto max-w-2xl text-lg text-gray-600">
+          Discover the story behind America&apos;s oldest family sauce-maker and
+          our commitment to authentic Italian flavors since 1914
+        </p>
+      </div>
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
           <div key={index} className="flex justify-start pt-10  md:gap-10">
             <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <motion.div
-                className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-white dark:bg-black flex items-center justify-center shadow-lg"
-                whileInView={{ scale: [0, 1.2, 1] }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-              >
-                <img
-                  src="/images/tomato-image-small.png"
-                  alt="Timeline marker"
-                  className="h-10 w-10 md:h-12 md:w-12 object-contain"
-                />
-              </motion.div>
+              <TomatoMarker />
               <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
                 {item.title}
               </h3>
