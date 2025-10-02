@@ -1,4 +1,5 @@
 import {
+  ClockIcon,
   DocumentTextIcon,
   DropIcon,
   PackageIcon,
@@ -146,6 +147,12 @@ export const structure = (
     .title("Content")
     .items([
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
+      createSingleTon({
+        S,
+        type: "history",
+        title: "History Page",
+        icon: ClockIcon,
+      }),
       S.divider(),
       createList({ S, type: "page", title: "Pages" }),
       createIndexList({
