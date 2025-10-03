@@ -51,7 +51,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   Arkansas: { Kroger: [lf("select")] },
   Arizona: {
-    "Albertsons/Safeway": [sp("Southwestern Division")],
+    "Albertsons/Safeway": [sp()],
   },
   California: {
     "Bel Air Market": [lf()],
@@ -174,7 +174,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   Nevada: {
     "Raley's": [lf()],
-    "Albertsons/Safeway": [sp("Southern NV - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Southern NV")],
   },
   "New Hampshire": {
     Hannaford: [lf(), sp()],
@@ -190,7 +190,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     "Stop & Shop": [sp()],
   },
   "New Mexico": {
-    "Albertsons/Safeway": [sp("Western NM - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Western NM")],
   },
   "New York": {
     "Shop Rite": [lf("select")],
@@ -264,17 +264,14 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     Publix: [lf()],
   },
   Texas: {
-    Albertsons: [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("El Paso - Southwestern Division"),
-    ],
+    Albertsons: [lf("specific-location", "Sloppy Joe Only"), sp("El Paso")],
     Kroger: [lf()],
     "Randall's": [lf("specific-location", "Sloppy Joe Only")],
     "Tom Thumb": [lf("specific-location", "Sloppy Joe Only")],
   },
   Utah: {
     "Associated Food Stores": [lf("specific-location", "Sloppy Joe Only")],
-    "Albertsons/Safeway": [sp("Southern UT - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Southern UT")],
   },
   Vermont: {
     Hannaford: [lf(), sp()],

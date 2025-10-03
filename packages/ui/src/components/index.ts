@@ -7,6 +7,17 @@ export {
 export { Badge, badgeVariants } from "./badge";
 export { Button, buttonVariants } from "./button";
 export { Checkbox } from "./checkbox";
+export { Combobox, type ComboboxOption, type ComboboxProps } from "./combobox";
+export {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./command";
 export {
   Drawer,
   DrawerClose,
@@ -47,6 +58,12 @@ export {
   navigationMenuTriggerStyle,
   NavigationMenuViewport,
 } from "./navigation-menu";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+} from "./popover";
 export { RadioGroup, RadioGroupItem } from "./radio-group";
 export { Section } from "./section";
 export {

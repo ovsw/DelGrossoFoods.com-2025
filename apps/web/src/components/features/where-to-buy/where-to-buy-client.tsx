@@ -1,9 +1,14 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import {
+  Combobox,
+  type ComboboxOption,
+} from "@workspace/ui/components/combobox";
+import Fuse from "fuse.js";
 import { Info, Store } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   allStates,
@@ -19,6 +24,32 @@ type ProductFilter = "all" | ProductLine;
 export function WhereToBuyClient() {
   const [selectedState, setSelectedState] = useState<string>("");
   const [productFilter, setProductFilter] = useState<ProductFilter>("all");
+
+  // Convert allStates to ComboboxOption format
+  const stateOptions: ComboboxOption[] = useMemo(
+    () =>
+      allStates.map((state) => ({
+        label: state,
+        value: state,
+      })),
+    [],
+  );
+
+  // Create Fuse.js filter function for state search
+  const filterStateOptions = useCallback(
+    (options: ComboboxOption[], searchValue: string) => {
+      if (!searchValue.trim()) {
+        return options;
+      }
+      const fuse = new Fuse(options, {
+        keys: ["label"],
+        threshold: 0.3,
+        includeScore: true,
+      });
+      return fuse.search(searchValue).map((result) => result.item);
+    },
+    [],
+  );
 
   const filteredStores = useMemo<StoreChain[]>(() => {
     if (!selectedState) return [];
@@ -42,30 +73,22 @@ export function WhereToBuyClient() {
           {/* State Selector */}
           <div>
             <label
-              htmlFor="state-select"
+              htmlFor="state-combobox"
               className="block text-lg font-medium mb-2"
             >
               Select Your State
             </label>
-            <div className="relative">
-              <select
-                id="state-select"
-                className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                value={selectedState}
-                onChange={(e) => setSelectedState(e.currentTarget.value)}
-                aria-label="Select your state"
-              >
-                <option value="">Choose a state...</option>
-                {allStates.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </select>
-              <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-muted-foreground">
-                ▾
-              </span>
-            </div>
+            <Combobox
+              id="state-combobox"
+              options={stateOptions}
+              value={selectedState}
+              onSelect={setSelectedState}
+              placeholder="Choose a state..."
+              searchPlaceholder="Type to search states..."
+              emptyMessage="No states found."
+              filterOptions={filterStateOptions}
+              aria-label="Select your state"
+            />
           </div>
 
           {/* Product Filter */}
@@ -155,7 +178,7 @@ function StoreCard({ store }: StoreCardProps) {
   const hasLogo = Boolean(logoPath);
 
   return (
-    <div className="bg-white/40 rounded-lg border border-input shadow-sm p-4 transition-shadow">
+    <div className="bg-white/50 rounded-lg border border-input shadow-sm p-4 transition-shadow">
       {/* Store header with logo */}
       <div className="flex items-center gap-3 mb-3">
         {hasLogo && logoPath ? (
