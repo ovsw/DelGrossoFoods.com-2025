@@ -1,6 +1,8 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import { Info, Store } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import {
@@ -9,6 +11,7 @@ import {
   type ProductLine,
   productLineLabels,
   type StoreChain,
+  storeLogos,
 } from "@/lib/stores/data";
 
 type ProductFilter = "all" | ProductLine;
@@ -34,7 +37,7 @@ export function WhereToBuyClient() {
   return (
     <div className="mt-12">
       {/* Filter Controls */}
-      <div className="bg-white/70 rounded-lg border border-input p-6 mb-8">
+      <div className="bg-white/50 rounded-lg border border-input p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* State Selector */}
           <div>
@@ -148,31 +151,53 @@ type StoreCardProps = {
 };
 
 function StoreCard({ store }: StoreCardProps) {
-  return (
-    <div className="bg-white rounded-lg border border-input p-4 hover:border-brand-green/50 transition-colors">
-      <h3 className="text-lg font-semibold mb-3">{store.name}</h3>
+  const logoPath = storeLogos[store.name];
+  const hasLogo = Boolean(logoPath);
 
-      <div className="space-y-2">
+  return (
+    <div className="bg-white/40 rounded-lg border border-input shadow-sm p-4 transition-shadow">
+      {/* Store header with logo */}
+      <div className="flex items-center gap-3 mb-3">
+        {hasLogo && logoPath ? (
+          <div className="relative w-16 h-16 flex-shrink-0">
+            <Image
+              src={logoPath}
+              alt={`${store.name} logo`}
+              fill
+              className="object-contain"
+              sizes="72px"
+            />
+          </div>
+        ) : (
+          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-brand-green rounded">
+            <Store className="w-6 h-6 text-th-light-100" />
+          </div>
+        )}
+        <h3 className="text-lg font-semibold">{store.name}</h3>
+      </div>
+
+      {/* Product lines */}
+      <div className="flex items-center gap-2.5 flex-wrap">
         {store.productLines.map((pl, idx) => (
-          <div key={idx}>
-            <div className="flex items-start gap-2 flex-wrap">
-              <Badge
-                variant={getProductLineBadgeVariant(pl.line)}
-                text={productLineLabels[pl.line]}
-              />
-              {pl.availability === "select" && (
-                <Badge variant="accent" text="Select Stores" />
-              )}
-            </div>
-            {pl.note && (
-              <p className="mt-1 text-xs text-muted-foreground">
-                Note: {pl.note}
-              </p>
+          <div key={idx} className="flex items-center gap-1 flex-wrap">
+            <Badge
+              variant={getProductLineBadgeVariant(pl.line)}
+              text={productLineLabels[pl.line]}
+              className="min-w-fit"
+            />
+            {/* Inline note with info icon for select stores */}
+            {pl.availability === "select" && (
+              <span className="inline-flex items-center gap-0.5  tracking-tight text-xs text-th-dark-700/80">
+                <Info className="w-3 h-3 flex-shrink-0" />
+                <span>Select stores (call ahead)</span>
+              </span>
             )}
-            {pl.availability === "select" && !pl.note && (
-              <p className="mt-1 text-xs text-muted-foreground">
-                Call ahead to confirm your local store carries this product
-              </p>
+            {/* Inline note with info icon for specific notes */}
+            {pl.note && (
+              <span className="inline-flex items-center gap-0.5  tracking-tight  text-xs text-th-dark-700/80">
+                <Info className="w-3 h-3 flex-shrink-0" />
+                <span>{pl.note}</span>
+              </span>
             )}
           </div>
         ))}
