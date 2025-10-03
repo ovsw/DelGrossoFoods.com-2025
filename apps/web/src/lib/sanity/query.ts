@@ -838,10 +838,6 @@ export const getHistoryPageQuery = defineQuery(`
         }
       }
     },
-    pageBuilder[]{
-      _type,
-      _key,
-      ...pageBuilderFragment
-    }
+    ${pageBuilderFragment}
   }
 `);
