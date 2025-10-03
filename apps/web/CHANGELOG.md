@@ -1,5 +1,22 @@
 # web
 
+## 1.13.0
+
+### Minor Changes
+
+- [`c695bb3`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c695bb395e5e1b3cb743c14fe0cca2a1a5321819) Thanks [@ovsw](https://github.com/ovsw)! - Add history page with interactive timeline
+  - Introduce history document schema with timeline markers and timeline object definitions
+  - Add history page with scroll-driven timeline featuring headings, subtitles, rich text, and images
+  - Create reusable Timeline section and TimelineLayout components with smooth animations
+  - Update Sanity structure to include history page and timeline content management
+  - Add animation runtime support for timeline interactions
+  - Minor refactor to recipe hero initialization
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.13.0
+
 ## 1.12.1
 
 ### Patch Changes
