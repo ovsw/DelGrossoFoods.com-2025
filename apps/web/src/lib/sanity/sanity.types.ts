@@ -293,6 +293,59 @@ export type Feature = {
   spacing: SectionSpacing;
 };
 
+export type TimelineMarker = {
+  _type: "timelineMarker";
+  heading?: string;
+  subtitle?: string;
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
+        listItem?: "number" | "bullet";
+        markDefs?: Array<{
+          customLink?: CustomUrl;
+          _type: "customLink";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        caption?: string;
+        _type: "image";
+        _key: string;
+      }
+  >;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type SectionSpacing = {
   _type: "sectionSpacing";
   spacingTop: "default" | "none" | "small" | "large";
@@ -361,6 +414,45 @@ export type RichText = Array<
       _key: string;
     }
 >;
+
+export type History = {
+  _id: string;
+  _type: "history";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description?: string;
+  timeline?: Timeline;
+  pageBuilder?: PageBuilder;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  seoNoIndex?: boolean;
+  seoHideFromLists?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+};
+
+export type Timeline = {
+  _type: "timeline";
+  markers?: Array<
+    {
+      _key: string;
+    } & TimelineMarker
+  >;
+};
 
 export type Navbar = {
   _id: string;
@@ -1308,10 +1400,13 @@ export type AllSanitySchemaTypes =
   | FeatureCardsIcon
   | Cta
   | Feature
+  | TimelineMarker
   | SectionSpacing
   | PageBuilder
   | Button
   | RichText
+  | History
+  | Timeline
   | Navbar
   | Footer
   | Settings
@@ -4051,6 +4146,105 @@ export type GetProductBySlugQueryResult = {
     } | null;
   }> | null;
 } | null;
+// Variable: getHistoryPageQuery
+// Query: *[_type == "history"][0]{    _id,    _type,    title,    description,    timeline{      markers[]{        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  }  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },          "assetRef": asset._ref        }      }    },    pageBuilder[]{      _type,      _key,      ...pageBuilderFragment    }  }
+export type GetHistoryPageQueryResult = {
+  _id: string;
+  _type: "history";
+  title: string;
+  description: string | null;
+  timeline: {
+    markers: Array<{
+      heading: string | null;
+      subtitle: string | null;
+      content: Array<
+        | {
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+            listItem?: "bullet" | "number";
+            markDefs: Array<
+              | {
+                  customLink?: CustomUrl;
+                  _type: "customLink";
+                  _key: string;
+                  openInNewTab: boolean | null;
+                  href: string | "#" | null;
+                }
+              | {
+                  customLink?: CustomUrl;
+                  _type: "customLink";
+                  _key: string;
+                }
+            > | null;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }
+        | {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            caption?: string;
+            _type: "image";
+            _key: string;
+            image: null;
+          }
+      > | null;
+      image: {
+        id: string | null;
+        preview: string | null;
+        hotspot: {
+          x: number;
+          y: number;
+        } | null;
+        crop: {
+          bottom: number;
+          left: number;
+          right: number;
+          top: number;
+        } | null;
+        assetRef: string | null;
+      } | null;
+    }> | null;
+  } | null;
+  pageBuilder: Array<
+    | {
+        _type: "cta";
+        _key: string;
+      }
+    | {
+        _type: "faqAccordion";
+        _key: string;
+      }
+    | {
+        _type: "feature";
+        _key: string;
+      }
+    | {
+        _type: "featureCardsIcon";
+        _key: string;
+      }
+    | {
+        _type: "imageLinkCards";
+        _key: string;
+      }
+    | {
+        _type: "subscribeNewsletter";
+        _key: string;
+      }
+  > | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -4087,5 +4281,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "product" && defined(slug.current) && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    // Unique sets of referenced sauce attributes for filtering/badges\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
     '\n  *[\n    _type == "product"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetProductsBySauceIdQueryResult;
     '\n  *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    shippingCategory,\n    price,\n    weight,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n      "alt": coalesce(alt, "")\n    },\n    "sauces": array::compact(sauces[]->{\n      _id,\n      _type,\n      name,\n      line,\n      category,\n      "slug": slug.current,\n      "descriptionPlain": coalesce(pt::text(description), ""),\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n        "alt": coalesce(alt, "")\n      }\n    })\n  }\n': GetProductBySlugQueryResult;
+    '\n  *[_type == "history"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    timeline{\n      markers[]{\n        heading,\n        subtitle,\n        content[]{\n          ...,\n          _type == "block" => {\n            ...,\n            \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n          },\n          _type == "image" => {\n            \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n\n  }\n\n          }\n        },\n        image{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  }\n,\n          "assetRef": asset._ref\n        }\n      }\n    },\n    pageBuilder[]{\n      _type,\n      _key,\n      ...pageBuilderFragment\n    }\n  }\n': GetHistoryPageQueryResult;
   }
 }

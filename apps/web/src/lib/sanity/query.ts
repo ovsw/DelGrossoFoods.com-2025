@@ -811,3 +811,33 @@ export const getProductBySlugQuery = defineQuery(`
     })
   }
 `);
+
+export const getHistoryPageQuery = defineQuery(`
+  *[_type == "history"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    timeline{
+      markers[]{
+        heading,
+        subtitle,
+        content[]{
+          ...,
+          _type == "block" => {
+            ...,
+            ${markDefsFragment}
+          },
+          _type == "image" => {
+            ${imageFragment}
+          }
+        },
+        image{
+          ${imageFields},
+          "assetRef": asset._ref
+        }
+      }
+    },
+    ${pageBuilderFragment}
+  }
+`);

@@ -162,10 +162,11 @@ AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Theming (important)
 
-- The web app is light-only. There is no runtime theme switching.
+- **LIGHT-ONLY THEME**: The web app is light-only with no dark mode support anywhere in the application.
 - Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web` is a no-op wrapper.
-- Do not add `dark:` Tailwind variants or dark-theme specific classes.
-- If you need theming in the future, see `plans/adr-001-disable-theme-switching.md` for re-enable steps.
+- **NO DARK CLASSES**: Never add `dark:` Tailwind variants or dark-theme specific classes. All `dark:` classes have been purged from the codebase.
+- **HTML Color Scheme**: The root `layout.tsx` is hardcoded with `<html className="light" style={{ colorScheme: "light" }}>`.
+- **Future Theming**: If dark theme support is needed in the future, see `plans/adr-001-disable-theme-switching.md` for re-enable steps.
 
 ### Next.js app (apps/web)
 
