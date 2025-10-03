@@ -2,27 +2,23 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
+import { SanityImage } from "@/components/elements/sanity-image";
+
 interface TimelineEntry {
   title: string;
   subtitle?: string;
   content: React.ReactElement | null;
   image?: {
-    src?: string;
+    id: string;
     alt?: string;
-    id?: string;
     hotspot?: { x: number; y: number } | null;
     crop?: { top: number; bottom: number; left: number; right: number } | null;
     preview?: string | null;
-    [key: string]: unknown;
   } | null;
 }
 
-interface TimelineProps {
+interface TimelineLayoutProps {
   data: TimelineEntry[];
-  renderImage?: (
-    image: NonNullable<TimelineEntry["image"]>,
-    className?: string,
-  ) => React.ReactNode;
 }
 
 const TomatoMarker = () => {
@@ -50,7 +46,7 @@ const TomatoMarker = () => {
   );
 };
 
-export const Timeline = ({ data, renderImage }: TimelineProps) => {
+export const TimelineLayout = ({ data }: TimelineLayoutProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -90,21 +86,24 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div className="w-full mx-auto max-w-7xl md:px-10" ref={containerRef}>
+    <div className="w-full mx-auto max-w-4xl md:px-10" ref={containerRef}>
       <div className="mb-16 text-center lg:mb-24"></div>
       <div ref={ref} className="relative max-w-7xl mx-auto">
         {data.map((item, index) => (
-          <div key={index} className="marker_wrap mb-20 md:mb-40">
+          <div
+            key={index}
+            className={`marker_wrap ${index !== data.length - 1 ? "mb-20 md:mb-28" : ""}`}
+          >
             <div className="marker_heading flex flex-row z-40 items-center top-40 self-start mb-3">
               <div className="flex-shrink-0 z-10">
                 <TomatoMarker />
               </div>
-              <h3 className="text-3xl md:text-5xl font-bold text-brand-green">
+              <h3 className="text-3xl md:text-4xl font-bold text-brand-green">
                 {item.title}
               </h3>
             </div>
 
-            <div className="marker_content-wrap pl-14 sm:pl-24 md:pl-32">
+            <div className="marker_content-wrap pl-14 sm:pl-24 md:pl-28">
               {item.subtitle && (
                 <p className="text-xl md:text-2xl font-medium text-th-dark-700 mb-4">
                   {item.subtitle}
@@ -116,18 +115,16 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
               </div>
               {item.image && (
                 <div className="mt-8">
-                  {renderImage ? (
-                    renderImage(
-                      item.image,
-                      "w-full max-w-md rounded-lg shadow-md",
-                    )
-                  ) : (
-                    <img
-                      src={item.image.src}
-                      alt={item.image.alt}
-                      className="w-full max-w-md rounded-lg shadow-md"
-                    />
-                  )}
+                  <SanityImage
+                    image={{
+                      id: item.image.id,
+                      hotspot: item.image.hotspot || null,
+                      crop: item.image.crop || null,
+                      preview: item.image.preview || null,
+                    }}
+                    alt={item.image.alt || ""}
+                    className="w-full max-w-md rounded-lg shadow-md"
+                  />
                 </div>
               )}
             </div>
