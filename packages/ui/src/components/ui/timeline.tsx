@@ -71,10 +71,7 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div
-      className="w-full mx-auto max-w-7xl dark:bg-neutral-950 md:px-10"
-      ref={containerRef}
-    >
+    <div className="w-full mx-auto max-w-7xl md:px-10" ref={containerRef}>
       <div className="mb-16 text-center lg:mb-24"></div>
       <div ref={ref} className="relative max-w-7xl mx-auto">
         {data.map((item, index) => (
@@ -84,11 +81,11 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
                 <TomatoMarker />
               </div>
               <div className="hidden md:block md:pl-20">
-                <h3 className="text-xl md:text-5xl font-bold text-neutral-500 dark:text-neutral-500">
+                <h3 className="text-xl md:text-5xl font-bold text-neutral-500">
                   {item.title}
                 </h3>
                 {item.subtitle && (
-                  <p className="text-lg md:text-2xl font-medium text-neutral-400 dark:text-neutral-400 mt-2">
+                  <p className="text-lg md:text-2xl font-medium text-neutral-400 mt-2">
                     {item.subtitle}
                   </p>
                 )}
@@ -97,11 +94,11 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
 
             <div className="relative pl-20 pr-4 md:pl-4 w-full">
               <div className="md:hidden">
-                <h3 className="text-2xl mb-2 text-left font-bold text-neutral-500 dark:text-neutral-500">
+                <h3 className="text-2xl mb-2 text-left font-bold text-neutral-500">
                   {item.title}
                 </h3>
                 {item.subtitle && (
-                  <p className="text-lg mb-4 text-left font-medium text-neutral-400 dark:text-neutral-400">
+                  <p className="text-lg mb-4 text-left font-medium text-neutral-400">
                     {item.subtitle}
                   </p>
                 )}
