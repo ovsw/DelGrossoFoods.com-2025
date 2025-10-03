@@ -51,7 +51,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   Arkansas: { Kroger: [lf("select")] },
   Arizona: {
-    "Albertson's/Safeway": [sp("Southwestern Division")],
+    "Albertsons/Safeway": [sp("Southwestern Division")],
   },
   California: {
     "Bel Air Market": [lf()],
@@ -73,10 +73,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   "District of Columbia": {
     "Harris Teeter": [lf()],
-    "Whole Foods": [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("Mid-Atlantic Division"),
-    ],
+    "Whole Foods": [lf("specific-location", "Sloppy Joe Only"), sp()],
   },
   Florida: {
     "Fresco y Mas": [lf()],
@@ -138,10 +135,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     "Graul's": [lf()],
     "Harris Teeter": [lf()],
     Weis: [lf(), o(), sp()],
-    "Whole Foods": [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("Mid-Atlantic Division"),
-    ],
+    "Whole Foods": [lf("specific-location", "Sloppy Joe Only"), sp()],
   },
   Massachusetts: {
     "Roche Bros.": [lf()],
@@ -171,7 +165,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     "Dierberg's": [lf()],
   },
   Montana: {
-    "Albertson's": [lf("select")],
+    Albertsons: [lf("select")],
     "Joe's Parkway": [lf("all", "Bozeman")],
     "Rosauer's": [lf()],
   },
@@ -180,7 +174,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   Nevada: {
     "Raley's": [lf()],
-    "Albertson's/Safeway": [sp("Southern NV - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Southern NV - Southwestern Division")],
   },
   "New Hampshire": {
     Hannaford: [lf(), sp()],
@@ -189,14 +183,14 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     "Shop Rite": [lf("select")],
     "Whole Foods": [
       lf("specific-location", "Sloppy Joe Only; Select Stores"),
-      sp("Southern NJ - Mid-Atlantic Division"),
+      sp("Southern NJ"),
     ],
     "Uncle Giuseppe's": [lf()],
     Weis: [o(), sp()],
     "Stop & Shop": [sp()],
   },
   "New Mexico": {
-    "Albertson's/Safeway": [sp("Western NM - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Western NM - Southwestern Division")],
   },
   "New York": {
     "Shop Rite": [lf("select")],
@@ -219,16 +213,13 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     Kroger: [lf("select")],
     "Market District": [lf()],
     Meijer: [lf()],
-    "Whole Foods": [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("Mid-Atlantic Division"),
-    ],
+    "Whole Foods": [lf("specific-location", "Sloppy Joe Only"), sp()],
     Acme: [o()],
     "Marc's": [o()],
     "Shop N Save": [o()],
   },
   Oregon: {
-    "Albertson's": [lf()],
+    Albertsons: [lf()],
     "Market of Choice": [lf()],
     "New Seasons": [lf()],
     "Rosauer's": [lf(), sp("Pacific NW")],
@@ -246,10 +237,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
       lf("specific-location", "State College only"),
       o("State College only"),
     ],
-    "Whole Foods": [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("Mid-Atlantic Division"),
-    ],
+    "Whole Foods": [lf("specific-location", "Sloppy Joe Only"), sp()],
     "Shur Fine": [o()],
     "Shop N Save": [o()],
     "Wal-Mart": [o("Select PA locations")],
@@ -276,7 +264,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     Publix: [lf()],
   },
   Texas: {
-    "Albertson's": [
+    Albertsons: [
       lf("specific-location", "Sloppy Joe Only"),
       sp("El Paso - Southwestern Division"),
     ],
@@ -286,7 +274,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
   },
   Utah: {
     "Associated Food Stores": [lf("specific-location", "Sloppy Joe Only")],
-    "Albertson's/Safeway": [sp("Southern UT - Southwestern Division")],
+    "Albertsons/Safeway": [sp("Southern UT - Southwestern Division")],
   },
   Vermont: {
     Hannaford: [lf(), sp()],
@@ -299,10 +287,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     Publix: [lf()],
     Safeway: [lf("select")],
     Weis: [lf(), sp()],
-    "Whole Foods": [
-      lf("specific-location", "Sloppy Joe Only"),
-      sp("Mid-Atlantic Division"),
-    ],
+    "Whole Foods": [lf("specific-location", "Sloppy Joe Only"), sp()],
   },
   Washington: {
     "New Seasons": [lf()],
@@ -321,7 +306,7 @@ const rawStateData: Record<string, Record<string, ProductLineInfo[]>> = {
     "Sendik's": [lf("specific-location", "Sloppy Joe Only")],
   },
   Wyoming: {
-    "Albertson's": [lf("select")],
+    Albertsons: [lf("select")],
   },
 };
 
@@ -359,6 +344,25 @@ export function getStoresByState(
 export const productLineLabels: Record<ProductLine, string> = {
   original: "Original",
   organic: "Organic",
-  "la-famiglia": "La Famiglia",
+  "la-famiglia": "La Famiglia DelGrosso",
   specialty: "Sloppy Joe, Salsa & Meatballs",
+};
+
+// Store logo mapping - returns path to logo or undefined for fallback
+export const storeLogos: Record<string, string> = {
+  Albertsons: "/images/logos/stores/albertsons-logo-500x281.png",
+  "Albertsons/Safeway":
+    "/images/logos/stores/albertsons-safeway-combo-logo.png",
+  "Giant Eagle": "/images/logos/stores/giant-eagle-logo-500x281.png",
+  Hannaford: "/images/logos/stores/hannaford_logo.svg.png",
+  "Harris Teeter": "/images/logos/stores/harris-teeter-logo-500x281.png",
+  Kroger: "/images/logos/stores/logo-kroger-500x281.png",
+  Meijer: "/images/logos/stores/Meijer-Logo-500x281.png",
+  Publix: "/images/logos/stores/publix_logo-624x400.png",
+  Safeway: "/images/logos/stores/safeway-logo-500x281.png",
+  "Shop Rite": "/images/logos/stores/shoprite-logo-500x281.png",
+  Wegmans: "/images/logos/stores/wegmans-logo-500x281.png",
+  Weis: "/images/logos/stores/weis-logo.jpg",
+  "Whole Foods": "/images/logos/stores/whole-foods-logo-500x281.png",
+  "Winn Dixie": "/images/logos/stores/winn-dixie-logo.png",
 };
