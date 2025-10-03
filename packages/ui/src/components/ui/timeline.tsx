@@ -30,7 +30,7 @@ const TomatoMarker = () => {
 
   const { scrollYProgress } = useScroll({
     target: markerRef,
-    offset: ["start end", "center center"],
+    offset: ["start end", "end 40%"],
   });
 
   const scale = useTransform(scrollYProgress, [0, 1], [0, 1]);
@@ -38,7 +38,7 @@ const TomatoMarker = () => {
   return (
     <motion.div
       ref={markerRef}
-      className="h-16 w-16 md:h-20 md:w-20 rounded-full flex items-center justify-center"
+      className="size-12 sm:size-20 sm:flex sm:items-center sm:justify-center"
       style={{ scale }}
     >
       <img
@@ -56,15 +56,34 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setHeight(rect.height);
-    }
+    const calculateHeight = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect();
+        setHeight(rect.height);
+      }
+    };
+
+    // Calculate initial height
+    calculateHeight();
+
+    // Debounced resize handler
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(calculateHeight, 150); // 150ms debounce
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
+    };
   }, [ref]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 10%", "end 50%"],
+    offset: ["start 50%", "end 80%"],
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
@@ -75,35 +94,24 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
       <div className="mb-16 text-center lg:mb-24"></div>
       <div ref={ref} className="relative max-w-7xl mx-auto">
         {data.map((item, index) => (
-          <div key={index} className="flex justify-start pt-10  md:gap-10">
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="flex-shrink-0">
+          <div key={index} className="marker_wrap mb-20 md:mb-40">
+            <div className="marker_heading flex flex-row z-40 items-center top-40 self-start mb-3">
+              <div className="flex-shrink-0 z-10">
                 <TomatoMarker />
               </div>
-              <div className="hidden md:block md:pl-20">
-                <h3 className="text-xl md:text-5xl font-bold text-neutral-500">
-                  {item.title}
-                </h3>
-                {item.subtitle && (
-                  <p className="text-lg md:text-2xl font-medium text-neutral-400 mt-2">
-                    {item.subtitle}
-                  </p>
-                )}
-              </div>
+              <h3 className="text-3xl md:text-5xl font-bold text-brand-green">
+                {item.title}
+              </h3>
             </div>
 
-            <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <div className="md:hidden">
-                <h3 className="text-2xl mb-2 text-left font-bold text-neutral-500">
-                  {item.title}
-                </h3>
-                {item.subtitle && (
-                  <p className="text-lg mb-4 text-left font-medium text-neutral-400">
-                    {item.subtitle}
-                  </p>
-                )}
-              </div>
-              <div className="prose prose-lg max-w-none mb-8">
+            <div className="marker_content-wrap pl-14 sm:pl-24 md:pl-32">
+              {item.subtitle && (
+                <p className="text-xl md:text-2xl font-medium text-th-dark-700 mb-4">
+                  {item.subtitle}
+                </p>
+              )}
+
+              <div className="marker_rich-text prose prose-lg max-w-none mb-4">
                 {item.content || null}
               </div>
               {item.image && (
@@ -129,7 +137,7 @@ export const Timeline = ({ data, renderImage }: TimelineProps) => {
           style={{
             height: height + "px",
           }}
-          className="absolute left-10 top-0 overflow-hidden w-[6px] -translate-x-1/2 bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-brand-green to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] "
+          className="absolute left-5 sm:left-10 top-0 overflow-hidden w-[6px] -translate-x-1/2 bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-brand-green to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%)] "
         >
           <motion.div
             style={{
