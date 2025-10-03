@@ -60,4 +60,3 @@ export {
   SheetTrigger,
 } from "./sheet";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
-export { Timeline } from "./ui/timeline";

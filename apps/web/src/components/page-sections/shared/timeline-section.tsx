@@ -1,9 +1,8 @@
 "use client";
 
-import { Timeline } from "@workspace/ui/components";
 import { Section } from "@workspace/ui/components/section";
 
-import { SanityImage } from "@/components/elements/sanity-image";
+import { TimelineLayout } from "@/components/layouts/timeline-layout";
 
 interface TimelineSectionProps {
   title?: string;
@@ -13,7 +12,7 @@ interface TimelineSectionProps {
     subtitle?: string;
     content: React.ReactElement | null;
     image?: {
-      id?: string;
+      id: string;
       alt?: string;
       hotspot?: { x: number; y: number } | null;
       crop?: {
@@ -23,7 +22,6 @@ interface TimelineSectionProps {
         right: number;
       } | null;
       preview?: string | null;
-      src?: string;
     } | null;
   }>;
   className?: string;
@@ -39,36 +37,6 @@ export function TimelineSection({
   if (!title && !subtitle && (!timelineData || timelineData.length === 0)) {
     return null;
   }
-
-  const renderImage = (
-    image: NonNullable<TimelineSectionProps["timelineData"]>[0]["image"],
-    className?: string,
-  ) => {
-    // Handle Sanity images (with id)
-    if (image?.id && typeof image.id === "string") {
-      return (
-        <SanityImage
-          image={{
-            id: image.id,
-            hotspot: image.hotspot || null,
-            crop: image.crop || null,
-            preview: image.preview || null,
-          }}
-          alt={image.alt || ""}
-          className={className}
-        />
-      );
-    }
-
-    // Handle regular images (with src) - fallback
-    if (image?.src && typeof image.src === "string") {
-      return (
-        <img src={image.src} alt={image.alt || ""} className={className} />
-      );
-    }
-
-    return null;
-  };
 
   return (
     <Section
@@ -87,7 +55,7 @@ export function TimelineSection({
         </div>
 
         {/* Timeline */}
-        <Timeline data={timelineData} renderImage={renderImage} />
+        <TimelineLayout data={timelineData} />
       </div>
     </Section>
   );
