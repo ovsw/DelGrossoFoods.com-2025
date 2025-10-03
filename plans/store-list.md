@@ -1,6 +1,37 @@
-**La Famiglia DelGrosso Pasta and Pizza Sauces**
+## **Original DelGrosso Pasta and Pizza Sauces**
 
-Available in these fine stores:
+- Acme (OH)
+- Giant Eagle (PA, OH, MD, WV)
+- Martins (PA, VA)
+- Shur Fine (PA)
+- Wegmans (State College, PA only)
+- Giant (PA) Marc’s (OH)
+- Shop N Save (PA, OH)
+- Wal-Mart (Select PA locations)
+- Weis (PA, NY, NJ, MD)
+
+## **Organic DelGrosso Pasta and Pizza Sauce**‍
+
+- Hometown Market
+- Weis (Altoona, PA only)
+- Giant Eagle (Altoona, PA only)
+
+## **Sloppy Joe, salsa, and meatballs**
+
+- Albertson’s/Safeway Southwestern Division (AZ, Southern NV, Southern UT, Western NM, El Paso, TX)
+- Bristol Farms (Southern CA)
+- Hannaford (ME, MA, NY, VT, NH)
+- Rosauer’s: Pacific NW
+- Super 1: Pacific NW
+- Stop & Shop (MA, RI, CT, NY, NJ)
+- The Fresh Market
+  Weis (PA, NY, NJ, MD, VA, DE)
+- Whole Foods Market Mid-Atlantic Division (OH, PA, MD, VA, DC, Southern NJ
+- Yoke’s: Pacific NW
+- Most natural grocers in Hawaii
+- Sprouts Farmers Market (Nationwide)
+
+## **La Famiglia DelGrosso Pasta and Pizza Sauces**
 
 #### Alabama
 
