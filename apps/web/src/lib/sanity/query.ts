@@ -813,11 +813,12 @@ export const getProductBySlugQuery = defineQuery(`
 `);
 
 export const getHistoryPageQuery = defineQuery(`
-  *[_type == "history"][0]{
+  *[_type == "historyPage"][0]{
     _id,
     _type,
     title,
     description,
+    "slug": slug.current,
     timeline{
       markers[]{
         heading,
@@ -838,6 +839,17 @@ export const getHistoryPageQuery = defineQuery(`
         }
       }
     },
+    ${pageBuilderFragment}
+  }
+`);
+
+export const getStoreLocatorPageQuery = defineQuery(`
+  *[_type == "storeLocator"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
     ${pageBuilderFragment}
   }
 `);

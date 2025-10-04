@@ -70,6 +70,8 @@ const slugMapper: Record<string, SlugMapValue> = {
   sauceIndex: "/sauces",
   productIndex: "/store",
   recipeIndex: "/recipes",
+  historyPage: "/history",
+  storeLocator: "/where-to-buy",
 };
 
 function normalizePath(path: string): string {

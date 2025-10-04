@@ -4,9 +4,11 @@ import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
+import { createSlug } from "../../utils/slug";
+import { createSlugValidator } from "../../utils/slug-validation";
 
-export const history = defineType({
-  name: "history",
+export const historyPage = defineType({
+  name: "historyPage",
   title: "History Page",
   type: "document",
   icon: ClockIcon,
@@ -43,6 +45,24 @@ export const history = defineType({
             "The meta description should not exceed 160 characters as it will be truncated in search results",
           ),
       ],
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "Slug",
+      description:
+        "The fixed web address for this page. Leave as '/history' so links and Presentation keep working.",
+      group: GROUP.MAIN_CONTENT,
+      options: {
+        source: "title",
+        slugify: createSlug,
+      },
+      validation: (Rule) =>
+        Rule.required().custom(
+          createSlugValidator({
+            sanityDocumentType: "historyPage",
+          }),
+        ),
     }),
     defineField({
       name: "timeline",

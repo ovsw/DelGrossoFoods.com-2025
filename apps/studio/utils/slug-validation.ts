@@ -135,6 +135,16 @@ function getDocumentTypeConfig(
         documentType: "Home page",
         requiredPrefix: "/",
       };
+    case "historyPage":
+      return {
+        documentType: "History page",
+        requiredPrefix: "/history",
+      };
+    case "storeLocator":
+      return {
+        documentType: "Store locator page",
+        requiredPrefix: "/where-to-buy",
+      };
     case "page":
       return {
         documentType: "Page",
