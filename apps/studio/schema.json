@@ -2958,7 +2958,7 @@
     }
   },
   {
-    "name": "history",
+    "name": "historyPage",
     "type": "document",
     "attributes": {
       "_id": {
@@ -2971,7 +2971,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "string",
-          "value": "history"
+          "value": "historyPage"
         }
       },
       "_createdAt": {
