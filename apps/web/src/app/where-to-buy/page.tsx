@@ -1,5 +1,6 @@
 import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
+import { stegaClean } from "next-sanity";
 
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
 import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
@@ -16,14 +17,20 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = (storeLocatorData?.data ??
     null) as GetStoreLocatorPageQueryResult | null;
 
+  const rawTitle = data?.title ?? null;
+  const rawDescription = data?.description ?? null;
+
+  const cleanTitle = rawTitle ? stegaClean(rawTitle) : null;
+  const cleanDescription = rawDescription ? stegaClean(rawDescription) : null;
+
   return getSEOMetadata({
-    title: data?.title
-      ? `${data.title} - DelGrosso Foods`
+    title: cleanTitle
+      ? `${cleanTitle} - DelGrosso Foods`
       : "Where to Buy - DelGrosso Foods",
     description:
-      data?.description ||
+      cleanDescription ||
       "Find La Famiglia DelGrosso Pasta and Pizza Sauces at a store near you. Available in grocery stores across the United States.",
-    slug: "/where-to-buy",
+    slug: data?.slug || "/where-to-buy",
   });
 }
 

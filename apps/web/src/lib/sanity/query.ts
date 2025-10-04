@@ -818,6 +818,7 @@ export const getHistoryPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "slug": slug.current,
     timeline{
       markers[]{
         heading,
@@ -848,6 +849,7 @@ export const getStoreLocatorPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "slug": slug.current,
     ${pageBuilderFragment}
   }
 `);
