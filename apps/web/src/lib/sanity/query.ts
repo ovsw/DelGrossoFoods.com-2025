@@ -813,7 +813,7 @@ export const getProductBySlugQuery = defineQuery(`
 `);
 
 export const getHistoryPageQuery = defineQuery(`
-  *[_type == "history"][0]{
+  *[_type == "historyPage"][0]{
     _id,
     _type,
     title,

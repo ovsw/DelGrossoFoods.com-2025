@@ -149,7 +149,7 @@ export const structure = (
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
       createSingleTon({
         S,
-        type: "history",
+        type: "historyPage",
         title: "History Page",
         icon: ClockIcon,
       }),

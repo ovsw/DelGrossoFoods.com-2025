@@ -5,8 +5,8 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 
-export const history = defineType({
-  name: "history",
+export const historyPage = defineType({
+  name: "historyPage",
   title: "History Page",
   type: "document",
   icon: ClockIcon,
