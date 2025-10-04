@@ -1,5 +1,28 @@
 # web
 
+## 1.14.0
+
+### Minor Changes
+
+- [#89](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/89) [`c94d65f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c94d65fb9063d0e1aefe80cb41bb5b1af57aac7f) Thanks [@ovsw](https://github.com/ovsw)! - Add "Where to Buy" store locator page
+  - New `/where-to-buy` route with smart state selector and product line filters
+  - Comprehensive store location data across 40+ states for all product lines:
+    - Original DelGrosso sauces
+    - Organic DelGrosso sauces
+    - La Famiglia DelGrosso premium line
+    - Specialty products (Sloppy Joe, Salsa & Meatballs)
+  - Store cards display multiple product line availability with color-coded badges
+  - Location-specific notes for stores with regional restrictions (e.g., "State College only", "Altoona only")
+  - De-duplicated store listings show all product lines carried at each location
+  - Responsive design with mobile-optimized filters and card layouts
+
+### Patch Changes
+
+- [#89](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/89) [`594d7a0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/594d7a004a214de4acd45dc0bc082a4e36f689b3) Thanks [@ovsw](https://github.com/ovsw)! - - Add Store Locator singleton config for the Where to Buy page and enforce canonical slugs for history and store locator routes.
+  - Connect to front-end web app.
+- Updated dependencies []:
+  - @workspace/ui@1.14.0
+
 ## 1.13.0
 
 ### Minor Changes
