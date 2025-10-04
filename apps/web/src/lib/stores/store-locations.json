@@ -1,0 +1,1281 @@
+{
+  "Alabama": {
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Rouse's": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Winn Dixie": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Arkansas": {
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ]
+  },
+  "Arizona": {
+    "Albertsons/Safeway": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "California": {
+    "Bel Air Market": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Draeger's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Nob Hill Food": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Lunardi's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Mollie Stone's Markets": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Raley's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ralphs": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Bristol Farms": [
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Southern CA"
+      }
+    ]
+  },
+  "Connecticut": {
+    "Shop Rite": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Stop & Shop": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Delaware": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "District of Columbia": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Florida": {
+    "Fresco y Mas": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harvey's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Milam's Market": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Winn Dixie": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Georgia": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harvey's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Winn Dixie": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Hawaii": {
+    "Island Naturals Market": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Foodland": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Natural Grocers": [
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Most locations"
+      }
+    ]
+  },
+  "Idaho": {
+    "Albertsons": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Rosauer's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Illinois": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Jewel": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Indiana": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Market District": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Kansas": {
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ]
+  },
+  "Kentucky": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ]
+  },
+  "Louisiana": {
+    "Breaux Mart": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Calandros": [
+      {
+        "line": "la-famiglia",
+        "availability": "all",
+        "note": "Baton Rouge"
+      }
+    ],
+    "Robért Fresh Market": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Rouse's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Winn Dixie": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Maine": {
+    "Hannaford": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Maryland": {
+    "Giant Eagle": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Graul's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Massachusetts": {
+    "Roche Bros.": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Hannaford": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Stop & Shop": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Michigan": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Oleson's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Minnesota": {
+    "Cub Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Jerry's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kowalski's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Lunds & Byerly's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Mississippi": {
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Rouse's": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Winn Dixie": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Missouri": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Dierberg's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Montana": {
+    "Albertsons": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Joe's Parkway": [
+      {
+        "line": "la-famiglia",
+        "availability": "all",
+        "note": "Bozeman"
+      }
+    ],
+    "Rosauer's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Nebraska": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ]
+  },
+  "Nevada": {
+    "Raley's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Albertsons/Safeway": [
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Southern NV"
+      }
+    ]
+  },
+  "New Hampshire": {
+    "Hannaford": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "New Jersey": {
+    "Shop Rite": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only; Select Stores"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Southern NJ"
+      }
+    ],
+    "Uncle Giuseppe's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Stop & Shop": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "New Mexico": {
+    "Albertsons/Safeway": [
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Western NM"
+      }
+    ]
+  },
+  "New York": {
+    "Shop Rite": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Tops": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Uncle Giuseppe's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Hannaford": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Stop & Shop": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "North Carolina": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harvey's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Ohio": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Giant Eagle": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "organic",
+        "availability": "specific-location",
+        "note": "Altoona only"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Market District": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Acme": [
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Marc's": [
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Shop N Save": [
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ]
+  },
+  "Oregon": {
+    "Albertsons": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Market of Choice": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "New Seasons": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Rosauer's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Pacific NW"
+      }
+    ],
+    "Safeway": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Pennsylvania": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Giant Eagle": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "organic",
+        "availability": "specific-location",
+        "note": "Altoona only"
+      }
+    ],
+    "Giant": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Martin's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Price Chopper": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Shop Rite": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      },
+      {
+        "line": "organic",
+        "availability": "specific-location",
+        "note": "Altoona only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Wegmans": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "State College only"
+      },
+      {
+        "line": "original",
+        "availability": "specific-location",
+        "note": "State College only"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Shur Fine": [
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Shop N Save": [
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Wal-Mart": [
+      {
+        "line": "original",
+        "availability": "specific-location",
+        "note": "Select PA locations"
+      }
+    ],
+    "Hometown Market": [
+      {
+        "line": "organic",
+        "availability": "specific-location"
+      }
+    ]
+  },
+  "Rhode Island": {
+    "Dave's Marketplace": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Stop & Shop": [
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "South Carolina": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Harvey's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "South Dakota": {
+    "Safeway": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ]
+  },
+  "Tennessee": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Texas": {
+    "Albertsons": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "El Paso"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Randall's": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Tom Thumb": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ]
+  },
+  "Utah": {
+    "Associated Food Stores": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Albertsons/Safeway": [
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Southern UT"
+      }
+    ]
+  },
+  "Vermont": {
+    "Hannaford": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Virginia": {
+    "Harris Teeter": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Ingles": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Martin's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Publix": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Safeway": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ],
+    "Whole Foods": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      },
+      {
+        "line": "specialty",
+        "availability": "all"
+      }
+    ]
+  },
+  "Washington": {
+    "New Seasons": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Rosauer's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Pacific NW"
+      }
+    ],
+    "Super 1": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Pacific NW"
+      }
+    ],
+    "Yoke's": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "specialty",
+        "availability": "specific-location",
+        "note": "Pacific NW"
+      }
+    ]
+  },
+  "West Virginia": {
+    "Giant Eagle": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      },
+      {
+        "line": "original",
+        "availability": "all"
+      }
+    ],
+    "Kroger": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ],
+    "Weis": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ]
+  },
+  "Wisconsin": {
+    "Fresh Thyme": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ],
+    "Meijer": [
+      {
+        "line": "la-famiglia",
+        "availability": "all"
+      }
+    ],
+    "Sendik's": [
+      {
+        "line": "la-famiglia",
+        "availability": "specific-location",
+        "note": "Sloppy Joe Only"
+      }
+    ]
+  },
+  "Wyoming": {
+    "Albertsons": [
+      {
+        "line": "la-famiglia",
+        "availability": "select"
+      }
+    ]
+  }
+}

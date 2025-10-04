@@ -1,5 +1,6 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -37,9 +38,11 @@ const TomatoMarker = () => {
       className="size-12 sm:size-20 sm:flex sm:items-center sm:justify-center"
       style={{ scale }}
     >
-      <img
+      <Image
         src="/images/tomato-image-small.png"
         alt="Timeline marker"
+        width={100}
+        height={98}
         className="h-10 w-10 md:h-12 md:w-12 object-contain"
       />
     </motion.div>

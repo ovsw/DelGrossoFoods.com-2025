@@ -2,6 +2,7 @@ import {
   ClockIcon,
   DocumentTextIcon,
   DropIcon,
+  MarkerIcon,
   PackageIcon,
   TagIcon,
 } from "@sanity/icons";
@@ -149,9 +150,15 @@ export const structure = (
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
       createSingleTon({
         S,
-        type: "history",
+        type: "historyPage",
         title: "History Page",
         icon: ClockIcon,
+      }),
+      createSingleTon({
+        S,
+        type: "storeLocator",
+        title: "Store Locator Page",
+        icon: MarkerIcon,
       }),
       S.divider(),
       createList({ S, type: "page", title: "Pages" }),
