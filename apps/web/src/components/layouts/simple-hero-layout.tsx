@@ -10,7 +10,6 @@ export interface SimpleHeroLayoutProps {
   readonly objectFit?: "cover" | "contain";
   readonly priority?: boolean;
   readonly className?: string;
-  readonly minHeight?: string;
 }
 
 export function SimpleHeroLayout({
