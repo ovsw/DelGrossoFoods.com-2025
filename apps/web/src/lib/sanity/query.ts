@@ -853,3 +853,14 @@ export const getStoreLocatorPageQuery = defineQuery(`
     ${pageBuilderFragment}
   }
 `);
+
+export const getContactPageQuery = defineQuery(`
+  *[_type == "contactPage"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    ${pageBuilderFragment}
+  }
+`);

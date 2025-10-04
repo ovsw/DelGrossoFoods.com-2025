@@ -1,6 +1,7 @@
 import { author } from "./author";
 import { blog } from "./blog";
 import { blogIndex } from "./blog-index";
+import { contactPage } from "./contact-page";
 import { faq } from "./faq";
 import { footer } from "./footer";
 import { historyPage } from "./history-page";
@@ -28,6 +29,7 @@ export const singletons = [
   navbar,
   historyPage,
   storeLocator,
+  contactPage,
 ];
 
 export const documents = [
