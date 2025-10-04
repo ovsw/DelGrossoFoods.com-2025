@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
@@ -14,14 +15,20 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
 
+  const rawTitle = data?.title ?? null;
+  const rawDescription = data?.description ?? null;
+
+  const cleanTitle = rawTitle ? stegaClean(rawTitle) : null;
+  const cleanDescription = rawDescription ? stegaClean(rawDescription) : null;
+
   return getSEOMetadata({
-    title: data?.title
-      ? `${data.title} - DelGrosso Foods`
+    title: cleanTitle
+      ? `${cleanTitle} - DelGrosso Foods`
       : "Our History - DelGrosso Foods",
     description:
-      data?.description ||
+      cleanDescription ||
       "Discover the rich history and heritage of DelGrosso Foods, America's oldest family sauce-maker since 1914. Learn about our journey, traditions, and commitment to authentic Italian flavors.",
-    slug: "/history",
+    slug: data?.slug || "/history",
   });
 }
 

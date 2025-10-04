@@ -3006,6 +3006,14 @@
         },
         "optional": true
       },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
+        },
+        "optional": false
+      },
       "pageBuilder": {
         "type": "objectAttribute",
         "value": {
@@ -3175,6 +3183,14 @@
           "type": "string"
         },
         "optional": true
+      },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
+        },
+        "optional": false
       },
       "timeline": {
         "type": "objectAttribute",

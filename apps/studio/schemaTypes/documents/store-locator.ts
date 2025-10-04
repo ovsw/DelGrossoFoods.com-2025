@@ -4,6 +4,8 @@ import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
+import { createSlug } from "../../utils/slug";
+import { createSlugValidator } from "../../utils/slug-validation";
 
 export const storeLocator = defineType({
   name: "storeLocator",
@@ -43,6 +45,24 @@ export const storeLocator = defineType({
             "Keep this under 160 characters to avoid truncation in search results",
           ),
       ],
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      description:
+        "The web address for the Where to Buy page. Keep this set to '/where-to-buy'.",
+      group: GROUP.MAIN_CONTENT,
+      options: {
+        source: "title",
+        slugify: createSlug,
+      },
+      validation: (Rule) =>
+        Rule.required().custom(
+          createSlugValidator({
+            sanityDocumentType: "storeLocator",
+          }),
+        ),
     }),
     defineField({
       name: "pageBuilder",
