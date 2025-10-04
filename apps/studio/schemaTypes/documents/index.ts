@@ -15,6 +15,7 @@ import { recipeType } from "./recipeType";
 import { sauce } from "./sauce";
 import { sauceIndex } from "./sauce-index";
 import { settings } from "./settings";
+import { storeLocator } from "./store-locator";
 
 export const singletons = [
   homePage,
@@ -26,6 +27,7 @@ export const singletons = [
   footer,
   navbar,
   historyPage,
+  storeLocator,
 ];
 
 export const documents = [

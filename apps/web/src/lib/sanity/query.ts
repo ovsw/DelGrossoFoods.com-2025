@@ -841,3 +841,13 @@ export const getHistoryPageQuery = defineQuery(`
     ${pageBuilderFragment}
   }
 `);
+
+export const getStoreLocatorPageQuery = defineQuery(`
+  *[_type == "storeLocator"][0]{
+    _id,
+    _type,
+    title,
+    description,
+    ${pageBuilderFragment}
+  }
+`);
