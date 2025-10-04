@@ -1,5 +1,12 @@
 # studio
 
+## 1.14.0
+
+### Patch Changes
+
+- [#89](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/89) [`594d7a0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/594d7a004a214de4acd45dc0bc082a4e36f689b3) Thanks [@ovsw](https://github.com/ovsw)! - - Add Store Locator singleton config for the Where to Buy page and enforce canonical slugs for history and store locator routes.
+  - Connect to front-end web app.
+
 ## 1.13.0
 
 ### Minor Changes
