@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { ContactFormSection } from "@/components/page-sections/contact-page/contact-form-section";
-import { ContactHeroSection } from "@/components/page-sections/contact-page/contact-hero-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getContactPageQuery } from "@/lib/sanity/query";
 import type { GetContactPageQueryResult } from "@/lib/sanity/sanity.types";
@@ -46,8 +45,7 @@ export default async function ContactPage() {
 
   return (
     <main>
-      <ContactHeroSection title={heading} description={intro} />
-      <ContactFormSection />
+      <ContactFormSection title={heading} description={intro} />
 
       {/* Additional Content Sections (if any) */}
       {/* This will be populated by the pageBuilder field when content is added in Sanity */}
