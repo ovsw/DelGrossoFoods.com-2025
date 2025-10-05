@@ -1,8 +1,8 @@
-import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
-import { ContactForm } from "@/components/features/contact/contact-form";
+import { ContactFormSection } from "@/components/page-sections/contact-page/contact-form-section";
+import { ContactHeroSection } from "@/components/page-sections/contact-page/contact-hero-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getContactPageQuery } from "@/lib/sanity/query";
 import type { GetContactPageQueryResult } from "@/lib/sanity/sanity.types";
@@ -46,31 +46,8 @@ export default async function ContactPage() {
 
   return (
     <main>
-      {/* Hero Section */}
-      <Section spacingTop="default" spacingBottom="default">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="max-w-3xl text-center">
-            <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
-              {heading}
-            </h1>
-            <p className="mt-4 text-xl leading-8 text-muted-foreground">
-              {intro}
-            </p>
-          </div>
-        </div>
-      </Section>
-
-      {/* Contact Form Section */}
-      <Section spacingTop="default" spacingBottom="default">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="bg-white/50 rounded-lg border border-input p-6 md:p-8">
-            <h2 className="text-2xl font-semibold mb-6 text-center">
-              Send us a message
-            </h2>
-            <ContactForm />
-          </div>
-        </div>
-      </Section>
+      <ContactHeroSection title={heading} description={intro} />
+      <ContactFormSection />
 
       {/* Additional Content Sections (if any) */}
       {/* This will be populated by the pageBuilder field when content is added in Sanity */}
