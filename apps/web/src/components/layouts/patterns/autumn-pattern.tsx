@@ -1,4 +1,5 @@
 import { cn } from "@workspace/ui/lib/utils";
+import { useId } from "react";
 
 interface AutumnPatternProps {
   patternX: string;
@@ -21,6 +22,7 @@ export function AutumnPattern({
   maskClass,
   opacity,
 }: AutumnPatternProps) {
+  const idBase = useId();
   return (
     <svg
       aria-hidden="true"
@@ -35,7 +37,7 @@ export function AutumnPattern({
         <pattern
           x={patternX}
           y={-1}
-          id="decorated-split-pattern-autumn"
+          id={`${idBase}-pattern`}
           width={88}
           height={24}
           patternUnits="userSpaceOnUse"
@@ -51,7 +53,7 @@ export function AutumnPattern({
         <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
       </svg>
       <rect
-        fill="url(#decorated-split-pattern-autumn)"
+        fill={`url(#${idBase}-pattern)`}
         width="100%"
         height="100%"
         strokeWidth={0}
