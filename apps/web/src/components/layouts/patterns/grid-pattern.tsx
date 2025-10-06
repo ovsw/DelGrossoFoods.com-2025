@@ -1,4 +1,5 @@
 import { cn } from "@workspace/ui/lib/utils";
+import { useId } from "react";
 
 interface GridPatternProps {
   patternX: string;
@@ -21,6 +22,7 @@ export function GridPattern({
   maskClass,
   opacity,
 }: GridPatternProps) {
+  const idBase = useId();
   return (
     <svg
       aria-hidden="true"
@@ -35,7 +37,7 @@ export function GridPattern({
         <pattern
           x={patternX}
           y={-1}
-          id="decorated-split-pattern-grid"
+          id={`${idBase}-pattern`}
           width={200}
           height={200}
           patternUnits="userSpaceOnUse"
@@ -47,7 +49,7 @@ export function GridPattern({
         <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
       </svg>
       <rect
-        fill="url(#decorated-split-pattern-grid)"
+        fill={`url(#${idBase}-pattern)`}
         width="100%"
         height="100%"
         strokeWidth={0}
