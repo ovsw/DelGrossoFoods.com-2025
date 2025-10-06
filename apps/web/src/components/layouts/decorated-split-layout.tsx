@@ -6,10 +6,11 @@ import {
   type ReactNode,
 } from "react";
 
+import { AutumnPattern } from "./patterns/autumn-pattern";
 import { GridPattern } from "./patterns/grid-pattern";
 import { ItalianIngredientsPattern } from "./patterns/italian-ingredients-pattern";
 
-type BackgroundVariant = "grid" | "italian-ingredients";
+type BackgroundVariant = "grid" | "italian-ingredients" | "autumn";
 
 interface VariantConfig {
   baseColor: string;
@@ -35,6 +36,14 @@ const BACKGROUND_VARIANTS: Record<BackgroundVariant, VariantConfig> = {
     patternFill: "fill-brand-red/90",
     gradientFrom: "from-th-light-100/40",
     gradientTo: "to-th-light-200/40",
+    opacity: "opacity-10",
+  },
+  autumn: {
+    baseColor: "bg-[#525b45]/25",
+    patternStroke: "stroke-[#525b45]/80",
+    patternFill: "fill-[#525b45]/60",
+    gradientFrom: "from-[#525b45]/15",
+    gradientTo: "to-[#525b45]/8",
     opacity: "opacity-10",
   },
 } as const;
@@ -140,6 +149,15 @@ function DecoratedSplitLayoutRoot({
         <ItalianIngredientsPattern
           patternX={patternX}
           patternStroke={patternStroke}
+          maskClass={maskClass}
+          opacity={opacity}
+        />
+      ) : variant === "autumn" ? (
+        <AutumnPattern
+          patternX={patternX}
+          svgX={svgX}
+          patternStroke={patternStroke}
+          patternFill={patternFill}
           maskClass={maskClass}
           opacity={opacity}
         />

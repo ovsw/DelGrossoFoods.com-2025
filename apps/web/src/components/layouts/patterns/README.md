@@ -92,3 +92,4 @@ See existing patterns:
 
 - `grid-pattern.tsx` - Simple repeating grid lines
 - `italian-ingredients-pattern.tsx` - Large illustration background
+- `autumn-pattern.tsx` - Organic leaf and branch motifs with autumnal styling
