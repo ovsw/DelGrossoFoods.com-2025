@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import LogoSvg from "@/components/elements/logo";
 import { announce } from "@/lib/a11y/announce";
 
-const FORMSPARK_URL = "https://submit-form.com/YPNRQGkpq";
+const FORMSPARK_URL = process.env.NEXT_PUBLIC_FORMSPARK_URL;
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
