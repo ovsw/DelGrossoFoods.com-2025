@@ -145,6 +145,11 @@ function getDocumentTypeConfig(
         documentType: "Store locator page",
         requiredPrefix: "/where-to-buy",
       };
+    case "contactPage":
+      return {
+        documentType: "Contact page",
+        requiredPrefix: "/contact",
+      };
     case "page":
       return {
         documentType: "Page",
@@ -386,6 +391,13 @@ function applyDocumentTypeRules(
       // Recipe index should be exactly /recipes
       if (slug !== "/recipes") {
         return "/recipes";
+      }
+      return slug;
+
+    case "contactPage":
+      // Contact page should be exactly /contact
+      if (slug !== "/contact") {
+        return "/contact";
       }
       return slug;
 
