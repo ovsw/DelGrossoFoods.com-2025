@@ -21,9 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const cleanDescription = rawDescription ? stegaClean(rawDescription) : null;
 
   return getSEOMetadata({
-    title: cleanTitle
-      ? `${cleanTitle} - DelGrosso Foods`
-      : "Contact Us - DelGrosso Foods",
+    title: cleanTitle || "Contact Us",
     description:
       cleanDescription ||
       "Get in touch with DelGrosso Foods. Whether you have questions about our La Famiglia DelGrosso pasta sauces or need help finding our products, we're here to help.",
