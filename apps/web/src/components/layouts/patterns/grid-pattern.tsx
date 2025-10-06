@@ -5,6 +5,8 @@ interface GridPatternProps {
   svgX: string;
   patternStroke: string;
   patternFill: string;
+  maskClass: string;
+  opacity: string;
 }
 
 /**
@@ -16,13 +18,17 @@ export function GridPattern({
   svgX,
   patternStroke,
   patternFill,
+  maskClass,
+  opacity,
 }: GridPatternProps) {
   return (
     <svg
       aria-hidden="true"
       className={cn(
-        "absolute inset-0 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)]",
+        "absolute inset-0 size-full",
+        maskClass,
         patternStroke,
+        opacity,
       )}
     >
       <defs>
@@ -37,12 +43,6 @@ export function GridPattern({
           <path d="M130 200V.5M.5 .5H200" fill="none" />
         </pattern>
       </defs>
-      <rect
-        width="100%"
-        height="100%"
-        strokeWidth={0}
-        className="fill-background"
-      />
       <svg x={svgX} y={-1} className={cn("overflow-visible", patternFill)}>
         <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
       </svg>
