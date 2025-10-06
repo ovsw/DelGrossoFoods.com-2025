@@ -6,19 +6,44 @@ import {
   type ReactNode,
 } from "react";
 
-interface DecorativeBackgroundOptions {
-  baseColor?: string;
-  patternStroke?: string;
-  patternFill?: string;
-  gradientFrom?: string;
-  gradientTo?: string;
+import { GridPattern } from "./patterns/grid-pattern";
+import { ItalianIngredientsPattern } from "./patterns/italian-ingredients-pattern";
+
+type BackgroundVariant = "grid" | "italian-ingredients";
+
+interface VariantConfig {
+  baseColor: string;
+  patternStroke: string;
+  patternFill: string;
+  gradientFrom: string;
+  gradientTo: string;
+  opacity: string;
 }
+
+const BACKGROUND_VARIANTS: Record<BackgroundVariant, VariantConfig> = {
+  grid: {
+    baseColor: "bg-th-red-500/30",
+    patternStroke: "stroke-th-red-500/90",
+    patternFill: "fill-muted/20",
+    gradientFrom: "from-brand-green/10",
+    gradientTo: "to-brand-green/5",
+    opacity: "opacity-90",
+  },
+  "italian-ingredients": {
+    baseColor: "bg-th-brown-400/40",
+    patternStroke: "stroke-brand-red/20",
+    patternFill: "fill-brand-red/90",
+    gradientFrom: "from-th-light-100/40",
+    gradientTo: "to-th-light-200/40",
+    opacity: "opacity-10",
+  },
+} as const;
 
 interface DecoratedSplitLayoutProps {
   decoratedColumn: "main" | "secondary";
   mainPosition: "left" | "right";
+  variant?: BackgroundVariant;
   children: ReactNode;
-  decorativeBackground?: DecorativeBackgroundOptions;
 }
 
 interface SlotProps {
@@ -46,8 +71,8 @@ Secondary.displayName = "DecoratedSplitLayout.Secondary";
 function DecoratedSplitLayoutRoot({
   decoratedColumn,
   mainPosition,
+  variant = "grid",
   children,
-  decorativeBackground = {},
 }: DecoratedSplitLayoutProps) {
   // Extract slot content from children
   const mainContent = findSlot(children, Main);
@@ -64,18 +89,28 @@ function DecoratedSplitLayoutRoot({
       "DecoratedSplitLayout requires a <DecoratedSplitLayout.Secondary> child",
     );
   }
+
+  // Get variant configuration
   const {
-    baseColor = "bg-muted/30",
-    patternStroke = "stroke-muted-foreground/90",
-    patternFill = "fill-muted/20",
-    gradientFrom = "from-brand-green/10",
-    gradientTo = "to-brand-green/5",
-  } = decorativeBackground;
+    baseColor,
+    patternStroke,
+    patternFill,
+    gradientFrom,
+    gradientTo,
+    opacity,
+  } = BACKGROUND_VARIANTS[variant];
 
   // Determine which physical side (left/right) is decorated
   const isMainDecorated = decoratedColumn === "main";
   const isMainLeft = mainPosition === "left";
   const isLeftDecorated = isMainDecorated ? isMainLeft : !isMainLeft;
+
+  // Calculate mask class based on decoration position
+  // Logic: (main decorated + main left) OR (secondary decorated + main right) → top_right
+  // Otherwise → top_left
+  const maskClass = isLeftDecorated
+    ? "mask-[radial-gradient(100%_100%_at_top_right,white,transparent)]"
+    : "mask-[radial-gradient(100%_100%_at_top_left,white,transparent)]";
 
   // Background positioning and rounding (rounds towards center)
   const backgroundClasses = cn(
@@ -92,7 +127,7 @@ function DecoratedSplitLayoutRoot({
 
   // Gradient positioning
   const gradientClasses = cn(
-    "absolute top-[calc(100%-13rem)] hidden transform-gpu blur-3xl lg:top-[calc(50%-7rem)]",
+    "blob_overlay absolute top-[calc(100%-13rem)] transform-gpu blur-3xl lg:top-[calc(50%-7rem)]",
     isLeftDecorated
       ? "-left-56 lg:left-[max(-14rem,calc(100%-59rem))]"
       : "-right-56 lg:right-[max(-14rem,calc(100%-59rem))]",
@@ -101,41 +136,23 @@ function DecoratedSplitLayoutRoot({
   // Decorative background element (rendered inside decorated column)
   const decorativeBackgroundElement = (
     <div className={backgroundClasses}>
-      <svg
-        aria-hidden="true"
-        className={cn(
-          "absolute inset-0 size-full mask-[radial-gradient(100%_100%_at_top_right,white,transparent)]",
-          patternStroke,
-        )}
-      >
-        <defs>
-          <pattern
-            x={patternX}
-            y={-1}
-            id="decorated-split-pattern"
-            width={200}
-            height={200}
-            patternUnits="userSpaceOnUse"
-          >
-            <path d="M130 200V.5M.5 .5H200" fill="none" />
-          </pattern>
-        </defs>
-        <rect
-          width="100%"
-          height="100%"
-          strokeWidth={0}
-          className="fill-background"
+      {variant === "italian-ingredients" ? (
+        <ItalianIngredientsPattern
+          patternX={patternX}
+          patternStroke={patternStroke}
+          maskClass={maskClass}
+          opacity={opacity}
         />
-        <svg x={svgX} y={-1} className={cn("overflow-visible", patternFill)}>
-          <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
-        </svg>
-        <rect
-          fill="url(#decorated-split-pattern)"
-          width="100%"
-          height="100%"
-          strokeWidth={0}
+      ) : (
+        <GridPattern
+          patternX={patternX}
+          svgX={svgX}
+          patternStroke={patternStroke}
+          patternFill={patternFill}
+          maskClass={maskClass}
+          opacity={opacity}
         />
-      </svg>
+      )}
       <div aria-hidden="true" className={gradientClasses}>
         <div
           style={{

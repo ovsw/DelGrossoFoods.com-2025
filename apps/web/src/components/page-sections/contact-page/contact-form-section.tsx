@@ -16,7 +16,11 @@ export function ContactFormSection({
 }: ContactFormSectionProps) {
   return (
     <Section spacingTop="page-top" spacingBottom="default">
-      <DecoratedSplitLayout decoratedColumn="secondary" mainPosition="left">
+      <DecoratedSplitLayout
+        decoratedColumn="main"
+        mainPosition="left"
+        variant="italian-ingredients"
+      >
         <DecoratedSplitLayout.Main>
           <h2 className="text-4xl font-semibold tracking-tight text-pretty text-foreground sm:text-5xl">
             {title}
