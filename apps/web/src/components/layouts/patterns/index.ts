@@ -11,6 +11,7 @@
  * 2. Illustration Patterns - Single large background images
  */
 
+export { AutumnPattern } from "./autumn-pattern";
 export { GridPattern } from "./grid-pattern";
 export { ItalianIngredientsPattern } from "./italian-ingredients-pattern";
 
