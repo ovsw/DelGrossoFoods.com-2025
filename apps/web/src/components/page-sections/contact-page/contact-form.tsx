@@ -171,8 +171,9 @@ export function ContactForm() {
               {...register("email", {
                 required: "Email is required",
                 pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "Please enter a valid email address",
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                  message:
+                    "Please enter a valid email address including a domain",
                 },
               })}
               className={`w-full rounded-md border bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
