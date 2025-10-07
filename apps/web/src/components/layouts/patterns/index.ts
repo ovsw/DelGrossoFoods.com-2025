@@ -1,4 +1,4 @@
-import { type ComponentType, lazy } from "react";
+import { type ComponentType } from "react";
 
 import type { AutumnPatternProps } from "./autumn-pattern";
 // Import components for registry (these will be lazy loaded by PatternFactory)

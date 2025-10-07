@@ -1,6 +1,18 @@
-import { type ReactElement, type ReactNode, Suspense } from "react";
+import {
+  type ComponentType,
+  type ReactElement,
+  type ReactNode,
+  Suspense,
+} from "react";
 
-import { PATTERN_COMPONENTS, type PatternVariant } from "./index";
+import type { AutumnPatternProps } from "./autumn-pattern";
+import type { GridPatternProps } from "./grid-pattern";
+import {
+  PATTERN_COMPONENTS,
+  type PatternProps,
+  type PatternVariant,
+} from "./index";
+import type { ItalianIngredientsPatternProps } from "./italian-ingredients-pattern";
 
 /**
  * Pattern factory component for conditional rendering with lazy loading
@@ -27,28 +39,42 @@ import { PATTERN_COMPONENTS, type PatternVariant } from "./index";
  * }
  * ```
  */
-interface PatternFactoryProps {
-  variant: PatternVariant;
-  fallback?: ReactNode;
-  patternX: string;
-  patternStroke: string;
-  maskClass: string;
-  opacity: string;
-  svgX?: string;
-  patternFill?: string;
-  [key: string]: any; // Allow additional props for extensibility
-}
+// Accept any variant that extends the pattern variant union
+export function PatternFactory<Variant extends PatternVariant>(
+  props: {
+    variant: Variant;
+    fallback?: ReactNode;
+  } & PatternProps<Variant>,
+): ReactElement {
+  const { variant, fallback = null } = props;
 
-export function PatternFactory({
-  variant,
-  fallback = null,
-  ...patternProps
-}: PatternFactoryProps): ReactElement {
-  const PatternComponent = PATTERN_COMPONENTS[variant];
+  // Use explicit type checking and casting based on the variant
+  if (variant === "autumn") {
+    const autumnProps = props as AutumnPatternProps & { fallback?: ReactNode };
+    return (
+      <Suspense fallback={fallback}>
+        <PATTERN_COMPONENTS.autumn {...autumnProps} />
+      </Suspense>
+    );
+  }
 
+  if (variant === "grid") {
+    const gridProps = props as GridPatternProps & { fallback?: ReactNode };
+    return (
+      <Suspense fallback={fallback}>
+        <PATTERN_COMPONENTS.grid {...gridProps} />
+      </Suspense>
+    );
+  }
+
+  // italian-ingredients
+  const italianProps = props as ItalianIngredientsPatternProps & {
+    fallback?: ReactNode;
+  };
+  const ItalianIngredientsComponent = PATTERN_COMPONENTS["italian-ingredients"];
   return (
     <Suspense fallback={fallback}>
-      <PatternComponent {...(patternProps as any)} />
+      <ItalianIngredientsComponent {...italianProps} />
     </Suspense>
   );
 }
