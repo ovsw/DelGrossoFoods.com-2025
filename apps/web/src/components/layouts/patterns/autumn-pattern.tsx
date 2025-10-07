@@ -1,7 +1,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import { useId } from "react";
 
-interface AutumnPatternProps {
+export interface AutumnPatternProps {
   patternX: string;
   svgX: string;
   patternStroke: string;

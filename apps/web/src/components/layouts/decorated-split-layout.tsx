@@ -6,9 +6,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { AutumnPattern } from "./patterns/autumn-pattern";
-import { GridPattern } from "./patterns/grid-pattern";
-import { ItalianIngredientsPattern } from "./patterns/italian-ingredients-pattern";
+import { PatternFactory } from "./patterns/pattern-factory";
 
 type BackgroundVariant = "grid" | "italian-ingredients" | "autumn";
 
@@ -145,32 +143,19 @@ function DecoratedSplitLayoutRoot({
   // Decorative background element (rendered inside decorated column)
   const decorativeBackgroundElement = (
     <div className={backgroundClasses}>
-      {variant === "italian-ingredients" ? (
-        <ItalianIngredientsPattern
-          patternX={patternX}
-          patternStroke={patternStroke}
-          maskClass={maskClass}
-          opacity={opacity}
-        />
-      ) : variant === "autumn" ? (
-        <AutumnPattern
-          patternX={patternX}
-          svgX={svgX}
-          patternStroke={patternStroke}
-          patternFill={patternFill}
-          maskClass={maskClass}
-          opacity={opacity}
-        />
-      ) : (
-        <GridPattern
-          patternX={patternX}
-          svgX={svgX}
-          patternStroke={patternStroke}
-          patternFill={patternFill}
-          maskClass={maskClass}
-          opacity={opacity}
-        />
-      )}
+      <PatternFactory
+        variant={variant}
+        patternX={patternX}
+        patternStroke={patternStroke}
+        maskClass={maskClass}
+        opacity={opacity}
+        {...(variant === "autumn" || variant === "grid"
+          ? {
+              svgX,
+              patternFill,
+            }
+          : {})}
+      />
       <div aria-hidden="true" className={gradientClasses}>
         <div
           style={{

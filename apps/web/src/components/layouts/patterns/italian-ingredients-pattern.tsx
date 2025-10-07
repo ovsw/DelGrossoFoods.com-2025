@@ -1,6 +1,6 @@
 import { cn } from "@workspace/ui/lib/utils";
 
-interface ItalianIngredientsPatternProps {
+export interface ItalianIngredientsPatternProps {
   patternX: string;
   patternStroke: string;
   maskClass: string;
