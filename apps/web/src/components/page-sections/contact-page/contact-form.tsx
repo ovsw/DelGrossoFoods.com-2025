@@ -54,6 +54,10 @@ export function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setFormState("submitting");
 
+    if (!FORMSPARK_URL) {
+      throw new Error("Form service not configured");
+    }
+
     try {
       const response = await fetch(FORMSPARK_URL, {
         method: "POST",
@@ -71,7 +75,7 @@ export function ContactForm() {
       setFormState("success");
       reset();
       announce(
-        "Thank you for your message! We&apos;ll get back to you soon.",
+        "Thank you for your message! We'll get back to you soon.",
         "polite",
       );
     } catch (error) {
