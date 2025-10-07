@@ -8,7 +8,9 @@ export function WhereToBuyHeroSection() {
       width={1200}
       height={800}
       objectFit="contain"
-      priority
+      priority={true}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+      quality={75}
     />
   );
 }
