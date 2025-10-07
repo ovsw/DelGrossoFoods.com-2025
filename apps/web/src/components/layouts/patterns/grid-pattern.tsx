@@ -1,7 +1,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import { useId } from "react";
 
-interface GridPatternProps {
+export interface GridPatternProps {
   patternX: string;
   svgX: string;
   patternStroke: string;
