@@ -2066,6 +2066,23 @@
           },
           "optional": true
         },
+        "imageFit": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "cover"
+              },
+              {
+                "type": "string",
+                "value": "fit"
+              }
+            ]
+          },
+          "optional": true
+        },
         "buttons": {
           "type": "objectAttribute",
           "value": {
