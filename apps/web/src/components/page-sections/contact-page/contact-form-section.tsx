@@ -22,9 +22,9 @@ export function ContactFormSection({
         variant="italian-ingredients"
       >
         <DecoratedSplitLayout.Main>
-          <h2 className="text-4xl font-semibold tracking-tight text-pretty text-foreground sm:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-pretty text-foreground sm:text-5xl">
             {title}
-          </h2>
+          </h1>
           <p className="mt-6 text-lg/8 text-muted-foreground">{description}</p>
 
           {/* Response Time */}
