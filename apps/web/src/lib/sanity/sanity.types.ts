@@ -285,6 +285,7 @@ export type Feature = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  imageFit?: "cover" | "fit";
   buttons?: Array<
     {
       _key: string;
@@ -1755,6 +1756,7 @@ export type QueryHomePageDataResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;
@@ -2238,6 +2240,7 @@ export type QuerySlugPageDataResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;
@@ -2715,6 +2718,7 @@ export type QueryBlogIndexPageDataResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;
@@ -4526,6 +4530,7 @@ export type GetHistoryPageQueryResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;
@@ -4978,6 +4983,7 @@ export type GetStoreLocatorPageQueryResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;
@@ -5430,6 +5436,7 @@ export type GetContactPageQueryResult = {
             top: number;
           } | null;
         } | null;
+        imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
           variant: "default" | "link" | "outline" | "secondary" | null;

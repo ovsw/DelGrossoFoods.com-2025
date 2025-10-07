@@ -1,5 +1,7 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
+import { cn } from "@workspace/ui/lib/utils";
+import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityButtons } from "@/components/elements/sanity-buttons";
@@ -18,11 +20,21 @@ export function FeatureBlock({
   title,
   richText,
   image,
+  imageFit,
   buttons,
   spacing,
   isPageTop = false,
 }: FeatureBlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const cleanedImageFit = stegaClean(imageFit ?? "cover") as "cover" | "fit";
+  const isImageFit = cleanedImageFit === "fit";
+  const imageObjectFitClass = isImageFit ? "object-contain" : "object-cover";
+  const imageFrameClass = cn(
+    "relative aspect-[4/3] overflow-hidden",
+    isImageFit
+      ? null
+      : "rounded-2xl shadow-2xl ring-1 ring-brand-green-text/20",
+  );
 
   return (
     <Section
@@ -86,13 +98,15 @@ export function FeatureBlock({
           {/* Right side image */}
           {image && (
             <div className="relative lg:pl-8">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-brand-green-text/20">
+              <div className={imageFrameClass}>
                 <SanityImage
                   image={image}
-                  className="object-cover w-full h-full"
+                  className={cn("h-full w-full", imageObjectFitClass)}
                 />
                 {/* Decorative gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-brand-green-text/10 to-transparent rounded-2xl"></div>
+                {!isImageFit ? (
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent"></div>
+                ) : null}
               </div>
             </div>
           )}
