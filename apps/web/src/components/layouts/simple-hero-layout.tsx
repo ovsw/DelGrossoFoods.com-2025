@@ -10,6 +10,10 @@ export interface SimpleHeroLayoutProps {
   readonly objectFit?: "cover" | "contain";
   readonly priority?: boolean;
   readonly className?: string;
+  readonly sizes?: string;
+  readonly quality?: number;
+  readonly placeholder?: "blur" | "empty";
+  readonly blurDataURL?: string;
 }
 
 export function SimpleHeroLayout({
@@ -20,6 +24,10 @@ export function SimpleHeroLayout({
   objectFit = "contain",
   priority = false,
   className,
+  sizes,
+  quality,
+  placeholder,
+  blurDataURL,
 }: SimpleHeroLayoutProps) {
   return (
     <Section
@@ -35,6 +43,13 @@ export function SimpleHeroLayout({
             width={width}
             height={height}
             priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
+            decoding={priority ? "sync" : "async"}
+            sizes={sizes}
+            quality={quality}
+            placeholder={placeholder}
+            blurDataURL={blurDataURL}
             className={cn(
               "w-full",
               objectFit === "cover" ? "object-cover" : "object-contain",
