@@ -1,9 +1,4 @@
-import {
-  type ComponentType,
-  type ReactElement,
-  type ReactNode,
-  Suspense,
-} from "react";
+import { type ReactElement, type ReactNode, Suspense } from "react";
 
 import type { AutumnPatternProps } from "./autumn-pattern";
 import type { GridPatternProps } from "./grid-pattern";

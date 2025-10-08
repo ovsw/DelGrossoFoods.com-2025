@@ -1,21 +1,26 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
-import { stegaClean } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
+import { dataset, projectId, studioUrl } from "@/config";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
 
-export type FeatureBlockProps = PageBuilderBlockProps<"feature">;
+export type FeatureBlockProps = PageBuilderBlockProps<"feature"> & {
+  sanityDocumentId?: string;
+  sanityDocumentType?: string;
+};
 
 /**
  * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
  */
 export function FeatureBlock({
+  _key,
   badge,
   title,
   richText,
@@ -24,12 +29,28 @@ export function FeatureBlock({
   buttons,
   spacing,
   isPageTop = false,
+  sanityDocumentId,
+  sanityDocumentType,
 }: FeatureBlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
   const cleanedImageFit = stegaClean(imageFit ?? "cover") as "cover" | "fit";
   const isImageFit = cleanedImageFit === "fit";
   const imageObjectFitClass = isImageFit ? "object-contain" : "object-cover";
   const imageMode = isImageFit ? "contain" : "cover";
+
+  // Create data attribute for click-to-edit functionality
+  // The path needs to include the block key since this is within a page builder
+  const imageDataAttribute =
+    sanityDocumentId && sanityDocumentType && _key
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].image`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
 
   const imageFrameClass = cn(
     "relative aspect-[4/3] overflow-hidden",
@@ -98,23 +119,28 @@ export function FeatureBlock({
           </div>
 
           {/* Right side image */}
-          {image && (
-            <div className="relative lg:pl-8">
-              <div className={imageFrameClass}>
-                <SanityImage
-                  image={image}
-                  mode={imageMode}
-                  width={800}
-                  height={800}
-                  className={cn("h-full w-full", imageObjectFitClass)}
-                />
-                {/* Decorative gradient overlay */}
-                {!isImageFit ? (
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent"></div>
-                ) : null}
-              </div>
+          <div className="relative lg:pl-8">
+            <div className={imageFrameClass}>
+              {image && (
+                <>
+                  <SanityImage
+                    image={image}
+                    width={800}
+                    height={800}
+                    alt={typeof title === "string" ? title : ""}
+                    className={cn(
+                      "w-full rounded-3xl h-full z-10",
+                      imageObjectFitClass,
+                    )}
+                    data-sanity={imageDataAttribute}
+                  />
+                  {!isImageFit ? (
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent -z-1"></div>
+                  ) : null}
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </Section>
