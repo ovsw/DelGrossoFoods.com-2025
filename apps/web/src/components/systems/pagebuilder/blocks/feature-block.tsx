@@ -53,7 +53,7 @@ export function FeatureBlock({
       : undefined;
 
   const imageFrameClass = cn(
-    "relative aspect-[4/3] overflow-hidden",
+    "relative aspect-[4/3] ",
     isImageFit
       ? null
       : "rounded-2xl shadow-2xl ring-1 ring-brand-green-text/20",
@@ -122,11 +122,11 @@ export function FeatureBlock({
           <div className="relative lg:pl-8">
             <div className={imageFrameClass}>
               {image && (
-                <>
+                <div className="overflow-hidden">
                   <SanityImage
                     image={image}
-                    width={800}
-                    height={800}
+                    width={400}
+                    height={400}
                     alt={typeof title === "string" ? title : ""}
                     className={cn(
                       "w-full rounded-3xl h-full z-10",
@@ -137,7 +137,7 @@ export function FeatureBlock({
                   {!isImageFit ? (
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent -z-1"></div>
                   ) : null}
-                </>
+                </div>
               )}
             </div>
           </div>
