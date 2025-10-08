@@ -64,10 +64,9 @@ export function FeatureBlock({
       spacingTop={spacingTop}
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}
-      className="bg-brand-green relative overflow-hidden rounded-none min-[1440px]:rounded-2xl lg:max-[1439px]:mx-[calc(50%-50vw)] min-[1440px]:-mx-8 min-[1536px]:-mx-12"
     >
       {/* Decorative background elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-brand-green-text/10 blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-white/5 blur-3xl"></div>
         <svg
@@ -88,57 +87,58 @@ export function FeatureBlock({
           </defs>
           <rect width="100%" height="100%" fill="url(#feature-pattern)" />
         </svg>
-      </div>
+      </div> */}
 
-      <div className="container mx-auto px-4 md:px-8 lg:max-w-7xl 2xl:max-w-8xl">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Left side content */}
-          <div className="space-y-8 lg:pr-8">
-            {badge && (
-              <Eyebrow text={badge} className="text-brand-green-text" />
-            )}
-            {title && (
-              <h2 className="text-3xl font-bold tracking-tight text-brand-green-text md:text-4xl lg:text-5xl">
-                {title}
-              </h2>
-            )}
-            {richText && (
-              <div className="prose prose-invert max-w-none text-brand-green-text/90">
-                <RichText richText={richText} />
-              </div>
-            )}
-
-            {buttons && (
-              <div className="flex flex-wrap gap-4 pt-4">
-                <SanityButtons
-                  buttons={buttons}
-                  buttonClassName="bg-white text-brand-green hover:bg-white/90"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Right side image */}
-          <div className="relative lg:pl-8">
-            <div className={imageFrameClass}>
-              {image && (
-                <div className="overflow-hidden">
-                  <SanityImage
-                    image={image}
-                    width={400}
-                    height={400}
-                    alt={typeof title === "string" ? title : ""}
-                    className={cn(
-                      "w-full rounded-3xl h-full z-10",
-                      imageObjectFitClass,
-                    )}
-                    data-sanity={imageDataAttribute}
-                  />
-                  {!isImageFit ? (
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent -z-1"></div>
-                  ) : null}
+      <div className="relative isolate overflow-hidden  px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24 rounded-none bg-brand-green min-[1440px]:-mx-8 min-[1440px]:rounded-2xl min-[1536px]:-mx-12 lg:max-[1439px]:mx-[calc(50%-50vw)]">
+        <div className="2xl:max-w-8xl container mx-auto px-4 md:px-8 lg:max-w-7xl">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
+            {/* Left side content */}
+            <div className="space-y-8 lg:pr-8">
+              {badge && (
+                <Eyebrow text={badge} className="text-brand-green-text" />
+              )}
+              {title && (
+                <h2 className="text-3xl font-bold tracking-tight text-brand-green-text md:text-4xl lg:text-5xl">
+                  {title}
+                </h2>
+              )}
+              {richText && (
+                <div className="prose prose-invert max-w-none text-brand-green-text/90">
+                  <RichText richText={richText} />
                 </div>
               )}
+              {buttons && (
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <SanityButtons
+                    buttons={buttons}
+                    buttonClassName="bg-white text-brand-green hover:bg-white/90"
+                  />
+                </div>
+              )}
+            </div>
+            {/* Right side image */}
+            <div className="lg:pl-8 max-h-120 lg:aspect-[4/3]">
+              <div className={imageFrameClass}>
+                {image && (
+                  <>
+                    <SanityImage
+                      image={image}
+                      width={400}
+                      height={400}
+                      alt={typeof title === "string" ? title : ""}
+                      className={cn(
+                        "w-full rounded-3xl h-full max-h-120 lg:max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] ",
+                        // "size-[180%] max-w-none rounded-3xl z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] lg:left-[50%] lg:transform lg:-translate-x-[50%]",
+                        imageObjectFitClass,
+                      )}
+                      data-sanity={imageDataAttribute}
+                    />
+                    {!isImageFit ? (
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent -z-1"></div>
+                    ) : null}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
