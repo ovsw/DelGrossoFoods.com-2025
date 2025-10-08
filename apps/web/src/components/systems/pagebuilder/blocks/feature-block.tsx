@@ -29,6 +29,8 @@ export function FeatureBlock({
   const cleanedImageFit = stegaClean(imageFit ?? "cover") as "cover" | "fit";
   const isImageFit = cleanedImageFit === "fit";
   const imageObjectFitClass = isImageFit ? "object-contain" : "object-cover";
+  const imageMode = isImageFit ? "contain" : "cover";
+
   const imageFrameClass = cn(
     "relative aspect-[4/3] overflow-hidden",
     isImageFit
@@ -101,6 +103,9 @@ export function FeatureBlock({
               <div className={imageFrameClass}>
                 <SanityImage
                   image={image}
+                  mode={imageMode}
+                  width={800}
+                  height={800}
                   className={cn("h-full w-full", imageObjectFitClass)}
                 />
                 {/* Decorative gradient overlay */}
