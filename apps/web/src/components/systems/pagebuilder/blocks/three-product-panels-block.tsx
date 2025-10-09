@@ -42,8 +42,10 @@ const normalizeHref = (href?: string | null): string | undefined => {
 
 // Shared styles for all cards - smooth, consistent timing
 const SHARED_CARD_STYLES = cn(
-  "group cursor-pointer transition-all duration-900 ease-out",
+  "group relative cursor-pointer transition-all duration-900 ease-out",
   "hover:scale-[1.02] hover:shadow-2xl",
+  // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
+  "h-[24rem] md:h-[28rem] lg:h-[30rem]",
   "border-2 border-white/20 rounded-2xl overflow-hidden text-white",
 );
 
@@ -71,71 +73,91 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
       role="article"
       aria-label={`${panel.title} product panel`}
     >
-      {/* Panel Content */}
-      <div className="p-6 md:p-8">
-        {/* Panel Image */}
-        {panel.image && (
-          <div className="mb-6 aspect-[4/3] overflow-hidden rounded-lg">
-            <SanityImage
-              image={panel.image}
-              width={400}
-              height={300}
-              alt={panel.title || "Product image"}
-              className="h-full w-full object-contain"
-            />
-          </div>
-        )}
-
-        {/* Panel Title */}
-        <h3 className="mb-4 text-2xl font-bold text-white">{panel.title}</h3>
-
-        {/* Short Description */}
-        <div className="mb-4">
-          <p className="text-sm leading-relaxed text-white/90">
-            {panel.shortDescription}
-          </p>
-        </div>
-
-        {/* Expanded Content - grid-template-rows reveal (CSS-only) */}
-        {/**
-         * Technique: Animate grid-template-rows from 0fr -> 1fr while the
-         * inner clip wrapper has overflow-hidden. This yields smooth height
-         * animation without hard max-height values.
-         *
-         * Keyboard: also reveal on focus-within of the card (group).
-         */}
+      {/* Background Image Layer */}
+      {panel.image && (
         <div
           className={cn(
-            // Grid container with a single row track we can animate
-            "grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out",
-            // Reveal on hover and focus-within of the parent card
-            "group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr]",
-            // Respect reduced motion
-            "motion-reduce:transition-none motion-reduce:duration-0",
+            "pointer-events-none absolute inset-x-0 top-0 flex items-end justify-center",
+            "bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem]",
+            "px-8 md:px-10",
           )}
         >
-          <div className="overflow-hidden">
-            <div className="mb-4 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
-              <p className="text-sm leading-relaxed text-white/90">
-                {panel.expandedDescription}
-              </p>
-            </div>
+          <SanityImage
+            image={panel.image}
+            width={800}
+            height={600}
+            alt={panel.title || "Product image"}
+            className="h-full w-full max-w-[82%] object-contain"
+          />
+        </div>
+      )}
 
-            {/* CTA Button */}
-            {ctaButton?.href && (
-              <div className="mt-4 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
-                <SanityButtons
-                  buttons={[
-                    {
-                      ...(ctaButton as SanityButtonProps),
-                      variant: "link",
-                    },
-                  ]}
-                  className="gap-0"
-                  buttonClassName="h-auto w-auto justify-start p-0 text-sm font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-80"
-                />
-              </div>
+      {/* Bottom Overlay Content */}
+      <div className="absolute inset-x-0 bottom-0 z-10">
+        <div className="relative">
+          {/* Gradient only appears when overlay expands */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100"
+            style={{
+              backgroundImage:
+                "linear-gradient(0deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)",
+            }}
+            aria-hidden="true"
+          />
+
+          <div
+            className={cn(
+              "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+              "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
             )}
+          >
+            {/* Panel Title */}
+            <h3 className="mb-1 text-2xl font-bold text-white line-clamp-1 md:line-clamp-none">
+              {panel.title}
+            </h3>
+
+            {/* Short Description */}
+            <p className="mb-3 text-sm leading-relaxed text-white/90 line-clamp-1 md:line-clamp-none">
+              {panel.shortDescription}
+            </p>
+
+            {/* Expanded Content - grid-template-rows reveal (CSS-only overlay) */}
+            {/**
+             * Technique: Animate grid-template-rows from 0fr -> 1fr while the
+             * inner clip wrapper has overflow-hidden. The card has a fixed height,
+             * so reveal pushes upward inside the card without changing layout.
+             */}
+            <div
+              className={cn(
+                "grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out",
+                "group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr]",
+                "motion-reduce:transition-none motion-reduce:duration-0",
+              )}
+            >
+              <div className="overflow-hidden">
+                {panel.expandedDescription && (
+                  <p className="mb-3 text-sm leading-relaxed text-white/90 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
+                    {panel.expandedDescription}
+                  </p>
+                )}
+
+                {/* CTA Button */}
+                {ctaButton?.href && (
+                  <div className="opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
+                    <SanityButtons
+                      buttons={[
+                        {
+                          ...(ctaButton as SanityButtonProps),
+                          variant: "link",
+                        },
+                      ]}
+                      className="gap-0"
+                      buttonClassName="h-auto w-auto justify-start p-0 text-sm font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-80"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
