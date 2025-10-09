@@ -45,9 +45,7 @@ alwaysApply: true
 - Naming: descriptive, full words; kebab-case filenames; `.tsx` for components, `.ts` for utils.
 - Accessibility: semantic HTML, alt text, keyboard/contrast sanity checks, no div-as-button.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
-- After completing each task, you MUST:
-      1. ✅ ALWAYS: linting (pnpm --filter web lint:fix) and formatting (pnpm --filter web format)
-      2. ❌ NEVER: full builds (pnpm --filter web build) unless specifically requested
+- After completing each task, you MUST: 1. ✅ ALWAYS: linting (pnpm --filter web lint:fix) and formatting (pnpm --filter web format) 2. ❌ NEVER: full builds (pnpm --filter web build) unless specifically requested
 
 ### UI system and Tailwind
 
@@ -131,3 +129,10 @@ alwaysApply: true
 - Env: required variables documented and present locally/CI.
 - i18n/RTL: apply directional utilities only when asked; follow the existing table.
 
+### Critical Container Requirements
+
+**Avoid `overflow-hidden` on Image Containers:**
+
+- `overflow-hidden` on parent containers of `SanityImage` components causes images to remain blurry (stuck on LQIP) in Sanity Presentation mode.
+- This interferes with the library's intersection observer and layout detection mechanisms
+- **Solution:** Remove `overflow-hidden` from containers that wrap `SanityImage` components

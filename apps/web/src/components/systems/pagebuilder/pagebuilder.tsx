@@ -152,7 +152,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.feature;
           return (
             <div key={`feature-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -193,7 +198,7 @@ function useBlockRenderer(id: string, type: string) {
           );
       }
     },
-    [createBlockDataAttribute],
+    [createBlockDataAttribute, id, type],
   );
 
   return { renderBlock };
