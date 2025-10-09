@@ -161,7 +161,7 @@ export function ThreeProductPanelsBlock({
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className={cn("mb-4 rounded-lg p-4", colors.expandedBg)}>
+                <div className="mb-4">
                   <p className={cn("text-sm leading-relaxed", colors.bodyText)}>
                     {panel.expandedDescription}
                   </p>
