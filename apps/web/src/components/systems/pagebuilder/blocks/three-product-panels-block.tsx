@@ -40,13 +40,9 @@ const normalizeHref = (href?: string | null): string | undefined => {
   return `/${cleaned}`;
 };
 
-// Shared styles for all cards - smooth, consistent timing
+// Shared styles for all cards - smooth, consistent timing and fixed height to prevent layout shift
 const SHARED_CARD_STYLES = cn(
-  "group relative cursor-pointer transition-all duration-900 ease-out",
-  "hover:scale-[1.02] hover:shadow-2xl",
-  // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
-  "h-[24rem] md:h-[28rem] lg:h-[30rem]",
-  "border-2 border-white/20 rounded-2xl overflow-hidden text-white",
+  "group relative cursor-pointer transition-all duration-900 ease-out hover:scale-[1.02] hover:shadow-2xl h-[24rem] md:h-[28rem] lg:h-[30rem] border-2 border-white/20 rounded-2xl overflow-hidden text-white",
 );
 
 /**
@@ -75,13 +71,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
     >
       {/* Background Image Layer */}
       {panel.image && (
-        <div
-          className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 flex items-end justify-center",
-            "bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem]",
-            "px-8 md:px-10",
-          )}
-        >
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-end justify-center bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] px-8 md:px-10">
           <SanityImage
             image={panel.image}
             width={800}
@@ -97,20 +87,11 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
         <div className="relative">
           {/* Gradient only appears when overlay expands */}
           <div
-            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100"
-            style={{
-              backgroundImage:
-                "linear-gradient(0deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)",
-            }}
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.35)_45%,rgba(0,0,0,1)_100%)] opacity-0 transition-opacity duration-300 ease-out group-focus-within:opacity-100 group-hover:opacity-100"
             aria-hidden="true"
           />
 
-          <div
-            className={cn(
-              "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
-              "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
-            )}
-          >
+          <div className="relative rounded-t-2xl bg-[inherit] p-6 md:p-8">
             {/* Panel Title */}
             <h3 className="mb-1 text-2xl font-bold text-white line-clamp-1 md:line-clamp-none">
               {panel.title}
@@ -127,13 +108,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
              * inner clip wrapper has overflow-hidden. The card has a fixed height,
              * so reveal pushes upward inside the card without changing layout.
              */}
-            <div
-              className={cn(
-                "grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out",
-                "group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr]",
-                "motion-reduce:transition-none motion-reduce:duration-0",
-              )}
-            >
+            <div className="grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr] motion-reduce:transition-none motion-reduce:duration-0">
               <div className="overflow-hidden">
                 {panel.expandedDescription && (
                   <p className="mb-3 text-sm leading-relaxed text-white/90 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
@@ -191,19 +166,19 @@ export function ThreeProductPanelsBlock({
       isPageTop={isPageTop}
       eyebrow={
         eyebrow ? (
-          <Eyebrow text={eyebrow} className={cn("text-brand-green")} />
+          <Eyebrow text={eyebrow} className="text-brand-green" />
         ) : undefined
       }
       title={
         title ? (
-          <h2 className={cn("text-3xl font-bold text-brand-green lg:text-5xl")}>
+          <h2 className="text-3xl font-bold text-brand-green lg:text-5xl">
             {title}
           </h2>
         ) : undefined
       }
       description={
         subtitle ? (
-          <p className={cn("mx-auto max-w-2xl text-lg text-th-dark-700")}>
+          <p className="mx-auto max-w-2xl text-lg text-th-dark-700">
             {subtitle}
           </p>
         ) : undefined
