@@ -47,15 +47,16 @@ export function ThreeProductPanelsBlock({
           indicatorBg: "bg-white",
           overlay: "bg-black/10",
         };
+      case "black":
       case "brown":
         return {
-          cardBg: "bg-th-brown-600",
+          cardBg: "bg-th-dark-900",
           border: "border-white/20",
           heading: "text-white",
           bodyText: "text-white/90",
           expandedBg: "bg-white/10",
           buttonBg: "bg-white",
-          buttonText: "text-th-brown-600",
+          buttonText: "text-th-dark-900",
           indicatorBg: "bg-white",
           overlay: "bg-black/10",
         };

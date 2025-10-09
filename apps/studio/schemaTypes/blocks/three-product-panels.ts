@@ -76,12 +76,12 @@ export const threeProductPanels = defineType({
               title: "Accent Color",
               type: "string",
               description:
-                "The accent color for this panel (red, green, or brown)",
+                "The accent color for this panel (red, green, or black)",
               options: {
                 list: [
                   { title: "Deep Red (Original)", value: "red" },
                   { title: "Olive Green (Organic)", value: "green" },
-                  { title: "Dark Brown (La Famiglia)", value: "brown" },
+                  { title: "Charcoal Black (La Famiglia)", value: "black" },
                 ],
               },
               initialValue: "red",
