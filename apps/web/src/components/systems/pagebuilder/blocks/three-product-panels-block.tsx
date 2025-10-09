@@ -3,6 +3,7 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { cn } from "@workspace/ui/lib/utils";
 import { motion } from "framer-motion";
+import { stegaClean } from "next-sanity";
 import { useState } from "react";
 
 import { SanityButtons } from "@/components/elements/sanity-buttons";
@@ -102,7 +103,11 @@ export function ThreeProductPanelsBlock({
       }
       gridClassName="gap-6 md:grid-cols-3 lg:gap-8"
       cards={panels.map((panel, index) => {
-        const colors = getAccentColors(panel.accentColor || "red");
+        const cleanedAccent =
+          typeof panel.accentColor === "string"
+            ? stegaClean(panel.accentColor)
+            : "red";
+        const colors = getAccentColors(cleanedAccent || "red");
         const isHovered = hoveredPanel === index;
 
         return (
