@@ -77,7 +77,7 @@ export function SauceHeroSection({
       >
         <RichText
           richText={sauce.description}
-          className="text-sm italic text-brand-green/90 md:text-lg max-w-2xl mx-auto lg:max-w-none"
+          className="text-sm italic text-brand-green/90 md:text-lg max-w-2xl lg:max-w-none"
         />
         <div className="flex justify-center lg:justify-start">
           <SanityButtons
