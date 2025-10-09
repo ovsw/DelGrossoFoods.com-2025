@@ -1,5 +1,21 @@
 # web
 
+## 1.16.0
+
+### Minor Changes
+
+- [#94](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/94) [`0d05015`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/0d05015b4216b7d0a582377325d1a1312c439645) Thanks [@ovsw](https://github.com/ovsw)! - Implement new Feature Section design with enhanced image handling
+  - Add click-to-edit functionality for feature block images
+  - Implement imageFit option for controlling image scaling (cover/crop modes)
+  - Fix section padding and z-index for background gradient
+  - Resolve LQIP overflow issues for proper image display
+  - Update schema to support new image presentation options
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.16.0
+
 ## 1.15.0
 
 ### Minor Changes
