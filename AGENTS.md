@@ -665,39 +665,7 @@ Explicit selection rule to avoid confusion:
 
 - When adding a changeset, select only the workspaces that actually changed; fixed groups still bump all workspaces to the same version (highest bump), but CHANGELOG entries are generated only for the selected ones.
 
-### Quick recipes (copy/paste friendly)
-
-1. Add a changeset with the work done in this conversation
-
-```bash
-# Pick a kebab-case slug that describes the change
-cat <<'EOF' > .changeset/<slug>.md
----
-"web": patch
-# add other changed workspaces (e.g. "studio", "@workspace/ui") and bump levels as needed
----
-
-Write a concise, user-facing summary (be imperative)
-EOF
-
-git add .changeset/<slug>.md && git commit -m "chore(changeset): add changeset"
-```
-
-2. Add a changeset for this entire branch
-
-```bash
-# Repeat the manual file creation above, but include every workspace touched anywhere on the branch
-# Adjust bump levels (patch | minor | major) to match the largest change
-git add .changeset/<slug>.md && git commit -m "chore(changeset): add branch changeset"
-```
-
-3. Preview pending releases and versions
-
-```bash
-pnpm changeset:status
-```
-
-4. CI Release PR (automatic on main)
+## CI Release PR (automatic on main)
 
 - After merging a changeset to `main`, CI opens a Release PR that bumps versions for the fixed group and writes CHANGELOGs for selected workspaces. Merge that PR to land the versions.
 
@@ -722,16 +690,42 @@ Bullets (optional, keep short):
 - Add active state handling in MobileNavPanel
 ```
 
-### Validation checklist (before merging Release PR)
-
-- `pnpm changeset:status` shows expected workspaces and bump levels
-- CHANGELOG entries are clear and scoped to selected workspaces
-- All fixed workspaces share the same new version
-- Internal dependency ranges are aligned
-
 ### Reference
 
 - Config: `.changeset/config.json` (baseBranch: `main`, changelog: GitHub)
 - Workspaces: `apps/*`, `packages/*` (pnpm)
 - Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
+
+# `cn()` usage
+
+You should never ever use the cn function unless you're defining a custom string or interpolating some dynamic data in a class name property. Stuff like
+
+```
+ className={cn(
+              "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+              "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
+            )}
+```
+
+Just makes things way harder for me to debug. There's no reason to split that string into two strings like that. It is correct that everywhere you see it in this file, and never do it again.
+
+Stuff like:
+
+```
+SHARED_CARD_STYLES = cn(
+  "group relative cursor-pointer transition-all duration-900 ease-out",
+  "hover:scale-[1.02] hover:shadow-2xl",
+  // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
+  "h-[24rem] md:h-[28rem] lg:h-[30rem]",
+  "border-2 border-white/20 rounded-2xl overflow-hidden text-white",
+);
+```
+
+is TOTALLY FINE and SHOULD BE DONE, but NOT on multiple rows.
+
+It sohuld be
+
+```
+const SHARED_CARD_STYLES = cn("group relative cursor-pointer transition-all duration-900 ease-out hover:scale-[1.02] hover:shadow-2xl h-[24rem] md:h-[28rem] lg:h-[30rem] border-2 border-white/20 rounded-2xl overflow-hidden text-white");
+```
