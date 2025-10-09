@@ -35,7 +35,7 @@ export type ThreeProductPanels = {
       alt?: string;
       _type: "image";
     };
-    accentColor?: "red" | "green" | "brown";
+    accentColor?: "red" | "green" | "black";
     ctaButton?: Button;
     _type: "productPanel";
     _key: string;
@@ -2042,7 +2042,7 @@ export type QueryHomePageDataResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
@@ -2562,7 +2562,7 @@ export type QuerySlugPageDataResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
@@ -3076,7 +3076,7 @@ export type QueryBlogIndexPageDataResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
@@ -4924,7 +4924,7 @@ export type GetHistoryPageQueryResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
@@ -5413,7 +5413,7 @@ export type GetStoreLocatorPageQueryResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
@@ -5902,7 +5902,7 @@ export type GetContactPageQueryResult = {
               top: number;
             } | null;
           } | null;
-          accentColor?: "brown" | "green" | "red";
+          accentColor?: "black" | "green" | "red";
           ctaButton?: Button;
           _type: "productPanel";
           _key: string;
