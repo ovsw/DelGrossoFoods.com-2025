@@ -36,7 +36,6 @@ export function FeatureBlock({
   const cleanedImageFit = stegaClean(imageFit ?? "cover") as "cover" | "fit";
   const isImageFit = cleanedImageFit === "fit";
   const imageObjectFitClass = isImageFit ? "object-contain" : "object-cover";
-  const imageMode = isImageFit ? "contain" : "cover";
 
   // Create data attribute for click-to-edit functionality
   // The path needs to include the block key since this is within a page builder
@@ -89,7 +88,7 @@ export function FeatureBlock({
         </svg>
       </div> */}
 
-      <div className="relative isolate overflow-hidden  px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24 rounded-none bg-brand-green min-[1440px]:-mx-8 min-[1440px]:rounded-2xl min-[1536px]:-mx-12 lg:max-[1439px]:mx-[calc(50%-50vw)]">
+      <div className="relative isolate overflow-hidden  rounded-none bg-brand-green px-6 py-20 min-[1440px]:-mx-8 min-[1440px]:rounded-2xl min-[1536px]:-mx-12 xl:rounded-3xl sm:px-10 sm:py-24 lg:py-24 lg:max-[1439px]:mx-[calc(50%-50vw)] xl:px-24">
         <div className="2xl:max-w-8xl container mx-auto px-4 md:px-8 lg:max-w-7xl">
           <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
             {/* Left side content */}
@@ -125,7 +124,7 @@ export function FeatureBlock({
                       image={image}
                       width={400}
                       height={400}
-                      alt={typeof title === "string" ? title : ""}
+                      alt={stegaClean(typeof title === "string" ? title : "")}
                       className={cn(
                         "w-full rounded-3xl h-full max-h-120 lg:max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] ",
                         // "size-[180%] max-w-none rounded-3xl z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] lg:left-[50%] lg:transform lg:-translate-x-[50%]",
@@ -134,7 +133,7 @@ export function FeatureBlock({
                       data-sanity={imageDataAttribute}
                     />
                     {!isImageFit ? (
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent -z-1"></div>
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent z-[-1]"></div>
                     ) : null}
                   </>
                 )}
