@@ -181,6 +181,18 @@ const featureCardsIconBlock = /* groq */ `
   }
 `;
 
+const threeProductPanelsBlock = /* groq */ `
+  _type == "threeProductPanels" => {
+    ...,
+    ${buttonsFragment},
+    "panels": array::compact(panels[]{
+      ...,
+      ${imageFragment},
+      ${buttonsFragment}
+    })
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
@@ -191,7 +203,8 @@ const pageBuilderFragment = /* groq */ `
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
-    ${imageLinkCardsBlock}
+    ${imageLinkCardsBlock},
+    ${threeProductPanelsBlock}
   }
 `;
 
