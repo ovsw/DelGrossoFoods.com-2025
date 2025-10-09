@@ -96,34 +96,52 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
           </p>
         </div>
 
-        {/* Expanded Content - CSS-only hover reveal */}
-        <div className="transition-all duration-300 ease-out overflow-hidden group-hover:max-h-96 group-hover:opacity-100 opacity-0 max-h-0">
-          <div className="mb-4">
-            <p className="text-sm leading-relaxed text-white/90">
-              {panel.expandedDescription}
-            </p>
-          </div>
-
-          {/* CTA Button */}
-          {ctaButton?.href && (
-            <div className="mt-4">
-              <SanityButtons
-                buttons={[
-                  {
-                    ...(ctaButton as SanityButtonProps),
-                    variant: "link",
-                  },
-                ]}
-                className="gap-0"
-                buttonClassName="h-auto w-auto justify-start p-0 text-sm font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-80"
-              />
-            </div>
+        {/* Expanded Content - grid-template-rows reveal (CSS-only) */}
+        {/**
+         * Technique: Animate grid-template-rows from 0fr -> 1fr while the
+         * inner clip wrapper has overflow-hidden. This yields smooth height
+         * animation without hard max-height values.
+         *
+         * Keyboard: also reveal on focus-within of the card (group).
+         */}
+        <div
+          className={cn(
+            // Grid container with a single row track we can animate
+            "grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out",
+            // Reveal on hover and focus-within of the parent card
+            "group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr]",
+            // Respect reduced motion
+            "motion-reduce:transition-none motion-reduce:duration-0",
           )}
+        >
+          <div className="overflow-hidden">
+            <div className="mb-4 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
+              <p className="text-sm leading-relaxed text-white/90">
+                {panel.expandedDescription}
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            {ctaButton?.href && (
+              <div className="mt-4 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
+                <SanityButtons
+                  buttons={[
+                    {
+                      ...(ctaButton as SanityButtonProps),
+                      variant: "link",
+                    },
+                  ]}
+                  className="gap-0"
+                  buttonClassName="h-auto w-auto justify-start p-0 text-sm font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-80"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Subtle gradient overlay on hover - CSS only */}
-      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-30 transition-opacity duration-400 ease-out pointer-events-none" />
+      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-30 group-focus-within:opacity-30 transition-opacity duration-400 ease-out pointer-events-none" />
     </div>
   );
 };
