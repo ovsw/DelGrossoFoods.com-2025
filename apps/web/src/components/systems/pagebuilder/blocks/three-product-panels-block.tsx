@@ -42,9 +42,7 @@ export function ThreeProductPanelsBlock({
           border: "border-white/20",
           heading: "text-white",
           bodyText: "text-white/90",
-          expandedBg: "bg-white/10",
-          buttonBg: "bg-white",
-          buttonText: "text-th-green-600",
+          linkText: "text-white",
           indicatorBg: "bg-white",
           overlay: "bg-black/10",
         };
@@ -55,9 +53,7 @@ export function ThreeProductPanelsBlock({
           border: "border-white/20",
           heading: "text-white",
           bodyText: "text-white/90",
-          expandedBg: "bg-white/10",
-          buttonBg: "bg-white",
-          buttonText: "text-th-dark-900",
+          linkText: "text-white",
           indicatorBg: "bg-white",
           overlay: "bg-black/10",
         };
@@ -68,13 +64,26 @@ export function ThreeProductPanelsBlock({
           border: "border-white/20",
           heading: "text-white",
           bodyText: "text-white/90",
-          expandedBg: "bg-white/10",
-          buttonBg: "bg-white",
-          buttonText: "text-th-red-600",
+          linkText: "text-white",
           indicatorBg: "bg-white",
           overlay: "bg-black/10",
         };
     }
+  };
+
+  const normalizeHref = (href?: string | null) => {
+    if (!href) {
+      return undefined;
+    }
+    const cleaned = stegaClean(href);
+    if (
+      cleaned.startsWith("/") ||
+      cleaned.startsWith("#") ||
+      /^(?:https?:)?\/\//.test(cleaned)
+    ) {
+      return cleaned;
+    }
+    return `/${cleaned}`;
   };
 
   return (
@@ -109,6 +118,13 @@ export function ThreeProductPanelsBlock({
             : "red";
         const colors = getAccentColors(cleanedAccent || "red");
         const isHovered = hoveredPanel === index;
+        const ctaButton = panel.ctaButton
+          ? {
+              ...panel.ctaButton,
+              _key: panel.ctaButton._key ?? `${panel._key}-cta`,
+              href: normalizeHref(panel.ctaButton.href),
+            }
+          : null;
 
         return (
           <motion.div
@@ -168,28 +184,24 @@ export function ThreeProductPanelsBlock({
                 </div>
 
                 {/* CTA Button */}
-                {panel.ctaButton && (
+                {ctaButton?.href && (
                   <div className="mt-4">
                     <SanityButtons
-                      buttons={[panel.ctaButton as SanityButtonProps]}
+                      buttons={[
+                        {
+                          ...(ctaButton as SanityButtonProps),
+                          variant: "link",
+                        },
+                      ]}
+                      className="gap-0"
                       buttonClassName={cn(
-                        "w-full hover:opacity-90",
-                        colors.buttonBg,
-                        colors.buttonText,
+                        "h-auto w-auto justify-start p-0 text-sm font-semibold underline underline-offset-4 transition-opacity hover:opacity-80",
+                        colors.linkText,
                       )}
                     />
                   </div>
                 )}
               </motion.div>
-
-              {/* Hover Indicator */}
-              <div
-                className={cn(
-                  "absolute bottom-4 right-4 h-2 w-2 rounded-full transition-opacity duration-300",
-                  colors.indicatorBg,
-                  isHovered ? "opacity-100" : "opacity-0",
-                )}
-              />
             </div>
 
             {/* Subtle gradient overlay on hover */}
