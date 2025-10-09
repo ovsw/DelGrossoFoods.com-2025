@@ -40,9 +40,12 @@ const normalizeHref = (href?: string | null): string | undefined => {
   return `/${cleaned}`;
 };
 
-// Shared styles for all cards
-const SHARED_CARD_STYLES =
-  "group cursor-pointer transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-2xl border-2 border-white/20 rounded-2xl overflow-hidden text-white";
+// Shared styles for all cards - smooth, consistent timing
+const SHARED_CARD_STYLES = cn(
+  "group cursor-pointer transition-all duration-900 ease-out",
+  "hover:scale-[1.02] hover:shadow-2xl",
+  "border-2 border-white/20 rounded-2xl overflow-hidden text-white",
+);
 
 /**
  * Individual product panel card component
@@ -120,7 +123,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
       </div>
 
       {/* Subtle gradient overlay on hover - CSS only */}
-      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-30 transition-opacity duration-400 ease-out pointer-events-none" />
     </div>
   );
 };
@@ -148,19 +151,19 @@ export function ThreeProductPanelsBlock({
       isPageTop={isPageTop}
       eyebrow={
         eyebrow ? (
-          <Eyebrow text={eyebrow} className="text-brand-green" />
+          <Eyebrow text={eyebrow} className={cn("text-brand-green")} />
         ) : undefined
       }
       title={
         title ? (
-          <h2 className="text-3xl font-bold text-brand-green lg:text-5xl">
+          <h2 className={cn("text-3xl font-bold text-brand-green lg:text-5xl")}>
             {title}
           </h2>
         ) : undefined
       }
       description={
         subtitle ? (
-          <p className="mx-auto max-w-2xl text-lg text-th-dark-700">
+          <p className={cn("mx-auto max-w-2xl text-lg text-th-dark-700")}>
             {subtitle}
           </p>
         ) : undefined
