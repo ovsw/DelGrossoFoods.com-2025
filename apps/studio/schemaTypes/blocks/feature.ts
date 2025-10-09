@@ -34,6 +34,27 @@ export const feature = defineType({
         hotspot: true,
       },
     }),
+    defineField({
+      name: "imageFit",
+      title: "Image fit",
+      description:
+        "Control how the feature image scales within its frame — choose Cover to fill the crop or Fit to show the full image",
+      type: "string",
+      options: {
+        layout: "radio",
+        list: [
+          {
+            title: "Cover (fill the frame)",
+            value: "cover",
+          },
+          {
+            title: "Fit (show entire image)",
+            value: "fit",
+          },
+        ],
+      },
+      initialValue: "cover",
+    }),
     buttonsField,
     sectionSpacingField,
   ],

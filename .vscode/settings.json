@@ -46,5 +46,6 @@
       "routes": ["/", "/blog"],
       "current_route": "/"
     }
-  }
+  },
+  "claudeCodeChat.permissions.yoloMode": true
 }
