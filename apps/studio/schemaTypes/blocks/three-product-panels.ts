@@ -88,9 +88,55 @@ export const threeProductPanels = defineType({
             }),
             defineField({
               name: "ctaButton",
-              title: "CTA Button",
-              type: "button",
-              description: "Call-to-action button for this panel",
+              title: "CTA Link",
+              description:
+                "Link that directs shoppers to the appropriate product collection or detail page",
+              type: "object",
+              fields: [
+                defineField({
+                  name: "text",
+                  title: "Link Text",
+                  type: "string",
+                  description:
+                    "Short, action-oriented text that appears on the link",
+                }),
+                defineField({
+                  name: "url",
+                  title: "Destination",
+                  type: "customUrl",
+                  description:
+                    "Choose an internal page or enter an external URL for this link",
+                }),
+              ],
+              preview: {
+                select: {
+                  title: "text",
+                  urlType: "url.type",
+                  internalSlug: "url.internal.slug.current",
+                  externalUrl: "url.external",
+                  openInNewTab: "url.openInNewTab",
+                },
+                prepare: ({
+                  title,
+                  urlType,
+                  internalSlug,
+                  externalUrl,
+                  openInNewTab,
+                }) => {
+                  const destination =
+                    urlType === "external"
+                      ? externalUrl
+                      : internalSlug
+                        ? `/${internalSlug}`
+                        : "No destination selected";
+                  const newTabIndicator = openInNewTab ? " ↗" : "";
+
+                  return {
+                    title: title || "CTA Link",
+                    subtitle: `${destination}${newTabIndicator}`,
+                  };
+                },
+              },
             }),
           ],
           preview: {
