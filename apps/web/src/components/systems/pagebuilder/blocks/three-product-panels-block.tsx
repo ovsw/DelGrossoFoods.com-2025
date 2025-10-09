@@ -37,28 +37,40 @@ export function ThreeProductPanelsBlock({
     switch (accentColor) {
       case "green":
         return {
-          bg: "bg-th-green-600",
-          text: "text-th-green-600",
-          border: "border-th-green-600",
-          hoverBg: "hover:bg-th-green-600/10",
-          lightBg: "bg-th-green-600/5",
+          cardBg: "bg-th-green-600",
+          border: "border-white/20",
+          heading: "text-white",
+          bodyText: "text-white/90",
+          expandedBg: "bg-white/10",
+          buttonBg: "bg-white",
+          buttonText: "text-th-green-600",
+          indicatorBg: "bg-white",
+          overlay: "bg-black/10",
         };
       case "brown":
         return {
-          bg: "bg-th-brown-600",
-          text: "text-th-brown-600",
-          border: "border-th-brown-600",
-          hoverBg: "hover:bg-th-brown-600/10",
-          lightBg: "bg-th-brown-600/5",
+          cardBg: "bg-th-brown-600",
+          border: "border-white/20",
+          heading: "text-white",
+          bodyText: "text-white/90",
+          expandedBg: "bg-white/10",
+          buttonBg: "bg-white",
+          buttonText: "text-th-brown-600",
+          indicatorBg: "bg-white",
+          overlay: "bg-black/10",
         };
       case "red":
       default:
         return {
-          bg: "bg-th-red-600",
-          text: "text-th-red-600",
-          border: "border-th-red-600",
-          hoverBg: "hover:bg-th-red-600/10",
-          lightBg: "bg-th-red-600/5",
+          cardBg: "bg-th-red-600",
+          border: "border-white/20",
+          heading: "text-white",
+          bodyText: "text-white/90",
+          expandedBg: "bg-white/10",
+          buttonBg: "bg-white",
+          buttonText: "text-th-red-600",
+          indicatorBg: "bg-white",
+          overlay: "bg-black/10",
         };
     }
   };
@@ -96,9 +108,9 @@ export function ThreeProductPanelsBlock({
           <motion.div
             key={panel._key}
             className={cn(
-              "relative cursor-pointer overflow-hidden rounded-2xl border-2 transition-all duration-300 ease-in-out",
+              "relative cursor-pointer overflow-hidden rounded-2xl border-2 text-white transition-all duration-300 ease-in-out",
               colors.border,
-              colors.hoverBg,
+              colors.cardBg,
               isHovered ? "scale-105 shadow-2xl" : "shadow-lg",
             )}
             onMouseEnter={() => setHoveredPanel(index)}
@@ -122,13 +134,13 @@ export function ThreeProductPanelsBlock({
               )}
 
               {/* Panel Title */}
-              <h3 className={cn("mb-4 text-2xl font-bold", colors.text)}>
+              <h3 className={cn("mb-4 text-2xl font-bold", colors.heading)}>
                 {panel.title}
               </h3>
 
               {/* Short Description */}
-              <div className="mb-4 text-th-dark-700">
-                <p className="text-sm leading-relaxed">
+              <div className="mb-4">
+                <p className={cn("text-sm leading-relaxed", colors.bodyText)}>
                   {panel.shortDescription}
                 </p>
               </div>
@@ -143,8 +155,8 @@ export function ThreeProductPanelsBlock({
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className={cn("mb-4 rounded-lg p-4", colors.lightBg)}>
-                  <p className="text-sm leading-relaxed text-th-dark-700">
+                <div className={cn("mb-4 rounded-lg p-4", colors.expandedBg)}>
+                  <p className={cn("text-sm leading-relaxed", colors.bodyText)}>
                     {panel.expandedDescription}
                   </p>
                 </div>
@@ -155,9 +167,9 @@ export function ThreeProductPanelsBlock({
                     <SanityButtons
                       buttons={[panel.ctaButton as SanityButtonProps]}
                       buttonClassName={cn(
-                        "w-full",
-                        colors.bg,
-                        "text-white hover:opacity-90",
+                        "w-full hover:opacity-90",
+                        colors.buttonBg,
+                        colors.buttonText,
                       )}
                     />
                   </div>
@@ -168,7 +180,7 @@ export function ThreeProductPanelsBlock({
               <div
                 className={cn(
                   "absolute bottom-4 right-4 h-2 w-2 rounded-full transition-opacity duration-300",
-                  colors.bg,
+                  colors.indicatorBg,
                   isHovered ? "opacity-100" : "opacity-0",
                 )}
               />
@@ -178,7 +190,7 @@ export function ThreeProductPanelsBlock({
             <motion.div
               className={cn(
                 "absolute inset-0 pointer-events-none",
-                colors.lightBg,
+                colors.overlay,
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: isHovered ? 0.3 : 0 }}
