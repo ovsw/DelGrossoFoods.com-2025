@@ -1,3 +1,5 @@
+# SUPER IMPORTANT RULE NO.1! Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
+
 # PROJECT INFO
 
 AI agent handbook for exploring, editing, and shipping safely in this monorepo
@@ -733,10 +735,3 @@ Bullets (optional, keep short):
 - Workspaces: `apps/*`, `packages/*` (pnpm)
 - Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
-
-### Audible task completion (agent memory)
-
-- At the end of each task, speak an audible completion message on macOS.
-- Exact command to run (fastest path): `say -v Daniel -r 175 "Task finished"`
-  - Use the built-in "Daniel" voice at 175 wpm ("Alex" is not installed on this machine).
-- If using the MCP server named `say`, the equivalent tool call is: `{ "text": "Task finished", "voice": "Daniel", "rate": 175, "background": false }` for tool `speak`.
