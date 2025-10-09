@@ -3,6 +3,18 @@ import { stegaClean } from "next-sanity";
 
 import type { SectionSpacing } from "@/lib/sanity/sanity.types";
 
+type SectionSpacingInput =
+  | SectionSpacing
+  | {
+      readonly spacingTop?: SectionSpacing["spacingTop"] | null | undefined;
+      readonly spacingBottom?:
+        | SectionSpacing["spacingBottom"]
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+
 interface ResolvedSectionSpacing {
   readonly spacingTop: SectionSpacingToken;
   readonly spacingBottom: SectionSpacingToken;
@@ -38,10 +50,12 @@ function normalizeSpacingToken(value?: string | null): SectionSpacingToken {
 }
 
 export function resolveSectionSpacing(
-  spacing?: SectionSpacing | null,
+  spacing?: SectionSpacingInput,
 ): ResolvedSectionSpacing {
   return {
     spacingTop: normalizeSpacingToken(spacing?.spacingTop),
     spacingBottom: normalizeSpacingToken(spacing?.spacingBottom),
   };
 }
+
+export type { SectionSpacingInput };

@@ -1,11 +1,10 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
-import { Section } from "@workspace/ui/components/section";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityIcon } from "@/components/elements/sanity-icon";
+import { FeatureCardGridLayout } from "@/components/layouts/pagebuilder/feature-card-grid-layout";
 
 import type { PageBuilderBlockProps } from "../types";
-import { resolveSectionSpacing } from "../utils/section-spacing";
 
 type FeatureCardsWithIconProps = PageBuilderBlockProps<"featureCardsIcon">;
 
@@ -44,36 +43,22 @@ export function FeatureCardsWithIconBlock({
   spacing,
   isPageTop = false,
 }: FeatureCardsWithIconProps) {
-  const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
-  const sectionId = _key ? `features-${_key}` : "features";
-
   return (
-    <Section
-      id={sectionId}
-      spacingTop={spacingTop}
-      spacingBottom={spacingBottom}
+    <FeatureCardGridLayout
+      _key={_key}
+      spacing={spacing}
       isPageTop={isPageTop}
-    >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex w-full flex-col items-center">
-          <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:text-center">
-            <Eyebrow text={eyebrow ?? ""} />
-            <h2 className="text-3xl font-semibold md:text-5xl">{title}</h2>
-            <RichText
-              richText={richText}
-              className="text-base md:text-lg text-balance max-w-3xl"
-            />
-          </div>
-        </div>
-        <div className="mx-auto mt-20 grid gap-8 lg:grid-cols-3">
-          {cards?.map((card, index) => (
-            <FeatureCard
-              key={`FeatureCard-${card?._key}-${index}`}
-              card={card}
-            />
-          ))}
-        </div>
-      </div>
-    </Section>
+      eyebrow={<Eyebrow text={eyebrow ?? ""} />}
+      title={<h2 className="text-3xl font-semibold md:text-5xl">{title}</h2>}
+      description={
+        <RichText
+          richText={richText}
+          className="text-base md:text-lg text-balance max-w-3xl"
+        />
+      }
+      cards={cards?.map((card, index) => (
+        <FeatureCard key={`FeatureCard-${card?._key}-${index}`} card={card} />
+      ))}
+    />
   );
 }
