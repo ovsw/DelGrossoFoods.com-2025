@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
+import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 import { FeatureCardGridLayout } from "@/components/layouts/pagebuilder/feature-card-grid-layout";
 import type { SanityButtonProps } from "@/types";
 
@@ -52,10 +53,12 @@ const normalizeHref = (href?: string | null): string | undefined => {
   return `/${cleaned}`;
 };
 
-// Shared styles for all cards - smooth, consistent timing and fixed height to prevent layout shift
-const SHARED_CARD_STYLES = cn(
-  "group relative cursor-pointer transition-all duration-900 ease-out hover:scale-[1.02] hover:shadow-2xl h-[24rem] md:h-[28rem] lg:h-[30rem] border-2 border-white/20 rounded-2xl overflow-hidden text-white",
-);
+// Shared styles for card container and surface layers
+const CARD_CONTAINER_STYLES =
+  "group relative h-[24rem] md:h-[28rem] lg:h-[30rem] focus-within:outline-none [--card-scale:1] hover:[--card-scale:1.06] focus-within:[--card-scale:1.06] motion-reduce:hover:[--card-scale:1] motion-reduce:focus-within:[--card-scale:1]";
+
+const CARD_SURFACE_STYLES =
+  "absolute inset-0 rounded-2xl rounded-b-2xl border-2 border-white/20 border-b-2 border-white/50 overflow-hidden text-white transition-[transform,box-shadow] duration-300 ease-out shadow-none origin-top [transform:scale(var(--card-scale))] group-hover:shadow-2xl group-focus-within:shadow-2xl motion-reduce:duration-0 will-change-transform";
 
 /**
  * Individual product panel card component
@@ -67,6 +70,11 @@ interface ProductPanelCardProps {
 
 const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
   const cardBg = getCardBackground(accentColor);
+  const accentValue = getAccentVar(accentColor);
+  const accentCssVars = {
+    "--card-bg-color": accentValue,
+    "--overlay-accent": accentValue,
+  } as CSSProperties;
   const ctaButton = panel.ctaButton
     ? {
         ...panel.ctaButton,
@@ -77,13 +85,16 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
 
   return (
     <div
-      className={cn(SHARED_CARD_STYLES, cardBg)}
+      className={CARD_CONTAINER_STYLES}
       role="article"
       aria-label={`${panel.title} product panel`}
+      style={accentCssVars}
     >
-      {/* Background Image Layer */}
+      <SurfaceShineOverlay />
+      <div className={`${CARD_SURFACE_STYLES} ${cardBg}`} aria-hidden="true" />
+
       {panel.image && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-end justify-center bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] px-8 md:px-10">
+        <div className="pointer-events-none absolute inset-x-0 -top-10 bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] z-10 flex items-end justify-center px-8">
           <SanityImage
             image={panel.image}
             width={800}
@@ -94,24 +105,18 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
         </div>
       )}
 
-      {/* Bottom Overlay Content */}
-      <div className="absolute inset-x-0 bottom-0 z-10">
+      <div className="absolute inset-x-0 bottom-0 z-20 origin-top transition-transform duration-300 ease-out [transform:scale(var(--card-scale))] motion-reduce:duration-0 will-change-transform">
         <div className="relative">
-          <div
+          {/* <div
             className={cn(
               "pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out",
               "border-b-2 border-white/50 rounded-b-2xl",
               "bg-[linear-gradient(0deg,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0)_50%,color-mix(in_srgb,var(--overlay-accent)_0%,transparent)_100%)]",
             )}
-            style={
-              {
-                "--overlay-accent": getAccentVar(accentColor),
-              } as CSSProperties
-            }
             aria-hidden="true"
-          />
+          /> */}
 
-          <div className="relative rounded-t-2xl bg-[inherit] p-6 md:p-8">
+          <div className="relative rounded-t-2xl p-6 md:p-8">
             {/* Panel Title */}
             <h3 className="mb-1 text-2xl font-bold text-white line-clamp-1 md:line-clamp-none">
               {panel.title}
@@ -137,7 +142,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
                 )}
 
                 {/* CTA Button */}
-                {ctaButton?.href && (
+                {!ctaButton?.href && (
                   <div className="opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
                     <SanityButtons
                       buttons={[
@@ -157,8 +162,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
         </div>
       </div>
 
-      {/* Subtle gradient overlay on hover - CSS only */}
-      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-30 group-focus-within:opacity-30 transition-opacity duration-400 ease-out pointer-events-none" />
+      <div className="absolute inset-0 z-30 origin-top bg-black/10 opacity-0 transition-[opacity,transform] duration-400 ease-out pointer-events-none [transform:scale(var(--card-scale))] group-hover:opacity-30 group-focus-within:opacity-30 motion-reduce:duration-0 will-change-[opacity,transform]" />
     </div>
   );
 };
