@@ -1,6 +1,7 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
+import type { CSSProperties } from "react";
 
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -24,6 +25,17 @@ type AccentColor = keyof typeof ACCENT_COLOR_MAP;
 
 const getCardBackground = (color: string): string =>
   ACCENT_COLOR_MAP[color as AccentColor] || ACCENT_COLOR_MAP.red;
+
+// Map accent keys to their CSS variable values for dynamic gradients
+const ACCENT_VAR_MAP: Record<AccentColor, string> = {
+  green: "var(--color-th-green-600)",
+  black: "var(--color-th-dark-900)",
+  brown: "var(--color-th-dark-900)",
+  red: "var(--color-th-red-600)",
+};
+
+const getAccentVar = (color: string): string =>
+  ACCENT_VAR_MAP[(color as AccentColor) || "red"] || ACCENT_VAR_MAP.red;
 
 const normalizeHref = (href?: string | null): string | undefined => {
   if (!href) {
@@ -85,9 +97,17 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
       {/* Bottom Overlay Content */}
       <div className="absolute inset-x-0 bottom-0 z-10">
         <div className="relative">
-          {/* Gradient only appears when overlay expands */}
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.35)_45%,rgba(0,0,0,1)_100%)] opacity-0 transition-opacity duration-300 ease-out group-focus-within:opacity-100 group-hover:opacity-100"
+            className={cn(
+              "pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out",
+              "border-b-2 border-white/50 rounded-b-2xl",
+              "bg-[linear-gradient(0deg,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0)_50%,color-mix(in_srgb,var(--overlay-accent)_0%,transparent)_100%)]",
+            )}
+            style={
+              {
+                "--overlay-accent": getAccentVar(accentColor),
+              } as CSSProperties
+            }
             aria-hidden="true"
           />
 
