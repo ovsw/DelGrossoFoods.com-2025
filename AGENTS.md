@@ -2,6 +2,10 @@
 
 # PROJECT INFO
 
+## User Preferences
+
+- Perform only the explicitly requested changes; never add opportunistic optimizations or extra tasks unless the user asks for them.
+
 AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Quick facts
