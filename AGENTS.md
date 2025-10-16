@@ -703,21 +703,10 @@ Bullets (optional, keep short):
 
 # `cn()` usage
 
-You should never ever use the cn function unless you're defining a custom string or interpolating some dynamic data in a class name property. Stuff like
+**For constants (shared style constants):** Multi-line `cn()` calls are acceptable and recommended when defining reusable style constants at the top of files:
 
-```
- className={cn(
-              "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
-              "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
-            )}
-```
-
-Just makes things way harder for me to debug. There's no reason to split that string into two strings like that. It is correct that everywhere you see it in this file, and never do it again.
-
-Stuff like:
-
-```
-SHARED_CARD_STYLES = cn(
+```tsx
+const SHARED_CARD_STYLES = cn(
   "group relative cursor-pointer transition-all duration-900 ease-out",
   "hover:scale-[1.02] hover:shadow-2xl",
   // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
@@ -726,10 +715,24 @@ SHARED_CARD_STYLES = cn(
 );
 ```
 
-is TOTALLY FINE and SHOULD BE DONE, but NOT on multiple rows.
+**For inline className props:** Use single-line `cn()` calls or raw strings. Never split class strings across multiple lines in JSX:
 
-It sohuld be
+```tsx
+// ✅ Good - single line cn() with dynamic data
+className={cn(
+  "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+  "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
+  isActive && "ring-2 ring-blue-500"
+)}
 
+// ❌ Bad - multi-line class strings in JSX
+className={cn(
+  "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+  "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
+)}
+
+// ✅ Also good - raw string when no dynamic data needed
+className="relative rounded-t-2xl bg-[inherit] p-6 md:p-8 shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]"
 ```
-const SHARED_CARD_STYLES = cn("group relative cursor-pointer transition-all duration-900 ease-out hover:scale-[1.02] hover:shadow-2xl h-[24rem] md:h-[28rem] lg:h-[30rem] border-2 border-white/20 rounded-2xl overflow-hidden text-white");
-```
+
+This approach maintains full Tailwind IntelliSense support while keeping JSX readable and debuggable.
