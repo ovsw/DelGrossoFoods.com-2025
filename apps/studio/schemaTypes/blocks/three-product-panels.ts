@@ -1,10 +1,11 @@
-import { defineField, defineType } from "sanity";
+import { TagIcon } from "@sanity/icons";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const threeProductPanels = defineType({
   name: "threeProductPanels",
   title: "Three Product Panels",
   type: "object",
-  icon: () => "🍝",
+  icon: TagIcon,
   fields: [
     defineField({
       name: "eyebrow",
@@ -31,7 +32,7 @@ export const threeProductPanels = defineType({
       description: "The three product line panels to display",
       type: "array",
       of: [
-        {
+        defineArrayMember({
           type: "object",
           name: "productPanel",
           title: "Product Panel",
@@ -146,7 +147,7 @@ export const threeProductPanels = defineType({
               media: "image",
             },
           },
-        },
+        }),
       ],
       validation: (Rule) =>
         Rule.required().min(3).max(3).error("Exactly 3 panels are required"),
