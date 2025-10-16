@@ -113,7 +113,7 @@ export const threeProductPanels = defineType({
                 select: {
                   title: "text",
                   urlType: "url.type",
-                  internalSlug: "url.internal.slug.current",
+                  internalSlug: "url.internal->slug.current",
                   externalUrl: "url.external",
                   openInNewTab: "url.openInNewTab",
                 },

@@ -411,7 +411,6 @@ export type PageBuilder = Array<
 
 export type Button = {
   _type: "button";
-  variant?: "default" | "secondary" | "outline" | "link";
   text?: string;
   url?: CustomUrl;
 };
@@ -1639,7 +1638,7 @@ export type QueryHomePageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -1795,7 +1794,7 @@ export type QueryHomePageDataResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -1930,7 +1929,7 @@ export type QueryHomePageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2163,7 +2162,7 @@ export type QuerySlugPageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2319,7 +2318,7 @@ export type QuerySlugPageDataResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2454,7 +2453,7 @@ export type QuerySlugPageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2681,7 +2680,7 @@ export type QueryBlogIndexPageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2837,7 +2836,7 @@ export type QueryBlogIndexPageDataResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -2972,7 +2971,7 @@ export type QueryBlogIndexPageDataResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -3510,7 +3509,7 @@ export type QueryNavbarDataResult = {
   > | null;
   buttons: Array<{
     text: string | null;
-    variant: "default" | "link" | "outline" | "secondary" | null;
+    variant: null;
     _key: string;
     _type: "button";
     openInNewTab: boolean | null;
@@ -4533,7 +4532,7 @@ export type GetHistoryPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -4689,7 +4688,7 @@ export type GetHistoryPageQueryResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -4824,7 +4823,7 @@ export type GetHistoryPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5026,7 +5025,7 @@ export type GetStoreLocatorPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5182,7 +5181,7 @@ export type GetStoreLocatorPageQueryResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5317,7 +5316,7 @@ export type GetStoreLocatorPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5519,7 +5518,7 @@ export type GetContactPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5675,7 +5674,7 @@ export type GetContactPageQueryResult = {
         imageFit?: "cover" | "fit";
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;
@@ -5810,7 +5809,7 @@ export type GetContactPageQueryResult = {
         > | null;
         buttons: Array<{
           text: string | null;
-          variant: "default" | "link" | "outline" | "secondary" | null;
+          variant: null;
           _key: string;
           _type: "button";
           openInNewTab: boolean | null;

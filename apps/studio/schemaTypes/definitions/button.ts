@@ -1,26 +1,12 @@
 import { Command } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
-import { capitalize, createRadioListLayout } from "../../utils/helper";
-
-const buttonVariants = ["default", "secondary", "outline", "link"];
-
 export const button = defineType({
   name: "button",
   title: "Button",
   type: "object",
   icon: Command,
   fields: [
-    defineField({
-      name: "variant",
-      type: "string",
-      description:
-        "Choose the button's visual style - default is solid, secondary is less prominent, outline has a border, and link looks like regular text",
-      initialValue: () => "default",
-      options: createRadioListLayout(buttonVariants, {
-        direction: "horizontal",
-      }),
-    }),
     defineField({
       name: "text",
       title: "Button Text",
@@ -39,20 +25,12 @@ export const button = defineType({
   preview: {
     select: {
       title: "text",
-      variant: "variant",
       externalUrl: "url.external",
       urlType: "url.type",
-      internalUrl: "url.internal.slug.current",
+      internalUrl: "url.internal->slug.current",
       openInNewTab: "url.openInNewTab",
     },
-    prepare: ({
-      title,
-      variant,
-      externalUrl,
-      urlType,
-      internalUrl,
-      openInNewTab,
-    }) => {
+    prepare: ({ title, externalUrl, urlType, internalUrl, openInNewTab }) => {
       const url = urlType === "external" ? externalUrl : internalUrl;
       const newTabIndicator = openInNewTab ? " ↗" : "";
       const truncatedUrl =
@@ -60,7 +38,7 @@ export const button = defineType({
 
       return {
         title: title || "Untitled Button",
-        subtitle: `${capitalize(variant ?? "default")} • ${truncatedUrl}${newTabIndicator}`,
+        subtitle: `${truncatedUrl}${newTabIndicator}`,
       };
     },
   },
