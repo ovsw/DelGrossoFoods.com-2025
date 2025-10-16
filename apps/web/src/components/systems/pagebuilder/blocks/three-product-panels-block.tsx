@@ -155,7 +155,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
                       buttons={[
                         {
                           ...(ctaButton as SanityButtonProps),
-                          variant: "link",
+                          variant: null,
                         },
                       ]}
                       className="gap-0"
