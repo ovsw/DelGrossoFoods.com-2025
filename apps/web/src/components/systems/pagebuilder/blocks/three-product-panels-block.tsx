@@ -53,12 +53,12 @@ const normalizeHref = (href?: string | null): string | undefined => {
   return `/${cleaned}`;
 };
 
-// Shared styles for card container and surface layers
-const CARD_CONTAINER_STYLES =
-  "group relative h-[24rem] md:h-[28rem] lg:h-[30rem] focus-within:outline-none [--card-scale:1] hover:[--card-scale:1.06] focus-within:[--card-scale:1.06] motion-reduce:hover:[--card-scale:1] motion-reduce:focus-within:[--card-scale:1]";
+// Shared animation parameters for synchronized hover effects
+const SHARED_HOVER_ANIMATION_STYLES =
+  "transition-[transform,box-shadow] duration-300 ease-out origin-top [transform:scale(var(--card-scale))] group-hover:shadow-2xl group-focus-within:shadow-2xl motion-reduce:duration-0 will-change-transform";
 
-const CARD_SURFACE_STYLES =
-  "absolute inset-0 rounded-2xl rounded-b-2xl border-2 border-white/20 border-b-2 border-white/50 overflow-hidden text-white transition-[transform,box-shadow] duration-300 ease-out shadow-none origin-top [transform:scale(var(--card-scale))] group-hover:shadow-2xl group-focus-within:shadow-2xl motion-reduce:duration-0 will-change-transform";
+// Shared styles for card container and surface layers
+const CARD_CONTAINER_STYLES = "";
 
 /**
  * Individual product panel card component
@@ -85,13 +85,20 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
 
   return (
     <div
-      className={CARD_CONTAINER_STYLES}
+      className="group relative h-[24rem] md:h-[28rem] lg:h-[30rem] focus-within:outline-none [--card-scale:1] hover:[--card-scale:1.06] focus-within:[--card-scale:1.06] motion-reduce:hover:[--card-scale:1] motion-reduce:focus-within:[--card-scale:1]"
       role="article"
       aria-label={`${panel.title} product panel`}
       style={accentCssVars}
     >
-      <SurfaceShineOverlay />
-      <div className={`${CARD_SURFACE_STYLES} ${cardBg}`} aria-hidden="true" />
+      <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} />
+      <div
+        className={cn(
+          "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",
+          SHARED_HOVER_ANIMATION_STYLES,
+          cardBg,
+        )}
+        aria-hidden="true"
+      />
 
       {panel.image && (
         <div className="pointer-events-none absolute inset-x-0 -top-10 bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] z-10 flex items-end justify-center px-8">
@@ -142,7 +149,7 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
                 )}
 
                 {/* CTA Button */}
-                {!ctaButton?.href && (
+                {ctaButton?.href && (
                   <div className="opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
                     <SanityButtons
                       buttons={[
@@ -161,8 +168,6 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
           </div>
         </div>
       </div>
-
-      <div className="absolute inset-0 z-30 origin-top bg-black/10 opacity-0 transition-[opacity,transform] duration-400 ease-out pointer-events-none [transform:scale(var(--card-scale))] group-hover:opacity-30 group-focus-within:opacity-30 motion-reduce:duration-0 will-change-[opacity,transform]" />
     </div>
   );
 };
