@@ -57,9 +57,6 @@ const normalizeHref = (href?: string | null): string | undefined => {
 const SHARED_HOVER_ANIMATION_STYLES =
   "transition-[transform,box-shadow] duration-300 ease-out origin-top [transform:scale(var(--card-scale))] group-hover:shadow-2xl group-focus-within:shadow-2xl motion-reduce:duration-0 will-change-transform";
 
-// Shared styles for card container and surface layers
-const CARD_CONTAINER_STYLES = "";
-
 /**
  * Individual product panel card component
  */
@@ -152,14 +149,9 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
                 {ctaButton?.href && (
                   <div className="opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
                     <SanityButtons
-                      buttons={[
-                        {
-                          ...(ctaButton as SanityButtonProps),
-                          variant: null,
-                        },
-                      ]}
+                      buttons={[ctaButton as SanityButtonProps]}
                       className="gap-0"
-                      buttonClassName="h-auto w-auto justify-start p-0 text-sm font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-80"
+                      buttonVariants={["link"]}
                     />
                   </div>
                 )}

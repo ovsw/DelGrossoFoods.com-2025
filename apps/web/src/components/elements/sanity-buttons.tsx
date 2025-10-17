@@ -1,16 +1,31 @@
-import { Button } from "@workspace/ui/components/button";
+import { Button, buttonVariants } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, JSX, ReactNode } from "react";
 
 import type { SanityButtonProps } from "@/types";
 
+// Keep in sync with @workspace/ui/components/button.tsx variants
+type ButtonVariant =
+  | "default"
+  | "secondary"
+  | "outline"
+  | "link"
+  | "ghost"
+  | "accent"
+  | "destructive";
+
+// Base shape we accept from content regardless of Sanity source
+type ContentButton = Omit<SanityButtonProps, "variant"> & { icon?: ReactNode };
+
 type SanityButtonsProps = {
-  buttons: (SanityButtonProps & { icon?: ReactNode })[] | null;
+  buttons: ContentButton[] | null;
   className?: string;
   buttonClassName?: string;
-  size?: "sm" | "lg" | "default" | "icon" | null | undefined;
+  // Align with UI button size variant (no nulls)
+  size?: "sm" | "lg" | "default" | "icon";
+  buttonVariants?: (ButtonVariant | null | undefined)[];
 };
 
 function SanityButton({
@@ -19,15 +34,24 @@ function SanityButton({
   openInNewTab,
   className,
   icon,
+  variant,
   ...props
-}: (SanityButtonProps & { icon?: ReactNode }) & ComponentProps<typeof Button>) {
+}: ContentButton &
+  ComponentProps<typeof Button> & { variant?: ButtonVariant }): JSX.Element {
   if (!href) {
     console.log("Link Broken", { text, href, openInNewTab });
     return <Button>Link Broken</Button>;
   }
 
+  // Apply design system variant classes if variant is specified
+  const variantClasses = variant ? buttonVariants({ variant }) : "";
+
   return (
-    <Button {...props} asChild className={cn("rounded-[10px]", className)}>
+    <Button
+      {...props}
+      asChild
+      className={cn("rounded-[10px]", variantClasses, className)}
+    >
       <Link
         href={href || "#"}
         target={openInNewTab ? "_blank" : "_self"}
@@ -47,24 +71,41 @@ function SanityButton({
   );
 }
 
+// Sensible defaults for button variants
+const DEFAULT_BUTTON_VARIANTS: ButtonVariant[] = [
+  "default",
+  "outline",
+  "secondary",
+];
+
 export function SanityButtons({
   buttons,
   className,
   buttonClassName,
   size = "default",
-}: SanityButtonsProps) {
+  buttonVariants,
+}: SanityButtonsProps): JSX.Element | null {
   if (!buttons?.length) return null;
 
   return (
     <div className={cn("flex flex-col sm:flex-row gap-4", className)}>
-      {buttons.map((button) => (
-        <SanityButton
-          key={`button-${button._key}`}
-          size={size}
-          {...button}
-          className={buttonClassName}
-        />
-      ))}
+      {buttons.map((button, index) => {
+        // Determine variant: use provided variant, or fallback to defaults, or default to "default"
+        const variant =
+          buttonVariants?.[index] ??
+          DEFAULT_BUTTON_VARIANTS[index % DEFAULT_BUTTON_VARIANTS.length] ??
+          "default";
+
+        return (
+          <SanityButton
+            key={`button-${button._key}`}
+            size={size}
+            variant={variant}
+            {...button}
+            className={buttonClassName}
+          />
+        );
+      })}
     </div>
   );
 }
