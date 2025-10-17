@@ -1,6 +1,6 @@
 # SUPER IMPORTANT RULE NO.1: Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
 
-# SUPER IMPORTANT RULE NO. 2: run `coderabbit review --plain` to get comprehensive code analysis and improvement suggestions every time you finish a task, then review and consider the feedback you receive. If you deem it valid, implement a fixes.
+# SUPER IMPORTANT RULE NO. 2: run `coderabbit review --plain` to get comprehensive code analysis and improvement suggestions every time you finish a task, then review and consider the feedback you receive. If you deem it valid, implement a
 
 # PROJECT INFO
 
@@ -743,3 +743,88 @@ className="relative rounded-t-2xl bg-[inherit] p-6 md:p-8 shadow-[0_-12px_32px_-
 ```
 
 This approach maintains full Tailwind IntelliSense support while keeping JSX readable and debuggable.
+
+## Implementing click-to-edit for Sanity images
+
+When adding click-to-edit support to `SanityImage` components (or any image field), use `createDataAttribute` from `next-sanity` to build the proper data attribute:
+
+**Required imports:**
+
+```typescript
+import { createDataAttribute } from "next-sanity";
+import { dataset, projectId, studioUrl } from "@/config";
+```
+
+**Pattern (for page builder blocks):**
+
+1. Extend block props to accept `sanityDocumentId` and `sanityDocumentType`:
+
+   ```typescript
+   export type MyBlockProps = PageBuilderBlockProps<"myBlock"> & {
+     sanityDocumentId?: string;
+     sanityDocumentType?: string;
+   };
+   ```
+
+2. Create the data attribute using the full path from the document root:
+
+   ```typescript
+   const imageDataAttribute =
+     sanityDocumentId && sanityDocumentType && _key
+       ? createDataAttribute({
+           id: sanityDocumentId,
+           type: sanityDocumentType,
+           path: `pageBuilder[_key=="${_key}"].image`,
+           baseUrl: studioUrl,
+           projectId,
+           dataset,
+         }).toString()
+       : undefined;
+   ```
+
+3. For nested arrays (e.g., panels within a block), include the full path:
+
+   ```typescript
+   const imageDataAttribute =
+     sanityDocumentId && sanityDocumentType && parentKey
+       ? createDataAttribute({
+           id: sanityDocumentId,
+           type: sanityDocumentType,
+           path: `pageBuilder[_key=="${parentKey}"].panels[_key=="${panel._key}"].image`,
+           baseUrl: studioUrl,
+           projectId,
+           dataset,
+         }).toString()
+       : undefined;
+   ```
+
+4. Pass the attribute to `SanityImage`:
+
+   ```typescript
+   <SanityImage
+     image={image}
+     width={800}
+     height={600}
+     alt={stegaClean(title)}
+     data-sanity={imageDataAttribute}
+   />
+   ```
+
+5. Update the PageBuilder to pass document context:
+   ```typescript
+   <Component
+     {...block}
+     isPageTop={isFirstBlock}
+     sanityDocumentId={id}
+     sanityDocumentType={type}
+   />
+   ```
+
+**Key rules:**
+
+- Never use raw string paths like `data-sanity="${parentKey}.image"` — this won't work.
+- Always use `createDataAttribute` with the full path from document root.
+- For array items, use GROQ-style path syntax: `arrayName[_key=="${itemKey}"].fieldName`.
+- The path must be relative to the document root (e.g., starting with `pageBuilder[...]` for page builder blocks).
+- Always pass `baseUrl`, `projectId`, and `dataset` from config.
+- Call `.toString()` on the result before passing to `data-sanity`.

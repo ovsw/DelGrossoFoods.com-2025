@@ -1,18 +1,22 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { cn } from "@workspace/ui/lib/utils";
-import { stegaClean } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 import type { CSSProperties } from "react";
 
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 import { FeatureCardGridLayout } from "@/components/layouts/pagebuilder/feature-card-grid-layout";
+import { dataset, projectId, studioUrl } from "@/config";
 import type { SanityButtonProps } from "@/types";
 
 import type { PageBuilderBlockProps } from "../types";
 
 export type ThreeProductPanelsProps =
-  PageBuilderBlockProps<"threeProductPanels">;
+  PageBuilderBlockProps<"threeProductPanels"> & {
+    sanityDocumentId?: string;
+    sanityDocumentType?: string;
+  };
 
 // Simplified color mapping - only background colors differ
 const ACCENT_COLOR_MAP = {
@@ -63,9 +67,18 @@ const SHARED_HOVER_ANIMATION_STYLES =
 interface ProductPanelCardProps {
   panel: ThreeProductPanelsProps["panels"][0];
   accentColor: string;
+  parentKey: string;
+  sanityDocumentId?: string;
+  sanityDocumentType?: string;
 }
 
-const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
+const ProductPanelCard = ({
+  panel,
+  accentColor,
+  parentKey,
+  sanityDocumentId,
+  sanityDocumentType,
+}: ProductPanelCardProps) => {
   const cardBg = getCardBackground(accentColor);
   const accentValue = getAccentVar(accentColor);
   const accentCssVars = {
@@ -79,6 +92,19 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
         href: normalizeHref(panel.ctaButton.href),
       }
     : null;
+
+  // Create data attribute for click-to-edit functionality
+  const imageDataAttribute =
+    sanityDocumentId && sanityDocumentType && parentKey
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${parentKey}"].panels[_key=="${panel._key}"].image`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
 
   return (
     <div
@@ -98,13 +124,14 @@ const ProductPanelCard = ({ panel, accentColor }: ProductPanelCardProps) => {
       />
 
       {panel.image && (
-        <div className="pointer-events-none absolute inset-x-0 -top-10 bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] z-10 flex items-end justify-center px-8">
+        <div className="absolute inset-x-0 -top-10 bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] z-10 flex items-end justify-center px-8">
           <SanityImage
             image={panel.image}
             width={800}
             height={600}
             alt={panel.title || "Product image"}
             className="h-full w-full max-w-[82%] object-contain"
+            data-sanity={imageDataAttribute}
           />
         </div>
       )}
@@ -175,6 +202,8 @@ export function ThreeProductPanelsBlock({
   panels,
   spacing,
   isPageTop = false,
+  sanityDocumentId,
+  sanityDocumentType,
 }: ThreeProductPanelsProps) {
   if (!panels || panels.length !== 3) {
     return null;
@@ -216,6 +245,9 @@ export function ThreeProductPanelsBlock({
             key={panel._key}
             panel={panel}
             accentColor={cleanedAccent || "red"}
+            parentKey={_key}
+            sanityDocumentId={sanityDocumentId}
+            sanityDocumentType={sanityDocumentType}
           />
         );
       })}
