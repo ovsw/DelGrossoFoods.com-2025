@@ -96,9 +96,9 @@ export function SanityButtons({
         return (
           <SanityButton
             key={`button-${button._key}`}
+            {...button}
             size={size}
             variant={variant}
-            {...button}
             className={buttonClassName}
           />
         );
