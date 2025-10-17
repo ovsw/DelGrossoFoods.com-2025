@@ -1,5 +1,17 @@
 # studio
 
+## 1.16.1
+
+### Patch Changes
+
+- [#96](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/96) [`7d96140`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7d961400e4073f25617c434c0b2e7e1c38d92285) Thanks [@ovsw](https://github.com/ovsw)! - Refactor product panels and cards with improved styling and animations
+  - Simplify ThreeProductPanelsBlock by removing framer motion and making it a RSC
+  - Extract ProductPanelCard component with improved layout and animation
+  - Introduce dynamic gradient overlay with CSS variable support
+  - Consolidate className definitions for better readability
+  - Update Sanity schema for three-product-panels block
+  - Add SurfaceShineOverlay component with enhanced styling
+
 ## 1.16.0
 
 ### Patch Changes
