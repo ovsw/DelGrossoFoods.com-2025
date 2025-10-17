@@ -179,6 +179,8 @@ const ProductPanelCard = ({
                       buttons={[ctaButton as SanityButtonProps]}
                       className="gap-0"
                       buttonVariants={["link"]}
+                      surface={"onDark"}
+                      size={"slim"}
                     />
                   </div>
                 )}
