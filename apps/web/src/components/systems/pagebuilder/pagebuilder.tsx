@@ -14,6 +14,7 @@ import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
+import { ThreeProductPanelsBlock } from "./blocks/three-product-panels-block";
 import type { PageBuilderBlockProps } from "./types";
 
 // More specific and descriptive type aliases
@@ -45,6 +46,7 @@ const BLOCK_COMPONENTS = {
   featureCardsIcon: FeatureCardsWithIconBlock,
   subscribeNewsletter: SubscribeNewsletterBlock,
   imageLinkCards: ImageLinkCardsBlock,
+  threeProductPanels: ThreeProductPanelsBlock,
 } satisfies BlockComponentMap;
 
 /**
@@ -185,6 +187,19 @@ function useBlockRenderer(id: string, type: string) {
           return (
             <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "threeProductPanels": {
+          const Component = BLOCK_COMPONENTS.threeProductPanels;
+          return (
+            <div key={`threeProductPanels-${_key}`} data-sanity={dataAttribute}>
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }

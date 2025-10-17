@@ -39,7 +39,7 @@ export function SauceHeroSection({
       _key: "order-online",
       _type: "button" as const,
       text: "Order Online",
-      variant: "default" as const,
+      variant: null,
       href: "#related-products",
       openInNewTab: false,
       icon: <ShoppingCart className="size-4" aria-hidden="true" />,
@@ -48,7 +48,7 @@ export function SauceHeroSection({
       _key: "see-recipes",
       _type: "button" as const,
       text: "See Recipes",
-      variant: "secondary" as const,
+      variant: null,
       href: "#related-recipes",
       openInNewTab: false,
       icon: <BookOpen className="size-4" aria-hidden="true" />,
@@ -77,7 +77,7 @@ export function SauceHeroSection({
       >
         <RichText
           richText={sauce.description}
-          className="text-sm italic text-brand-green/90 md:text-lg max-w-2xl mx-auto lg:max-w-none"
+          className="text-sm italic text-brand-green/90 md:text-lg max-w-2xl lg:max-w-none"
         />
         <div className="flex justify-center lg:justify-start">
           <SanityButtons
