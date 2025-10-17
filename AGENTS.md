@@ -1,12 +1,12 @@
-# SUPER IMPORTANT RULE NO.1! Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
+# SUPER IMPORTANT RULE NO.1: Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
+
+# SUPER IMPORTANT RULE NO. 2: run `coderabbit review --plain` to get comprehensive code analysis and improvement suggestions every time you finish a task, then review and consider the feedback you receive. If you deem it valid, implement a fixes.
 
 # PROJECT INFO
 
 ## User Preferences
 
 - Perform only the explicitly requested changes; never add opportunistic optimizations or extra tasks unless the user asks for them.
-
-AI agent handbook for exploring, editing, and shipping safely in this monorepo
 
 ### Quick facts
 
@@ -700,6 +700,13 @@ Bullets (optional, keep short):
 - Workspaces: `apps/*`, `packages/*` (pnpm)
 - Pending changesets: `.changeset/*.md`
 - CI workflow: `.github/workflows/release.yml`
+
+### Audible task completion (agent memory)
+
+- At the end of each task, speak an audible completion message on macOS.
+- Exact command to run (fastest path): `say -v Daniel -r 175 "Task finished"`
+  - Use the built-in "Daniel" voice at 175 wpm ("Alex" is not installed on this machine).
+- If using the MCP server named `say`, the equivalent tool call is: `{ "text": "Task finished", "voice": "Daniel", "rate": 175, "background": false }` for tool `speak`.
 
 # `cn()` usage
 
