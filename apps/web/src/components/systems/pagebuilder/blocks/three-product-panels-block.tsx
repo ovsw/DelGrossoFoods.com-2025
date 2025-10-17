@@ -110,7 +110,7 @@ const ProductPanelCard = ({
     <div
       className="group relative h-[24rem] md:h-[28rem] lg:h-[30rem] focus-within:outline-none [--card-scale:1] hover:[--card-scale:1.06] focus-within:[--card-scale:1.06] motion-reduce:hover:[--card-scale:1] motion-reduce:focus-within:[--card-scale:1]"
       role="article"
-      aria-label={`${panel.title} product panel`}
+      aria-label={`${stegaClean(panel.title)} product panel`}
       style={accentCssVars}
     >
       <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} />
@@ -129,7 +129,7 @@ const ProductPanelCard = ({
             image={panel.image}
             width={800}
             height={600}
-            alt={panel.title || "Product image"}
+            alt={stegaClean(panel.title || "Product image")}
             className="h-full w-full max-w-[82%] object-contain"
             data-sanity={imageDataAttribute}
           />

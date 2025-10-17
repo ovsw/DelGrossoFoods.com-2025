@@ -712,7 +712,7 @@ Bullets (optional, keep short):
 
 ```tsx
 const SHARED_CARD_STYLES = cn(
-  "group relative cursor-pointer transition-all duration-900 ease-out",
+  "group relative cursor-pointer transition-all duration-1000 ease-out",
   "hover:scale-[1.02] hover:shadow-2xl",
   // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
   "h-[24rem] md:h-[28rem] lg:h-[30rem]",

@@ -1,6 +1,4 @@
-# SUPER IMPORTANT RULE NO.1: Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
-
-# SUPER IMPORTANT RULE NO. 2: run `coderabbit review --plain` to get comprehensive code analysis and improvement suggestions every time you finish a task, then review and consider the feedback you receive. If you deem it valid, implement a
+# SUPER IMPORTANT RULE NO.1: Always run `say -v Daniel "finished task"` once you finished a task or response to the user.
 
 # PROJECT INFO
 
