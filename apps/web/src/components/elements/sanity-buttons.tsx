@@ -2,36 +2,54 @@ import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, JSX, ReactNode } from "react";
 
 import type { SanityButtonProps } from "@/types";
 
+type ButtonProps = ComponentProps<typeof Button>;
+type ButtonVariant = ButtonProps["variant"];
+type ButtonSize = ButtonProps["size"];
+type ButtonSurface = ButtonProps["surface"];
+type NonNullButtonVariant = Exclude<ButtonVariant, null | undefined>;
+
+// Base shape we accept from content regardless of Sanity source
+type ContentButton = Omit<SanityButtonProps, "variant"> & { icon?: ReactNode };
+
 type SanityButtonsProps = {
-  buttons: (SanityButtonProps & { icon?: ReactNode })[] | null;
+  buttons: ContentButton[] | null;
   className?: string;
   buttonClassName?: string;
-  size?: "sm" | "lg" | "default" | "icon" | null | undefined;
+  // Align with UI button size variant (no nulls)
+  size?: ButtonSize;
+  buttonVariants?: (ButtonVariant | null | undefined)[];
+  surface?: ButtonSurface;
 };
 
 function SanityButton({
   text,
   href,
-  variant = "default",
   openInNewTab,
   className,
   icon,
+  variant,
+  surface,
   ...props
-}: (SanityButtonProps & { icon?: ReactNode }) & ComponentProps<typeof Button>) {
+}: ContentButton &
+  Omit<ButtonProps, "variant" | "surface"> & {
+    variant?: ButtonVariant;
+    surface?: ButtonSurface;
+  }): JSX.Element {
   if (!href) {
-    console.log("Link Broken", { text, href, variant, openInNewTab });
+    console.log("Link Broken", { text, href, openInNewTab });
     return <Button>Link Broken</Button>;
   }
 
   return (
     <Button
-      variant={variant}
       {...props}
       asChild
+      variant={variant}
+      surface={surface}
       className={cn("rounded-[10px]", className)}
     >
       <Link
@@ -53,24 +71,45 @@ function SanityButton({
   );
 }
 
+// Sensible defaults for button variants
+const DEFAULT_BUTTON_VARIANTS: NonNullButtonVariant[] = [
+  "default",
+  "outline",
+  "secondary",
+];
+
 export function SanityButtons({
   buttons,
   className,
   buttonClassName,
   size = "default",
-}: SanityButtonsProps) {
+  buttonVariants,
+  surface,
+}: SanityButtonsProps): JSX.Element | null {
   if (!buttons?.length) return null;
 
   return (
     <div className={cn("flex flex-col sm:flex-row gap-4", className)}>
-      {buttons.map((button) => (
-        <SanityButton
-          key={`button-${button._key}`}
-          size={size}
-          {...button}
-          className={buttonClassName}
-        />
-      ))}
+      {buttons.map((button, index) => {
+        // Determine variant: use provided variant, or fallback to defaults, or default to "default"
+        const fallbackVariant: NonNullButtonVariant =
+          DEFAULT_BUTTON_VARIANTS[index % DEFAULT_BUTTON_VARIANTS.length] ??
+          "default";
+        const providedVariant = buttonVariants?.[index];
+        const variant =
+          providedVariant == null ? fallbackVariant : providedVariant;
+
+        return (
+          <SanityButton
+            key={`button-${button._key}`}
+            {...button}
+            size={size}
+            variant={variant}
+            surface={surface}
+            className={buttonClassName}
+          />
+        );
+      })}
     </div>
   );
 }

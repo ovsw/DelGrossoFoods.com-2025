@@ -181,6 +181,29 @@ const featureCardsIconBlock = /* groq */ `
   }
 `;
 
+const threeProductPanelsBlock = /* groq */ `
+  _type == "threeProductPanels" => {
+    ...,
+    "panels": array::compact(panels[]{
+      ...,
+      ${imageFragment},
+      "ctaButton": select(
+        defined(ctaButton.text) && defined(ctaButton.url) => {
+          "_type": "button",
+          "_key": coalesce(ctaButton._key, ^._key + "-cta"),
+          "text": ctaButton.text,
+          "openInNewTab": ctaButton.url.openInNewTab,
+          "href": select(
+            ctaButton.url.type == "internal" && defined(ctaButton.url.internal->slug.current) => ctaButton.url.internal->slug.current,
+            ctaButton.url.type == "external" && defined(ctaButton.url.external) => ctaButton.url.external,
+            ctaButton.url.href
+          )
+        }
+      )
+    })
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
@@ -191,7 +214,8 @@ const pageBuilderFragment = /* groq */ `
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
-    ${imageLinkCardsBlock}
+    ${imageLinkCardsBlock},
+    ${threeProductPanelsBlock}
   }
 `;
 

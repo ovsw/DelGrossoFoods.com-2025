@@ -1,6 +1,10 @@
+# SUPER IMPORTANT RULE 1: Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
+
 # PROJECT INFO
 
-AI agent handbook for exploring, editing, and shipping safely in this monorepo
+## User Preferences
+
+- Perform only the explicitly requested changes; never add opportunistic optimizations or extra tasks unless the user asks for them.
 
 ### Quick facts
 
@@ -663,39 +667,7 @@ Explicit selection rule to avoid confusion:
 
 - When adding a changeset, select only the workspaces that actually changed; fixed groups still bump all workspaces to the same version (highest bump), but CHANGELOG entries are generated only for the selected ones.
 
-### Quick recipes (copy/paste friendly)
-
-1. Add a changeset with the work done in this conversation
-
-```bash
-# Pick a kebab-case slug that describes the change
-cat <<'EOF' > .changeset/<slug>.md
----
-"web": patch
-# add other changed workspaces (e.g. "studio", "@workspace/ui") and bump levels as needed
----
-
-Write a concise, user-facing summary (be imperative)
-EOF
-
-git add .changeset/<slug>.md && git commit -m "chore(changeset): add changeset"
-```
-
-2. Add a changeset for this entire branch
-
-```bash
-# Repeat the manual file creation above, but include every workspace touched anywhere on the branch
-# Adjust bump levels (patch | minor | major) to match the largest change
-git add .changeset/<slug>.md && git commit -m "chore(changeset): add branch changeset"
-```
-
-3. Preview pending releases and versions
-
-```bash
-pnpm changeset:status
-```
-
-4. CI Release PR (automatic on main)
+## CI Release PR (automatic on main)
 
 - After merging a changeset to `main`, CI opens a Release PR that bumps versions for the fixed group and writes CHANGELOGs for selected workspaces. Merge that PR to land the versions.
 
@@ -720,13 +692,6 @@ Bullets (optional, keep short):
 - Add active state handling in MobileNavPanel
 ```
 
-### Validation checklist (before merging Release PR)
-
-- `pnpm changeset:status` shows expected workspaces and bump levels
-- CHANGELOG entries are clear and scoped to selected workspaces
-- All fixed workspaces share the same new version
-- Internal dependency ranges are aligned
-
 ### Reference
 
 - Config: `.changeset/config.json` (baseBranch: `main`, changelog: GitHub)
@@ -740,3 +705,124 @@ Bullets (optional, keep short):
 - Exact command to run (fastest path): `say -v Daniel -r 175 "Task finished"`
   - Use the built-in "Daniel" voice at 175 wpm ("Alex" is not installed on this machine).
 - If using the MCP server named `say`, the equivalent tool call is: `{ "text": "Task finished", "voice": "Daniel", "rate": 175, "background": false }` for tool `speak`.
+
+# `cn()` usage
+
+**For constants (shared style constants):** Multi-line `cn()` calls are acceptable and recommended when defining reusable style constants at the top of files:
+
+```tsx
+const SHARED_CARD_STYLES = cn(
+  "group relative cursor-pointer transition-all duration-1000 ease-out",
+  "hover:scale-[1.02] hover:shadow-2xl",
+  // Fixed card height per breakpoint to avoid layout shift when revealing overlay content
+  "h-[24rem] md:h-[28rem] lg:h-[30rem]",
+  "border-2 border-white/20 rounded-2xl overflow-hidden text-white",
+);
+```
+
+**For inline className props:** Use single-line `cn()` calls or raw strings. Never split class strings across multiple lines in JSX:
+
+```tsx
+// ✅ Good - single line cn() with dynamic data
+className={cn(
+  "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+  "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
+  isActive && "ring-2 ring-blue-500"
+)}
+
+// ❌ Bad - multi-line class strings in JSX
+className={cn(
+  "relative rounded-t-2xl bg-[inherit] p-6 md:p-8",
+  "shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]",
+)}
+
+// ✅ Also good - raw string when no dynamic data needed
+className="relative rounded-t-2xl bg-[inherit] p-6 md:p-8 shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.45)]"
+```
+
+This approach maintains full Tailwind IntelliSense support while keeping JSX readable and debuggable.
+
+## Implementing click-to-edit for Sanity images
+
+When adding click-to-edit support to `SanityImage` components (or any image field), use `createDataAttribute` from `next-sanity` to build the proper data attribute:
+
+**Required imports:**
+
+```typescript
+import { createDataAttribute } from "next-sanity";
+import { dataset, projectId, studioUrl } from "@/config";
+```
+
+**Pattern (for page builder blocks):**
+
+1. Extend block props to accept `sanityDocumentId` and `sanityDocumentType`:
+
+   ```typescript
+   export type MyBlockProps = PageBuilderBlockProps<"myBlock"> & {
+     sanityDocumentId?: string;
+     sanityDocumentType?: string;
+   };
+   ```
+
+2. Create the data attribute using the full path from the document root:
+
+   ```typescript
+   const imageDataAttribute =
+     sanityDocumentId && sanityDocumentType && _key
+       ? createDataAttribute({
+           id: sanityDocumentId,
+           type: sanityDocumentType,
+           path: `pageBuilder[_key=="${_key}"].image`,
+           baseUrl: studioUrl,
+           projectId,
+           dataset,
+         }).toString()
+       : undefined;
+   ```
+
+3. For nested arrays (e.g., panels within a block), include the full path:
+
+   ```typescript
+   const imageDataAttribute =
+     sanityDocumentId && sanityDocumentType && parentKey
+       ? createDataAttribute({
+           id: sanityDocumentId,
+           type: sanityDocumentType,
+           path: `pageBuilder[_key=="${parentKey}"].panels[_key=="${panel._key}"].image`,
+           baseUrl: studioUrl,
+           projectId,
+           dataset,
+         }).toString()
+       : undefined;
+   ```
+
+4. Pass the attribute to `SanityImage`:
+
+   ```typescript
+   <SanityImage
+     image={image}
+     width={800}
+     height={600}
+     alt={stegaClean(title)}
+     data-sanity={imageDataAttribute}
+   />
+   ```
+
+5. Update the PageBuilder to pass document context:
+   ```typescript
+   <Component
+     {...block}
+     isPageTop={isFirstBlock}
+     sanityDocumentId={id}
+     sanityDocumentType={type}
+   />
+   ```
+
+**Key rules:**
+
+- Never use raw string paths like `data-sanity="${parentKey}.image"` — this won't work.
+- Always use `createDataAttribute` with the full path from document root.
+- For array items, use GROQ-style path syntax: `arrayName[_key=="${itemKey}"].fieldName`.
+- The path must be relative to the document root (e.g., starting with `pageBuilder[...]` for page builder blocks).
+- Always pass `baseUrl`, `projectId`, and `dataset` from config.
+- Call `.toString()` on the result before passing to `data-sanity`.
