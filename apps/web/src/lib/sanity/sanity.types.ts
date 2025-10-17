@@ -36,10 +36,7 @@ export type ThreeProductPanels = {
       _type: "image";
     };
     accentColor?: "red" | "green" | "black";
-    ctaButton?: {
-      text?: string;
-      url?: CustomUrl;
-    };
+    ctaButton?: Button;
     _type: "productPanel";
     _key: string;
   }>;
@@ -408,12 +405,6 @@ export type PageBuilder = Array<
       _key: string;
     } & ThreeProductPanels)
 >;
-
-export type Button = {
-  _type: "button";
-  text?: string;
-  url?: CustomUrl;
-};
 
 export type RichText = Array<
   | {
@@ -1142,6 +1133,12 @@ export type Page = {
   ogDescription?: string;
 };
 
+export type Button = {
+  _type: "button";
+  text?: string;
+  url?: CustomUrl;
+};
+
 export type Blog = {
   _id: string;
   _type: "blog";
@@ -1500,7 +1497,6 @@ export type AllSanitySchemaTypes =
   | TimelineMarker
   | SectionSpacing
   | PageBuilder
-  | Button
   | RichText
   | ContactPage
   | StoreLocator
@@ -1521,6 +1517,7 @@ export type AllSanitySchemaTypes =
   | Author
   | Faq
   | Page
+  | Button
   | Blog
   | CustomUrl
   | SanityAssistInstructionTask
