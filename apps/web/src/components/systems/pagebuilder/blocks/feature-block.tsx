@@ -111,10 +111,7 @@ export function FeatureBlock({
               )}
               {buttons && (
                 <div className="flex flex-wrap gap-4 pt-4">
-                  <SanityButtons
-                    buttons={buttons}
-                    buttonClassName="bg-white text-brand-green hover:bg-white/90"
-                  />
+                  <SanityButtons buttons={buttons} surface="onDark" />
                 </div>
               )}
             </div>

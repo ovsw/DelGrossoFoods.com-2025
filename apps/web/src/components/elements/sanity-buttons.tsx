@@ -9,6 +9,7 @@ import type { SanityButtonProps } from "@/types";
 type ButtonProps = ComponentProps<typeof Button>;
 type ButtonVariant = ButtonProps["variant"];
 type ButtonSize = ButtonProps["size"];
+type ButtonSurface = ButtonProps["surface"];
 type NonNullButtonVariant = Exclude<ButtonVariant, null | undefined>;
 
 // Base shape we accept from content regardless of Sanity source
@@ -21,6 +22,7 @@ type SanityButtonsProps = {
   // Align with UI button size variant (no nulls)
   size?: ButtonSize;
   buttonVariants?: (ButtonVariant | null | undefined)[];
+  surface?: ButtonSurface;
 };
 
 function SanityButton({
@@ -30,10 +32,12 @@ function SanityButton({
   className,
   icon,
   variant,
+  surface,
   ...props
 }: ContentButton &
-  Omit<ButtonProps, "variant"> & {
+  Omit<ButtonProps, "variant" | "surface"> & {
     variant?: ButtonVariant;
+    surface?: ButtonSurface;
   }): JSX.Element {
   if (!href) {
     console.log("Link Broken", { text, href, openInNewTab });
@@ -45,6 +49,7 @@ function SanityButton({
       {...props}
       asChild
       variant={variant}
+      surface={surface}
       className={cn("rounded-[10px]", className)}
     >
       <Link
@@ -79,6 +84,7 @@ export function SanityButtons({
   buttonClassName,
   size = "default",
   buttonVariants,
+  surface,
 }: SanityButtonsProps): JSX.Element | null {
   if (!buttons?.length) return null;
 
@@ -99,6 +105,7 @@ export function SanityButtons({
             {...button}
             size={size}
             variant={variant}
+            surface={surface}
             className={buttonClassName}
           />
         );
