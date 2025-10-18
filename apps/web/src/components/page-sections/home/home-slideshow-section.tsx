@@ -120,32 +120,54 @@ export function HomeSlideshowSection() {
       aria-label="DelGrosso Sauce Lines Slideshow"
       aria-live="polite"
     >
-      {/* Centered Container (Yellow) */}
-      <div className="mx-auto flex max-w-7xl transform flex-col items-center justify-center gap-8 px-4 sm:px-8 lg:translate-x-20 lg:flex-row lg:items-stretch lg:justify-start lg:px-16">
-        {/* Mobile-only Slideshow Image (Green, at the top) */}
-        {/* <div className="order-1 w-full lg:hidden">
-          {renderSauceImages('mx-auto')}
-        </div> */}
-
-        {/* Left Static Content Polaroid Image*/}
-        {/* <div className="flex max-w-md items-center pt-20 lg:hidden lg:max-w-sm lg:pt-0">
-          <div className="-rotate-2 transform bg-white p-4 shadow-lg transition-transform duration-300 hover:rotate-0">
-            <img
-              src="/images/delgrosso-family-photo.jpg"
-              alt="DelGrosso family photo of gathering with traditional cooking"
-              className="w-full object-cover"
-            />
-            <div className="font-handwriting mt-2 text-center text-sm text-gray-600">
-              Family Tradition Since 1914
-            </div>
+      {/* Centered Container - Two Row Layout on Desktop */}
+      <div className="mx-auto flex max-w-7xl transform flex-col items-center justify-center gap-8 px-4 py-8 sm:px-8 lg:translate-x-20 lg:px-16 lg:min-h-[80svh]">
+        {/* Desktop Row 1: Text Content */}
+        <div className="hidden w-full lg:flex lg:gap-16">
+          {/* Left Column: Title and Eyebrow */}
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                <h1 className="mb-3 text-2xl font-bold md:text-3xl">
+                  {current.title}
+                </h1>
+                <h2 className="mb-8 text-3xl font-semibold md:text-5xl lg:text-6xl leading-tight">
+                  {current.subtitle}
+                </h2>
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </div> */}
 
-        <div className="container mx-auto flex w-full items-start gap-6 lg:flex-row lg:justify-start lg:gap-8">
-          <div
-            className={`w-[15rem] py-4 md:min-w-[20rem] lg:order-1 lg:w-md lg:py-0`}
-          >
-            <div className="mb-8 max-w-[20rem] -rotate-2 transform bg-white p-2 shadow-lg hover:rotate-0 md:p-4">
+          {/* Right Column: Description and Button */}
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                <p className="mb-8 text-base italic">{current.description}</p>
+                <Button asChild size="lg">
+                  <Link href={current.buttonLink}>{current.buttonText}</Link>
+                </Button>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Desktop Row 2: Images - Hidden on mobile, shown on desktop */}
+        <div className="hidden w-full lg:flex lg:gap-16 lg:items-end">
+          {/* Family Photo */}
+          <div className="flex-1">
+            <div className="mb-8 max-w-[24rem] -rotate-2 transform bg-white p-4 shadow-lg hover:rotate-0">
               <Image
                 priority={true}
                 width={500}
@@ -154,21 +176,75 @@ export function HomeSlideshowSection() {
                 alt="DelGrosso family photo of gathering with traditional cooking"
                 className="w-full object-cover"
               />
-              <div className="font-handwriting mt-2 hidden text-center text-sm text-gray-600 md:block">
+              <div className="font-handwriting mt-2 text-center text-sm text-gray-600">
                 Family Tradition Since 1914
               </div>
             </div>
-            {/* Left Slideshow Content (Purple - Text) */}
+          </div>
+
+          {/* Product Jars */}
+          <div className="flex-1">
             <AnimatePresence mode="wait">
               <motion.div
-                key={current.id} // Use the same key as the image container
-                initial={{ opacity: 0 }} // Start hidden
-                animate={{ opacity: 1 }} // Animate to fully visible
-                exit={{ opacity: 0 }} // Animate to hidden
-                transition={{ duration: 0.35 }} // Match image animation duration
+                key={current.id}
+                initial={{ opacity: 0, x: "10%" }}
+                animate={{ opacity: 1, x: "0%" }}
+                exit={{ opacity: 0, x: "0%" }}
+                transition={{ duration: 0.35 }}
+                className="relative min-h-[35svh] w-auto flex-shrink-0 items-end justify-start"
               >
-                <h1 className="mb-2 text-xl font-bold">{current.title}</h1>
-                <h2 className="mb-6 text-2xl font-semibold md:text-4xl lg:text-4xl">
+                {current.sauceImage.map((image, index) => (
+                  <Image
+                    priority={true}
+                    key={`${current.id}-${index}`}
+                    src={image}
+                    alt={
+                      current.sauceAlts[index] ??
+                      `${current.title} ${current.subtitle}`
+                    }
+                    width={500}
+                    height={300}
+                    className="block min-h-[35svh] w-auto object-contain"
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Mobile Layout - Single Column */}
+        <div className="flex w-full flex-col items-start gap-12 lg:hidden">
+          {/* Family Photo */}
+          <div className="w-full max-w-[20rem]">
+            <div className="mb-8 max-w-[20rem] -rotate-2 transform bg-white p-4 shadow-lg hover:rotate-0">
+              <Image
+                priority={true}
+                width={500}
+                height={300}
+                src="/images/delgrosso-family-photo.jpg"
+                alt="DelGrosso family photo of gathering with traditional cooking"
+                className="w-full object-cover"
+              />
+              <div className="font-handwriting mt-2 text-center text-sm text-gray-600">
+                Family Tradition Since 1914
+              </div>
+            </div>
+          </div>
+
+          {/* Text Content */}
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                <h1 className="mb-3 text-2xl font-bold md:text-3xl">
+                  {current.title}
+                </h1>
+                <h2 className="mb-8 text-3xl font-semibold md:text-5xl leading-tight">
                   {current.subtitle}
                 </h2>
                 <p className="mb-8 text-base italic">{current.description}</p>
@@ -179,32 +255,34 @@ export function HomeSlideshowSection() {
             </AnimatePresence>
           </div>
 
-          {/* Slideshow Image */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current.id} // Key changes with the slide to trigger exit/enter animations
-              initial={{ opacity: 0, x: "10%" }} // Start off-screen right and hidden
-              animate={{ opacity: 1, x: "0%" }} // Animate to fully visible at final position
-              exit={{ opacity: 0, x: "0%" }} // Animate to hidden in place (fade out only)
-              transition={{ duration: 0.35 }} // Animation duration
-              className={`relative order-2 min-h-[60svh] w-auto flex-shrink-0 items-start justify-start lg:flex lg:flex-col`}
-            >
-              {current.sauceImage.map((image, index) => (
-                <Image
-                  priority={true}
-                  key={`${current.id}-${index}`}
-                  src={image}
-                  alt={
-                    current.sauceAlts[index] ??
-                    `${current.title} ${current.subtitle}`
-                  }
-                  width={500} // Aspect ratio hint
-                  height={300} // Aspect ratio hint
-                  className={`block min-h-[60svh] w-auto object-contain`}
-                />
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          {/* Product Jars */}
+          <div className="w-full">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current.id}
+                initial={{ opacity: 0, x: "10%" }}
+                animate={{ opacity: 1, x: "0%" }}
+                exit={{ opacity: 0, x: "0%" }}
+                transition={{ duration: 0.35 }}
+                className="relative min-h-[35svh] w-auto items-end justify-center"
+              >
+                {current.sauceImage.map((image, index) => (
+                  <Image
+                    priority={true}
+                    key={`${current.id}-${index}`}
+                    src={image}
+                    alt={
+                      current.sauceAlts[index] ??
+                      `${current.title} ${current.subtitle}`
+                    }
+                    width={500}
+                    height={300}
+                    className="block min-h-[35svh] w-auto object-contain"
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
