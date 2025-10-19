@@ -1,7 +1,6 @@
 // import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import type { Metadata } from "next";
 
-import { HomeSlideshowSection } from "@/components/page-sections/home/home-slideshow-section";
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHomePageData } from "@/lib/sanity/query";
@@ -40,7 +39,6 @@ export default async function Page() {
 
   return (
     <>
-      <HomeSlideshowSection />
       <PageBuilder pageBuilder={pageBuilder ?? []} id={_id} type={_type} />
     </>
   );

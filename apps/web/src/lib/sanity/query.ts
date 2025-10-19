@@ -131,6 +131,37 @@ const featureBlock = /* groq */ `
   }
 `;
 
+const homeSlideshowBlock = /* groq */ `
+  _type == "homeSlideshow" => {
+    ...,
+    "slides": array::compact(slides[0...2]{
+      _key,
+      title,
+      subtitle,
+      "description": description[]{
+        ...,
+        _type == "block" => {
+          ...,
+          ${markDefsFragment}
+        },
+        _type == "image" => {
+          ${imageFields},
+          "caption": caption
+        }
+      },
+      ${buttonsFragment},
+      "image": select(
+        defined(image.asset._ref) => {
+          "image": image{
+            ${imageFields}
+          },
+          "alt": image.alt
+        }
+      )
+    })
+  }
+`;
+
 const faqFragment = /* groq */ `
   "faqs": array::compact(faqs[]->{
     title,
@@ -215,7 +246,8 @@ const pageBuilderFragment = /* groq */ `
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
     ${imageLinkCardsBlock},
-    ${threeProductPanelsBlock}
+    ${threeProductPanelsBlock},
+    ${homeSlideshowBlock}
   }
 `;
 
