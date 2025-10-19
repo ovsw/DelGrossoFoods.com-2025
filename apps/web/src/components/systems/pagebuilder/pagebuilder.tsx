@@ -251,7 +251,7 @@ export function PageBuilder({
 
   return (
     <section
-      className="page-builder max-w-7xl mx-auto w-full"
+      className="page-builder w-full"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >

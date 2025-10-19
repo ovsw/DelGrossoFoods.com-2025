@@ -48,6 +48,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       : spacingTop;
 
     const spacingClasses = cn(
+      "mx-auto w-full max-w-7xl",
       SECTION_TOP_SPACING_CLASS[effectiveTopSpacing],
       SECTION_BOTTOM_SPACING_CLASS[spacingBottom],
       className,
