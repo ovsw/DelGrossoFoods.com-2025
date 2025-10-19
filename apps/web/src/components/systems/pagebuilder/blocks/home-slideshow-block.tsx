@@ -26,6 +26,7 @@ function toSlide(
 
   const normalizedSlide: HomeSlideshowSlide = {
     id: slide._key ?? `slide-${slideIndex}`,
+    sanityKey: slide._key ?? null,
     title: slide.title,
     subtitle: slide.subtitle,
     description: slide.description,
@@ -48,12 +49,24 @@ function normalizeSlides(
     .filter((slide): slide is HomeSlideshowSlide => slide !== null);
 }
 
-export function HomeSlideshowBlock({ slides }: HomeSlideshowBlockProps) {
+export function HomeSlideshowBlock({
+  slides,
+  _key,
+  sanityDocumentId,
+  sanityDocumentType,
+}: HomeSlideshowBlockProps) {
   const normalizedSlides = normalizeSlides(slides);
 
   if (!normalizedSlides.length) {
     return null;
   }
 
-  return <HomeSlideshowSection slides={normalizedSlides} />;
+  return (
+    <HomeSlideshowSection
+      slides={normalizedSlides}
+      sanityBlockKey={_key}
+      sanityDocumentId={sanityDocumentId}
+      sanityDocumentType={sanityDocumentType}
+    />
+  );
 }

@@ -1,14 +1,16 @@
 "use client";
 
+import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { stegaClean } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
+import { dataset, projectId, studioUrl } from "@/config";
 import type { SanityButtonProps, SanityImageProps } from "@/types";
 
 const SLIDE_DURATION = 6000; // milliseconds
@@ -17,6 +19,7 @@ const TRANSITION_DURATION_S = TRANSITION_DURATION / 1000; // seconds
 
 export interface HomeSlideshowSlide {
   readonly id: string;
+  readonly sanityKey?: string | null;
   readonly title?: string | null;
   readonly subtitle?: string | null;
   readonly description?: unknown;
@@ -27,10 +30,16 @@ export interface HomeSlideshowSlide {
 
 interface HomeSlideshowSectionProps {
   readonly slides?: ReadonlyArray<HomeSlideshowSlide>;
+  readonly sanityBlockKey?: string | null;
+  readonly sanityDocumentId?: string;
+  readonly sanityDocumentType?: string;
 }
 
 export function HomeSlideshowSection({
   slides = [],
+  sanityBlockKey,
+  sanityDocumentId,
+  sanityDocumentType,
 }: HomeSlideshowSectionProps) {
   const normalizedSlides = useMemo(
     () =>
@@ -113,6 +122,40 @@ export function HomeSlideshowSection({
   }
 
   const current = normalizedSlides[currentSlide] ?? normalizedSlides[0]!;
+  const slidesPathBase =
+    sanityBlockKey !== undefined && sanityBlockKey !== null
+      ? `pageBuilder[_key==${JSON.stringify(sanityBlockKey)}].slides`
+      : undefined;
+  const slideSelector =
+    current.sanityKey !== undefined && current.sanityKey !== null
+      ? `[_key==${JSON.stringify(current.sanityKey)}]`
+      : `[${currentSlide}]`;
+
+  const createFieldDataAttribute = (field: string) => {
+    if (
+      !sanityDocumentId ||
+      !sanityDocumentType ||
+      slidesPathBase === undefined
+    ) {
+      return undefined;
+    }
+
+    const fieldPath = `${slidesPathBase}${slideSelector}.${field}`;
+
+    return createDataAttribute({
+      id: sanityDocumentId,
+      type: sanityDocumentType,
+      path: fieldPath,
+      baseUrl: studioUrl,
+      projectId,
+      dataset,
+    }).toString();
+  };
+
+  const currentSlideImageDataAttribute = createFieldDataAttribute("image");
+  const currentSlideTitleDataAttribute = createFieldDataAttribute("title");
+  const currentSlideSubtitleDataAttribute =
+    createFieldDataAttribute("subtitle");
 
   return (
     <div
@@ -144,13 +187,16 @@ export function HomeSlideshowSection({
                 className="flex w-full flex-col items-center text-center md:items-start md:text-left lg:items-center lg:text-center"
               >
                 {current.title ? (
-                  <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-brand-green-text/70">
-                    {stegaClean(current.title)}
-                  </p>
+                  <Eyebrow
+                    text={current.title}
+                    data-sanity={currentSlideTitleDataAttribute}
+                  />
                 ) : null}
                 {current.subtitle ? (
                   <h2 className="mb-6 text-2xl font-semibold md:text-4xl lg:text-4xl">
-                    {stegaClean(current.subtitle)}
+                    <span data-sanity={currentSlideSubtitleDataAttribute}>
+                      {current.subtitle}
+                    </span>
                   </h2>
                 ) : null}
                 {current.description ? (
@@ -163,7 +209,11 @@ export function HomeSlideshowSection({
                 ) : null}
                 {current.button ? (
                   <div className="w-full md:self-start lg:self-center">
-                    <SanityButtons buttons={[current.button]} size="lg" />
+                    <SanityButtons
+                      buttons={[current.button]}
+                      size="lg"
+                      className="items-center sm:justify-center"
+                    />
                   </div>
                 ) : null}
               </motion.div>
@@ -194,6 +244,7 @@ export function HomeSlideshowSection({
                         width={500}
                         height={300}
                         className="block h-full max-h-[28rem] w-auto object-contain lg:h-full lg:max-h-none"
+                        data-sanity={currentSlideImageDataAttribute}
                       />
                     ) : null}
                   </motion.div>

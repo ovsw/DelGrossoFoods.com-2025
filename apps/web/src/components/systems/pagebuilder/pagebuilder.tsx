@@ -209,7 +209,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.homeSlideshow;
           return (
             <div key={`homeSlideshow-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
