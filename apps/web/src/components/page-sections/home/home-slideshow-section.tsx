@@ -12,7 +12,8 @@ import { SanityImage } from "@/components/elements/sanity-image";
 import type { SanityButtonProps, SanityImageProps } from "@/types";
 
 const SLIDE_DURATION = 6000; // milliseconds
-const TRANSITION_DURATION = 300; // milliseconds
+const TRANSITION_DURATION = 350; // milliseconds (matches Framer Motion's 0.35s)
+const TRANSITION_DURATION_S = TRANSITION_DURATION / 1000; // seconds
 
 export interface HomeSlideshowSlide {
   readonly id: string;
@@ -139,7 +140,7 @@ export function HomeSlideshowSection({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
+                transition={{ duration: TRANSITION_DURATION_S }}
                 className="flex w-full flex-col items-center text-center md:items-start md:text-left lg:items-center lg:text-center"
               >
                 {current.title ? (
@@ -178,7 +179,7 @@ export function HomeSlideshowSection({
                     initial={{ opacity: 0, x: "10%" }}
                     animate={{ opacity: 1, x: "0%" }}
                     exit={{ opacity: 0, x: "0%" }}
-                    transition={{ duration: 0.35 }}
+                    transition={{ duration: TRANSITION_DURATION_S }}
                     className="flex h-full w-full items-end justify-center lg:justify-start"
                   >
                     {current.image ? (
@@ -244,7 +245,7 @@ export function HomeSlideshowSection({
           key={`${current.id}-${currentSlide}-${hasMounted}`}
           className={
             totalSlides > 1
-              ? "bg-brand-green h-full animate-[progress-animation_6000ms_linear]"
+              ? `bg-brand-green h-full animate-[progress-animation_${SLIDE_DURATION}ms_linear]`
               : "bg-brand-green h-full"
           }
         />
