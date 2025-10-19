@@ -2,6 +2,7 @@ import { cta } from "./cta";
 import { faqAccordion } from "./faq-accordion";
 import { feature } from "./feature";
 import { featureCardsIcon } from "./feature-cards-icon";
+import { homeSlideshow } from "./home-slideshow";
 import { imageLinkCards } from "./image-link-cards";
 import { subscribeNewsletter } from "./subscribe-newsletter";
 import { threeProductPanels } from "./three-product-panels";
@@ -14,4 +15,5 @@ export const pageBuilderBlocks = [
   imageLinkCards,
   subscribeNewsletter,
   threeProductPanels,
+  homeSlideshow,
 ];
