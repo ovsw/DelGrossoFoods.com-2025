@@ -12,7 +12,8 @@ const imageFields = /* groq */ `
     left,
     right,
     top
-  }
+  },
+  "alt": alt
 `;
 // Base fragments for reusable query parts
 const imageFragment = /* groq */ `

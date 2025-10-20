@@ -1,5 +1,5 @@
 import { Section } from "@workspace/ui/components/section";
-import { createDataAttribute } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
@@ -26,6 +26,14 @@ export function PageHeadingSection({
   const heroDescription = description ?? "";
   const heroEyebrow = eyebrow ?? null;
   const heroBackgroundImage = backgroundImage ?? null;
+  const backgroundAlt =
+    heroBackgroundImage && "alt" in heroBackgroundImage
+      ? heroBackgroundImage.alt
+      : null;
+  const cleanedBackgroundAlt =
+    typeof backgroundAlt === "string" && backgroundAlt.length > 0
+      ? stegaClean(backgroundAlt)
+      : "";
 
   const createFieldAttribute = (fieldPath: string) =>
     sanityDocumentId && sanityDocumentType
@@ -59,8 +67,9 @@ export function PageHeadingSection({
         {heroBackgroundImage ? (
           <SanityImage
             image={heroBackgroundImage}
-            alt=""
+            alt={cleanedBackgroundAlt}
             loading="eager"
+            width={600}
             className="size-full object-cover opacity-10"
             decoding="async"
             fetchPriority="high"
