@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
-import { CollectionHeroSection } from "@/components/page-sections/shared/collection-hero-section";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -77,7 +77,7 @@ export default async function ProductsIndexPage({
 
   return (
     <main>
-      <CollectionHeroSection
+      <PageHeadingSection
         eyebrow={eyebrow}
         title={heading}
         description={intro}
