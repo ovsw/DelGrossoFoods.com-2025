@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
+import { CollectionHeroSection } from "@/components/page-sections/shared/collection-hero-section";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -68,6 +69,7 @@ export default async function ProductsIndexPage({
   const initialState: ProductQueryState =
     parseSearchParams(resolvedSearchParams);
 
+  const eyebrow = indexDoc?.eyebrow ?? null;
   const heading = indexDoc?.title ?? "Premium Sauces";
   const intro =
     indexDoc?.description ??
@@ -75,17 +77,12 @@ export default async function ProductsIndexPage({
 
   return (
     <main>
-      <div className="container py-40 md:py-60 mx-auto px-4 md:px-6">
-        <div className="max-w-3xl text-start">
-          <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
-            {heading}
-          </h1>
-          <p className="mt-4 text-xl leading-8 text-muted-foreground">
-            {intro}
-          </p>
-        </div>
-        <ProductsCatalogSection items={items} initialState={initialState} />
-      </div>
+      <CollectionHeroSection
+        eyebrow={eyebrow}
+        title={heading}
+        description={intro}
+      />
+      <ProductsCatalogSection items={items} initialState={initialState} />
     </main>
   );
 }

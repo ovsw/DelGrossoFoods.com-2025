@@ -22,6 +22,14 @@ export const sauceIndex = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "string",
+      description:
+        "Short label that appears above the main heading to provide context or highlight the category.",
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "description",
       type: "text",
       description:

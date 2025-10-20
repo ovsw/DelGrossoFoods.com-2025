@@ -24,6 +24,14 @@ export const productIndex = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "string",
+      description:
+        "Short label that appears above the main heading to provide extra context for visitors.",
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "description",
       type: "text",
       description:
