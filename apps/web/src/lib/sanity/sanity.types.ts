@@ -444,7 +444,7 @@ export type SectionSpacing = {
   spacingBottom: "default" | "none" | "small" | "large";
 };
 
-export type PageBuilder = Array<
+export type HomePageBuilder = Array<
   | ({
       _key: string;
     } & Feature)
@@ -469,6 +469,30 @@ export type PageBuilder = Array<
   | ({
       _key: string;
     } & HomeSlideshow)
+>;
+
+export type PageBuilder = Array<
+  | ({
+      _key: string;
+    } & Feature)
+  | ({
+      _key: string;
+    } & Cta)
+  | ({
+      _key: string;
+    } & FeatureCardsIcon)
+  | ({
+      _key: string;
+    } & FaqAccordion)
+  | ({
+      _key: string;
+    } & ImageLinkCards)
+  | ({
+      _key: string;
+    } & SubscribeNewsletter)
+  | ({
+      _key: string;
+    } & ThreeProductPanels)
 >;
 
 export type RichText = Array<
@@ -809,7 +833,7 @@ export type HomePage = {
   title?: string;
   description?: string;
   slug: Slug;
-  pageBuilder?: PageBuilder;
+  pageBuilder?: HomePageBuilder;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1562,6 +1586,7 @@ export type AllSanitySchemaTypes =
   | Feature
   | TimelineMarker
   | SectionSpacing
+  | HomePageBuilder
   | PageBuilder
   | RichText
   | ContactPage
@@ -2549,97 +2574,6 @@ export type QuerySlugPageDataResult = {
       }
     | {
         _key: string;
-        _type: "homeSlideshow";
-        slides: Array<{
-          _key: string;
-          title: string | null;
-          subtitle: string;
-          description: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs: Array<
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                      openInNewTab: boolean | null;
-                      href: string | "#" | null;
-                    }
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                    }
-                > | null;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
-                media?: unknown;
-                hotspot: {
-                  x: number;
-                  y: number;
-                } | null;
-                crop: {
-                  bottom: number;
-                  left: number;
-                  right: number;
-                  top: number;
-                } | null;
-                caption: string | null;
-                _type: "image";
-                _key: string;
-                id: string | null;
-                preview: string | null;
-              }
-          >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
-          image: {
-            image: {
-              id: string | null;
-              preview: string | null;
-              hotspot: {
-                x: number;
-                y: number;
-              } | null;
-              crop: {
-                bottom: number;
-                left: number;
-                right: number;
-                top: number;
-              } | null;
-            };
-            alt: string;
-          };
-        }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
-      }
-    | {
-        _key: string;
         _type: "imageLinkCards";
         eyebrow?: string;
         title: string;
@@ -3155,97 +3089,6 @@ export type QueryBlogIndexPageDataResult = {
           _key: string;
         }> | null;
         spacing: SectionSpacing;
-      }
-    | {
-        _key: string;
-        _type: "homeSlideshow";
-        slides: Array<{
-          _key: string;
-          title: string | null;
-          subtitle: string;
-          description: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs: Array<
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                      openInNewTab: boolean | null;
-                      href: string | "#" | null;
-                    }
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                    }
-                > | null;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
-                media?: unknown;
-                hotspot: {
-                  x: number;
-                  y: number;
-                } | null;
-                crop: {
-                  bottom: number;
-                  left: number;
-                  right: number;
-                  top: number;
-                } | null;
-                caption: string | null;
-                _type: "image";
-                _key: string;
-                id: string | null;
-                preview: string | null;
-              }
-          >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
-          image: {
-            image: {
-              id: string | null;
-              preview: string | null;
-              hotspot: {
-                x: number;
-                y: number;
-              } | null;
-              crop: {
-                bottom: number;
-                left: number;
-                right: number;
-                top: number;
-              } | null;
-            };
-            alt: string;
-          };
-        }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
     | {
         _key: string;
@@ -5101,97 +4944,6 @@ export type GetHistoryPageQueryResult = {
       }
     | {
         _key: string;
-        _type: "homeSlideshow";
-        slides: Array<{
-          _key: string;
-          title: string | null;
-          subtitle: string;
-          description: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs: Array<
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                      openInNewTab: boolean | null;
-                      href: string | "#" | null;
-                    }
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                    }
-                > | null;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
-                media?: unknown;
-                hotspot: {
-                  x: number;
-                  y: number;
-                } | null;
-                crop: {
-                  bottom: number;
-                  left: number;
-                  right: number;
-                  top: number;
-                } | null;
-                caption: string | null;
-                _type: "image";
-                _key: string;
-                id: string | null;
-                preview: string | null;
-              }
-          >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
-          image: {
-            image: {
-              id: string | null;
-              preview: string | null;
-              hotspot: {
-                x: number;
-                y: number;
-              } | null;
-              crop: {
-                bottom: number;
-                left: number;
-                right: number;
-                top: number;
-              } | null;
-            };
-            alt: string;
-          };
-        }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
-      }
-    | {
-        _key: string;
         _type: "imageLinkCards";
         eyebrow?: string;
         title: string;
@@ -5685,97 +5437,6 @@ export type GetStoreLocatorPageQueryResult = {
       }
     | {
         _key: string;
-        _type: "homeSlideshow";
-        slides: Array<{
-          _key: string;
-          title: string | null;
-          subtitle: string;
-          description: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs: Array<
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                      openInNewTab: boolean | null;
-                      href: string | "#" | null;
-                    }
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                    }
-                > | null;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
-                media?: unknown;
-                hotspot: {
-                  x: number;
-                  y: number;
-                } | null;
-                crop: {
-                  bottom: number;
-                  left: number;
-                  right: number;
-                  top: number;
-                } | null;
-                caption: string | null;
-                _type: "image";
-                _key: string;
-                id: string | null;
-                preview: string | null;
-              }
-          >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
-          image: {
-            image: {
-              id: string | null;
-              preview: string | null;
-              hotspot: {
-                x: number;
-                y: number;
-              } | null;
-              crop: {
-                bottom: number;
-                left: number;
-                right: number;
-                top: number;
-              } | null;
-            };
-            alt: string;
-          };
-        }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
-      }
-    | {
-        _key: string;
         _type: "imageLinkCards";
         eyebrow?: string;
         title: string;
@@ -6266,97 +5927,6 @@ export type GetContactPageQueryResult = {
           _key: string;
         }> | null;
         spacing: SectionSpacing;
-      }
-    | {
-        _key: string;
-        _type: "homeSlideshow";
-        slides: Array<{
-          _key: string;
-          title: string | null;
-          subtitle: string;
-          description: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
-                listItem?: "bullet" | "number";
-                markDefs: Array<
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                      openInNewTab: boolean | null;
-                      href: string | "#" | null;
-                    }
-                  | {
-                      customLink?: CustomUrl;
-                      _type: "customLink";
-                      _key: string;
-                    }
-                > | null;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
-                media?: unknown;
-                hotspot: {
-                  x: number;
-                  y: number;
-                } | null;
-                crop: {
-                  bottom: number;
-                  left: number;
-                  right: number;
-                  top: number;
-                } | null;
-                caption: string | null;
-                _type: "image";
-                _key: string;
-                id: string | null;
-                preview: string | null;
-              }
-          >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
-          image: {
-            image: {
-              id: string | null;
-              preview: string | null;
-              hotspot: {
-                x: number;
-                y: number;
-              } | null;
-              crop: {
-                bottom: number;
-                left: number;
-                right: number;
-                top: number;
-              } | null;
-            };
-            alt: string;
-          };
-        }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
     | {
         _key: string;

@@ -7,7 +7,7 @@ import { imageLinkCards } from "./image-link-cards";
 import { subscribeNewsletter } from "./subscribe-newsletter";
 import { threeProductPanels } from "./three-product-panels";
 
-export const pageBuilderBlocks = [
+const sharedBlocks = [
   feature,
   cta,
   featureCardsIcon,
@@ -15,5 +15,13 @@ export const pageBuilderBlocks = [
   imageLinkCards,
   subscribeNewsletter,
   threeProductPanels,
-  homeSlideshow,
+];
+
+const homeExclusiveBlocks = [homeSlideshow];
+
+export const pageBuilderBlocks = sharedBlocks;
+export const homePageBuilderBlocks = [...sharedBlocks, ...homeExclusiveBlocks];
+export const registeredPageBuilderBlocks = [
+  ...sharedBlocks,
+  ...homeExclusiveBlocks,
 ];
