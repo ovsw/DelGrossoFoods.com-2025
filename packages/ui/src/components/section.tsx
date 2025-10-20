@@ -25,6 +25,7 @@ export interface SectionProps
   readonly spacingTop?: SectionSpacingTopToken;
   readonly spacingBottom?: SectionSpacingToken;
   readonly isPageTop?: boolean;
+  readonly fullBleed?: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       spacingTop = "default",
       spacingBottom = "default",
       isPageTop = false,
+      fullBleed = false,
       ...props
     },
     ref,
@@ -47,7 +49,10 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
       ? "page-top"
       : spacingTop;
 
+    const maxWidthClass = fullBleed ? "w-full" : "mx-auto w-full max-w-7xl";
+
     const spacingClasses = cn(
+      maxWidthClass,
       SECTION_TOP_SPACING_CLASS[effectiveTopSpacing],
       SECTION_BOTTOM_SPACING_CLASS[spacingBottom],
       className,

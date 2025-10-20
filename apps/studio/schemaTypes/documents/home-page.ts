@@ -6,7 +6,7 @@ import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import { createSlugValidator } from "../../utils/slug-validation";
-import { pageBuilderField } from "../common";
+import { homePageBuilderField } from "../common";
 
 export const homePage = defineType({
   name: "homePage",
@@ -63,7 +63,7 @@ export const homePage = defineType({
           }),
         ),
     }),
-    pageBuilderField,
+    homePageBuilderField,
     ...seoFields.filter(
       (field) => !["seoNoIndex", "seoHideFromLists"].includes(field.name),
     ),

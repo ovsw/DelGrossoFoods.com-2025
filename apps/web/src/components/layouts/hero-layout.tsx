@@ -48,6 +48,7 @@ export interface HeroLayoutProps {
   readonly backgroundImage?: string;
   readonly className?: string;
   readonly children?: ReactNode;
+  readonly fullBleed?: boolean;
 }
 
 export function HeroLayout({
@@ -59,6 +60,7 @@ export function HeroLayout({
   backgroundImage,
   className,
   children,
+  fullBleed = false,
 }: HeroLayoutProps) {
   const cleanedTitle = stegaClean(title);
 
@@ -115,6 +117,7 @@ export function HeroLayout({
     <Section
       spacingTop="page-top"
       spacingBottom="default"
+      fullBleed={fullBleed}
       className={cn(
         "relative isolate overflow-hidden",
         backgroundImage && `bg-cover bg-bottom`,
