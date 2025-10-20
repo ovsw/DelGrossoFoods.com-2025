@@ -1,25 +1,48 @@
 import { Section } from "@workspace/ui/components/section";
+import { createDataAttribute } from "next-sanity";
+
+import { SanityImage } from "@/components/elements/sanity-image";
+import { dataset, projectId, studioUrl } from "@/config";
+import type { SanityImageProps as SanityImageData } from "@/types";
 
 interface PageHeadingSectionProps {
   readonly eyebrow?: string | null;
   readonly title?: string | null;
   readonly description?: string | null;
-  readonly backgroundImageUrl?: string | null;
+  readonly backgroundImage?: SanityImageData | null;
+  readonly sanityDocumentId?: string | null;
+  readonly sanityDocumentType?: string | null;
 }
-
-const DEFAULT_BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen";
 
 export function PageHeadingSection({
   eyebrow,
   title,
   description,
-  backgroundImageUrl,
+  backgroundImage,
+  sanityDocumentId,
+  sanityDocumentType,
 }: PageHeadingSectionProps) {
   const heroTitle = title ?? "";
   const heroDescription = description ?? "";
   const heroEyebrow = eyebrow ?? null;
-  const imageUrl = backgroundImageUrl ?? DEFAULT_BACKGROUND_IMAGE;
+  const heroBackgroundImage = backgroundImage ?? null;
+
+  const createFieldAttribute = (fieldPath: string) =>
+    sanityDocumentId && sanityDocumentType
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: fieldPath,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : null;
+
+  const eyebrowAttribute = createFieldAttribute("eyebrow");
+  const titleAttribute = createFieldAttribute("title");
+  const descriptionAttribute = createFieldAttribute("description");
+  const backgroundImageAttribute = createFieldAttribute("backgroundImage");
 
   if (!heroTitle && !heroDescription && !heroEyebrow) {
     return null;
@@ -30,18 +53,23 @@ export function PageHeadingSection({
       spacingTop="page-top"
       spacingBottom="default"
       fullBleed
-      className="relative isolate overflow-hidden bg-white"
+      className="relative isolate overflow-hidden bg-brand-green"
     >
       <div className="absolute inset-0 -z-10">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt=""
-          src={imageUrl}
-          loading="lazy"
-          className="size-full object-cover opacity-10"
-        />
+        {heroBackgroundImage ? (
+          <SanityImage
+            image={heroBackgroundImage}
+            alt=""
+            loading="eager"
+            className="size-full object-cover opacity-10"
+            decoding="async"
+            fetchPriority="high"
+            sizes="100vw"
+            data-sanity={backgroundImageAttribute ?? undefined}
+          />
+        ) : null}
       </div>
-
+      {/*
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:block sm:mr-10 sm:transform-gpu sm:blur-3xl"
@@ -51,7 +79,7 @@ export function PageHeadingSection({
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
-          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-15"
+          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-th-light-200 to-white opacity-25"
         />
       </div>
 
@@ -64,24 +92,33 @@ export function PageHeadingSection({
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
-          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-15"
+          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-th-light-200 to-white opacity-25"
         />
-      </div>
+      </div> */}
 
-      <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-24  lg:px-8">
         <div className="mx-auto max-w-2xl text-start lg:mx-0">
           {heroEyebrow ? (
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-600">
+            <p
+              className="text-sm font-semibold uppercase tracking-[0.2em] text-th-light-100/80"
+              data-sanity={eyebrowAttribute ?? undefined}
+            >
               {heroEyebrow}
             </p>
           ) : null}
           {heroTitle ? (
-            <h1 className="mt-4 text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+            <h1
+              className="mt-4 text-5xl font-semibold tracking-tight text-th-light-100 sm:text-7xl"
+              data-sanity={titleAttribute ?? undefined}
+            >
               {heroTitle}
             </h1>
           ) : null}
           {heroDescription ? (
-            <p className="mt-8 text-lg font-medium text-pretty text-gray-700 sm:text-xl sm:leading-8">
+            <p
+              className="mt-8 text-lg font-medium text-pretty text-th-light-100/80 sm:text-xl sm:leading-8"
+              data-sanity={descriptionAttribute ?? undefined}
+            >
               {heroDescription}
             </p>
           ) : null}

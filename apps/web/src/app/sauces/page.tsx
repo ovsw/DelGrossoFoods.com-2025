@@ -70,19 +70,21 @@ export default async function SaucesIndexPage({
 
   // Fallback copy so the page always shows intro even if CMS data is missing
   const eyebrow = indexDoc?.eyebrow ?? null;
-  const heading = indexDoc?.title ?? "Premium Sauces";
-  const intro =
-    indexDoc?.description ??
-    "Discover the Heart of Authentic Italian Flavor with Our Original Pasta, Pizza and Sandwich Sauces.";
+  const heading = indexDoc?.title ?? "<< click to edit this heading>>";
+  const intro = indexDoc?.description ?? "<< click to edit this description >>";
+  const backgroundImage = indexDoc?.backgroundImage ?? null;
 
   return (
-    <main>
+    <>
       <PageHeadingSection
         eyebrow={eyebrow}
         title={heading}
         description={intro}
+        backgroundImage={backgroundImage}
+        sanityDocumentId={indexDoc?._id}
+        sanityDocumentType={indexDoc?._type}
       />
       <SaucesCatalogSection items={items} initialState={initialState} />
-    </main>
+    </>
   );
 }
