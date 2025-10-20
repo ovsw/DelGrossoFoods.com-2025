@@ -1,6 +1,6 @@
 import { Section } from "@workspace/ui/components/section";
 
-interface CollectionHeroSectionProps {
+interface PageHeadingSectionProps {
   readonly eyebrow?: string | null;
   readonly title?: string | null;
   readonly description?: string | null;
@@ -10,12 +10,12 @@ interface CollectionHeroSectionProps {
 const DEFAULT_BACKGROUND_IMAGE =
   "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=screen";
 
-export function CollectionHeroSection({
+export function PageHeadingSection({
   eyebrow,
   title,
   description,
   backgroundImageUrl,
-}: CollectionHeroSectionProps) {
+}: PageHeadingSectionProps) {
   const heroTitle = title ?? "";
   const heroDescription = description ?? "";
   const heroEyebrow = eyebrow ?? null;

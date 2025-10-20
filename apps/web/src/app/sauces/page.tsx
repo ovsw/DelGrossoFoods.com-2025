@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
-import { CollectionHeroSection } from "@/components/page-sections/shared/collection-hero-section";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getAllSaucesForIndexQuery,
@@ -77,7 +77,7 @@ export default async function SaucesIndexPage({
 
   return (
     <main>
-      <CollectionHeroSection
+      <PageHeadingSection
         eyebrow={eyebrow}
         title={heading}
         description={intro}
