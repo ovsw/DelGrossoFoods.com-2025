@@ -12,6 +12,7 @@ import { CTABlock } from "./blocks/cta-block";
 import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
 import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
+import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
 import { ThreeProductPanelsBlock } from "./blocks/three-product-panels-block";
@@ -47,6 +48,7 @@ const BLOCK_COMPONENTS = {
   subscribeNewsletter: SubscribeNewsletterBlock,
   imageLinkCards: ImageLinkCardsBlock,
   threeProductPanels: ThreeProductPanelsBlock,
+  homeSlideshow: HomeSlideshowBlock,
 } satisfies BlockComponentMap;
 
 /**
@@ -203,6 +205,19 @@ function useBlockRenderer(id: string, type: string) {
             </div>
           );
         }
+        case "homeSlideshow": {
+          const Component = BLOCK_COMPONENTS.homeSlideshow;
+          return (
+            <div key={`homeSlideshow-${_key}`} data-sanity={dataAttribute}>
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
+            </div>
+          );
+        }
         default:
           return (
             <UnknownBlockError
@@ -241,7 +256,7 @@ export function PageBuilder({
 
   return (
     <section
-      className="page-builder max-w-7xl mx-auto w-full"
+      className="page-builder w-full"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >

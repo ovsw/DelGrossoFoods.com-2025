@@ -2,14 +2,14 @@ import { cn } from "@workspace/ui/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
-// Eyebrow: minimal, no background. Left border + 1rem padding.
+// Eyebrow: uppercase label displayed above headings.
 const eyebrowVariants = cva(
-  "inline-flex items-center text-xs leading-none border-l pl-4", // base
+  "block mb-2 text-sm font-semibold uppercase tracking-wide", // base
   {
     variants: {
       variant: {
-        onLight: "border-th-neutral-300 text-th-dark-700",
-        onDark: "border-th-light-100 text-th-light-100",
+        onLight: "text-foreground/70",
+        onDark: "text-th-light-100",
       },
     },
     defaultVariants: {

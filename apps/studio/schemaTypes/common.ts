@@ -25,6 +25,14 @@ export const pageBuilderField = defineField({
     "Build your page by adding different sections like text, images, and other content blocks",
 });
 
+export const homePageBuilderField = defineField({
+  name: "pageBuilder",
+  group: GROUP.MAIN_CONTENT,
+  type: "homePageBuilder",
+  description:
+    "Build your home page by adding sections, including the exclusive home slideshow block",
+});
+
 export const sectionSpacingField = defineField({
   name: "spacing",
   title: "Section spacing",

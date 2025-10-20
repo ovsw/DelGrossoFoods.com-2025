@@ -29,6 +29,7 @@ export function ProductHeroSection({ product }: ProductHeroSectionProps) {
     <Section
       spacingTop="page-top"
       spacingBottom="default"
+      fullBleed
       className="relative isolate overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600.jpg')] bg-cover bg-bottom"
     >
       <div className="absolute inset-0 bg-white/10" aria-hidden="true" />
