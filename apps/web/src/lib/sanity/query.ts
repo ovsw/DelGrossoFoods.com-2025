@@ -492,6 +492,9 @@ export const getSauceIndexPageQuery = defineQuery(`
     title,
     eyebrow,
     description,
+    "backgroundImage": backgroundImage{
+      ${imageFields}
+    },
     "slug": slug.current
   }
 `);
@@ -776,6 +779,9 @@ export const getProductIndexPageQuery = defineQuery(`
     title,
     eyebrow,
     description,
+    "backgroundImage": backgroundImage{
+      ${imageFields}
+    },
     "slug": slug.current
   }
 `);

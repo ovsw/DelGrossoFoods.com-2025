@@ -37,6 +37,26 @@ export const sauceIndex = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "backgroundImage",
+      title: "Background Image",
+      type: "image",
+      description:
+        "Decorative image shown behind the heading and intro copy. Leave empty for a solid background.",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description:
+            "Used only for accessibility when this image appears elsewhere. Leave blank if it is purely decorative.",
+        }),
+      ],
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       description:
