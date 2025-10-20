@@ -490,6 +490,7 @@ export const getSauceIndexPageQuery = defineQuery(`
     _id,
     _type,
     title,
+    eyebrow,
     description,
     "slug": slug.current
   }
@@ -773,6 +774,7 @@ export const getProductIndexPageQuery = defineQuery(`
     _id,
     _type,
     title,
+    eyebrow,
     description,
     "slug": slug.current
   }
