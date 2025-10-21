@@ -238,7 +238,7 @@ export function HomeSlideshowBlock({
                     <SanityButtons
                       buttons={[current.button]}
                       size="lg"
-                      className="items-center sm:justify-center"
+                      className="items-center sm:justify-center md:justify-start lg:justify-center"
                     />
                   </div>
                 ) : null}
@@ -248,7 +248,7 @@ export function HomeSlideshowBlock({
 
           <div className="relative order-2 flex w-full flex-col items-center justify-end pl-2 md:pl-6 lg:order-2 lg:self-stretch lg:items-end lg:justify-center lg:pl-16">
             <div className="relative w-full overflow-visible lg:h-full lg:self-stretch">
-              <div className="relative flex w-full items-end justify-center lg:absolute lg:-bottom-4 lg:left-0 lg:h-[calc(100%-1.25rem)] lg:w-[125%] lg:max-w-[720px] lg:-translate-x-4 lg:[aspect-ratio:4/3] lg:items-end lg:justify-start">
+              <div className="relative flex w-full items-end justify-center min-h-[35svh] [aspect-ratio:4/3] lg:absolute lg:-bottom-4 lg:left-0 lg:h-[calc(100%-1.25rem)] lg:w-[125%] lg:max-w-[720px] lg:-translate-x-4 lg:[aspect-ratio:4/3] lg:items-end lg:justify-start">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={current.id}

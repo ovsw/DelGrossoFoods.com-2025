@@ -9,6 +9,7 @@ import LogoSvg from "@/components/elements/logo";
 import { useScrollVisibility } from "@/hooks/use-scroll-visibility";
 
 import { CartButton } from "./CartButton";
+import { CookbookIcon } from "./cookbook-icon";
 import { DesktopActions } from "./DesktopActions";
 import { DesktopNav } from "./DesktopNav";
 import { MobileMenuToggle } from "./MobileMenuToggle";
@@ -58,7 +59,7 @@ export function Header() {
         >
           <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-1">
               <Link href="/">
                 <LogoSvg className="h-7" />
               </Link>
@@ -77,7 +78,15 @@ export function Header() {
             <div className="flex items-center space-x-4 lg:hidden">
               {/* Mobile Recipes Button */}
               <div>
-                <RecipesButton variant="accent" size="sm" />
+                <RecipesButton
+                  variant="accent"
+                  size="sm"
+                  className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
+                  aria-label="Browse recipes"
+                >
+                  <span className="max-[450px]:hidden">Recipes</span>
+                  <CookbookIcon className="hidden size-5 max-[450px]:block" />
+                </RecipesButton>
               </div>
               {/* Mobile Cart Button */}
               <div>
