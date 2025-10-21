@@ -77,7 +77,7 @@ function FiltersForm({
         label="Search"
         value={search}
         onChange={setSearch}
-        placeholder="Search by name or description"
+        placeholder="Search"
         ariaLabel="Search products"
         visuallyHideLabel
       />

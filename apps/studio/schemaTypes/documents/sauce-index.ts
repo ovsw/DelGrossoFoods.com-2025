@@ -16,17 +16,29 @@ export const sauceIndex = defineType({
   fields: [
     defineField({
       name: "title",
+      title: "Title",
       type: "string",
       description:
-        "The main heading that will appear at the top of your sauce listing page",
-      group: GROUP.MAIN_CONTENT,
+        "The main heading that appears at the top of your sauce listing page.",
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "description",
+      title: "Description",
       type: "text",
       description:
-        "A short summary of what visitors can find on your page. This helps people understand what your page is about.",
-      group: GROUP.MAIN_CONTENT,
+        "A short summary of what visitors can expect to find on this page.",
+      rows: 3,
+      group: GROUP.HEADER,
+    }),
+    defineField({
+      name: "pageHeaderImage",
+      title: "Header Background Image",
+      type: "image",
+      description:
+        "Background image displayed behind the page heading. Crop using hotspot to control the focal point.",
+      options: { hotspot: true },
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "slug",
