@@ -1,5 +1,17 @@
 # web
 
+## 1.18.0
+
+### Minor Changes
+
+- [#100](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/100) [`1e0d58e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/1e0d58e3346edb407593b74b4c1dd497a7421d00) Thanks [@ovsw](https://github.com/ovsw)! - Introduce the new PageHeading flow for sauces and store pages, including schema support, visual refinements, and click-to-edit improvements.
+  Add the new page heading for the history page as well As the /sauce and /store index pages.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.18.0
+
 ## 1.17.0
 
 ### Minor Changes
