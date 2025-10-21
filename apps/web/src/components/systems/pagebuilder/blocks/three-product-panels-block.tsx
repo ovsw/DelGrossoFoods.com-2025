@@ -113,7 +113,9 @@ const ProductPanelCard = ({
       aria-label={`${stegaClean(panel.title)} product panel`}
       style={accentCssVars}
     >
-      <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} />
+      <SurfaceShineOverlay
+        className={cn("rounded-2xl", SHARED_HOVER_ANIMATION_STYLES)}
+      />
       <div
         className={cn(
           "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",
