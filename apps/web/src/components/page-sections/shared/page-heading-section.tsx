@@ -59,7 +59,11 @@ export function PageHeadingSection({
   const eyebrowAttribute = createFieldAttribute("eyebrow");
   const titleAttribute = createFieldAttribute("title");
   const descriptionAttribute = createFieldAttribute("description");
-  const backgroundImageAttribute = createFieldAttribute("backgroundImage");
+  const backgroundImageField =
+    typeof sanityFieldPrefix === "string" && sanityFieldPrefix.length > 0
+      ? "backgroundImage"
+      : "pageHeaderImage";
+  const backgroundImageAttribute = createFieldAttribute(backgroundImageField);
 
   if (!heroTitle && !heroDescription && !heroEyebrow) {
     return null;

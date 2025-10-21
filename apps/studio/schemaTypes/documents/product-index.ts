@@ -17,11 +17,29 @@ export const productIndex = defineType({
   groups: GROUPS,
   fields: [
     defineField({
-      name: "pageHeader",
-      title: "Page Header",
-      type: "pageHeader",
+      name: "title",
+      title: "Title",
+      type: "string",
       description:
-        "Controls the eyebrow, main heading, supporting copy, and background image displayed on the product index page.",
+        "The main heading that appears at the top of your product listing page.",
+      group: GROUP.HEADER,
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      description:
+        "A short summary of what visitors can expect to find on this page.",
+      rows: 3,
+      group: GROUP.HEADER,
+    }),
+    defineField({
+      name: "pageHeaderImage",
+      title: "Header Background Image",
+      type: "image",
+      description:
+        "Background image displayed behind the page heading. Crop using hotspot to control the focal point.",
+      options: { hotspot: true },
       group: GROUP.HEADER,
     }),
     defineField({
@@ -32,7 +50,7 @@ export const productIndex = defineType({
       group: GROUP.MAIN_CONTENT,
       readOnly: true,
       options: {
-        source: "pageHeader.heading",
+        source: "title",
         slugify: createSlug,
         isUnique: isUnique,
       },
@@ -46,8 +64,8 @@ export const productIndex = defineType({
   ],
   preview: {
     select: {
-      title: "pageHeader.heading",
-      description: "pageHeader.text",
+      title: "title",
+      description: "description",
       slug: "slug.current",
     },
     prepare: ({ title, description, slug }) => ({

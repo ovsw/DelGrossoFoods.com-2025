@@ -23,12 +23,12 @@ export const GROUPS: FieldGroupDefinition[] = [
     name: GROUP.HEADER,
     icon: TextIcon,
     title: "Header",
+    default: true,
   },
   {
     name: GROUP.MAIN_CONTENT,
     icon: ComposeIcon,
     title: "Content",
-    default: true,
   },
   { name: GROUP.SEO, icon: SearchIcon, title: "SEO" },
   {
