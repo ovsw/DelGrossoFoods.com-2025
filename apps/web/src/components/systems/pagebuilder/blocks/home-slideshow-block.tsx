@@ -238,7 +238,7 @@ export function HomeSlideshowBlock({
                     <SanityButtons
                       buttons={[current.button]}
                       size="lg"
-                      className="items-center sm:justify-center"
+                      className="items-center sm:justify-center md:justify-start lg:justify-center"
                     />
                   </div>
                 ) : null}
