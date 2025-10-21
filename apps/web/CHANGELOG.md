@@ -1,5 +1,14 @@
 # web
 
+## 1.18.1
+
+### Patch Changes
+
+- [`423f2f8`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/423f2f8183dfe8b50678b15b480ebe7aa931ff76) Thanks [@ovsw](https://github.com/ovsw)! - Polish mobile navigation and feature surfaces: add a Cookbook icon to the header’s Recipes button with responsive tweaks, refine NavLink and SearchField focus styles, tighten SurfaceShine overlay radius handling, and smooth HomeSlideshowBlock spacing for better small-screen layout. Also expose the dev server on all interfaces for device testing.
+
+- Updated dependencies []:
+  - @workspace/ui@1.18.1
+
 ## 1.18.0
 
 ### Minor Changes
