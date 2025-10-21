@@ -45,7 +45,7 @@ export function SearchField({
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               onChange(e.currentTarget.value)
             }
-            className="w-full rounded-md border border-input bg-white/70 ps-9 pe-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="w-full rounded-md border border-input bg-white/70 ps-9 pe-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:ring-inset"
             placeholder={placeholder}
             aria-label={ariaLabel ?? label}
           />
