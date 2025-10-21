@@ -15,46 +15,12 @@ export const sauceIndex = defineType({
   groups: GROUPS,
   fields: [
     defineField({
-      name: "title",
-      type: "string",
+      name: "pageHeader",
+      title: "Page Header",
+      type: "pageHeader",
       description:
-        "The main heading that will appear at the top of your sauce listing page",
-      group: GROUP.MAIN_CONTENT,
-    }),
-    defineField({
-      name: "eyebrow",
-      title: "Eyebrow",
-      type: "string",
-      description:
-        "Short label that appears above the main heading to provide context or highlight the category.",
-      group: GROUP.MAIN_CONTENT,
-    }),
-    defineField({
-      name: "description",
-      type: "text",
-      description:
-        "A short summary of what visitors can find on your page. This helps people understand what your page is about.",
-      group: GROUP.MAIN_CONTENT,
-    }),
-    defineField({
-      name: "backgroundImage",
-      title: "Background Image",
-      type: "image",
-      description:
-        "Decorative image shown behind the heading and intro copy. Leave empty for a solid background.",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Alt Text",
-          type: "string",
-          description:
-            "Used only for accessibility when this image appears elsewhere. Leave blank if it is purely decorative.",
-        }),
-      ],
-      group: GROUP.MAIN_CONTENT,
+        "Controls the eyebrow, main heading, supporting copy, and background image displayed on the sauce index page.",
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "slug",
@@ -64,7 +30,7 @@ export const sauceIndex = defineType({
       group: GROUP.MAIN_CONTENT,
       readOnly: true,
       options: {
-        source: "title",
+        source: "pageHeader.heading",
         slugify: createSlug,
         isUnique: isUnique,
       },
@@ -112,8 +78,8 @@ export const sauceIndex = defineType({
   ],
   preview: {
     select: {
-      title: "title",
-      description: "description",
+      title: "pageHeader.heading",
+      description: "pageHeader.text",
       slug: "slug.current",
     },
     prepare: ({ title, description, slug }) => ({

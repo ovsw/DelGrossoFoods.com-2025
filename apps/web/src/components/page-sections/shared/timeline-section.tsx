@@ -5,8 +5,6 @@ import { Section } from "@workspace/ui/components/section";
 import { TimelineLayout } from "@/components/layouts/timeline-layout";
 
 interface TimelineSectionProps {
-  title?: string;
-  subtitle?: string;
   timelineData?: Array<{
     title: string;
     subtitle?: string;
@@ -28,35 +26,17 @@ interface TimelineSectionProps {
 }
 
 export function TimelineSection({
-  title,
-  subtitle,
   timelineData = [],
   className,
 }: TimelineSectionProps) {
   // Don't render if no data is provided
-  if (!title && !subtitle && (!timelineData || timelineData.length === 0)) {
+  if (!timelineData || timelineData.length === 0) {
     return null;
   }
 
   return (
-    <Section
-      isPageTop
-      spacingTop="large"
-      spacingBottom="large"
-      className={className}
-    >
+    <Section spacingTop="small" spacingBottom="large" className={className}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:mt-16">
-        {/* Header */}
-        <div className="mb-16 text-center lg:mb-24">
-          <h2 className="mb-4 text-3xl font-bold text-brand-green lg:text-5xl">
-            {title}
-          </h2>
-          <p className="mx-auto max-w-2xl lg:text-lg text-dark-700">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Timeline */}
         <TimelineLayout data={timelineData} />
       </div>
     </Section>

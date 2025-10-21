@@ -4,10 +4,12 @@ import {
   InlineElementIcon,
   InsertAboveIcon,
   SearchIcon,
+  TextIcon,
 } from "@sanity/icons";
 import type { FieldGroupDefinition } from "sanity";
 
 export const GROUP = {
+  HEADER: "header",
   SEO: "seo",
   MAIN_CONTENT: "main-content",
   CARD: "card",
@@ -17,6 +19,11 @@ export const GROUP = {
 
 export const GROUPS: FieldGroupDefinition[] = [
   // { name: CONST.MAIN_CONTENT, default: true },
+  {
+    name: GROUP.HEADER,
+    icon: TextIcon,
+    title: "Header",
+  },
   {
     name: GROUP.MAIN_CONTENT,
     icon: ComposeIcon,
