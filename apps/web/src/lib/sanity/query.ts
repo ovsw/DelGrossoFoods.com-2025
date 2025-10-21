@@ -12,7 +12,8 @@ const imageFields = /* groq */ `
     left,
     right,
     top
-  }
+  },
+  "alt": alt
 `;
 // Base fragments for reusable query parts
 const imageFragment = /* groq */ `
@@ -491,6 +492,15 @@ export const getSauceIndexPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
+      }
+    ),
     "slug": slug.current
   }
 `);
@@ -581,6 +591,15 @@ export const getRecipeIndexPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
+      }
+    ),
     "slug": slug.current
   }
 `);
@@ -774,6 +793,15 @@ export const getProductIndexPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
+      }
+    ),
     "slug": slug.current
   }
 `);
@@ -874,6 +902,15 @@ export const getHistoryPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
+      }
+    ),
     "slug": slug.current,
     timeline{
       markers[]{

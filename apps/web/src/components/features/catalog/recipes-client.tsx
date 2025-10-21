@@ -76,7 +76,7 @@ function FiltersForm({
         label="Search"
         value={search}
         onChange={setSearch}
-        placeholder="Search by name"
+        placeholder="Search"
         ariaLabel="Search recipes"
         visuallyHideLabel
       />

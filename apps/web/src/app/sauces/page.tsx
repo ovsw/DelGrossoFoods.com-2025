@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
   getAllSaucesForIndexQuery,
@@ -68,26 +69,22 @@ export default async function SaucesIndexPage({
   const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
 
   // Fallback copy so the page always shows intro even if CMS data is missing
-  const heading = indexDoc?.title ?? "Premium Sauces";
-  const intro =
-    indexDoc?.description ??
-    "Discover the Heart of Authentic Italian Flavor with Our Original Pasta, Pizza and Sandwich Sauces.";
+  const eyebrow = null;
+  const heading = indexDoc?.title ?? "<< click to edit this heading>>";
+  const intro = indexDoc?.description ?? "<< click to edit this description >>";
+  const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
-    <main>
-      <div className="container py-40 md:py-60 mx-auto px-4 md:px-6">
-        {/* Page intro: left-aligned heading + paragraph to match comps */}
-        <div className="max-w-3xl text-start">
-          <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
-            {heading}
-          </h1>
-          <p className="mt-4 text-xl leading-8 text-muted-foreground">
-            {intro}
-          </p>
-        </div>
-
-        <SaucesCatalogSection items={items} initialState={initialState} />
-      </div>
-    </main>
+    <>
+      <PageHeadingSection
+        eyebrow={eyebrow}
+        title={heading}
+        description={intro}
+        backgroundImage={backgroundImage}
+        sanityDocumentId={indexDoc?._id}
+        sanityDocumentType={indexDoc?._type}
+      />
+      <SaucesCatalogSection items={items} initialState={initialState} />
+    </>
   );
 }

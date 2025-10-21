@@ -27,7 +27,12 @@ export type SanityButtonProps = NonNullable<
   NonNullable<PagebuilderType<"feature">>["buttons"]
 >[number];
 
-export type SanityImageProps = NonNullable<QueryImageTypeResult>;
+export type SanityImageProps = Omit<
+  NonNullable<QueryImageTypeResult>,
+  "alt"
+> & {
+  alt?: string | null;
+};
 
 export type SanityRichTextProps =
   NonNullable<QueryBlogSlugPageDataResult>["richText"];

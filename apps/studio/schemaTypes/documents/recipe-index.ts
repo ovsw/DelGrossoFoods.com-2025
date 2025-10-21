@@ -19,14 +19,24 @@ export const recipeIndex = defineType({
       type: "string",
       description:
         "The main heading that will appear at the top of your recipe listing page",
-      group: GROUP.MAIN_CONTENT,
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "description",
       type: "text",
       description:
         "A short summary of what visitors can find on your page. This helps people understand what your page is about.",
-      group: GROUP.MAIN_CONTENT,
+      rows: 3,
+      group: GROUP.HEADER,
+    }),
+    defineField({
+      name: "pageHeaderImage",
+      title: "Header Background Image",
+      type: "image",
+      description:
+        "Background image displayed behind the page heading. Crop using hotspot to control the focal point.",
+      options: { hotspot: true },
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "slug",

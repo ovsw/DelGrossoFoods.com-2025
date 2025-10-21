@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getHistoryPageQuery } from "@/lib/sanity/query";
@@ -61,11 +62,24 @@ export default async function HistoryPage() {
     return null;
   }
 
+  const eyebrow = null;
+  const heading = data?.title ?? "<< click to edit this heading >>";
+  const intro = data?.description ?? "<< click to edit this description >>";
+  const backgroundImage = data?.pageHeaderImage ?? null;
+
   return (
-    <TimelineSection
-      title={data.title}
-      subtitle={data.description || undefined}
-      timelineData={timelineData}
-    />
+    <>
+      <PageHeadingSection
+        eyebrow={eyebrow}
+        title={heading}
+        description={intro}
+        backgroundImage={backgroundImage}
+        sanityDocumentId={data._id}
+        sanityDocumentType={data._type}
+        // sanityFieldPrefix="pageHeader" left here for reference DO NOT DELETE DO NOT UNCOMMENT
+        justification="center"
+      />
+      <TimelineSection timelineData={timelineData} />
+    </>
   );
 }
