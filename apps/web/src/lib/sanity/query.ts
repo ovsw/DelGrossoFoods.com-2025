@@ -490,14 +490,17 @@ export const getSauceIndexPageQuery = defineQuery(`
   *[_type == "sauceIndex"][0]{
     _id,
     _type,
-    "pageHeader": pageHeader{
-      eyebrow,
-      heading,
-      text,
-      "backgroundImage": backgroundImage{
-        ${imageFields}
+    title,
+    description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
       }
-    },
+    ),
     "slug": slug.current
   }
 `);
@@ -588,6 +591,15 @@ export const getRecipeIndexPageQuery = defineQuery(`
     _type,
     title,
     description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
+      }
+    ),
     "slug": slug.current
   }
 `);
@@ -779,14 +791,17 @@ export const getProductIndexPageQuery = defineQuery(`
   *[_type == "productIndex"][0]{
     _id,
     _type,
-    "pageHeader": pageHeader{
-      eyebrow,
-      heading,
-      text,
-      "backgroundImage": backgroundImage{
-        ${imageFields}
+    title,
+    description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
       }
-    },
+    ),
     "slug": slug.current
   }
 `);
@@ -885,14 +900,17 @@ export const getHistoryPageQuery = defineQuery(`
   *[_type == "historyPage"][0]{
     _id,
     _type,
-    "pageHeader": pageHeader{
-      eyebrow,
-      heading,
-      text,
-      "backgroundImage": backgroundImage{
-        ${imageFields}
+    title,
+    description,
+    "pageHeaderImage": select(
+      defined(pageHeaderImage.asset._ref) => {
+        "id": pageHeaderImage.asset._ref,
+        "preview": pageHeaderImage.asset->metadata.lqip,
+        "hotspot": pageHeaderImage.hotspot{ x, y },
+        "crop": pageHeaderImage.crop{ bottom, left, right, top },
+        "alt": pageHeaderImage.alt
       }
-    },
+    ),
     "slug": slug.current,
     timeline{
       markers[]{

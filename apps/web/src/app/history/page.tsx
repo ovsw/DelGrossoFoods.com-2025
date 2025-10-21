@@ -16,8 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
 
-  const rawTitle = data?.pageHeader?.heading ?? null;
-  const rawDescription = data?.pageHeader?.text ?? null;
+  const rawTitle = data?.title ?? null;
+  const rawDescription = data?.description ?? null;
 
   const cleanTitle = rawTitle ? stegaClean(rawTitle) : null;
   const cleanDescription = rawDescription ? stegaClean(rawDescription) : null;
@@ -39,7 +39,6 @@ export default async function HistoryPage() {
   });
 
   const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
-  const header = data?.pageHeader ?? null;
 
   // Transform Sanity data to match TimelineSection expected format
   const timelineData =
@@ -63,10 +62,10 @@ export default async function HistoryPage() {
     return null;
   }
 
-  const eyebrow = header?.eyebrow ?? null;
-  const heading = header?.heading ?? "<< click to edit this heading >>";
-  const intro = header?.text ?? "<< click to edit this description >>";
-  const backgroundImage = header?.backgroundImage ?? null;
+  const eyebrow = null;
+  const heading = data?.title ?? "<< click to edit this heading >>";
+  const intro = data?.description ?? "<< click to edit this description >>";
+  const backgroundImage = data?.pageHeaderImage ?? null;
 
   return (
     <>

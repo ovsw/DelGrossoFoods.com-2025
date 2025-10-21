@@ -17,14 +17,32 @@ export const historyPage = defineType({
   groups: GROUPS,
   fields: [
     defineField({
-      name: "pageHeader",
-      title: "Page Header",
-      type: "pageHeader",
+      name: "title",
+      title: "Title",
+      type: "string",
       description:
-        "Controls the eyebrow, main heading, supporting text, and background image shown at the top of the history page.",
+        "The main heading that appears at the top of the history page.",
       group: GROUP.HEADER,
       validation: (Rule) =>
-        Rule.required().error("The history page requires header content."),
+        Rule.required().error("The history page requires a title."),
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      description:
+        "Supporting copy shown below the heading to set the context for the history page.",
+      rows: 3,
+      group: GROUP.HEADER,
+    }),
+    defineField({
+      name: "pageHeaderImage",
+      title: "Header Background Image",
+      type: "image",
+      description:
+        "Background image displayed behind the page heading. Crop using hotspot to control the focal point.",
+      options: { hotspot: true },
+      group: GROUP.HEADER,
     }),
     defineField({
       name: "slug",
@@ -34,7 +52,7 @@ export const historyPage = defineType({
         "The fixed web address for this page. Leave as '/history' so links and Presentation keep working.",
       group: GROUP.MAIN_CONTENT,
       options: {
-        source: "pageHeader.heading",
+        source: "title",
         slugify: createSlug,
       },
       validation: (Rule) =>
@@ -65,7 +83,7 @@ export const historyPage = defineType({
   ],
   preview: {
     select: {
-      title: "pageHeader.heading",
+      title: "title",
       subtitle: "timeline.markers.0.heading",
     },
     prepare: ({ title, subtitle }) => ({

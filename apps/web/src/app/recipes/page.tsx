@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
 import { sanityFetch } from "@/lib/sanity/live";
 import {
@@ -83,24 +84,22 @@ export default async function RecipesIndexPage({
   const intro =
     indexDoc?.description ??
     "Need an idea for your next meal or some inspiration for your next family feast? Try these DelGrosso family recipes, all based around our Premium Sauces.";
+  const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
     <main>
-      <div className="container py-40 md:py-60 mx-auto px-4 md:px-6">
-        <div className="max-w-3xl text-start">
-          <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
-            {heading}
-          </h1>
-          <p className="mt-4 text-xl leading-8 text-muted-foreground">
-            {intro}
-          </p>
-        </div>
-        <RecipesCatalogSection
-          items={items}
-          initialState={initialState}
-          categories={categories}
-        />
-      </div>
+      <PageHeadingSection
+        title={heading}
+        description={intro}
+        backgroundImage={backgroundImage}
+        sanityDocumentId={indexDoc?._id}
+        sanityDocumentType={indexDoc?._type}
+      />
+      <RecipesCatalogSection
+        items={items}
+        initialState={initialState}
+        categories={categories}
+      />
     </main>
   );
 }

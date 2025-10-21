@@ -23,8 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return getSEOMetadata(
     data
       ? {
-          title: data?.pageHeader?.heading ?? "",
-          description: data?.pageHeader?.text ?? "",
+          title: data?.title ?? "",
+          description: data?.description ?? "",
           slug: "/store",
           contentId: data?._id,
           contentType: data?._type,
@@ -69,11 +69,10 @@ export default async function ProductsIndexPage({
   const initialState: ProductQueryState =
     parseSearchParams(resolvedSearchParams);
 
-  const header = indexDoc?.pageHeader ?? null;
-  const eyebrow = header?.eyebrow ?? null;
-  const heading = header?.heading ?? "<< click to edit this heading >>";
-  const intro = header?.text ?? "<< click to edit this description >>";
-  const backgroundImage = header?.backgroundImage ?? null;
+  const eyebrow = null;
+  const heading = indexDoc?.title ?? "<< click to edit this heading >>";
+  const intro = indexDoc?.description ?? "<< click to edit this description >>";
+  const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
     <main>
