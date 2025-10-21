@@ -1,4 +1,5 @@
 import { Section } from "@workspace/ui/components/section";
+import { cn } from "@workspace/ui/lib/utils";
 import { createDataAttribute, stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -12,6 +13,8 @@ interface PageHeadingSectionProps {
   readonly backgroundImage?: SanityImageData | null;
   readonly sanityDocumentId?: string | null;
   readonly sanityDocumentType?: string | null;
+  readonly sanityFieldPrefix?: string | null;
+  readonly justification?: "start" | "center";
 }
 
 export function PageHeadingSection({
@@ -21,6 +24,8 @@ export function PageHeadingSection({
   backgroundImage,
   sanityDocumentId,
   sanityDocumentType,
+  sanityFieldPrefix,
+  justification = "start",
 }: PageHeadingSectionProps) {
   const heroTitle = title ?? "";
   const heroDescription = description ?? "";
@@ -40,7 +45,11 @@ export function PageHeadingSection({
       ? createDataAttribute({
           id: sanityDocumentId,
           type: sanityDocumentType,
-          path: fieldPath,
+          path:
+            typeof sanityFieldPrefix === "string" &&
+            sanityFieldPrefix.length > 0
+              ? `${sanityFieldPrefix}.${fieldPath}`
+              : fieldPath,
           baseUrl: studioUrl,
           projectId,
           dataset,
@@ -105,8 +114,15 @@ export function PageHeadingSection({
         />
       </div> */}
 
-      <div className="mx-auto max-w-7xl px-6 py-24  lg:px-8">
-        <div className="mx-auto max-w-2xl text-start lg:mx-0">
+      <div className="mx-auto max-w-7xl px-6 pb-14 pt-6 lg:px-8">
+        <div
+          className={cn(
+            "mx-auto max-w-2xl",
+            justification === "center"
+              ? "text-center lg:mx-auto"
+              : "text-start lg:mx-0",
+          )}
+        >
           {heroEyebrow ? (
             <p
               className="text-sm font-semibold uppercase tracking-[0.2em] text-th-light-100/80"

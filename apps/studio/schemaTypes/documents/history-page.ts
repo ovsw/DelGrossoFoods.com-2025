@@ -17,34 +17,14 @@ export const historyPage = defineType({
   groups: GROUPS,
   fields: [
     defineField({
-      name: "title",
-      type: "string",
-      title: "Title",
+      name: "pageHeader",
+      title: "Page Header",
+      type: "pageHeader",
       description:
-        "The main heading that appears at the top of your page and in browser tabs",
-      group: GROUP.MAIN_CONTENT,
-      validation: (Rule) => Rule.required().error("A page title is required"),
-    }),
-    defineField({
-      name: "description",
-      type: "text",
-      title: "Description",
-      description:
-        "A brief summary of what this page is about. This text helps search engines understand your page and may appear in search results.",
-      rows: 3,
-      group: GROUP.MAIN_CONTENT,
-      validation: (rule) => [
-        rule
-          .min(140)
-          .warning(
-            "The meta description should be at least 140 characters for optimal SEO visibility in search results",
-          ),
-        rule
-          .max(160)
-          .warning(
-            "The meta description should not exceed 160 characters as it will be truncated in search results",
-          ),
-      ],
+        "Controls the eyebrow, main heading, supporting text, and background image shown at the top of the history page.",
+      group: GROUP.HEADER,
+      validation: (Rule) =>
+        Rule.required().error("The history page requires header content."),
     }),
     defineField({
       name: "slug",
@@ -54,7 +34,7 @@ export const historyPage = defineType({
         "The fixed web address for this page. Leave as '/history' so links and Presentation keep working.",
       group: GROUP.MAIN_CONTENT,
       options: {
-        source: "title",
+        source: "pageHeader.heading",
         slugify: createSlug,
       },
       validation: (Rule) =>
@@ -85,7 +65,7 @@ export const historyPage = defineType({
   ],
   preview: {
     select: {
-      title: "title",
+      title: "pageHeader.heading",
       subtitle: "timeline.markers.0.heading",
     },
     prepare: ({ title, subtitle }) => ({

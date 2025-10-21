@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
+import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getHistoryPageQuery } from "@/lib/sanity/query";
@@ -15,8 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
 
-  const rawTitle = data?.title ?? null;
-  const rawDescription = data?.description ?? null;
+  const rawTitle = data?.pageHeader?.heading ?? null;
+  const rawDescription = data?.pageHeader?.text ?? null;
 
   const cleanTitle = rawTitle ? stegaClean(rawTitle) : null;
   const cleanDescription = rawDescription ? stegaClean(rawDescription) : null;
@@ -38,6 +39,7 @@ export default async function HistoryPage() {
   });
 
   const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
+  const header = data?.pageHeader ?? null;
 
   // Transform Sanity data to match TimelineSection expected format
   const timelineData =
@@ -61,11 +63,24 @@ export default async function HistoryPage() {
     return null;
   }
 
+  const eyebrow = header?.eyebrow ?? null;
+  const heading = header?.heading ?? "<< click to edit this heading >>";
+  const intro = header?.text ?? "<< click to edit this description >>";
+  const backgroundImage = header?.backgroundImage ?? null;
+
   return (
-    <TimelineSection
-      title={data.title}
-      subtitle={data.description || undefined}
-      timelineData={timelineData}
-    />
+    <>
+      <PageHeadingSection
+        eyebrow={eyebrow}
+        title={heading}
+        description={intro}
+        backgroundImage={backgroundImage}
+        sanityDocumentId={data._id}
+        sanityDocumentType={data._type}
+        // sanityFieldPrefix="pageHeader" left here for reference DO NOT DELETE DO NOT UNCOMMENT
+        justification="center"
+      />
+      <TimelineSection timelineData={timelineData} />
+    </>
   );
 }

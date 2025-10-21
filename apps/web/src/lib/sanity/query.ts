@@ -490,11 +490,13 @@ export const getSauceIndexPageQuery = defineQuery(`
   *[_type == "sauceIndex"][0]{
     _id,
     _type,
-    title,
-    eyebrow,
-    description,
-    "backgroundImage": backgroundImage{
-      ${imageFields}
+    "pageHeader": pageHeader{
+      eyebrow,
+      heading,
+      text,
+      "backgroundImage": backgroundImage{
+        ${imageFields}
+      }
     },
     "slug": slug.current
   }
@@ -777,11 +779,13 @@ export const getProductIndexPageQuery = defineQuery(`
   *[_type == "productIndex"][0]{
     _id,
     _type,
-    title,
-    eyebrow,
-    description,
-    "backgroundImage": backgroundImage{
-      ${imageFields}
+    "pageHeader": pageHeader{
+      eyebrow,
+      heading,
+      text,
+      "backgroundImage": backgroundImage{
+        ${imageFields}
+      }
     },
     "slug": slug.current
   }
@@ -881,8 +885,14 @@ export const getHistoryPageQuery = defineQuery(`
   *[_type == "historyPage"][0]{
     _id,
     _type,
-    title,
-    description,
+    "pageHeader": pageHeader{
+      eyebrow,
+      heading,
+      text,
+      "backgroundImage": backgroundImage{
+        ${imageFields}
+      }
+    },
     "slug": slug.current,
     timeline{
       markers[]{

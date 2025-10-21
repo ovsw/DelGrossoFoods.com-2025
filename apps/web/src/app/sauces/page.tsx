@@ -25,8 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return getSEOMetadata(
     data
       ? {
-          title: data?.title ?? "",
-          description: data?.description ?? "",
+          title: data?.pageHeader?.heading ?? "",
+          description: data?.pageHeader?.text ?? "",
           slug: "/sauces",
           contentId: data?._id,
           contentType: data?._type,
@@ -69,10 +69,11 @@ export default async function SaucesIndexPage({
   const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
 
   // Fallback copy so the page always shows intro even if CMS data is missing
-  const eyebrow = indexDoc?.eyebrow ?? null;
-  const heading = indexDoc?.title ?? "<< click to edit this heading>>";
-  const intro = indexDoc?.description ?? "<< click to edit this description >>";
-  const backgroundImage = indexDoc?.backgroundImage ?? null;
+  const header = indexDoc?.pageHeader ?? null;
+  const eyebrow = header?.eyebrow ?? null;
+  const heading = header?.heading ?? "<< click to edit this heading>>";
+  const intro = header?.text ?? "<< click to edit this description >>";
+  const backgroundImage = header?.backgroundImage ?? null;
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { button } from "./button";
 import { customUrl } from "./custom-url";
+import { pageHeader } from "./page-header";
 import { homePageBuilder, pageBuilder } from "./pagebuilder";
 import { richText } from "./rich-text";
 import { sectionSpacing } from "./section-spacing";
@@ -15,4 +16,5 @@ export const definitions = [
   sectionSpacing,
   timelineMarker,
   timeline,
+  pageHeader,
 ];
