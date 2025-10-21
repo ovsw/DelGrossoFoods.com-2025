@@ -72,7 +72,7 @@ export function SauceHeroSection({
               }
             : null
         }
-        backgroundImage="/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600.jpg"
+        backgroundImage="/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg"
         fullBleed
         className="mt-6"
       >

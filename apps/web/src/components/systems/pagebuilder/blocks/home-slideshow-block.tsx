@@ -185,14 +185,14 @@ export function HomeSlideshowBlock({
 
   return (
     <div
-      className="relative w-full justify-center overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600.jpg')] bg-cover bg-bottom pt-36 pb-16"
+      className="relative w-full justify-center overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg')] bg-cover bg-bottom pt-36 pb-16"
       role="region"
       aria-label="DelGrosso Sauce Lines Slideshow"
       aria-live="polite"
     >
       <div className="mx-auto flex max-w-7xl transform flex-col items-center justify-center gap-8 lg:flex-row lg:items-stretch lg:justify-start ">
-        <div className="container mx-auto flex w-full flex-col items-center justify-end gap-12 px-6 text-center md:text-left lg:grid lg:grid-cols-[minmax(24rem,44%)_minmax(0,1fr)] lg:items-end lg:gap-0 lg:max-w-5xl">
-          <div className="flex w-full max-w-[20rem] flex-col items-center justify-end gap-8 py-6 md:max-w-none md:grid md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-10 md:py-8 lg:order-1 lg:max-w-[26rem] lg:grid-cols-1 lg:justify-items-center lg:gap-10 lg:py-10">
+        <div className="container mx-auto flex w-full flex-col items-center justify-end  px-6 text-center md:text-left lg:grid lg:grid-cols-[minmax(24rem,44%)_minmax(0,1fr)] lg:items-end lg:max-w-5xl">
+          <div className="flex w-full max-w-[20rem] flex-col items-center justify-end  py-6 md:grid md:max-w-none md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-10 md:py-8 lg:order-1 lg:max-w-[26rem] lg:grid-cols-1 lg:justify-items-center lg:gap-10 lg:py-10">
             <div className="mb-4 w-full max-w-[18rem] -rotate-2 transform bg-white p-2 shadow-lg hover:rotate-0 md:mb-0 md:max-w-[20rem] md:justify-self-start md:me-8 md:p-4 lg:me-0 lg:justify-self-center">
               <Image
                 priority={true}
@@ -246,7 +246,7 @@ export function HomeSlideshowBlock({
             </AnimatePresence>
           </div>
 
-          <div className="relative order-2 flex w-full flex-col items-center justify-end pl-2 md:pl-6 lg:order-2 lg:self-stretch lg:items-end lg:justify-center lg:pl-16">
+          <div className="relative bottom-10 mt-14 lg:bottom-0 order-2 flex w-full flex-col items-center justify-end pl-2 md:pl-6 lg:order-2 lg:items-end lg:justify-center lg:self-stretch lg:pl-16">
             <div className="relative w-full overflow-visible lg:h-full lg:self-stretch">
               <div className="relative flex w-full items-end justify-center min-h-[35svh] [aspect-ratio:4/3] lg:absolute lg:-bottom-4 lg:left-0 lg:h-[calc(100%-1.25rem)] lg:w-[125%] lg:max-w-[720px] lg:-translate-x-4 lg:[aspect-ratio:4/3] lg:items-end lg:justify-start">
                 <AnimatePresence mode="wait">
