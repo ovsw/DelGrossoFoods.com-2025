@@ -198,6 +198,25 @@
 
 - Do NOT import or use legacy preview components from `next-sanity/preview` or `@sanity/preview-kit` (e.g. `LiveQuery`, `useLiveQuery`, `LiveQueryProvider`). They are deprecated for our setup.
 - DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web/src/lib/sanity/live.ts`).
+
+## Memory: ThreeProductPanels hover reveal (restore notes)
+
+This documents how the hover-based content reveal works in `ThreeProductPanelsBlock` so we can re-add it later.
+
+- Component file: `apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx`
+- Technique overview:
+  - Card wrapper defines a CSS var `--card-scale` and uses `group` to coordinate hover/focus state. See `className` on the root card container for scale on hover/focus. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
+  - Shared transform/shadow animation string `SHARED_HOVER_ANIMATION_STYLES` applied to background and shine overlay for unified lift. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:60, 116, 120
+  - Content reveal uses a CSS-only grid row transition: wrapper starts with `[grid-template-rows:0fr]` and on `group-hover`/`group-focus-within` animates to `1fr`, with an inner `overflow-hidden` clip. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:169-170
+  - Text and CTA fade-in are driven by `opacity-0 → opacity-100` under the same group hover/focus selectors. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:171-176, 177-188
+  - The card uses a fixed height so the reveal pushes upward inside the card without affecting outside layout. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
+
+Restore steps (high level):
+
+- Reinstate the grid wrapper with `[grid-template-rows:0fr]` + `group-hover:[grid-template-rows:1fr]` and the inner `overflow-hidden` div.
+- Wrap `expandedDescription` and CTA in elements with `opacity-0` and `group-hover:opacity-100` (and `group-focus-within:opacity-100`).
+- Keep the root container `group` and the `--card-scale` hover/focus scaling if the “lift” effect is desired.
+- Ensure `SHARED_HOVER_ANIMATION_STYLES` is applied to the shine overlay and background for synchronized transform/shadow.
   - Mount `<SanityLive />` at the end of the root layout body (already done).
   - Fetch page data with `sanityFetch` in server components. This auto-switches to the Live Content API when Draft Mode is enabled.
 - Keep Presentation metadata intact: never force `stega: false` for fetches that render visible content. This is required for:

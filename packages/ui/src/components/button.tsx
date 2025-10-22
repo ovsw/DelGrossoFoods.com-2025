@@ -23,7 +23,7 @@ const buttonVariants = cva(defaultStyles, {
         "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
       ghost: "hover:bg-accent hover:text-accent-foreground",
       accent: "bg-th-red-500 text-th-light-100 hover:bg-th-red-600",
-      link: "text-primary underline-offset-4 hover:underline",
+      link: "text-primary underline underline-offset-4 hover:underline",
     },
     size: {
       slim: "p-0 has-[>svg]:px-3",
