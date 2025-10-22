@@ -50,7 +50,7 @@ export function FeatureCardGridLayout({
         </div>
         <div
           className={cn(
-            "mx-auto mt-12 lg:mt-20 grid gap-8 lg:grid-cols-3",
+            "mx-auto mt-12 lg:mt-20 grid grid-cols-1 gap-8 lg:grid-cols-3",
             gridClassName,
           )}
         >
