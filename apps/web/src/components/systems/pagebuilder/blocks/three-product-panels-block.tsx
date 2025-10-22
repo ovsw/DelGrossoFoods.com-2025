@@ -108,14 +108,12 @@ const ProductPanelCard = ({
 
   return (
     <div
-      className="group relative h-[24rem] md:h-[28rem] lg:h-[30rem] focus-within:outline-none [--card-scale:1] hover:[--card-scale:1.06] focus-within:[--card-scale:1.06] motion-reduce:hover:[--card-scale:1] motion-reduce:focus-within:[--card-scale:1]"
+      className="p-6 group relative rounded-2xl"
       role="article"
       aria-label={`${stegaClean(panel.title)} product panel`}
       style={accentCssVars}
     >
-      <SurfaceShineOverlay
-        className={cn("rounded-2xl", SHARED_HOVER_ANIMATION_STYLES)}
-      />
+      <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} />
       <div
         className={cn(
           "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",
@@ -126,70 +124,50 @@ const ProductPanelCard = ({
       />
 
       {panel.image && (
-        <div className="absolute inset-x-0 -top-10 bottom-[6.5rem] md:bottom-[7.5rem] lg:bottom-[8.5rem] z-10 flex items-end justify-center px-8">
+        <div className="relative mb-6">
           <SanityImage
             image={panel.image}
             width={800}
             height={600}
             alt={stegaClean(panel.title || "Product image")}
-            className="h-full w-full max-w-[82%] object-contain"
+            className="block w-full max-w-[28rem] pl-6 object-contain mx-auto"
             data-sanity={imageDataAttribute}
           />
         </div>
       )}
 
-      <div className="absolute inset-x-0 bottom-0 z-20 origin-top transition-transform duration-300 ease-out [transform:scale(var(--card-scale))] motion-reduce:duration-0 will-change-transform">
-        <div className="relative">
-          {/* <div
-            className={cn(
-              "pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out",
-              "border-b-2 border-white/50 rounded-b-2xl",
-              "bg-[linear-gradient(0deg,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0)_50%,color-mix(in_srgb,var(--overlay-accent)_0%,transparent)_100%)]",
-            )}
-            aria-hidden="true"
-          /> */}
+      <div className="relative space-y-5">
+        <div className="space-y-2">
+          {/* Panel Title */}
+          <h3 className="text-xl font-bold text-white">{panel.title}</h3>
 
-          <div className="relative rounded-t-2xl p-6 md:p-8">
-            {/* Panel Title */}
-            <h3 className="mb-1 text-2xl font-bold text-white line-clamp-1 md:line-clamp-none">
-              {panel.title}
-            </h3>
-
-            {/* Short Description */}
-            <p className="mb-3 text-sm leading-relaxed text-white/90 line-clamp-1 md:line-clamp-none">
-              {panel.shortDescription}
-            </p>
-
-            {/* Expanded Content - grid-template-rows reveal (CSS-only overlay) */}
-            {/**
-             * Technique: Animate grid-template-rows from 0fr -> 1fr while the
-             * inner clip wrapper has overflow-hidden. The card has a fixed height,
-             * so reveal pushes upward inside the card without changing layout.
-             */}
-            <div className="grid [grid-template-rows:0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:[grid-template-rows:1fr] group-focus-within:[grid-template-rows:1fr] motion-reduce:transition-none motion-reduce:duration-0">
-              <div className="overflow-hidden">
-                {panel.expandedDescription && (
-                  <p className="mb-3 text-sm leading-relaxed text-white/90 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
-                    {panel.expandedDescription}
-                  </p>
-                )}
-
-                {/* CTA Button */}
-                {ctaButton?.href && (
-                  <div className="opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100">
-                    <SanityButtons
-                      buttons={[ctaButton as SanityButtonProps]}
-                      className="gap-0"
-                      buttonVariants={["link"]}
-                      surface={"onDark"}
-                      size={"slim"}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* Short Description */}
+          <p className="text-sm leading-relaxed text-white/90">
+            {panel.shortDescription}
+          </p>
         </div>
+
+        {(panel.expandedDescription || ctaButton?.href) && (
+          <div className="space-y-3">
+            {panel.expandedDescription && (
+              <p className="text-sm leading-relaxed text-th-light-100/90">
+                {panel.expandedDescription}
+              </p>
+            )}
+
+            {/* CTA Button */}
+            {ctaButton?.href && (
+              <SanityButtons
+                buttons={[ctaButton as SanityButtonProps]}
+                className="items-start"
+                buttonClassName="justify-start"
+                buttonVariants={["link"]}
+                surface={"onDark"}
+                size={"slim"}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -225,7 +203,7 @@ export function ThreeProductPanelsBlock({
       }
       title={
         title ? (
-          <h2 className="text-3xl font-bold text-brand-green lg:text-5xl">
+          <h2 className="text-3xl max-w-2xl font-bold text-brand-green lg:text-5xl">
             {title}
           </h2>
         ) : undefined
@@ -237,7 +215,7 @@ export function ThreeProductPanelsBlock({
           </p>
         ) : undefined
       }
-      gridClassName="gap-6 md:grid-cols-3 lg:gap-8"
+      // gridClassName="mx-auto mt-20 grid gap-6 gap-8 lg:grid-cols-3 lg:grid-cols-3 lg:gap-8"
       cards={panels.map((panel) => {
         const cleanedAccent =
           typeof panel.accentColor === "string"

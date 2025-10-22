@@ -254,13 +254,18 @@ export function PageBuilder({
     return null;
   }
 
+  const blocksToRender = blocks.slice(0, 3);
+
   return (
-    <section
+    <div
       className="page-builder w-full"
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >
-      {blocks.map((block, index) => renderBlock(block, index === 0))}
-    </section>
+      {blocksToRender.map((block) => {
+        const originalIndex = blocks.indexOf(block);
+        return renderBlock(block, originalIndex === 0);
+      })}
+    </div>
   );
 }
