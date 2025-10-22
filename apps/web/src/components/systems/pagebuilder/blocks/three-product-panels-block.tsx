@@ -84,6 +84,7 @@ const ProductPanelCard = ({
   const accentCssVars = {
     "--card-bg-color": accentValue,
     "--overlay-accent": accentValue,
+    "--card-scale": 1,
   } as CSSProperties;
   const ctaButton = panel.ctaButton
     ? {
@@ -108,7 +109,7 @@ const ProductPanelCard = ({
 
   return (
     <div
-      className="p-6 group relative rounded-2xl"
+      className="group relative rounded-2xl p-6 md:grid md:grid-cols-[1fr_auto] md:items-center md:gap-4 md:p-5 md:pl-8 md:pr-0 md:min-h-[22rem] lg:block lg:p-6 lg:min-h-0 group-hover:[--card-scale:1.02] group-focus-within:[--card-scale:1.02]"
       role="article"
       aria-label={`${stegaClean(panel.title)} product panel`}
       style={accentCssVars}
@@ -124,25 +125,27 @@ const ProductPanelCard = ({
       />
 
       {panel.image && (
-        <div className="relative mb-6">
+        <div className="relative mb-6 md:order-2 md:mb-0 md:justify-self-end lg:order-none lg:mb-6 lg:justify-self-auto">
           <SanityImage
             image={panel.image}
             width={800}
             height={600}
             alt={stegaClean(panel.title || "Product image")}
-            className="block w-full max-w-[28rem] pl-6 object-contain mx-auto"
+            className="mx-auto block w-full max-w-[28rem] pl-6 object-contain md:mx-0 md:max-w-[22rem] md:pl-0 lg:mx-auto lg:max-w-[28rem] lg:pl-6"
             data-sanity={imageDataAttribute}
           />
         </div>
       )}
 
-      <div className="relative space-y-5">
+      <div className="relative space-y-5 md:order-1 md:max-w-prose md:space-y-4 md:pr-3 lg:order-none lg:max-w-none lg:space-y-5 lg:pr-0">
         <div className="space-y-2">
           {/* Panel Title */}
-          <h3 className="text-xl font-bold text-white">{panel.title}</h3>
+          <h3 className="text-lg font-bold text-white md:text-xl">
+            {panel.title}
+          </h3>
 
           {/* Short Description */}
-          <p className="text-sm leading-relaxed text-white/90">
+          <p className="text-sm leading-relaxed text-white/90 text-pretty">
             {panel.shortDescription}
           </p>
         </div>
@@ -150,7 +153,7 @@ const ProductPanelCard = ({
         {(panel.expandedDescription || ctaButton?.href) && (
           <div className="space-y-3">
             {panel.expandedDescription && (
-              <p className="text-sm leading-relaxed text-th-light-100/90">
+              <p className="text-sm leading-relaxed text-th-light-100/90 text-pretty">
                 {panel.expandedDescription}
               </p>
             )}
