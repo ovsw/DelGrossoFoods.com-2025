@@ -57,8 +57,8 @@ export function SauceHeroSection({
 
   return (
     <>
-      <BackLink href="/sauces" label="All Sauces" />
       <HeroLayout
+        prelude={<BackLink href="/sauces" label="All Sauces" />}
         title={sauceName}
         eyebrow={badgeLabel}
         image={
