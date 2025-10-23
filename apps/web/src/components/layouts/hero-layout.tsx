@@ -10,6 +10,7 @@ import { SanityImage } from "@/components/elements/sanity-image";
 export interface HeroLayoutProps {
   readonly title: string;
   readonly eyebrow?: string;
+  readonly prelude?: ReactNode;
   readonly image?: {
     readonly id: string | null;
     readonly preview: string | null;
@@ -54,6 +55,7 @@ export interface HeroLayoutProps {
 export function HeroLayout({
   title,
   eyebrow,
+  prelude,
   image,
   badges = [],
   variant = "default",
@@ -133,6 +135,11 @@ export function HeroLayout({
         <div className="absolute inset-0 bg-white/10" aria-hidden="true" />
       )}
       <div className="container relative mx-auto max-w-6xl px-4 md:px-0">
+        {prelude ? (
+          <div className="mb-6 flex justify-center lg:justify-start">
+            {prelude}
+          </div>
+        ) : null}
         <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
           <div className="flex flex-col justify-center gap-6 text-center lg:text-start">
             <div className="flex flex-col items-center gap-4 lg:items-start">
