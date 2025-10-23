@@ -3,7 +3,7 @@ import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 
@@ -48,6 +48,8 @@ export interface HeroLayoutProps {
   readonly variant?: "default" | "overlay";
   readonly backgroundImage?: string;
   readonly className?: string;
+  readonly titleClassName?: string;
+  readonly titleStyle?: CSSProperties;
   readonly children?: ReactNode;
   readonly fullBleed?: boolean;
 }
@@ -61,6 +63,8 @@ export function HeroLayout({
   variant = "default",
   backgroundImage,
   className,
+  titleClassName,
+  titleStyle,
   children,
   fullBleed = false,
 }: HeroLayoutProps) {
@@ -95,7 +99,12 @@ export function HeroLayout({
                 <Eyebrow text={eyebrow} className="text-white/80" />
               </div>
             )}
-            <h1 className="text-4xl font-bold md:text-6xl">{title}</h1>
+            <h1
+              className={cn("text-4xl font-bold md:text-6xl", titleClassName)}
+              style={titleStyle}
+            >
+              {title}
+            </h1>
             {badges.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {badges.map((badge, index) => (
@@ -143,15 +152,21 @@ export function HeroLayout({
         <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
           <div className="flex flex-col justify-center gap-6 text-center lg:text-start">
             <div className="flex flex-col items-center gap-4 lg:items-start">
-              <h1 className="text-4xl leading-tight font-semibold text-balance lg:text-6xl">
-                {title}
-              </h1>
               {eyebrow && (
                 <Eyebrow
                   text={eyebrow}
                   className="border-brand-green text-th-dark-900/70"
                 />
               )}
+              <h1
+                className={cn(
+                  "text-4xl leading-tight font-semibold text-balance lg:text-6xl",
+                  titleClassName,
+                )}
+                style={titleStyle}
+              >
+                {title}
+              </h1>
               {badges.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {badges.map((badge, index) => (
