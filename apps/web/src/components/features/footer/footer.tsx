@@ -75,7 +75,7 @@ function SocialLinks({ data }: SocialLinksProps) {
   ].filter((link) => link.url);
 
   return (
-    <ul className="flex items-center space-x-6 text-[color:var(--color-brand-green-text)]">
+    <ul className="flex flex-wrap items-center gap-4 sm:gap-6 text-[color:var(--color-brand-green-text)]">
       {socialLinks.map(({ url, Icon, label }, index) => (
         <li
           key={`social-link-${url}-${index.toString()}`}
@@ -167,11 +167,12 @@ function Footer({ data, settingsData }: FooterProps) {
   return (
     <footer className="mt-20">
       <section className="container mx-auto">
-        <div className="mx-auto max-w-7xl rounded-lg bg-brand-green p-4">
+        <div className="mx-auto max-w-7xl rounded-none bg-brand-green px-4 py-5 md:rounded-lg md:py-4">
           <div className="rounded-lg border border-brand-yellow">
-            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10 text-center p-6 text-[color:var(--color-brand-green-text)] lg:flex-row lg:text-left">
-              <div className="flex w-full max-w-90 shrink flex-col items-start justify-between gap-6 md:gap-8">
-                <div>
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10 p-6 text-center text-[color:var(--color-brand-green-text)] md:text-left lg:flex-row">
+              <div className="flex w-full shrink-0 flex-col items-start justify-between gap-6 md:grid md:grid-cols-12 md:items-end md:gap-x-6 md:gap-y-4 md:text-left lg:flex lg:flex-col lg:items-start lg:flex-none lg:w-[240px] xl:w-[300px] 2xl:w-[340px]">
+                {/* Logo + address (left) */}
+                <div className="md:col-span-4">
                   <span className="flex items-center justify-start gap-4">
                     <Link
                       href="/"
@@ -181,77 +182,80 @@ function Footer({ data, settingsData }: FooterProps) {
                       <LogoSvg className="w-full h-auto" />
                     </Link>
                   </span>
-                  {/* {subtitle && (
-                  <p className="mt-6 text-sm text-muted-foreground">
-                    {subtitle}
-                  </p>
-                )} */}
-                  {(addressLines?.length ||
-                    contactEmail ||
-                    tollFreePhone ||
-                    officePhone) && (
-                    <div data-c="footer_text">
-                      <div data-c="footer_address" className="mt-6 text-sm">
-                        {addressLines?.map((line, idx) => (
-                          <div key={`addr-${idx}`}>{line}</div>
-                        ))}
-                      </div>
-                      <div
-                        data-c="footer_contact"
-                        className="mt-4 text-sm flex-grow align-items-stretch"
-                      >
-                        {contactEmail && (
-                          <div>
-                            {/* Email:{" "} */}
-                            <a
-                              href={`mailto:${contactEmail}`}
-                              className="hover:text-brand-yellow"
-                            >
-                              {contactEmail}
-                            </a>
-                          </div>
-                        )}
-                        {tollFreePhone && (
-                          <div>
-                            {/* Toll Free:{" "} */}
-                            <a
-                              href={`tel:${tollFreePhone}`}
-                              className="hover:text-brand-yellow"
-                            >
-                              {tollFreePhone} (Toll Free)
-                            </a>
-                          </div>
-                        )}
-                        {officePhone && (
-                          <div>
-                            {/* Office:{" "} */}
-                            <a
-                              href={`tel:${officePhone}`}
-                              className="hover:text-brand-yellow"
-                            >
-                              {officePhone}
-                            </a>
-                          </div>
-                        )}
-                      </div>
+                  {addressLines?.length ? (
+                    <div
+                      data-c="footer_address"
+                      className="mt-6 text-sm md:mt-4"
+                    >
+                      {addressLines.map((line, idx) => (
+                        <div key={`addr-${idx}`}>{line}</div>
+                      ))}
                     </div>
-                  )}
+                  ) : null}
                 </div>
-                {socialLinks && <SocialLinks data={socialLinks} />}
+                {/* Address + contact */}
+                {(contactEmail || tollFreePhone || officePhone) && (
+                  <div className="md:col-span-4">
+                    <div
+                      data-c="footer_contact"
+                      className="text-sm flex-grow align-items-stretch md:mt-0"
+                    >
+                      {contactEmail && (
+                        <div>
+                          {/* Email:{" "} */}
+                          <a
+                            href={`mailto:${contactEmail}`}
+                            className="hover:text-brand-yellow"
+                          >
+                            {contactEmail}
+                          </a>
+                        </div>
+                      )}
+                      {tollFreePhone && (
+                        <div>
+                          {/* Toll Free:{" "} */}
+                          <a
+                            href={`tel:${tollFreePhone}`}
+                            className="hover:text-brand-yellow"
+                          >
+                            {tollFreePhone} (Toll Free)
+                          </a>
+                        </div>
+                      )}
+                      {officePhone && (
+                        <div>
+                          {/* Office:{" "} */}
+                          <a
+                            href={`tel:${officePhone}`}
+                            className="hover:text-brand-yellow"
+                          >
+                            {officePhone}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {/* Socials */}
+                {socialLinks && (
+                  <div className="md:col-span-4 md:self-end lg:self-start">
+                    <SocialLinks data={socialLinks} />
+                  </div>
+                )}
               </div>
               {Array.isArray(columns) && columns?.length > 0 && (
-                <div className="grid grid-cols-3 gap-2 lg:gap-28">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-y-8 gap-x-6 lg:gap-x-10 xl:gap-x-16 2xl:gap-x-24 text-left justify-items-start">
                   {columns.map((column, index) => (
                     <div key={`column-${column?._key}-${index}`}>
-                      <h3 className="mb-6 font-semibold text-brand-yellow text-lg">
+                      <h3 className="mb-6 font-semibold text-brand-yellow text-lg text-left">
                         {column?.title}
                       </h3>
                       {column?.links && column?.links?.length > 0 && (
-                        <ul className="space-y-4 text-sm">
+                        <ul className="space-y-4 text-sm text-left">
                           {column?.links?.map((link, index) => (
                             <li
                               key={`${link?._key}-${index}-column-${column?._key}`}
-                              className="font-medium hover:text-brand-yellow"
+                              className="font-medium hover:text-brand-yellow text-left"
                             >
                               <Link
                                 href={link.href ?? "#"}
@@ -278,7 +282,7 @@ function Footer({ data, settingsData }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-th-dark-900 py-8">
+        <div className="mt-0 border-0 py-4 md:mt-14 md:border-t md:border-th-dark-900 md:py-8">
           <div className="mx-auto flex max-w-7xl flex-col  justify-between gap-4 px-4 text-center text-sm font-normal text-th-dark-750/80 md:px-6 lg:flex-row lg:items-center lg:text-left">
             <p>
               © {year} {siteTitle}. All rights reserved.
