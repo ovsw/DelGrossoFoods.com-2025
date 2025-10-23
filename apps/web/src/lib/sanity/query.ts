@@ -551,6 +551,7 @@ export const getSauceBySlugQuery = defineQuery(`
     _type,
     name,
     "slug": slug.current,
+    colorHex,
     line,
     category,
     "description": description[]{
