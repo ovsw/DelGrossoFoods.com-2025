@@ -254,7 +254,7 @@ export function PageBuilder({
     return null;
   }
 
-  const blocksToRender = blocks.slice(0, 3);
+  // const blocksToRender = blocks.slice(0, 3);
 
   return (
     <div
@@ -262,7 +262,7 @@ export function PageBuilder({
       data-sanity={containerDataAttribute}
       aria-label="Page content"
     >
-      {blocksToRender.map((block) => {
+      {blocks.map((block) => {
         const originalIndex = blocks.indexOf(block);
         return renderBlock(block, originalIndex === 0);
       })}
