@@ -75,7 +75,7 @@ function SocialLinks({ data }: SocialLinksProps) {
   ].filter((link) => link.url);
 
   return (
-    <ul className="flex flex-wrap items-center gap-4 sm:gap-6 text-[color:var(--color-brand-green-text)]">
+    <ul className="flex flex-wrap items-center gap-4 sm:gap-6 text-brand-green-text">
       {socialLinks.map(({ url, Icon, label }, index) => (
         <li
           key={`social-link-${url}-${index.toString()}`}
@@ -104,7 +104,7 @@ export function FooterSkeleton() {
         <div className="mx-auto max-w-7xl rounded-lg bg-brand-green p-6">
           <div className="rounded-lg border border-[color:var(--color-brand-yellow)]">
             <div className="h-[500px] lg:h-auto">
-              <div className="flex flex-col items-center justify-between gap-10 text-center text-[color:var(--color-brand-green-text)] lg:flex-row lg:text-left">
+              <div className="flex flex-col items-center justify-between gap-10 text-center text-brand-green-text lg:flex-row lg:text-left">
                 <div className="flex w-full max-w-90 shrink flex-col items-center justify-between gap-6 lg:items-start">
                   <div>
                     <span className="flex items-center justify-center gap-4 lg:justify-start">
@@ -169,7 +169,7 @@ function Footer({ data, settingsData }: FooterProps) {
       <section className="container mx-auto">
         <div className="mx-auto max-w-7xl rounded-none bg-brand-green px-4 py-5 md:rounded-lg md:py-4">
           <div className="rounded-lg border border-brand-yellow">
-            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10 p-6 text-center text-[color:var(--color-brand-green-text)] md:text-left lg:flex-row">
+            <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-10 p-6 text-center text-brand-green-text md:text-left lg:flex-row">
               <div className="flex w-full shrink-0 flex-col items-start justify-between gap-6 md:grid md:grid-cols-12 md:items-end md:gap-x-6 md:gap-y-4 md:text-left lg:flex lg:flex-col lg:items-start lg:flex-none lg:w-[240px] xl:w-[300px] 2xl:w-[340px]">
                 {/* Logo + address (left) */}
                 <div className="md:col-span-4">
