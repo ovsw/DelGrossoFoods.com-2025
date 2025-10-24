@@ -29,6 +29,8 @@ export function SauceHeroSection({
   const rawColorHex = sauce.colorHex ?? "";
   const cleanedColorHex = stegaClean(rawColorHex).trim();
   const hasValidHeroColor = /^#(?:[0-9a-fA-F]{3}){1,2}$/.test(cleanedColorHex);
+  const useSoftTextShadow =
+    cleanedColorHex === "#0c8189" || cleanedColorHex === "#ffacee";
 
   const rawLine = sauce.line ?? "";
   const lineSlug = toLineSlug(rawLine);
@@ -96,7 +98,10 @@ export function SauceHeroSection({
             />
             <h1
               className={cn(
-                "mx-auto text-5xl max-w-[10ch] leading-[1.1] lg:leading-[0.9] font-bold text-balance  lg:mx-0 lg:max-w-[13ch] lg:text-6xl text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-2px_-1px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
+                "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
+                useSoftTextShadow
+                  ? "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.25),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]"
+                  : "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
               )}
               style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
             >
@@ -114,6 +119,7 @@ export function SauceHeroSection({
               buttons={buttons}
               buttonClassName="w-full min-[350px]:w-auto"
               className="mt-7 justify-center lg:justify-start flex-wrap min-[350px]:flex-row"
+              buttonVariants={["default", "secondary"]}
             />
           </div>
 

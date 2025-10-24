@@ -169,7 +169,7 @@ export function SauceNutritionalInfoSection({
   return (
     <Section
       spacingTop="large"
-      spacingBottom="large"
+      spacingBottom="default"
       aria-labelledby="nutritional-info-heading"
     >
       <div className="container max-w-7xl mx-auto px-4 md:px-6">
