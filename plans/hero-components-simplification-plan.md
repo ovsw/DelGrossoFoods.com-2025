@@ -117,35 +117,37 @@ Deliverable: new `shared-image-hero-section.tsx` with a tiny prop surface.
 
 ---
 
-## Stage 4 — Add Product Page Hero (split/grid)
+## Stage 4 — Product Page Hero (image-only)
 
 Prompt for your AI agent (copy-paste):
 
 ```
-Task: Create a minimal product detail hero similar to the sauce split/grid, without domain leakage.
+Task: Ensure the product detail hero is an image-only hero placed over the shared background (no split/grid layout, no text blocks inside the hero). The hero displays a single product image centered within the section.
 
-Create:
-- File: `apps/web/src/components/page-sections/product-page/product-hero-section.tsx`
+Create/Update:
+- File: `apps/web/src/components/page-sections/product-page/product-hero-section.tsx` (update if already present)
 - Export: `ProductHeroSection`
 
 Props (minimal):
-- `title: string`
-- `subtitle?: string`
-- `image: { id: string | null; preview: string | null; hotspot: { x: number; y: number } | null; crop: { top: number; right: number; bottom: number; left: number } | null; alt?: string; width?: number; height?: number; } | null`
-- `buttons?: Array<SanityButtonProps>` (reuse existing button type)
-- `backgroundSrc?: string`
+- `product: ProductDetailData` (source of `mainImage` and `name`)
+  - Uses `product.mainImage` for the jar image
+  - Uses `stegaClean(product.name)` for alt fallback
 
 Implementation:
 - Wrap in `<Section spacingTop="page-top" spacingBottom="default" fullBleed>`.
-- Optional background via `style={{ backgroundImage: ... }}` and subtle overlay.
-- Grid layout: left column (title, optional subtitle, optional buttons), right column (image via `SanityImage` if provided).
+- Apply the same background image used in other hero sections (e.g., the “counter-wall” background) via `style={{ backgroundImage: "url('...')" }}` (or class if already standardized) and add a subtle overlay `div` like Sauce Hero.
+- Containerized center layout with a single product image only:
+  - Use `SanityImage` with `respectSanityCrop={false}` and `object-contain` in a centered wrapper.
+  - Provide a reasonable min-height (e.g., `min-h-[360px]`) to ensure presence.
+- Alt text fallback: `image.alt || stegaClean(product.name) || "Product image"`.
+- No split/grid; no title/subtitle/buttons inside the hero. Those live in other sections.
 - Keep tokens; light-only theme; no CSS-var utility classes.
 
 Validation:
-- Ensure it compiles by importing and rendering in a placeholder page section (optional) or rely on types.
+- Rely on TypeScript for compile-time checks.
 - Run: `pnpm --filter web format && pnpm --filter web lint:fix && pnpm --filter web typecheck`.
 
-Deliverable: new `product-hero-section.tsx` with a minimal API.
+Deliverable: an image-only `product-hero-section.tsx` matching the provided design (single jar image centered over the shared background).
 ```
 
 ---
