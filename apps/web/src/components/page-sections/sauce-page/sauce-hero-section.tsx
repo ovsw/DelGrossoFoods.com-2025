@@ -82,54 +82,39 @@ export function SauceHeroSection({
       spacingTop="page-top"
       spacingBottom="default"
       fullBleed
-      className={cn(
-        "relative isolate overflow-hidden mt-6 [&_.hero-description]:mt-4 lg:[&_.hero-description]:mt-6",
-        backgroundImage && "bg-cover bg-bottom",
-      )}
+      className={cn("relative", backgroundImage && "bg-cover bg-bottom")}
       style={{ backgroundImage: `url('${backgroundImage}')` }}
     >
-      <div className="absolute inset-0 bg-white/10" aria-hidden="true" />
-
-      <div className="container relative mx-auto max-w-6xl px-4 md:px-0">
-        <div className="mb-6 flex justify-center lg:justify-start">
-          <BackLink
-            href="/sauces"
-            label="All Sauces"
-            className="!text-foreground hover:!text-foreground focus-visible:!ring-th-dark-900/40"
-          />
-        </div>
-
+      <div className="container  relative mx-auto max-w-6xl px-4 lg:pl-18">
         <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
-          <div className="flex flex-col justify-center gap-6 text-center lg:text-start">
-            <div className="flex flex-col items-center gap-4 lg:items-start">
-              <Eyebrow
-                text={lineSourceLabel}
-                className="border-brand-green text-th-dark-900/70"
-              />
-              <h1
-                className={cn(
-                  "text-4xl leading-tight font-semibold text-balance lg:text-6xl",
-                )}
-                style={
-                  hasValidHeroColor ? { color: cleanedColorHex } : undefined
-                }
-              >
-                {sauceName}
-              </h1>
-            </div>
+          {/* Text stack: pure document flow with margins for grouping */}
+          <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0">
+            {/* Identity: eyebrow + title (tight proximity via margin) */}
+            <Eyebrow
+              text={lineSourceLabel}
+              className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
+            />
+            <h1
+              className={cn(
+                "mx-auto text-5xl max-w-[10ch] leading-[1.1] lg:leading-[0.9] font-bold text-balance  lg:mx-0 lg:max-w-[13ch] lg:text-6xl text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-2px_-1px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
+              )}
+              style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
+            >
+              {sauceName}
+            </h1>
 
+            {/* Support: description (moderate from title) */}
             <RichText
               richText={sauce.description}
-              className="hero-description text-base italic text-foreground md:text-lg max-w-2xl lg:max-w-none"
+              className="mt-5 sm:mt-6 lg:mt-7  italic text-foreground/80 md:text-lg max-w-[50ch]"
             />
 
-            <div className="flex justify-center lg:justify-start">
-              <SanityButtons
-                buttons={buttons}
-                buttonClassName="w-full min-[340px]:w-auto"
-                className="grid w-full max-w-md gap-3 min-[340px]:w-fit min-[340px]:grid-flow-col"
-              />
-            </div>
+            {/* Actions: CTAs (largest from copy) */}
+            <SanityButtons
+              buttons={buttons}
+              buttonClassName="w-full min-[350px]:w-auto"
+              className="mt-7 justify-center lg:justify-start flex-wrap min-[350px]:flex-row"
+            />
           </div>
 
           {image?.id ? (
