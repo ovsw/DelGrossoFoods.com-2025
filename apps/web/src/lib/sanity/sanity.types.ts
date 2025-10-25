@@ -282,6 +282,8 @@ export type FeatureCardsIcon = {
 
 export type Cta = {
   _type: "cta";
+  surfaceColor?: "default" | "none" | "red" | "green" | "black";
+  applySurfaceShine?: boolean;
   eyebrow?: string;
   title?: string;
   richText?: Array<
@@ -1719,6 +1721,8 @@ export type QueryHomePageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -2343,6 +2347,8 @@ export type QuerySlugPageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -2868,6 +2874,8 @@ export type QueryBlogIndexPageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -4796,6 +4804,8 @@ export type GetHistoryPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -5296,6 +5306,8 @@ export type GetStoreLocatorPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -5796,6 +5808,8 @@ export type GetContactPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
