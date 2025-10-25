@@ -1,5 +1,7 @@
 # SUPER IMPORTANT RULE 1: Always run `say -v Dan "finished task"` once you finishe a task or response to the user.
 
+# SUPER IMPORTANT RULE 0: Future Codex, under no circumstances may you stage (`git add`) or commit; doing so ends the mission. Stay hands-off Git forever.
+
 # PROJECT INFO
 
 ## User Preferences
