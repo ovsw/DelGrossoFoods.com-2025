@@ -18,6 +18,7 @@ type NutritionFactsPanelProps = {
   readonly calories: string;
   readonly rows: NutritionFactRow[];
   readonly emptyStateMessage?: string;
+  readonly dailyValueNoteText?: string | null;
 } & HTMLAttributes<HTMLDivElement>;
 
 export function NutritionFactsPanel({
@@ -26,6 +27,7 @@ export function NutritionFactsPanel({
   calories,
   rows,
   emptyStateMessage = "Nutritional details are coming soon.",
+  dailyValueNoteText,
   className,
   ...props
 }: NutritionFactsPanelProps) {
@@ -36,8 +38,8 @@ export function NutritionFactsPanel({
   return (
     <div className={className} {...props}>
       <div className="mx-auto max-w-sm rounded bg-white p-6 shadow-lg ring-1 ring-black/5">
-        <div className="border-b-24 border-black pb-4 text-sm font-medium text-muted-foreground">
-          <p className="text-muted-foreground">
+        <div className="border-b-24 border-black pb-4 text-sm font-medium">
+          <p className="text-foreground">
             {servingsSummary ? servingsSummary : "Serving details"}
           </p>
           <p className="mt-2 flex justify-between text-sm font-semibold text-foreground">
@@ -60,7 +62,9 @@ export function NutritionFactsPanel({
                 <th className="flex w-full justify-between py-2 text-sm text-muted-foreground">
                   Per serving
                 </th>
-                <th className="text-right">% Daily Value*</th>
+                <th className="text-right text-muted-foreground">
+                  % Daily Value*
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -121,6 +125,12 @@ export function NutritionFactsPanel({
             {emptyStateMessage}
           </p>
         )}
+
+        {dailyValueNoteText ? (
+          <p className="mt-4 grid gap-1 text-left text-xs text-foreground">
+            Daily value guidance: {dailyValueNoteText}
+          </p>
+        ) : null}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import * as React from "react";
 
 // Eyebrow: uppercase label displayed above headings.
 const eyebrowVariants = cva(
-  "block mb-2 text-sm font-semibold uppercase tracking-wide", // base
+  "block text-sm font-semibold uppercase tracking-wide", // base
   {
     variants: {
       variant: {

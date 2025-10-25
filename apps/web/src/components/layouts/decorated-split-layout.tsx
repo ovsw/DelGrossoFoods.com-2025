@@ -50,6 +50,7 @@ interface DecoratedSplitLayoutProps {
   decoratedColumn: "main" | "secondary";
   mainPosition: "left" | "right";
   variant?: BackgroundVariant;
+  showDecoration?: boolean;
   children: ReactNode;
 }
 
@@ -79,6 +80,7 @@ function DecoratedSplitLayoutRoot({
   decoratedColumn,
   mainPosition,
   variant = "grid",
+  showDecoration = true,
   children,
 }: DecoratedSplitLayoutProps) {
   // Extract slot content from children
@@ -141,7 +143,7 @@ function DecoratedSplitLayoutRoot({
   );
 
   // Decorative background element (rendered inside decorated column)
-  const decorativeBackgroundElement = (
+  const decorativeBackgroundElement = showDecoration ? (
     <div className={backgroundClasses}>
       <PatternFactory
         variant={variant}
@@ -170,7 +172,7 @@ function DecoratedSplitLayoutRoot({
         />
       </div>
     </div>
-  );
+  ) : null;
 
   return (
     <div className="relative isolate">

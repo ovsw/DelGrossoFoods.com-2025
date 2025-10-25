@@ -24,7 +24,7 @@ export function SingleRelatedProductLayout({
           <div className="flex flex-col items-center text-center">
             {eyebrow ? <Eyebrow text={eyebrow} /> : null}
             {title ? (
-              <h2 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
+              <h2 className="mt-4 text-3xl text-brand-green font-semibold text-balance md:text-5xl">
                 {title}
               </h2>
             ) : null}

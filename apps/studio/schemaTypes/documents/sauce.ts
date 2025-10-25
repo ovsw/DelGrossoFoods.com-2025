@@ -40,6 +40,20 @@ export const sauce = defineType({
       type: "string",
       hidden: true,
     }),
+    defineField({
+      name: "colorHex",
+      title: "Accent Color Code",
+      description:
+        "Hex color code used for theming this sauce (for example, #FF5733).",
+      type: "string",
+      group: "basic",
+      validation: (rule) =>
+        rule
+          .regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/, {
+            name: "hex color",
+          })
+          .error("Enter a valid hex color (e.g. #FF5733)."),
+    }),
     // Basic
     defineField({
       name: "name",

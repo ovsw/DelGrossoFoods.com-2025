@@ -282,6 +282,8 @@ export type FeatureCardsIcon = {
 
 export type Cta = {
   _type: "cta";
+  surfaceColor?: "default" | "none" | "red" | "green" | "black";
+  applySurfaceShine?: boolean;
   eyebrow?: string;
   title?: string;
   richText?: Array<
@@ -1108,6 +1110,7 @@ export type Sauce = {
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
+  colorHex?: string;
   name: string;
   slug: Slug;
   line: "Original" | "Organic" | "Ultra-Premium";
@@ -1718,6 +1721,8 @@ export type QueryHomePageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -2342,6 +2347,8 @@ export type QuerySlugPageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -2867,6 +2874,8 @@ export type QueryBlogIndexPageDataResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -3908,12 +3917,13 @@ export type GetSaucesByIdsQueryResult = Array<{
   } | null;
 }>;
 // Variable: getSauceBySlugQuery
-// Query: *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{    _id,    _type,    name,    "slug": slug.current,    line,    category,    "description": description[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    "labelFlatImage": labelFlatImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    authorName,    "authorImage": authorImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    nutritionalInfo,    ingredients,    allergens  }
+// Query: *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{    _id,    _type,    name,    "slug": slug.current,    colorHex,    line,    category,    "description": description[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    "labelFlatImage": labelFlatImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    authorName,    "authorImage": authorImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    nutritionalInfo,    ingredients,    allergens  }
 export type GetSauceBySlugQueryResult = {
   _id: string;
   _type: "sauce";
   name: string;
   slug: string;
+  colorHex: string | null;
   line: "Organic" | "Original" | "Ultra-Premium";
   category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
   description: Array<
@@ -4794,6 +4804,8 @@ export type GetHistoryPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -5294,6 +5306,8 @@ export type GetStoreLocatorPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -5794,6 +5808,8 @@ export type GetContactPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
+        surfaceColor?: "black" | "default" | "green" | "none" | "red";
+        applySurfaceShine?: boolean;
         eyebrow?: string;
         title?: string;
         richText: Array<
@@ -6306,7 +6322,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "sauceIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n': GetSauceIndexPageQueryResult;
     '\n  *[_type == "sauce" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "descriptionPlain": pt::text(description),\n    "mainImage": {\n      "id": mainImage.asset._ref,\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    }\n  }\n': GetAllSaucesForIndexQueryResult;
     '\n  *[\n    _type == "sauce"\n    && _id in $sauceIds\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n  ] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    }\n  }\n': GetSaucesByIdsQueryResult;
-    '\n  *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    line,\n    category,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    "labelFlatImage": labelFlatImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    authorName,\n    "authorImage": authorImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    nutritionalInfo,\n    ingredients,\n    allergens\n  }\n': GetSauceBySlugQueryResult;
+    '\n  *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    colorHex,\n    line,\n    category,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    "labelFlatImage": labelFlatImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    authorName,\n    "authorImage": authorImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    nutritionalInfo,\n    ingredients,\n    allergens\n  }\n': GetSauceBySlugQueryResult;
     '\n  *[_type == "recipeIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n': GetRecipeIndexPageQueryResult;
     '\n  *[_type == "recipe" && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetAllRecipesForIndexQueryResult;
     '\n  *[\n    _type == "recipe"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetRecipesBySauceIdQueryResult;
