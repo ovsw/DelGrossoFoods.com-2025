@@ -20,10 +20,10 @@ const buttonVariants = cva(defaultStyles, {
       outline:
         "border border-brand-green text-brand-green shadow-xs hover:bg-background/10  hover:text-brand-green",
       secondary:
-        "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+        "border border-brand-green bg-th-light-200 text-brand-green shadow-xs hover:bg-secondary/80 hover:text-brand-green",
       ghost: "hover:bg-accent hover:text-accent-foreground",
       accent: "bg-th-red-500 text-th-light-100 hover:bg-th-red-600",
-      link: "text-primary underline-offset-4 hover:underline",
+      link: "text-primary underline underline-offset-4 hover:underline",
     },
     size: {
       slim: "p-0 has-[>svg]:px-3",

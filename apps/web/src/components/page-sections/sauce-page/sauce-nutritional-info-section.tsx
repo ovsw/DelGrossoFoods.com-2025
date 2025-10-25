@@ -169,11 +169,11 @@ export function SauceNutritionalInfoSection({
   return (
     <Section
       spacingTop="large"
-      spacingBottom="large"
+      spacingBottom="default"
       aria-labelledby="nutritional-info-heading"
     >
-      <div className="container max-w-7xl mx-auto px-4 md:px-6">
-        <div className="grid items-start gap-8 lg:grid-cols-2 ">
+      <div className="container max-w-[64rem] mx-auto px-4 md:px-6">
+        <div className="grid items-start gap-8 lg:grid-cols-2">
           <div className="grid grid-rows-[auto_1fr_auto] gap-6 items-center justify-items-center text-center lg:items-start lg:justify-items-start lg:text-left">
             <Eyebrow text="Nutrition Facts" />
 
@@ -185,17 +185,25 @@ export function SauceNutritionalInfoSection({
                 >
                   Nutritional Info
                 </h2>
-                {servingsSummaryText ? (
-                  <p className="text-muted-foreground">{servingsSummaryText}</p>
-                ) : null}
-                {servingDescriptionText ? (
-                  <p className="text-sm text-muted-foreground">
-                    Serving size {servingDescriptionText}
-                  </p>
-                ) : null}
               </div>
 
               <div className="grid gap-6">
+                {servingsSummaryText || servingDescriptionText ? (
+                  <div className="grid gap-2 text-left">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      Serving Size
+                    </h3>
+                    <div className="text-sm text-muted-foreground">
+                      {servingsSummaryText ? (
+                        <p>{servingsSummaryText}</p>
+                      ) : null}
+                      {servingDescriptionText ? (
+                        <p>Serving size {servingDescriptionText}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+
                 {ingredients.length > 0 ? (
                   <div className="grid gap-2 text-left">
                     <h3 className="text-xl font-semibold text-foreground">
@@ -222,14 +230,7 @@ export function SauceNutritionalInfoSection({
                   </div>
                 ) : null}
 
-                <div className="grid gap-2 text-center lg:text-left">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/80">
-                    Daily value guidance
-                  </span>
-                  <p className="text-sm text-muted-foreground">
-                    {dailyValueNote}
-                  </p>
-                </div>
+                {/* Daily value guidance moved into NutritionFactsPanel footer */}
               </div>
             </div>
 
@@ -259,6 +260,7 @@ export function SauceNutritionalInfoSection({
               servingDescriptionText={servingDescriptionText}
               calories={calories}
               rows={nutritionRows}
+              dailyValueNoteText={dailyValueNote}
             />
           </div>
         </div>

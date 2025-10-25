@@ -20,6 +20,7 @@ export function ContactFormSection({
         decoratedColumn="main"
         mainPosition="left"
         variant="italian-ingredients"
+        showDecoration={false}
       >
         <DecoratedSplitLayout.Main>
           <h1 className="text-4xl font-semibold tracking-tight text-pretty text-foreground sm:text-5xl">
