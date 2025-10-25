@@ -1,5 +1,35 @@
 # web
 
+## 1.18.2
+
+### Patch Changes
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`665e603`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/665e60384c8db224cd5a3ea41febe4b0141a137a) Thanks [@ovsw](https://github.com/ovsw)! - Hero components simplification (Stage 1–2): migrate Recipe Hero (overlay) and Sauce Hero (split/grid) off the shared HeroLayout. Inline explicit markup per page section to keep behavior and visuals identical: Recipe uses a full-bleed image with gradient overlay and bottom-left content stack (Eyebrow, H1, badges) and maintains alt fallback to `${stegaClean(recipeName)} recipe`. Sauce uses Section + grid with the previous background image and subtle overlay, preserves BackLink prelude, Eyebrow, title color override when a valid colorHex is provided, description (RichText), buttons, and product jar image with alt fallback. No user-visible changes expected; removes unnecessary abstraction from these sections.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`665e603`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/665e60384c8db224cd5a3ea41febe4b0141a137a) Thanks [@ovsw](https://github.com/ovsw)! - Hero components simplification (Stage 3): add a minimal shared image-backed hero section `SharedImageHeroSection` for non-entity pages. Uses `Section` with `spacingTop="page-top"`, `spacingBottom="default"`, and `fullBleed`, applies a background via `backgroundSrc`, supports optional `overlayTone` (default "dark") for a dark gradient overlay, and renders only a title and optional subtitle (no eyebrow). Light-only tokens, no CSS-var utilities.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`665e603`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/665e60384c8db224cd5a3ea41febe4b0141a137a) Thanks [@ovsw](https://github.com/ovsw)! - Hero components simplification (Stage 4): update Product Hero to match the image‑only design. Center a single product jar image over the shared “counter‑wall” background with a subtle overlay; remove split/grid expectations and avoid in‑hero text/CTAs. Improve alt fallback to `image.alt || stegaClean(product.name) || "Product image"`. Visual behavior remains the same; this removes unnecessary abstraction and aligns the hero with the provided design.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`665e603`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/665e60384c8db224cd5a3ea41febe4b0141a137a) Thanks [@ovsw](https://github.com/ovsw)! - Hero components simplification (Stage 5): remove the shared `HeroLayout` and sweep all usages. Recipe, Sauce, and Product heroes now use explicit, local section markup (overlay, split/grid, and image-only respectively) with backgrounds owned by the sections. No functional/UI changes intended; this eliminates an unnecessary abstraction and clarifies ownership.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`65256b0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/65256b0d1729b7f1444103844181fa61dad50135) Thanks [@ovsw](https://github.com/ovsw)! - Restore hover reveal and polish layouts across web UI:
+  - Reinstate hover-based content reveal in `ThreeProductPanelsBlock` with coordinated lift and CSS-only grid expand + opacity fade.
+  - Refine `FeatureCardGridLayout` columns and card spacing; adjust `ThreeProductPanelsBlock` padding and text sizes for responsiveness.
+  - Update Sauce hero and home slideshow to use the taller background image variant for visual consistency.
+  - Improve footer spacing, alignment, and social links responsiveness.
+  - Tweak `Button` styles in `@workspace/ui` for clearer hierarchy and consistency.
+
+  Commits: 0e1fb51, cbed15f, d1d6da6, 846bf73.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`de2141e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2141eee274c34fcd0e639ed2ae1015b8f6d9e7) Thanks [@ovsw](https://github.com/ovsw)! - Refine sauce hero content flow with tighter spacing, conditional text shadow, and explicit CTA variant control for a cleaner presentation.
+  Tweak sauce nutritional info spacing and related product layouts to reinforce brand hierarchy and legibility.
+  Align shared UI components by removing Eyebrow's built-in margin and giving secondary buttons a branded border treatment.
+
+  Commits: 6ac228e, e64d244.
+
+- Updated dependencies [[`65256b0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/65256b0d1729b7f1444103844181fa61dad50135), [`de2141e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2141eee274c34fcd0e639ed2ae1015b8f6d9e7)]:
+  - @workspace/ui@1.18.2
+
 ## 1.18.1
 
 ### Patch Changes
