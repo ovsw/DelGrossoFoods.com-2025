@@ -47,7 +47,11 @@ export function CTABlock({
   const hasSurfaceFrame = colorKey !== "none";
   const showOverlay = hasSurfaceFrame && Boolean(stegaClean(applySurfaceShine));
   const eyebrowVariant = surfaceStyle.isDark ? "onDark" : "onLight";
-  const headingColor = surfaceStyle.isDark ? "text-th-light-100" : undefined;
+  const headingColor = surfaceStyle.isDark
+    ? "text-th-light-100"
+    : colorKey === "none"
+      ? "text-brand-green"
+      : undefined;
   const richTextColor = surfaceStyle.isDark
     ? "text-th-light-100/90"
     : "text-muted-foreground";
