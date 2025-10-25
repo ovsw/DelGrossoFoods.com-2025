@@ -1,5 +1,24 @@
 # @workspace/ui
 
+## 1.18.2
+
+### Patch Changes
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`65256b0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/65256b0d1729b7f1444103844181fa61dad50135) Thanks [@ovsw](https://github.com/ovsw)! - Restore hover reveal and polish layouts across web UI:
+  - Reinstate hover-based content reveal in `ThreeProductPanelsBlock` with coordinated lift and CSS-only grid expand + opacity fade.
+  - Refine `FeatureCardGridLayout` columns and card spacing; adjust `ThreeProductPanelsBlock` padding and text sizes for responsiveness.
+  - Update Sauce hero and home slideshow to use the taller background image variant for visual consistency.
+  - Improve footer spacing, alignment, and social links responsiveness.
+  - Tweak `Button` styles in `@workspace/ui` for clearer hierarchy and consistency.
+
+  Commits: 0e1fb51, cbed15f, d1d6da6, 846bf73.
+
+- [#104](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/104) [`de2141e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2141eee274c34fcd0e639ed2ae1015b8f6d9e7) Thanks [@ovsw](https://github.com/ovsw)! - Refine sauce hero content flow with tighter spacing, conditional text shadow, and explicit CTA variant control for a cleaner presentation.
+  Tweak sauce nutritional info spacing and related product layouts to reinforce brand hierarchy and legibility.
+  Align shared UI components by removing Eyebrow's built-in margin and giving secondary buttons a branded border treatment.
+
+  Commits: 6ac228e, e64d244.
+
 ## 1.18.1
 
 ## 1.18.0
