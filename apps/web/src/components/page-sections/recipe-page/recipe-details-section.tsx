@@ -8,8 +8,9 @@ import {
   TabsTrigger,
 } from "@workspace/ui/components/tabs";
 import { cn } from "@workspace/ui/lib/utils";
-import * as React from "react";
+import { stegaClean } from "next-sanity";
 
+import { urlFor } from "@/lib/sanity/client";
 import type { RecipeDetailData } from "@/types";
 
 import {
@@ -23,6 +24,7 @@ import {
   VariantContent,
   type VariantKey,
 } from "./recipe-details";
+import { RecipeVideoClient } from "./recipe-video/recipe-video-client";
 
 export interface RecipeDetailsSectionProps {
   readonly recipe: RecipeDetailData;
@@ -60,6 +62,16 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
   const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
 
   // We intentionally preserve stega metadata in visible rich text below.
+  const video = recipe.video;
+  const playbackId = video?.playbackId ?? null;
+  const posterUrl =
+    playbackId && video?.posterImage?.id
+      ? urlFor(video.posterImage.id).width(1280).height(720).fit("crop").url()
+      : null;
+  const cleanTitle = stegaClean(recipe.name ?? "");
+  const ariaLabel = cleanTitle
+    ? `Watch recipe video: ${cleanTitle}`
+    : undefined;
 
   return (
     <Section spacingTop="default" spacingBottom="large">
@@ -71,8 +83,17 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
           className="grid grid-cols-1 gap-10 md:grid-cols-12"
           data-html="c-recipe-details-grid"
         >
-          {/* Left: Variant content */}
+          {/* Left: Video (if present) + Variant content */}
           <div className="order-2 md:order-1 md:col-span-7 lg:col-span-8">
+            {playbackId ? (
+              <RecipeVideoClient
+                playbackId={playbackId}
+                posterUrl={posterUrl}
+                metaTitle={cleanTitle}
+                ariaLabel={ariaLabel}
+                className="mb-8"
+              />
+            ) : null}
             {available.length > 1 ? (
               <Tabs
                 value={variant}
