@@ -957,6 +957,21 @@ export type Recipe = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  video?: {
+    asset: MuxVideo;
+    posterImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  };
   dgfIngredients: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -1499,6 +1514,95 @@ export type IconPicker = {
   svg?: string;
 };
 
+export type MuxVideo = {
+  _type: "mux.video";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "mux.videoAsset";
+  };
+};
+
+export type MuxVideoAsset = {
+  _id: string;
+  _type: "mux.videoAsset";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  status?: string;
+  assetId?: string;
+  playbackId?: string;
+  filename?: string;
+  thumbTime?: number;
+  data?: MuxAssetData;
+};
+
+export type MuxAssetData = {
+  _type: "mux.assetData";
+  resolution_tier?: string;
+  upload_id?: string;
+  created_at?: string;
+  id?: string;
+  status?: string;
+  max_stored_resolution?: string;
+  passthrough?: string;
+  encoding_tier?: string;
+  master_access?: string;
+  aspect_ratio?: string;
+  duration?: number;
+  max_stored_frame_rate?: number;
+  mp4_support?: string;
+  max_resolution_tier?: string;
+  tracks?: Array<
+    {
+      _key: string;
+    } & MuxTrack
+  >;
+  playback_ids?: Array<
+    {
+      _key: string;
+    } & MuxPlaybackId
+  >;
+  static_renditions?: MuxStaticRenditions;
+};
+
+export type MuxStaticRenditions = {
+  _type: "mux.staticRenditions";
+  status?: string;
+  files?: Array<
+    {
+      _key: string;
+    } & MuxStaticRenditionFile
+  >;
+};
+
+export type MuxStaticRenditionFile = {
+  _type: "mux.staticRenditionFile";
+  ext?: string;
+  name?: string;
+  width?: number;
+  bitrate?: number;
+  filesize?: number;
+  height?: number;
+};
+
+export type MuxPlaybackId = {
+  _type: "mux.playbackId";
+  id?: string;
+  policy?: string;
+};
+
+export type MuxTrack = {
+  _type: "mux.track";
+  id?: string;
+  type?: string;
+  max_width?: number;
+  max_frame_rate?: number;
+  duration?: number;
+  max_height?: number;
+};
+
 export type MediaTag = {
   _id: string;
   _type: "media.tag";
@@ -1675,6 +1779,13 @@ export type AllSanitySchemaTypes =
   | SanityAssistInstruction
   | SanityAssistSchemaTypeField
   | IconPicker
+  | MuxVideo
+  | MuxVideoAsset
+  | MuxAssetData
+  | MuxStaticRenditions
+  | MuxStaticRenditionFile
+  | MuxPlaybackId
+  | MuxTrack
   | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -4159,7 +4270,7 @@ export type GetAllRecipeCategoriesQueryResult = Array<{
   slug: Slug;
 }>;
 // Variable: getRecipeByIdQuery
-// Query: *[    _type == "recipe"    && _id == $id    && !(_id in path('drafts.**'))  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    dgfIngredients,    dgfDirections,    dgfNotes,    lfdIngredients,    lfdDirections,    lfdNotes,    dgfSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    },    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
+// Query: *[    _type == "recipe"    && _id == $id    && !(_id in path('drafts.**'))  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "video":   select(    defined(video.asset.asset._ref) => {      "playbackId": video.asset.asset->playbackId,      "assetId": video.asset.asset->assetId,      "status": video.asset.asset->status,      "thumbTime": video.asset.asset->thumbTime,      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),      "posterImage": video.posterImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt      }    }  ),    dgfIngredients,    dgfDirections,    dgfNotes,    lfdIngredients,    lfdDirections,    lfdNotes,    dgfSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    },    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
 export type GetRecipeByIdQueryResult = {
   _id: string;
   _type: "recipe";
@@ -4188,6 +4299,28 @@ export type GetRecipeByIdQueryResult = {
       right: number;
     } | null;
     alt: null;
+  };
+  video: {
+    playbackId: string | null;
+    assetId: string | null;
+    status: string | null;
+    thumbTime: number | null;
+    policy: string | "public";
+    posterImage: {
+      id: string | null;
+      preview: string | null;
+      hotspot: {
+        x: number;
+        y: number;
+      } | null;
+      crop: {
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
+      } | null;
+      alt: null;
+    } | null;
   };
   dgfIngredients: Array<{
     children?: Array<{
@@ -4341,7 +4474,7 @@ export type GetRecipeByIdQueryResult = {
   }> | null;
 } | null;
 // Variable: getRecipeBySlugQuery
-// Query: *[    _type == "recipe"    && slug.current in [$slug, $prefixedSlug]    && !(_id in path('drafts.**'))  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    dgfIngredients,    dgfDirections,    dgfNotes,    lfdIngredients,    lfdDirections,    lfdNotes,    dgfSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    },    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
+// Query: *[    _type == "recipe"    && slug.current in [$slug, $prefixedSlug]    && !(_id in path('drafts.**'))  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "video":   select(    defined(video.asset.asset._ref) => {      "playbackId": video.asset.asset->playbackId,      "assetId": video.asset.asset->assetId,      "status": video.asset.asset->status,      "thumbTime": video.asset.asset->thumbTime,      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),      "posterImage": video.posterImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt      }    }  ),    dgfIngredients,    dgfDirections,    dgfNotes,    lfdIngredients,    lfdDirections,    lfdNotes,    dgfSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    },    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
 export type GetRecipeBySlugQueryResult = {
   _id: string;
   _type: "recipe";
@@ -4370,6 +4503,28 @@ export type GetRecipeBySlugQueryResult = {
       right: number;
     } | null;
     alt: null;
+  };
+  video: {
+    playbackId: string | null;
+    assetId: string | null;
+    status: string | null;
+    thumbTime: number | null;
+    policy: string | "public";
+    posterImage: {
+      id: string | null;
+      preview: string | null;
+      hotspot: {
+        x: number;
+        y: number;
+      } | null;
+      crop: {
+        bottom: number;
+        left: number;
+        right: number;
+        top: number;
+      } | null;
+      alt: null;
+    } | null;
   };
   dgfIngredients: Array<{
     children?: Array<{
@@ -6328,8 +6483,8 @@ declare module "@sanity/client" {
     '\n  *[\n    _type == "recipe"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetRecipesBySauceIdQueryResult;
     '\n  *[\n    _type == "recipe"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceIds != null\n    && count($sauceIds) > 0\n    && count((coalesce(dgfSauces[]._ref, []) + coalesce(lfdSauces[]._ref, []))[@ in $sauceIds]) > 0\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "descriptionPlain": "",\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right }\n    },\n    // Compute unique product lines from both DGF and LFD sauces\n    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))\n  }\n': GetRecipesBySauceIdsQueryResult;
     '\n  *[_type == "recipeCategory"] | order(title asc){ _id, title, slug }\n': GetAllRecipeCategoriesQueryResult;
-    '\n  *[\n    _type == "recipe"\n    && _id == $id\n    && !(_id in path(\'drafts.**\'))\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    dgfIngredients,\n    dgfDirections,\n    dgfNotes,\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    dgfSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    },\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeByIdQueryResult;
-    '\n  *[\n    _type == "recipe"\n    && slug.current in [$slug, $prefixedSlug]\n    && !(_id in path(\'drafts.**\'))\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    dgfIngredients,\n    dgfDirections,\n    dgfNotes,\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    dgfSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    },\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeBySlugQueryResult;
+    '\n  *[\n    _type == "recipe"\n    && _id == $id\n    && !(_id in path(\'drafts.**\'))\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "video": \n  select(\n    defined(video.asset.asset._ref) => {\n      "playbackId": video.asset.asset->playbackId,\n      "assetId": video.asset.asset->assetId,\n      "status": video.asset.asset->status,\n      "thumbTime": video.asset.asset->thumbTime,\n      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),\n      "posterImage": video.posterImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n      }\n    }\n  )\n,\n    dgfIngredients,\n    dgfDirections,\n    dgfNotes,\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    dgfSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    },\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeByIdQueryResult;
+    '\n  *[\n    _type == "recipe"\n    && slug.current in [$slug, $prefixedSlug]\n    && !(_id in path(\'drafts.**\'))\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "video": \n  select(\n    defined(video.asset.asset._ref) => {\n      "playbackId": video.asset.asset->playbackId,\n      "assetId": video.asset.asset->assetId,\n      "status": video.asset.asset->status,\n      "thumbTime": video.asset.asset->thumbTime,\n      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),\n      "posterImage": video.posterImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n      }\n    }\n  )\n,\n    dgfIngredients,\n    dgfDirections,\n    dgfNotes,\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    dgfSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    },\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeBySlugQueryResult;
     '\n  *[_type == "productIndex"][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n': GetProductIndexPageQueryResult;
     '\n  *[_type == "product" && defined(slug.current) && !(_id in path(\'drafts.**\'))] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    // Unique sets of referenced sauce attributes for filtering/badges\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
     '\n  *[\n    _type == "product"\n    && defined(slug.current)\n    && !(_id in path(\'drafts.**\'))\n    && $sauceId != null\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    name,\n    "slug": slug.current,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetProductsBySauceIdQueryResult;
