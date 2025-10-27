@@ -107,5 +107,8 @@ export function applyFiltersAndSort(
   const afterTags = filterByTags(afterLine, state.tags);
   const afterMeats = filterByMeats(afterTags, state.meats);
   const afterCategory = filterByCategory(afterMeats, state.category);
-  return sortByName(afterCategory, state.sort);
+  const afterVideo = state.hasVideo
+    ? afterCategory.filter((it) => Boolean(it.hasVideo))
+    : afterCategory;
+  return sortByName(afterVideo, state.sort);
 }

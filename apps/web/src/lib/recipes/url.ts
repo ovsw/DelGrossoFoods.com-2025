@@ -33,6 +33,7 @@ export interface RecipeQueryState {
   readonly tags: RecipeTagSlug[];
   readonly meats: MeatSlug[];
   readonly category: string | "all";
+  readonly hasVideo: boolean;
   readonly sort: SortOrder;
 }
 
@@ -44,6 +45,7 @@ const DEFAULT_STATE: RecipeQueryState = {
   tags: [],
   meats: [],
   category: "all",
+  hasVideo: false,
   sort: "az",
 } as const;
 
@@ -75,23 +77,30 @@ export function parseSearchParams(
   const category =
     typeof params.category === "string" ? params.category : "all";
 
+  const hasVideoRaw = params.hasVideo;
+  const hasVideo =
+    typeof hasVideoRaw === "string"
+      ? hasVideoRaw === "1" || hasVideoRaw.toLowerCase() === "true"
+      : false;
+
   const sortRaw = typeof params.sort === "string" ? params.sort : undefined;
   const sort: SortOrder = sortRaw === "za" ? "za" : "az";
 
-  return { search, productLine, tags, meats, category, sort };
+  return { search, productLine, tags, meats, category, hasVideo, sort };
 }
 
 export function serializeStateToParams(
   state: RecipeQueryState,
 ): URLSearchParams {
   const sp = new URLSearchParams();
-  const { search, productLine, tags, meats, category, sort } = state;
+  const { search, productLine, tags, meats, category, hasVideo, sort } = state;
 
   if (search?.trim()) sp.set("search", search.trim());
   for (const l of productLine) sp.append("productLine", l);
   for (const t of tags) sp.append("tags", t);
   for (const m of meats) sp.append("meats", m);
   if (category && category !== "all") sp.set("category", category);
+  if (hasVideo) sp.set("hasVideo", "1");
   if (sort && sort !== "az") sp.set("sort", sort);
   return sp;
 }

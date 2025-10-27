@@ -628,6 +628,8 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     tags,
     meat,
     versions,
+    // Lightweight boolean for filter: whether a video asset exists
+    "hasVideo": defined(video.asset.asset._ref),
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
