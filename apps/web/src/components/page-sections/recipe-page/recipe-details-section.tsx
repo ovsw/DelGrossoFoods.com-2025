@@ -13,6 +13,10 @@ import { stegaClean } from "next-sanity";
 import { urlFor } from "@/lib/sanity/client";
 import type { RecipeDetailData } from "@/types";
 
+// Video poster dimensions constants
+const VIDEO_POSTER_WIDTH = 1280;
+const VIDEO_POSTER_HEIGHT = 720;
+
 import {
   BrandTabLabel,
   hasBlocks,
@@ -66,7 +70,11 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
   const playbackId = video?.playbackId ?? null;
   const posterUrl =
     playbackId && video?.posterImage?.id
-      ? urlFor(video.posterImage.id).width(1280).height(720).fit("crop").url()
+      ? urlFor(video.posterImage.id)
+          .width(VIDEO_POSTER_WIDTH)
+          .height(VIDEO_POSTER_HEIGHT)
+          .fit("crop")
+          .url()
       : null;
   const cleanTitle = stegaClean(recipe.name ?? "");
   const ariaLabel = cleanTitle
