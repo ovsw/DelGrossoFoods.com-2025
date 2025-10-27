@@ -1,5 +1,27 @@
 # web
 
+## 1.19.0
+
+### Minor Changes
+
+- [#106](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/106) [`6b6d192`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6b6d192d3e5e790364069e2feab31d05d823400a) Thanks [@ovsw](https://github.com/ovsw)! - Add Mux video support for recipes with filtering capabilities
+  - Integrate Mux Player for recipe video playback
+  - Add video field to recipe schema with poster image support
+  - Implement recipe video filtering in catalog view
+  - Create API route for Mux playback token signing
+  - Add Mux input plugin to Sanity studio configuration
+  - Update recipe queries to include video data
+  - Enhance RecipesClient with hasVideo filter option
+
+  🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+  Co-Authored-By: Claude <noreply@anthropic.com>
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.19.0
+
 ## 1.18.2
 
 ### Patch Changes
