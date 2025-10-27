@@ -219,11 +219,6 @@ export const recipeType = defineType({
           options: { hotspot: true },
         }),
       ],
-      validation: (Rule) =>
-        Rule.custom((value) => {
-          if (!value || !value.asset) return true;
-          return true;
-        }),
     }),
 
     defineField({
