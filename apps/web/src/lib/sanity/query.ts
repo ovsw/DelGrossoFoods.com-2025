@@ -22,6 +22,21 @@ const imageFragment = /* groq */ `
   }
 `;
 
+const recipeVideoFragment = /* groq */ `
+  select(
+    defined(video.asset.asset._ref) => {
+      "playbackId": video.asset.asset->playbackId,
+      "assetId": video.asset.asset->assetId,
+      "status": video.asset.asset->status,
+      "thumbTime": video.asset.asset->thumbTime,
+      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),
+      "posterImage": video.posterImage{
+        ${imageFields}
+      }
+    }
+  )
+`;
+
 const customLinkFragment = /* groq */ `
   ...customLink{
     openInNewTab,
@@ -613,6 +628,8 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     tags,
     meat,
     versions,
+    // Lightweight boolean for filter: whether a video asset exists
+    "hasVideo": defined(video.asset.asset._ref),
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
@@ -707,6 +724,7 @@ export const getRecipeByIdQuery = defineQuery(`
       "crop": mainImage.crop{ top, bottom, left, right },
       "alt": mainImage.alt
     },
+    "video": ${recipeVideoFragment},
     dgfIngredients,
     dgfDirections,
     dgfNotes,
@@ -758,6 +776,7 @@ export const getRecipeBySlugQuery = defineQuery(`
       "crop": mainImage.crop{ top, bottom, left, right },
       "alt": mainImage.alt
     },
+    "video": ${recipeVideoFragment},
     dgfIngredients,
     dgfDirections,
     dgfNotes,

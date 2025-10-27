@@ -6,6 +6,7 @@ import { structureTool } from "sanity/structure";
 import { unsplashImageAsset } from "sanity-plugin-asset-source-unsplash";
 import { iconPicker } from "sanity-plugin-icon-picker";
 import { media } from "sanity-plugin-media";
+import { muxInput } from "sanity-plugin-mux-input";
 
 import { Logo } from "./components/logo";
 import { locations } from "./location";
@@ -43,9 +44,11 @@ export default defineConfig({
     visionTool(),
     unsplashImageAsset(),
     media(),
+    muxInput({
+      mp4_support: "standard",
+    }),
     iconPicker(),
     assist(),
-    unsplashImageAsset(),
   ],
   document: {
     newDocumentOptions: (prev, { creationContext }) => {
