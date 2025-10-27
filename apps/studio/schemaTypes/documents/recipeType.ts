@@ -189,6 +189,37 @@ export const recipeType = defineType({
       options: { hotspot: true },
       group: "media",
     }),
+    defineField({
+      name: "video",
+      title: "Recipe Video",
+      type: "object",
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      group: "media",
+      fields: [
+        defineField({
+          name: "asset",
+          title: "Mux Video",
+          description:
+            "Upload the recipe video. Signed playback is enabled, so use the Mux input to manage the asset.",
+          type: "mux.video",
+          validation: (Rule) =>
+            Rule.required().error(
+              "A recipe video is required when this section is enabled.",
+            ),
+        }),
+        defineField({
+          name: "posterImage",
+          title: "Poster Image",
+          description:
+            "Optional poster image shown before playback. Defaults to the Mux thumbnail if left empty.",
+          type: "image",
+          options: { hotspot: true },
+        }),
+      ],
+    }),
 
     defineField({
       name: "dgfIngredients",

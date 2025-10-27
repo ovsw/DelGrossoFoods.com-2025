@@ -43,6 +43,8 @@ type FiltersFormProps = {
   toggleMeat: (m: MeatSlug) => void;
   category: string | "all";
   setCategory: (category: string | "all") => void;
+  hasVideo: boolean;
+  setHasVideo: (v: boolean) => void;
   clearProductLine: () => void;
   clearTags: () => void;
   clearMeats: () => void;
@@ -62,6 +64,8 @@ function FiltersForm({
   toggleMeat,
   category,
   setCategory,
+  hasVideo,
+  setHasVideo,
   clearProductLine,
   clearTags,
   clearMeats,
@@ -80,6 +84,29 @@ function FiltersForm({
         ariaLabel="Search recipes"
         visuallyHideLabel
       />
+
+      <div className="my-4 border-b border-input" />
+
+      <FilterGroupSection
+        title="Video"
+        showClear={hasVideo}
+        onClear={() => setHasVideo(false)}
+        contentClassName=""
+      >
+        <CheckboxList
+          items={[
+            {
+              id: `${idPrefix}-has-video`,
+              label: "Has video",
+              checked: hasVideo,
+              ariaLabel: "Has video",
+            },
+          ]}
+          onToggle={(id, checked) => {
+            if (id === `${idPrefix}-has-video`) setHasVideo(checked);
+          }}
+        />
+      </FilterGroupSection>
 
       <div className="my-4 border-b border-input" />
 
@@ -217,6 +244,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
   const [category, setCategory] = useState<string | "all">(
     initialState.category,
   );
+  const [hasVideo, setHasVideo] = useState<boolean>(initialState.hasVideo);
   const [sort, setSort] = useState<SortOrder>(initialState.sort);
 
   const applyingPopStateRef = useRef(false);
@@ -239,6 +267,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         setTags([...next.tags]);
         setMeats([...next.meats]);
         setCategory(next.category);
+        setHasVideo(next.hasVideo);
         setSort(next.sort);
       } finally {
         setTimeout(() => {
@@ -258,9 +287,10 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       tags,
       meats,
       category,
+      hasVideo,
       sort,
     }),
-    [debouncedSearch, productLine, tags, meats, category, sort],
+    [debouncedSearch, productLine, tags, meats, category, hasVideo, sort],
   );
 
   useUrlStateSync({
@@ -287,7 +317,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     productLine.length > 0 ||
     tags.length > 0 ||
     meats.length > 0 ||
-    category !== "all";
+    category !== "all" ||
+    hasVideo;
 
   // Key to trigger shared layout scroll behavior
   const resultsAnchorId = "recipes-results-top";
@@ -297,6 +328,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     tags,
     meats,
     category,
+    hasVideo,
     sort,
   });
 
@@ -306,6 +338,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     setTags([]);
     setMeats([]);
     setCategory("all");
+    setHasVideo(false);
     setSort("az");
   }
   const clearProductLine = () => setProductLine([]);
@@ -346,6 +379,8 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           toggleMeat={toggleMeat}
           category={category}
           setCategory={setCategory}
+          hasVideo={hasVideo}
+          setHasVideo={setHasVideo}
           clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}
@@ -376,6 +411,16 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           variant: "meat" as const,
           onRemove: () => toggleMeat(slug),
         })),
+        ...(hasVideo
+          ? [
+              {
+                key: "has-video",
+                text: "Has video",
+                variant: "neutral" as const,
+                onRemove: () => setHasVideo(false),
+              },
+            ]
+          : []),
       ]}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
