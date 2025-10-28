@@ -12,8 +12,8 @@ import { CTABlock } from "./blocks/cta-block";
 import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
 import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
+import { FeaturedRecipesBlock } from "./blocks/featured-recipes";
 import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
-import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
 import { LongFormBlock } from "./blocks/long-form-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
 import { ThreeProductPanelsBlock } from "./blocks/three-product-panels-block";
@@ -47,11 +47,11 @@ const BLOCK_COMPONENTS = {
   feature: FeatureBlock,
   featureCardsIcon: FeatureCardsWithIconBlock,
   subscribeNewsletter: SubscribeNewsletterBlock,
-  imageLinkCards: ImageLinkCardsBlock,
   threeProductPanels: ThreeProductPanelsBlock,
   homeSlideshow: HomeSlideshowBlock,
+  featuredRecipes: FeaturedRecipesBlock,
   longForm: LongFormBlock,
-} satisfies BlockComponentMap;
+};
 
 /**
  * Helper function to create consistent Sanity data attributes
@@ -194,14 +194,7 @@ function useBlockRenderer(id: string, type: string) {
             </div>
           );
         }
-        case "imageLinkCards": {
-          const Component = BLOCK_COMPONENTS.imageLinkCards;
-          return (
-            <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
-            </div>
-          );
-        }
+
         case "threeProductPanels": {
           const Component = BLOCK_COMPONENTS.threeProductPanels;
           return (
@@ -225,6 +218,14 @@ function useBlockRenderer(id: string, type: string) {
                 sanityDocumentId={id}
                 sanityDocumentType={type}
               />
+            </div>
+          );
+        }
+        case "featuredRecipes": {
+          const Component = BLOCK_COMPONENTS.featuredRecipes;
+          return (
+            <div key={`featuredRecipes-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );
         }

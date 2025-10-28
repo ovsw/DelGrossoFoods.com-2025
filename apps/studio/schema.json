@@ -1476,6 +1476,74 @@
     }
   },
   {
+    "name": "featuredRecipes",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "featuredRecipes"
+          }
+        },
+        "recipes": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "object",
+              "attributes": {
+                "_ref": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "_type": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string",
+                    "value": "reference"
+                  }
+                },
+                "_weak": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "boolean"
+                  },
+                  "optional": true
+                }
+              },
+              "dereferencesTo": "recipe",
+              "rest": {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "optional": false
+        },
+        "spacing": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "sectionSpacing"
+          },
+          "optional": false
+        }
+      }
+    }
+  },
+  {
     "name": "imageLinkCards",
     "type": "type",
     "value": {
@@ -3731,21 +3799,6 @@
             },
             "rest": {
               "type": "inline",
-              "name": "featureCardsIcon"
-            }
-          },
-          {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
               "name": "faqAccordion"
             }
           },
@@ -3761,7 +3814,7 @@
             },
             "rest": {
               "type": "inline",
-              "name": "imageLinkCards"
+              "name": "featuredRecipes"
             }
           },
           {
@@ -3878,21 +3931,6 @@
             },
             "rest": {
               "type": "inline",
-              "name": "featureCardsIcon"
-            }
-          },
-          {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
               "name": "faqAccordion"
             }
           },
@@ -3908,7 +3946,7 @@
             },
             "rest": {
               "type": "inline",
-              "name": "imageLinkCards"
+              "name": "featuredRecipes"
             }
           },
           {

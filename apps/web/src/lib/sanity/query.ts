@@ -275,6 +275,32 @@ const threeProductPanelsBlock = /* groq */ `
   }
 `;
 
+// Featured Recipes block
+const featuredRecipesBlock = /* groq */ `
+  _type == "featuredRecipes" => {
+    ...,
+    "recipes": array::compact(recipes[0...3]->{
+      _id,
+      name,
+      "slug": slug.current,
+      tags,
+      meat,
+      versions,
+      // Lightweight boolean for filter/UI parity with list items
+      "hasVideo": defined(video.asset.asset._ref),
+      "categories": array::compact(categories[]->{ _id, title, slug }),
+      "descriptionPlain": "",
+      "mainImage": {
+        "id": coalesce(mainImage.asset._ref, ""),
+        "preview": mainImage.asset->metadata.lqip,
+        "hotspot": mainImage.hotspot{ x, y },
+        "crop": mainImage.crop{ top, bottom, left, right }
+      },
+      "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
+    })
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
@@ -287,6 +313,8 @@ const pageBuilderFragment = /* groq */ `
     ${subscribeNewsletterBlock},
     ${imageLinkCardsBlock},
     ${threeProductPanelsBlock},
+    ${/* Featured Recipes block */ ""}
+    ${featuredRecipesBlock},
     ${longFormBlock},
     ${homeSlideshowBlock}
   }

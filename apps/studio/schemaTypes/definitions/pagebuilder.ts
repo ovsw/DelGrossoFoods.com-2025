@@ -2,9 +2,18 @@ import { defineArrayMember, defineType } from "sanity";
 
 import { homePageBuilderBlocks, pageBuilderBlocks } from "../blocks";
 
-export const pagebuilderBlockTypes = pageBuilderBlocks.map(({ name }) => ({
-  type: name,
-}));
+// Disable specific blocks from CMS selection
+const DISABLED_BLOCKS = new Set(["imageLinkCards", "featureCardsIcon"]);
+
+const filteredPageBuilderBlocks = pageBuilderBlocks.filter(
+  ({ name }) => !DISABLED_BLOCKS.has(name),
+);
+
+export const pagebuilderBlockTypes = filteredPageBuilderBlocks.map(
+  ({ name }) => ({
+    type: name,
+  }),
+);
 
 export const pageBuilder = defineType({
   name: "pageBuilder",
@@ -12,7 +21,12 @@ export const pageBuilder = defineType({
   of: pagebuilderBlockTypes.map((block) => defineArrayMember(block)),
 });
 
-const homePageBlockTypes = homePageBuilderBlocks.map(({ name }) => ({
+// Also filter for home page builder
+const filteredHomePageBuilderBlocks = homePageBuilderBlocks.filter(
+  ({ name }) => !DISABLED_BLOCKS.has(name),
+);
+
+const homePageBlockTypes = filteredHomePageBuilderBlocks.map(({ name }) => ({
   type: name,
 }));
 
