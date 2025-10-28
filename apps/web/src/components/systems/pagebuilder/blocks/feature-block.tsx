@@ -106,9 +106,7 @@ export function FeatureBlock({
                 </h2>
               )}
               {richText && (
-                <div className="prose prose-invert max-w-none text-brand-green-text/90">
-                  <RichText richText={richText} />
-                </div>
+                <RichText richText={richText} invert className="max-w-none" />
               )}
               {buttons && (
                 <div className="flex flex-wrap gap-4 pt-4">

@@ -84,14 +84,17 @@ const components: Partial<PortableTextReactComponents> = {
 export function RichText<T>({
   richText,
   className,
+  invert,
 }: {
   richText?: T | null;
   className?: string;
+  /** Render with inverted typography colors for dark surfaces */
+  invert?: boolean;
 }) {
   if (!richText) return null;
 
   return (
-    <Prose className={className}>
+    <Prose className={className} invert={invert}>
       <PortableText
         // The next-sanity PortableText expects PortableTextBlock[] by default.
         // Our generated GROQ types allow some fields to be optional/null, which
