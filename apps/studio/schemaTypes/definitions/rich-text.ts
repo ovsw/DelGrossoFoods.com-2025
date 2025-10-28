@@ -70,7 +70,12 @@ type Type = NonNullable<(typeof memberTypes)[number]>;
 
 export const customRichText = (
   type: Type[],
-  options?: { name?: string; title?: string; group?: string },
+  options?: {
+    name?: string;
+    title?: string;
+    group?: string;
+    description?: string;
+  },
 ) => {
   const { name } = options ?? {};
   const customMembers = richTextMembers.filter(

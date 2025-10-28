@@ -4,6 +4,7 @@ import { feature } from "./feature";
 import { featureCardsIcon } from "./feature-cards-icon";
 import { homeSlideshow } from "./home-slideshow";
 import { imageLinkCards } from "./image-link-cards";
+import { longForm } from "./long-form";
 import { subscribeNewsletter } from "./subscribe-newsletter";
 import { threeProductPanels } from "./three-product-panels";
 
@@ -14,6 +15,7 @@ const sharedBlocks = [
   faqAccordion,
   imageLinkCards,
   subscribeNewsletter,
+  longForm,
   threeProductPanels,
 ];
 
