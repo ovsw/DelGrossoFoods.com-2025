@@ -52,9 +52,8 @@ export function CTABlock({
     : colorKey === "none"
       ? "text-brand-green"
       : undefined;
-  const richTextColor = surfaceStyle.isDark
-    ? "text-th-light-100/90"
-    : "text-muted-foreground";
+  // Rich text renders via Typography plugin. On dark surfaces, use inverted colors
+  // directly via the RichText component; on light surfaces default colors apply.
   const buttonSurface = surfaceStyle.isDark ? "onDark" : undefined;
 
   return (
@@ -83,9 +82,11 @@ export function CTABlock({
             >
               {title}
             </h2>
-            <div className={cn("text-lg", richTextColor)}>
-              <RichText richText={richText} className="text-balance" />
-            </div>
+            <RichText
+              richText={richText}
+              invert={surfaceStyle.isDark}
+              className={cn("prose-lg text-balance")}
+            />
             <div className="flex justify-center">
               <SanityButtons
                 buttons={buttons}
