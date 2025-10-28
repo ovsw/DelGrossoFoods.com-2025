@@ -8,10 +8,12 @@ import { handleErrors } from "@/utils";
 
 interface SauceRelatedRecipesSectionProps {
   readonly sauceId: string | undefined;
+  readonly sauceName?: string | null;
 }
 
 export async function SauceRelatedRecipesSection({
   sauceId,
+  sauceName,
 }: SauceRelatedRecipesSectionProps): Promise<JSX.Element | null> {
   if (!sauceId) return null;
 
@@ -23,14 +25,21 @@ export async function SauceRelatedRecipesSection({
   );
   const items = (result?.data ?? []) as RecipeListItem[];
   if (!items || items.length === 0) return null;
+  const hasMultipleItems = items.length > 1;
+  const heading =
+    hasMultipleItems && sauceName
+      ? `${sauceName} Recipes`
+      : hasMultipleItems
+        ? "Recipes for this sauce"
+        : undefined;
 
   return (
     <RelatedRecipesLayout
       items={items}
-      title={items.length > 1 ? "Related recipes" : undefined}
-      eyebrow={items.length > 1 ? "Recipe ideas" : undefined}
+      title={heading}
+      eyebrow={hasMultipleItems ? "Recipe ideas" : undefined}
       description={
-        items.length > 1 ? "Try these recipes featuring this sauce." : undefined
+        hasMultipleItems ? "Try these recipes featuring this sauce." : undefined
       }
       variant={items.length === 1 ? "single-item-prominent" : "default"}
     />

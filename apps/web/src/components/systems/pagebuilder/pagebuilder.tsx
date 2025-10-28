@@ -14,6 +14,7 @@ import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
 import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
+import { LongFormBlock } from "./blocks/long-form-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
 import { ThreeProductPanelsBlock } from "./blocks/three-product-panels-block";
 import type { PageBuilderBlockProps } from "./types";
@@ -49,6 +50,7 @@ const BLOCK_COMPONENTS = {
   imageLinkCards: ImageLinkCardsBlock,
   threeProductPanels: ThreeProductPanelsBlock,
   homeSlideshow: HomeSlideshowBlock,
+  longForm: LongFormBlock,
 } satisfies BlockComponentMap;
 
 /**
@@ -140,6 +142,14 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.cta;
           return (
             <div key={`cta-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "longForm": {
+          const Component = BLOCK_COMPONENTS.longForm;
+          return (
+            <div key={`longForm-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );

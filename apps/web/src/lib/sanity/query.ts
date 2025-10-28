@@ -147,6 +147,30 @@ const featureBlock = /* groq */ `
   }
 `;
 
+const longFormBlock = /* groq */ `
+  _type == "longForm" => {
+    ...,
+    "intro": intro[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      }
+    },
+    "body": body[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    }
+  }
+`;
+
 const homeSlideshowBlock = /* groq */ `
   _type == "homeSlideshow" => {
     ...,
@@ -263,6 +287,7 @@ const pageBuilderFragment = /* groq */ `
     ${subscribeNewsletterBlock},
     ${imageLinkCardsBlock},
     ${threeProductPanelsBlock},
+    ${longFormBlock},
     ${homeSlideshowBlock}
   }
 `;
