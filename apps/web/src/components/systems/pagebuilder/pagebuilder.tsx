@@ -110,8 +110,28 @@ function useOptimisticPageBuilder(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (action.document as any).pageBuilder
       ) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (action.document as any).pageBuilder;
+        const nextBlocks = Array.isArray(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (action.document as any).pageBuilder,
+        )
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ((action.document as any).pageBuilder as PageBuilderBlock[])
+          : undefined;
+
+        if (!nextBlocks) {
+          return currentBlocks;
+        }
+
+        return nextBlocks.map((block) => {
+          const key = block?._key;
+          if (!key) {
+            return block;
+          }
+          const existing = currentBlocks.find(
+            (currentBlock) => currentBlock?._key === key,
+          );
+          return existing ?? block;
+        });
       }
       return currentBlocks;
     },
