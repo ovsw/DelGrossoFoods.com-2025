@@ -68,7 +68,7 @@ export const productType = defineType({
             if (!sku) return true; // Allow empty values
 
             const { document, getClient } = context;
-            const client = getClient({ apiVersion: "2025-05-08" });
+            const client = getClient({ apiVersion: "2025-02-19" });
             const id = document?._id.replace(/^drafts\./, "");
 
             // Query for any other documents with the same SKU, including their name

@@ -31,7 +31,7 @@ interface Doc {
   slug?: { current?: string };
 }
 
-const apiVersion = "2025-05-08";
+const apiVersion = "2025-02-19";
 
 function parseArgs(argv: string[]) {
   const args = new Set(argv);
@@ -143,7 +143,7 @@ async function backfill() {
   );
 
   // Only fetch published docs to avoid duplicates; we'll patch draft too if it exists.
-  const query = `*[_type in $types && !(_id in path("drafts.**"))]{_id,_type,name,title,slug}`;
+  const query = `*[_type in $types && !(_id match "drafts.*")]{_id,_type,name,title,slug}`;
   let docs = (await client.fetch(query, { types })) as Doc[];
 
   // Filter docs needing attention
