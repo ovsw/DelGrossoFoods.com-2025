@@ -546,7 +546,7 @@ export const getSauceIndexPageQuery = defineQuery(`
 `);
 
 export const getAllSaucesForIndexQuery = defineQuery(`
-  *[_type == "sauce" && !(_id in path('drafts.**'))] | order(name asc){
+  *[_type == "sauce"] | order(name asc){
     _id,
     _type,
     name,
@@ -569,7 +569,6 @@ export const getSaucesByIdsQuery = defineQuery(`
     _type == "sauce"
     && _id in $sauceIds
     && defined(slug.current)
-    && !(_id in path('drafts.**'))
   ] | order(name asc){
     _id,
     _type,
@@ -646,7 +645,7 @@ export const getRecipeIndexPageQuery = defineQuery(`
 `);
 
 export const getAllRecipesForIndexQuery = defineQuery(`
-  *[_type == "recipe" && !(_id in path('drafts.**'))] | order(name asc){
+  *[_type == "recipe"] | order(name asc){
     _id,
     name,
     "slug": slug.current,
@@ -672,7 +671,6 @@ export const getRecipesBySauceIdQuery = defineQuery(`
   *[
     _type == "recipe"
     && defined(slug.current)
-    && !(_id in path('drafts.**'))
     && $sauceId != null
     && references($sauceId)
   ] | order(name asc){
@@ -699,7 +697,6 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
   *[
     _type == "recipe"
     && defined(slug.current)
-    && !(_id in path('drafts.**'))
     && $sauceIds != null
     && count($sauceIds) > 0
     && count((coalesce(dgfSauces[]._ref, []) + coalesce(lfdSauces[]._ref, []))[@ in $sauceIds]) > 0
@@ -731,7 +728,6 @@ export const getRecipeByIdQuery = defineQuery(`
   *[
     _type == "recipe"
     && _id == $id
-    && !(_id in path('drafts.**'))
   ][0]{
     _id,
     _type,
@@ -783,7 +779,6 @@ export const getRecipeBySlugQuery = defineQuery(`
   *[
     _type == "recipe"
     && slug.current in [$slug, $prefixedSlug]
-    && !(_id in path('drafts.**'))
   ][0]{
     _id,
     _type,
@@ -852,7 +847,7 @@ export const getProductIndexPageQuery = defineQuery(`
 `);
 
 export const getAllProductsForIndexQuery = defineQuery(`
-  *[_type == "product" && defined(slug.current) && !(_id in path('drafts.**'))] | order(name asc){
+  *[_type == "product" && defined(slug.current)] | order(name asc){
     _id,
     name,
     "slug": slug.current,
@@ -876,7 +871,6 @@ export const getProductsBySauceIdQuery = defineQuery(`
   *[
     _type == "product"
     && defined(slug.current)
-    && !(_id in path('drafts.**'))
     && $sauceId != null
     && references($sauceId)
   ] | order(name asc){

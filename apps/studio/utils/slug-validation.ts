@@ -265,7 +265,7 @@ export function createUniqueSlugRule() {
     if (!current) return true; // Let required/format validators handle empties
 
     const { document, getClient } = context;
-    const client = getClient({ apiVersion: "2025-02-10" });
+    const client = getClient({ apiVersion: "2025-02-19" });
     const id = (document?._id ?? "").replace(/^drafts\./, "");
 
     const query = `*[
