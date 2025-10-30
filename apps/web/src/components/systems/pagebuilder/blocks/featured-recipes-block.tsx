@@ -81,7 +81,7 @@ export function FeaturedRecipesBlock({
           ) : null}
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-3">
           {recipes.map((recipe) => {
             if (!recipe?._id) {
               return null;
@@ -172,11 +172,11 @@ export function FeaturedRecipesBlock({
                 ) : null}
 
                 <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-th-dark-900/60 via-th-dark-900/30 to-th-dark-900/0"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-green/80 via-brand-green/40 to-brand-green/0"
                   aria-hidden="true"
                 />
                 <div
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-th-dark-900/90 via-th-dark-900/70 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-green/95 via-brand-green/80 to-transparent"
                   aria-hidden="true"
                 />
 
