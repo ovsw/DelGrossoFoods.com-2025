@@ -8,7 +8,7 @@ export const longForm = defineType({
   name: "longForm",
   title: "Long Form Content",
   description:
-    "Use for legal pages or other long-form articles that need headings, paragraphs, lists, and images.",
+    "Use for legal pages or other long-form articles that need headings, paragraphs, and lists.",
   type: "object",
   icon: ScrollText,
   fields: [
@@ -33,12 +33,12 @@ export const longForm = defineType({
       description:
         "Optional short lead paragraph that appears between the heading and the main body content.",
     }),
-    defineField({
+    // To re-enable image support, use: customRichText(["block", "image"], { ... })
+    customRichText(["block"], {
       name: "body",
       title: "Body Content",
       description:
-        "The main rich text content. Supports headings, lists, block quotes, and embedded images.",
-      type: "richText",
+        "The main rich text content. Supports headings, lists, and paragraphs.",
       validation: (Rule) => Rule.required().min(1),
     }),
     sectionSpacingField,
