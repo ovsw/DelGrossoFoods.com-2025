@@ -147,6 +147,79 @@ const featureBlock = /* groq */ `
   }
 `;
 
+const featuredRecipesBlock = /* groq */ `
+  _type == "featuredRecipes" => {
+    ...,
+    "recipes": array::compact(recipes[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      versions,
+      meat,
+      tags,
+      "dgfSauces": array::compact(dgfSauces[]->{
+        _id,
+        name,
+        "mainImage": select(
+          defined(mainImage.asset._ref) => {
+            "id": mainImage.asset._ref,
+            "preview": mainImage.asset->metadata.lqip,
+            "hotspot": mainImage.hotspot{
+              x,
+              y
+            },
+            "crop": mainImage.crop{
+              bottom,
+              left,
+              right,
+              top
+            },
+            "alt": mainImage.alt
+          }
+        )
+      }),
+      "lfdSauces": array::compact(lfdSauces[]->{
+        _id,
+        name,
+        "mainImage": select(
+          defined(mainImage.asset._ref) => {
+            "id": mainImage.asset._ref,
+            "preview": mainImage.asset->metadata.lqip,
+            "hotspot": mainImage.hotspot{
+              x,
+              y
+            },
+            "crop": mainImage.crop{
+              bottom,
+              left,
+              right,
+              top
+            },
+            "alt": mainImage.alt
+          }
+        )
+      }),
+      "mainImage": select(
+        defined(mainImage.asset._ref) => {
+          "id": mainImage.asset._ref,
+          "preview": mainImage.asset->metadata.lqip,
+          "hotspot": mainImage.hotspot{
+            x,
+            y
+          },
+          "crop": mainImage.crop{
+            bottom,
+            left,
+            right,
+            top
+          },
+          "alt": mainImage.alt
+        }
+      )
+    })
+  }
+`;
+
 const longFormBlock = /* groq */ `
   _type == "longForm" => {
     ...,
@@ -282,6 +355,7 @@ const pageBuilderFragment = /* groq */ `
     _type,
     ${ctaBlock},
     ${featureBlock},
+    ${featuredRecipesBlock},
     ${faqAccordionBlock},
     ${featureCardsIconBlock},
     ${subscribeNewsletterBlock},
