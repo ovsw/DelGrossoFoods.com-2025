@@ -12,6 +12,7 @@ import { CTABlock } from "./blocks/cta-block";
 import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
 import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
+import { FeaturedRecipesBlock } from "./blocks/featured-recipes-block";
 import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
 import { LongFormBlock } from "./blocks/long-form-block";
@@ -45,6 +46,7 @@ const BLOCK_COMPONENTS = {
   cta: CTABlock,
   faqAccordion: FaqAccordionBlock,
   feature: FeatureBlock,
+  featuredRecipes: FeaturedRecipesBlock,
   featureCardsIcon: FeatureCardsWithIconBlock,
   subscribeNewsletter: SubscribeNewsletterBlock,
   imageLinkCards: ImageLinkCardsBlock,
@@ -218,6 +220,14 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.imageLinkCards;
           return (
             <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "featuredRecipes": {
+          const Component = BLOCK_COMPONENTS.featuredRecipes;
+          return (
+            <div key={`featuredRecipes-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );
