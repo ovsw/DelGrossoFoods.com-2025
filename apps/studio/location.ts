@@ -146,6 +146,22 @@ export const locations = {
       };
     },
   }),
+  contactPage: defineLocations({
+    select: {
+      title: "title",
+      slug: "slug.current",
+    },
+    resolve: (doc) => {
+      return {
+        locations: [
+          {
+            title: doc?.title || "Contact",
+            href: `${doc?.slug || "/contact"}`,
+          },
+        ],
+      };
+    },
+  }),
   // Index page resolvers
   sauceIndex: defineLocations({
     select: {
