@@ -5418,6 +5418,13 @@
         },
         "optional": true
       },
+      "corporateWebsiteUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "socialLinks": {
         "type": "objectAttribute",
         "value": {

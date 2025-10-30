@@ -1067,6 +1067,14 @@ export const getContactPageQuery = defineQuery(`
     title,
     description,
     "slug": slug.current,
+    "siteSettings": *[_type == "settings"][0]{
+      _id,
+      addressLines,
+      contactEmail,
+      tollFreePhone,
+      officePhone,
+      corporateWebsiteUrl
+    },
     ${pageBuilderFragment}
   }
 `);

@@ -98,6 +98,20 @@ export const settings = defineType({
       description: "Primary contact email address for your website",
       validation: (rule) => rule.email(),
     }),
+    defineField({
+      name: "corporateWebsiteUrl",
+      type: "url",
+      title: "Corporate Website URL",
+      description:
+        "Link to the corporate site displayed on the contact page (e.g., https://www.delgrossos.com).",
+      validation: (rule) =>
+        rule
+          .uri({
+            allowRelative: false,
+            scheme: ["http", "https"],
+          })
+          .warning("Enter a full URL starting with http:// or https://."),
+    }),
     socialLinks,
   ],
   preview: {
