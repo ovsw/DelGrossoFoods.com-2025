@@ -1,51 +1,63 @@
 import { EarthGlobeIcon } from "@sanity/icons";
 import { useToast } from "@sanity/ui";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import {
+  defineDocumentFieldAction,
   definePlugin,
-  type DocumentActionComponent,
+  type DocumentFieldAction,
+  type DocumentFieldActionProps,
   useGetFormValue,
 } from "sanity";
+import { PresentationContext } from "sanity/_singletons";
 import { useRouter } from "sanity/router";
+
+const ACTION_NAME = "open-in-presentation";
+
+const openInPresentationFieldAction = defineDocumentFieldAction({
+  name: ACTION_NAME,
+  useAction: (props: DocumentFieldActionProps) => {
+    const presentation = useContext(PresentationContext);
+    const getFormValue = useGetFormValue();
+    const router = useRouter();
+    const toast = useToast();
+
+    const handlePresentationOpen = useCallback(() => {
+      const slug = getFormValue(["slug", "current"]);
+      if (typeof slug !== "string" || !slug) {
+        toast.push({
+          title: "No slug found",
+          status: "error",
+          description:
+            "Please ensure the document has a valid slug before opening presentation.",
+        });
+        return;
+      }
+
+      router.navigateUrl({
+        path: `/presentation?preview=${encodeURIComponent(slug)}`,
+      });
+    }, [getFormValue, router, toast]);
+
+    return {
+      type: "action" as const,
+      icon: EarthGlobeIcon,
+      title: "Open in Presentation",
+      onAction: handlePresentationOpen,
+      hidden: Boolean(presentation) || props.path.length > 0,
+      renderAsButton: true,
+      disabled: props.documentId === "root",
+    };
+  },
+});
 
 export const presentationUrl = definePlugin(() => {
   return {
     name: "presentationUrl",
     document: {
-      // Use stable document actions API instead of unstable_fieldActions
-      actions: (prev) => {
-        const OpenInPresentationAction: DocumentActionComponent = (props) => {
-          const getFormValue = useGetFormValue();
-          const router = useRouter();
-          const toast = useToast();
-
-          const handle = useCallback(() => {
-            const slug = getFormValue(["slug", "current"]);
-            if (typeof slug !== "string" || !slug) {
-              toast.push({
-                title: "No slug found",
-                status: "error",
-                description: "Please ensure the document has a valid slug",
-              });
-              props.onComplete?.();
-              return;
-            }
-            router.navigateUrl({
-              path: `/presentation?preview=${encodeURIComponent(slug)}`,
-            });
-            // Complete the action to close popovers if any
-            props.onComplete?.();
-          }, [getFormValue, router, toast, props]);
-
-          return {
-            label: "Open in Presentation",
-            icon: EarthGlobeIcon,
-            onHandle: handle,
-            disabled: props?.id === "root",
-          };
-        };
-
-        return [OpenInPresentationAction, ...prev];
+      unstable_fieldActions: (
+        previous: DocumentFieldAction[],
+      ): DocumentFieldAction[] => {
+        return [openInPresentationFieldAction, ...previous];
       },
     },
   };
