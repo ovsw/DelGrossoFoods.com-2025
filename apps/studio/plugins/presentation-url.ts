@@ -27,6 +27,7 @@ export const presentationUrl = definePlugin(() => {
                 status: "error",
                 description: "Please ensure the document has a valid slug",
               });
+              props.onComplete?.();
               return;
             }
             router.navigateUrl({
