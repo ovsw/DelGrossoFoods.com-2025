@@ -12,8 +12,10 @@ import { CTABlock } from "./blocks/cta-block";
 import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
 import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
+import { FeaturedRecipesBlock } from "./blocks/featured-recipes-block";
 import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
+import { LongFormBlock } from "./blocks/long-form-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
 import { ThreeProductPanelsBlock } from "./blocks/three-product-panels-block";
 import type { PageBuilderBlockProps } from "./types";
@@ -44,11 +46,13 @@ const BLOCK_COMPONENTS = {
   cta: CTABlock,
   faqAccordion: FaqAccordionBlock,
   feature: FeatureBlock,
+  featuredRecipes: FeaturedRecipesBlock,
   featureCardsIcon: FeatureCardsWithIconBlock,
   subscribeNewsletter: SubscribeNewsletterBlock,
   imageLinkCards: ImageLinkCardsBlock,
   threeProductPanels: ThreeProductPanelsBlock,
   homeSlideshow: HomeSlideshowBlock,
+  longForm: LongFormBlock,
 } satisfies BlockComponentMap;
 
 /**
@@ -108,8 +112,28 @@ function useOptimisticPageBuilder(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (action.document as any).pageBuilder
       ) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (action.document as any).pageBuilder;
+        const nextBlocks = Array.isArray(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (action.document as any).pageBuilder,
+        )
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ((action.document as any).pageBuilder as PageBuilderBlock[])
+          : undefined;
+
+        if (!nextBlocks) {
+          return currentBlocks;
+        }
+
+        return nextBlocks.map((block) => {
+          const key = block?._key;
+          if (!key) {
+            return block;
+          }
+          const existing = currentBlocks.find(
+            (currentBlock) => currentBlock?._key === key,
+          );
+          return existing ?? block;
+        });
       }
       return currentBlocks;
     },
@@ -140,6 +164,14 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.cta;
           return (
             <div key={`cta-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "longForm": {
+          const Component = BLOCK_COMPONENTS.longForm;
+          return (
+            <div key={`longForm-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );
@@ -188,6 +220,14 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.imageLinkCards;
           return (
             <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
+              <Component {...block} isPageTop={isFirstBlock} />
+            </div>
+          );
+        }
+        case "featuredRecipes": {
+          const Component = BLOCK_COMPONENTS.featuredRecipes;
+          return (
+            <div key={`featuredRecipes-${_key}`} data-sanity={dataAttribute}>
               <Component {...block} isPageTop={isFirstBlock} />
             </div>
           );

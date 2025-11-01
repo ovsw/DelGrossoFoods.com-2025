@@ -160,6 +160,12 @@ export const structure = (
         title: "Store Locator Page",
         icon: MarkerIcon,
       }),
+      createSingleTon({
+        S,
+        type: "contactPage",
+        title: "Contact Page",
+        icon: MessageCircle,
+      }),
       S.divider(),
       createList({ S, type: "page", title: "Pages" }),
       createIndexList({

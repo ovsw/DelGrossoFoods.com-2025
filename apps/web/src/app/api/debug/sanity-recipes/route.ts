@@ -44,7 +44,6 @@ export async function POST(request: Request) {
           *[
             _type == "recipe"
             && slug.current == $slug
-            && !(_id in path('drafts.**'))
           ][0]{
             _id,
             name,

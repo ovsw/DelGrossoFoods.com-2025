@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { ContactFormSection } from "@/components/page-sections/contact-page/contact-form-section";
+import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { getContactPageQuery } from "@/lib/sanity/query";
 import type { GetContactPageQueryResult } from "@/lib/sanity/sanity.types";
@@ -40,13 +41,59 @@ export default async function ContactPage() {
   const intro =
     data?.description ||
     "Get in touch with us about our La Famiglia DelGrosso pasta sauces or DelGrosso Foods products. We're here to help with any questions you might have.";
+  type ContactPageData = NonNullable<GetContactPageQueryResult>;
+  const siteSettings = data?.siteSettings ?? null;
+  const contactInformation = siteSettings
+    ? {
+        addressLines: Array.isArray(siteSettings.addressLines)
+          ? siteSettings.addressLines
+          : null,
+        phoneNumbers: (() => {
+          const phones: Array<{ _key: string; display: string }> = [];
+          if (siteSettings.officePhone) {
+            phones.push({
+              _key: "office",
+              display: siteSettings.officePhone,
+            });
+          }
+          if (siteSettings.tollFreePhone) {
+            phones.push({
+              _key: "tollFree",
+              display: siteSettings.tollFreePhone,
+            });
+          }
+          return phones.length > 0 ? phones : null;
+        })(),
+        email: siteSettings.contactEmail ?? null,
+        websiteUrl: siteSettings.corporateWebsiteUrl ?? null,
+      }
+    : null;
+  const maybePageBuilder = data?.pageBuilder;
+  const pageBuilder: ContactPageData["pageBuilder"] = Array.isArray(
+    maybePageBuilder,
+  )
+    ? maybePageBuilder
+    : [];
+  const hasPageBuilderContent = pageBuilder.length > 0;
+  const documentId = data?._id ?? null;
+  const documentType = data?._type ?? null;
 
   return (
     <main>
-      <ContactFormSection title={heading} description={intro} />
+      <ContactFormSection
+        title={heading}
+        description={intro}
+        contactInformation={contactInformation}
+        siteSettingsId={siteSettings?._id ?? null}
+      />
 
-      {/* Additional Content Sections (if any) */}
-      {/* This will be populated by the pageBuilder field when content is added in Sanity */}
+      {documentId && documentType && hasPageBuilderContent ? (
+        <PageBuilder
+          pageBuilder={pageBuilder}
+          id={documentId}
+          type={documentType}
+        />
+      ) : null}
     </main>
   );
 }

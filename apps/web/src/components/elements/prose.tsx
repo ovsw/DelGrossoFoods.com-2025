@@ -1,17 +1,31 @@
 import { cn } from "@workspace/ui/lib/utils";
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, PropsWithChildren } from "react";
+
+type ProseProps = HTMLAttributes<HTMLDivElement> & {
+  /**
+   * When true, use inverted typography colors suitable for dark surfaces.
+   * This avoids forcing light-surface colors on nested elements.
+   */
+  invert?: boolean;
+};
 
 export function Prose({
   className,
   children,
+  invert = false,
   ...props
-}: HTMLAttributes<HTMLDivElement>) {
+}: PropsWithChildren<ProseProps>) {
+  const base =
+    "prose max-w-none prose-headings:scroll-m-24 prose-img:rounded-lg";
+  const lightColors =
+    "text-foreground prose-headings:text-foreground prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-em:text-foreground/90 prose-a:text-brand-green prose-a:no-underline hover:prose-a:underline underline-offset-4";
+  const darkColors =
+    // Use prose-invert and avoid pinning element colors so inversion works
+    "prose-invert prose-a:no-underline hover:prose-a:underline underline-offset-4";
+
   return (
     <div
-      className={cn(
-        "prose prose-zinc prose-headings:scroll-m-24 prose-headings:text-opacity-90 prose-p:text-opacity-80 prose-a:decoration-dotted prose-ol:text-opacity-80 prose-ul:text-opacity-80 prose-h2:border-b prose-h2:pb-2 prose-h2:text-3xl prose-h2:font-semibold prose-h2:first:mt-0 max-w-none",
-        className,
-      )}
+      className={cn(base, invert ? darkColors : lightColors, className)}
       {...props}
     >
       {children}

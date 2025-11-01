@@ -1,12 +1,14 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
 import { Section } from "@workspace/ui/components/section";
+import { cn } from "@workspace/ui/lib/utils";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
 // import { newsletterSubmission } from "@/action/newsletter-submission";
 import { RichText } from "@/components/elements/rich-text";
+import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
@@ -22,33 +24,47 @@ import { resolveSectionSpacing } from "../utils/section-spacing";
 // );
 
 type SubscribeNewsletterProps = PageBuilderBlockProps<"subscribeNewsletter">;
-export default function SubscribeNewsletterButton() {
+
+function SubscribeNewsletterButton({ className }: { className?: string }) {
   const { pending } = useFormStatus();
   return (
     <Button
-      size="icon"
       type="submit"
       disabled={pending}
-      className="size-8 aspect-square bg-zinc-200 hover:bg-zinc-300"
+      variant="default"
+      surface="onDark"
+      className={cn(
+        "group relative flex h-full w-full items-center justify-center",
+        "rounded-full px-5 py-3 font-semibold text-brand-green",
+        "bg-th-light-100 shadow-md shadow-black/15 transition duration-150",
+        "sm:w-auto sm:justify-self-end sm:rounded-l-none sm:rounded-r-full",
+        "hover:bg-th-light-100/95 hover:shadow-lg",
+        "focus-visible:ring-4 focus-visible:ring-th-light-100/60",
+        className,
+      )}
       aria-label={pending ? "Subscribing..." : "Subscribe to newsletter"}
     >
-      <span className="flex items-center justify-center gap-2">
-        {pending ? (
+      {pending ? (
+        <span className="flex items-center justify-center gap-2">
           <LoaderCircle
-            className="animate-spin text-black"
-            size={16}
+            className="animate-spin text-brand-green"
+            size={18}
             strokeWidth={2}
             aria-hidden="true"
           />
-        ) : (
+          <span className="sr-only">Submitting</span>
+        </span>
+      ) : (
+        <span className="flex items-center justify-center gap-2">
+          <span className="sr-only">Subscribe</span>
           <ChevronRight
-            className="text-black"
-            size={16}
+            size={18}
             strokeWidth={2}
             aria-hidden="true"
+            className="text-brand-green transition-transform duration-200 group-hover:translate-x-1 group-focus-visible:translate-x-1"
           />
-        )}
-      </span>
+        </span>
+      )}
     </Button>
   );
 }
@@ -72,51 +88,50 @@ export function SubscribeNewsletterBlock({
       spacingBottom={spacingBottom}
       isPageTop={isPageTop}
     >
-      <div className="relative container mx-auto px-4 md:px-8 py-8 sm:py-16 md:py-24 lg:py-32 bg-gray-50 rounded-3xl overflow-hidden">
-        <div className="relative z-10 mx-auto text-center">
-          <h2 className="mb-4 text-xl font-semibold text-gray-900 sm:text-3xl md:text-5xl text-balance">
-            {title}
-          </h2>
-          {subTitle && (
-            <RichText
-              richText={subTitle}
-              className="mb-6 text-sm text-gray-600 sm:mb-8 text-balance sm:text-base"
-            />
-          )}
-          <Form
-            className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-2"
-            // action={newsletterSubmission}
-            action={() => {}}
-          >
-            <div className="flex bg-white items-center border rounded-xl p-2 drop-shadow-lg md:w-96 justify-between pl-4">
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="newsletter-email"
-                required
-                aria-label="Email address"
-                placeholder="Enter your email address"
-                className="rounded-e-none border-e-0 focus-visible:ring-0 outline-none bg-transparent w-full"
+      <div className="container mx-auto px-4 md:px-8">
+        <div className="relative isolate overflow-hidden rounded-3xl bg-brand-green px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
+          <SurfaceShineOverlay className="rounded-3xl" />
+          <div className="relative z-10 mx-auto max-w-3xl space-y-8 text-center">
+            <h2 className="text-3xl font-semibold text-brand-green-text text-balance sm:text-4xl md:text-5xl">
+              {title}
+            </h2>
+            {subTitle ? (
+              <RichText
+                richText={subTitle}
+                invert
+                className="prose-base text-balance"
               />
-              <SubscribeNewsletterButton />
-            </div>
-          </Form>
-          {helperText && (
-            <RichText
-              richText={helperText}
-              className="mt-3 text-sm text-gray-800 opacity-80 sm:mt-4"
-            />
-          )}
+            ) : null}
+            <Form
+              className="mx-auto grid w-full max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-0"
+              // action={newsletterSubmission}
+              action={() => {}}
+            >
+              <div className="grid">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="newsletter-email"
+                  required
+                  aria-label="Email address"
+                  placeholder="Enter your email address"
+                  className="w-full rounded-full border border-brand-green-text/30 bg-th-light-100 px-5 py-3 text-base text-th-dark-900 placeholder:text-th-dark-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green-text/40 sm:rounded-r-none"
+                />
+              </div>
+              <SubscribeNewsletterButton className="sm:rounded-l-none" />
+            </Form>
+            {helperText ? (
+              <RichText
+                richText={helperText}
+                invert
+                className="prose-sm text-balance opacity-80"
+              />
+            ) : null}
+          </div>
         </div>
-        {/* <InteractiveGridPattern
-          className={cn(
-            "absolute scale-125 inset-0 -z-0 w-full opacity-50",
-            "[mask-image:radial-gradient(1000px_circle_at_center,transparent,white)]",
-          )}
-        /> */}
       </div>
     </Section>
   );
