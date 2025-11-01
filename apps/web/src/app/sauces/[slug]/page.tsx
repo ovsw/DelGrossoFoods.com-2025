@@ -87,7 +87,7 @@ export default async function SauceDetailPage({
       <SauceHeroSection sauce={sauce} />
       <SauceNutritionalInfoSection sauce={sauce} />
       <SauceRelatedProductsSection sauceId={sauce._id} />
-      <SauceRelatedRecipesSection sauceId={sauce._id} />
+      <SauceRelatedRecipesSection sauceId={sauce._id} sauceName={sauce.name} />
     </main>
   );
 }

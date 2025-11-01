@@ -103,10 +103,10 @@ async function main(): Promise<void> {
     return;
   }
 
-  const client = getCliClient({ apiVersion: "2025-01-01" });
+  const client = getCliClient({ apiVersion: "2025-02-19" });
 
   // Exclude drafts by default unless explicitly included
-  const filterDrafts = includeDrafts ? "" : ' && !(_id in path("drafts.**"))';
+  const filterDrafts = includeDrafts ? "" : ' && !(_id match "drafts.*")';
 
   let totalDeleted = 0;
   let batchIndex = 0;

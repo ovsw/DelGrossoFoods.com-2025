@@ -1,4 +1,5 @@
 import { ImageIcon, LinkIcon } from "@sanity/icons";
+import type { ArrayRule } from "sanity";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const richTextMembers = [
@@ -70,16 +71,23 @@ type Type = NonNullable<(typeof memberTypes)[number]>;
 
 export const customRichText = (
   type: Type[],
-  options?: { name?: string; title?: string; group?: string },
+  options?: {
+    name?: string;
+    title?: string;
+    group?: string;
+    description?: string;
+    validation?: (rule: ArrayRule<unknown[]>) => ArrayRule<unknown[]>;
+  },
 ) => {
-  const { name } = options ?? {};
+  const { name, validation, ...rest } = options ?? {};
   const customMembers = richTextMembers.filter(
     (member) => member.name && type.includes(member.name),
   );
   return defineField({
-    ...options,
+    ...rest,
     name: name ?? "richText",
     type: "array",
     of: customMembers,
+    validation,
   });
 };
