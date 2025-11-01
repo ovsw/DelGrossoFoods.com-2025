@@ -1,5 +1,16 @@
 # web
 
+## 1.20.0
+
+### Minor Changes
+
+- [#110](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/110) [`8a53cf8`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/8a53cf85de0b2c7c1306eae697a6fe1f47e96848) Thanks [@ovsw](https://github.com/ovsw)! - Bring in the new Featured Recipes block with aligned schema and styling, refresh the long form content block and subscribe newsletter section, restructure the contact page, upgrade Studio resolvers and Sanity API usage, and ensure the presentation URL plugin completes after invalid slug checks.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.20.0
+
 ## 1.19.0
 
 ### Minor Changes
