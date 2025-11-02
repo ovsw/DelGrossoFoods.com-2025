@@ -16,6 +16,15 @@ export interface SlugValidationOptions {
 
 type SiteReference = { _ref?: string | undefined } | undefined;
 
+function deriveSiteIdFromDocumentId(documentId?: string): string | null {
+  if (!documentId) return null;
+  const sanitizedId = documentId.replace(/^drafts\./, "");
+  const segments = sanitizedId.split("-");
+  if (segments.length !== 2) return null;
+  const siteId = segments[1];
+  return siteId || null;
+}
+
 /**
  * Validates a slug string and returns array of validation errors
  */
@@ -281,6 +290,7 @@ export async function isUniqueWithinSite(
 
   const client = getClient({ apiVersion: "2025-02-19" });
   const id = String(document?._id ?? "").replace(/^drafts\./, "");
+  const fallbackSiteId = deriveSiteIdFromDocumentId(document?._id);
 
   if (siteRef) {
     const query = `!defined(*[_type == $type && slug.current == $slug && site._ref == $siteId && !(_id in [$id, 'drafts.' + $id])][0]._id)`;
@@ -298,6 +308,21 @@ export async function isUniqueWithinSite(
       type,
       slug,
       siteIds: siteRefs,
+      id,
+    });
+  }
+
+  if (fallbackSiteId) {
+    const query = `!defined(*[
+      _type == $type &&
+      slug.current == $slug &&
+      string::endsWith(_id, $suffix) &&
+      !(_id in [$id, 'drafts.' + $id])
+    ][0]._id)`;
+    return client.fetch(query, {
+      type,
+      slug,
+      suffix: `-${fallbackSiteId}`,
       id,
     });
   }

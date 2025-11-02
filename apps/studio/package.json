@@ -18,7 +18,9 @@
     "check-types": "tsc --noEmit",
     "check": "npm run lint && npm run format && npm run check-types",
     "check:fix": "npm run lint:fix && npm run format:fix",
-    "type": "sanity schema extract --enforce-required-fields && sanity typegen generate",
+    "type": "pnpm run type:dgf && pnpm run type:lfd",
+    "type:dgf": "sanity schema extract --enforce-required-fields --workspace=dgf && sanity typegen generate --workspace=dgf",
+    "type:lfd": "sanity schema extract --enforce-required-fields --workspace=lfd && sanity typegen generate --workspace=lfd",
     "postinstall": "sanity exec scripts/cli-alert-for-data.ts",
     "mut:delete-by-type": "sanity exec mutations/delete-by-type.ts --with-user-token"
   },
