@@ -316,13 +316,13 @@ export async function isUniqueWithinSite(
     const query = `!defined(*[
       _type == $type &&
       slug.current == $slug &&
-      string::endsWith(_id, $suffix) &&
+      string::matches(_id, $pattern) &&
       !(_id in [$id, 'drafts.' + $id])
     ][0]._id)`;
     return client.fetch(query, {
       type,
       slug,
-      suffix: `-${fallbackSiteId}`,
+      pattern: `^.*-${fallbackSiteId}$`,
       id,
     });
   }

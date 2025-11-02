@@ -1,13 +1,19 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 
-const DEFAULT_SITE_ID = "DGF" as const;
+import {
+  isKnownSiteId,
+  type KnownSiteId,
+  normalizeSiteId,
+  SITE_ID_COOKIE_NAME,
+} from "./site/constants";
+
+const DEFAULT_SITE_ID: KnownSiteId = "DGF";
 
 export const brandBySiteId = {
   DGF: "dgf",
   LFD: "lfd",
 } as const;
 
-type KnownSiteId = keyof typeof brandBySiteId;
 type BrandKey = (typeof brandBySiteId)[KnownSiteId];
 
 const HOST_TO_SITE_ID: Record<string, KnownSiteId> = {
@@ -43,13 +49,23 @@ const hostFallbacks: Array<{
   },
 ];
 
-const isKnownSiteId = (value: string): value is KnownSiteId =>
-  Object.prototype.hasOwnProperty.call(brandBySiteId, value);
-
 const DEFAULT_BRAND = brandBySiteId[DEFAULT_SITE_ID];
 
 export async function resolveSiteId(): Promise<KnownSiteId> {
   const headerList = await headers();
+  const headerSiteId = normalizeSiteId(headerList.get("x-dgf-site-id"));
+  if (headerSiteId) {
+    return headerSiteId;
+  }
+
+  const cookieStore = cookies();
+  const cookieSiteId = normalizeSiteId(
+    cookieStore.get(SITE_ID_COOKIE_NAME)?.value,
+  );
+  if (cookieSiteId) {
+    return cookieSiteId;
+  }
+
   const host = headerList.get("host")?.toLowerCase() ?? "";
 
   if (!host) return DEFAULT_SITE_ID;

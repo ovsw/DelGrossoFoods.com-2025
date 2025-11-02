@@ -378,7 +378,7 @@ export const queryImageType = defineQuery(`
 `);
 
 export const queryHomePageData =
-  defineQuery(`*[_type == "homePage" && site._ref == $siteId][0]{
+  defineQuery(`*[_type == "homePage" && site->key == $siteId][0]{
     ...,
     _id,
     _type,
@@ -389,7 +389,7 @@ export const queryHomePageData =
   }`);
 
 export const querySlugPageData = defineQuery(`
-  *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{
+  *[_type == "page" && slug.current == $slug && site->key == $siteId][0]{
     ...,
     "slug": slug.current,
     ${pageBuilderFragment}
@@ -397,11 +397,11 @@ export const querySlugPageData = defineQuery(`
   `);
 
 export const querySlugPagePaths = defineQuery(`
-  *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
+  *[_type == "page" && defined(slug.current) && site->key == $siteId].slug.current
 `);
 
 export const queryBlogIndexPageData = defineQuery(`
-  *[_type == "blogIndex" && site._ref == $siteId][0]{
+  *[_type == "blogIndex" && site->key == $siteId][0]{
     ...,
     _id,
     _type,
@@ -411,14 +411,14 @@ export const queryBlogIndexPageData = defineQuery(`
     "featuredBlogsCount" : featuredBlogsCount,
     ${pageBuilderFragment},
     "slug": slug.current,
-    "blogs": *[_type == "blog" && site._ref == $siteId && (seoHideFromLists != true)] | order(orderRank asc){
+    "blogs": *[_type == "blog" && site->key == $siteId && (seoHideFromLists != true)] | order(orderRank asc){
       ${blogCardFragment}
     }
   }
 `);
 
 export const queryBlogSlugPageData = defineQuery(`
-  *[_type == "blog" && slug.current == $slug && site._ref == $siteId][0]{
+  *[_type == "blog" && slug.current == $slug && site->key == $siteId][0]{
     ...,
     "slug": slug.current,
     ${blogAuthorFragment},
@@ -429,7 +429,7 @@ export const queryBlogSlugPageData = defineQuery(`
 `);
 
 export const queryBlogPaths = defineQuery(`
-  *[_type == "blog" && defined(slug.current) && site._ref == $siteId].slug.current
+  *[_type == "blog" && defined(slug.current) && site->key == $siteId].slug.current
 `);
 
 const ogFieldsFragment = /* groq */ `
