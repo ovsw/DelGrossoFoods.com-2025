@@ -14,6 +14,8 @@ export interface SlugValidationOptions {
   sanityDocumentType?: string; // Auto-configure based on Sanity document type
 }
 
+type SiteReference = { _ref?: string | undefined } | undefined;
+
 /**
  * Validates a slug string and returns array of validation errors
  */
@@ -250,6 +252,62 @@ export function createSlugValidator(
   options: SlugValidationOptions,
 ): (slug: { current?: string } | undefined) => string | true {
   return (slug) => validateSanitySlug(slug, options);
+}
+
+export async function isUniqueWithinSite(
+  slug: string,
+  context: {
+    document?: {
+      _id?: string;
+      _type?: string;
+      site?: SiteReference;
+      sites?: SiteReference[];
+    };
+    getClient: Function;
+  },
+): Promise<boolean> {
+  if (!slug) return true;
+
+  const { document, getClient } = context;
+  const type = document?._type;
+  const siteRef = document?.site?._ref;
+  const siteRefs = Array.isArray(document?.sites)
+    ? (document?.sites
+        ?.map((ref) => ref?._ref)
+        .filter((ref): ref is string => typeof ref === "string") ?? [])
+    : [];
+
+  if (!type) return true;
+
+  const client = getClient({ apiVersion: "2025-02-19" });
+  const id = String(document?._id ?? "").replace(/^drafts\./, "");
+
+  if (siteRef) {
+    const query = `!defined(*[_type == $type && slug.current == $slug && site._ref == $siteId && !(_id in [$id, 'drafts.' + $id])][0]._id)`;
+    return client.fetch(query, {
+      type,
+      slug,
+      siteId: siteRef,
+      id,
+    });
+  }
+
+  if (siteRefs.length > 0) {
+    const query = `!defined(*[_type == $type && slug.current == $slug && count(array::intersect(sites[]._ref, $siteIds)) > 0 && !(_id in [$id, 'drafts.' + $id])][0]._id)`;
+    return client.fetch(query, {
+      type,
+      slug,
+      siteIds: siteRefs,
+      id,
+    });
+  }
+
+  const query = `!defined(*[_type == $type && slug.current == $slug && !(_id in [$id, 'drafts.' + $id])][0]._id)`;
+  return client.fetch(query, {
+    type,
+    slug,
+    id,
+  });
 }
 
 /**

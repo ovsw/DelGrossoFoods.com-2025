@@ -5,7 +5,11 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSlugValidator,
+  isUniqueWithinSite,
+} from "../../utils/slug-validation";
+import { siteReferenceField } from "../common";
 
 export const storeLocator = defineType({
   name: "storeLocator",
@@ -16,6 +20,10 @@ export const storeLocator = defineType({
     "Manage the hero content, supporting sections, and SEO settings for the Where to Buy page",
   groups: GROUPS,
   fields: [
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.MAIN_CONTENT,
+    }),
     defineField({
       name: "title",
       type: "string",
@@ -56,6 +64,7 @@ export const storeLocator = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) =>
         Rule.required().custom(

@@ -5,7 +5,7 @@ This guide outlines a practical approach to run multiple websites from one Next.
 ## Summary
 
 - One Next.js app, many domains; host → site/brand resolver.
-- One Sanity project/dataset; two Studio workspaces (Site A, Site B).
+- One Sanity project/dataset; two Studio workspaces (DelGrosso Foods, La Famiglia DelGrosso).
 - Editors choose their site workspace; each workspace shows only relevant content.
 - Content is scoped by `site` (single) or `sites` (array) references.
 - Queries filter by `siteId`; styling is brand‑driven via CSS variables.
@@ -25,31 +25,29 @@ This guide outlines a practical approach to run multiple websites from one Next.
   - Pass `siteId` to all GROQ queries; set `<html data-brand="…">` for styling.
 - Presentation URLs route each workspace to the correct domain.
 
-## Implementation Sketch
+## Implementation Sketch (Status)
 
-1. Schemas
-   - Add `site` document; seed Site A/B.
-   - Extend `page` with `site` (required); extend `product` with `sites` (array).
-   - Implement site‑scoped slug uniqueness.
-2. Studio (multi‑workspace)
-   - Export two workspaces from `sanity.config.ts` (titles: “Site A”, “Site B”).
-   - Desk structure factory: lists filtered by workspace `siteId`.
-     - Pages: `_type == "page" && site._ref == $siteId`
-     - Products: `_type == "product" && $siteId in sites[]._ref`
-   - Initial value templates set membership by default per workspace.
-   - New document options limited to the workspace’s types/templates.
-   - Document actions hide/lock when a doc is outside the workspace’s membership.
-3. Preview & Presentation
-   - Workspace → domain map in `presentation-url.ts` (prod + local).
-   - Include `siteId` param if previewing on a shared domain.
-4. Web app
-   - Host → `siteId` resolver; thread through `sanityFetch`.
-   - CSS brand overrides via `[data-brand="…"]` variables (colors, fonts, patterns).
+- [x] **Schemas**
+  - [x] Add `site` document; seed DelGrosso Foods (DGF) and La Famiglia DelGrosso (LFD).
+  - [x] Extend `page` with `site` (required); extend `product` with `sites` (array).
+  - [x] Implement site‑scoped slug uniqueness.
+- [x] **Studio (multi‑workspace)**
+  - [x] Export two workspaces from `sanity.config.ts` (titles: “DelGrosso Foods”, “La Famiglia DelGrosso”).
+  - [x] Desk structure factory: lists filtered by workspace `siteId`.
+  - [x] Initial value templates set membership by default per workspace.
+  - [x] New document options limited to the workspace’s types/templates.
+  - [x] Document actions hide/lock when a doc is outside the workspace’s membership.
+- [x] **Preview & Presentation**
+  - [x] Workspace → domain map in `presentation-url.ts` (prod + local).
+  - [x] Include `siteId` param if previewing on a shared domain.
+- [x] **Web app**
+  - [x] Host → `siteId` resolver; thread through `sanityFetch`.
+  - [x] CSS brand overrides via `[data-brand="…"]` variables (colors, fonts, patterns).
 
 ## Editor UX for Subsets
 
-- Site B workspace shows only products where `B ∈ product.sites`.
-- Optional doc action: “Add to/Remove from Site B” to toggle membership.
+- La Famiglia DelGrosso workspace shows only products where `LFD ∈ product.sites`.
+- Optional doc action: “Add to/Remove from La Famiglia DelGrosso” to toggle membership.
 - For per‑site overrides (titles/pricing), add an overlay doc keyed by (product, site) and join in queries.
 
 ## Caveats & Gotchas
@@ -108,34 +106,34 @@ const dataset = process.env.SANITY_STUDIO_DATASET || "production";
 
 export default defineConfig([
   {
-    name: "siteA",
-    title: "Site A",
+    name: "dgf",
+    title: "DelGrosso Foods",
     projectId,
     dataset,
     plugins: [
       presentationTool({
         previewUrl: {
-          origin: "https://a.example.com",
+          origin: "https://delgrossofoods.com",
           previewMode: { enable: "/api/presentation-draft" },
         },
       }),
-      structureTool({ structure: (S) => structure(S, { siteId: "siteA-id" }) }),
+      structureTool({ structure: (S) => structure(S, { siteId: "DGF" }) }),
     ],
     schema: { types: schemaTypes },
   },
   {
-    name: "siteB",
-    title: "Site B",
+    name: "lfd",
+    title: "La Famiglia DelGrosso",
     projectId,
     dataset,
     plugins: [
       presentationTool({
         previewUrl: {
-          origin: "https://b.example.com",
+          origin: "https://lafamigliadelgrosso.com",
           previewMode: { enable: "/api/presentation-draft" },
         },
       }),
-      structureTool({ structure: (S) => structure(S, { siteId: "siteB-id" }) }),
+      structureTool({ structure: (S) => structure(S, { siteId: "LFD" }) }),
     ],
     schema: { types: schemaTypes },
   },
@@ -218,7 +216,7 @@ Two viable patterns:
 // In each workspace's presentationTool config
 presentationTool({
   previewUrl: {
-    origin: "https://a.example.com",
+    origin: "https://delgrossofoods.com",
     previewMode: { enable: "/api/presentation-draft" },
   },
 });
@@ -231,28 +229,30 @@ presentationTool({
 import { defineDocumentFieldAction } from "sanity";
 
 const ORIGINS: Record<string, string> = {
-  siteA: "https://a.example.com",
-  siteB: "https://b.example.com",
+  DGF: "https://delgrossofoods.com",
+  LFD: "https://lafamigliadelgrosso.com",
 };
 
-export const openInPresentation = defineDocumentFieldAction({
-  name: "open-in-presentation",
-  useAction: ({ documentId, path, onAction, ...ctx }) => {
-    const getFormValue = ctx.useGetFormValue?.() as any;
-    return {
-      type: "action" as const,
-      title: "Open in Presentation",
-      hidden: path.length > 0,
-      onAction: () => {
-        const slug = getFormValue(["slug", "current"]);
-        const siteRef = getFormValue(["site", "_ref"]);
-        const origin = siteRef === "siteB-id" ? ORIGINS.siteB : ORIGINS.siteA;
-        const url = `${origin}/api/presentation-draft?slug=${encodeURIComponent(slug)}&siteId=${encodeURIComponent(siteRef)}`;
-        window.open(url, "_blank");
-      },
-    };
-  },
-});
+export const openInPresentation = (workspaceSiteId: string) =>
+  defineDocumentFieldAction({
+    name: "open-in-presentation",
+    useAction: ({ documentId, path, onAction, ...ctx }) => {
+      const getFormValue = ctx.useGetFormValue?.() as any;
+      return {
+        type: "action" as const,
+        title: "Open in Presentation",
+        hidden: path.length > 0,
+        onAction: () => {
+          const slug = getFormValue(["slug", "current"]);
+          const siteRef = getFormValue(["site", "_ref"]);
+          const targetSiteId = siteRef ?? workspaceSiteId;
+          const origin = ORIGINS[targetSiteId] ?? ORIGINS.DGF;
+          const url = `${origin}/api/presentation-draft?slug=${encodeURIComponent(slug)}&siteId=${encodeURIComponent(targetSiteId)}`;
+          window.open(url, "_blank");
+        },
+      };
+    },
+  });
 ```
 
 Align with your current implementation intent. This repo ships a field action that opens an in‑Studio Presentation route; switch to external origin mapping if you want to preview on the real domain.
@@ -266,15 +266,23 @@ Resolve `siteId` from the request host and thread it through queries and a brand
 import { headers } from "next/headers";
 
 const HOST_TO_SITE: Record<string, string> = {
-  "a.example.com": "siteA-id",
-  "b.example.com": "siteB-id",
-  "a.localhost:3000": "siteA-id",
-  "b.localhost:3000": "siteB-id",
+  "localhost:3000": "DGF",
+  "127.0.0.1:3000": "DGF",
+  "dgf.localhost:3000": "DGF",
+  "lfd.localhost:3000": "LFD",
+  "delgrossofoods.com": "DGF",
+  "www.delgrossofoods.com": "DGF",
+  "lafamigliadelgrosso.com": "LFD",
+  "www.lafamigliadelgrosso.com": "LFD",
 };
 
 export function resolveSiteId(): string {
   const host = headers().get("host")?.toLowerCase() ?? "";
-  return HOST_TO_SITE[host] ?? "siteA-id";
+  if (!host) return "DGF";
+  if (HOST_TO_SITE[host]) return HOST_TO_SITE[host];
+  if (host.includes("lafamiglia") || host.includes("lfd")) return "LFD";
+  if (host.includes("delgrosso") || host.includes("dgf")) return "DGF";
+  return "DGF";
 }
 ```
 
@@ -373,15 +381,25 @@ Keep a canonical mapping for workspaces, site IDs, and domains. Store as code (e
 
 ```json
 {
-  "siteA": {
-    "siteId": "siteA-id",
-    "domains": ["a.example.com", "a.localhost:3000"],
-    "brand": "siteA"
+  "dgf": {
+    "siteId": "DGF",
+    "domains": [
+      "delgrossofoods.com",
+      "www.delgrossofoods.com",
+      "dgf.localhost:3000",
+      "localhost:3000",
+      "127.0.0.1:3000"
+    ],
+    "brand": "dgf"
   },
-  "siteB": {
-    "siteId": "siteB-id",
-    "domains": ["b.example.com", "b.localhost:3000"],
-    "brand": "siteB"
+  "lfd": {
+    "siteId": "LFD",
+    "domains": [
+      "lafamigliadelgrosso.com",
+      "www.lafamigliadelgrosso.com",
+      "lfd.localhost:3000"
+    ],
+    "brand": "lfd"
   }
 }
 ```
@@ -392,18 +410,18 @@ Seeding `site` docs (stable IDs recommended):
 // Example `site` docs to seed (ids must be stable across environments)
 [
   {
-    _id: "siteA-id",
+    _id: "DGF",
     _type: "site",
-    key: "siteA",
-    label: "Site A",
-    domains: ["a.example.com"],
+    key: "dgf",
+    label: "DelGrosso Foods",
+    domains: ["delgrossofoods.com", "www.delgrossofoods.com"],
   },
   {
-    _id: "siteB-id",
+    _id: "LFD",
     _type: "site",
-    key: "siteB",
-    label: "Site B",
-    domains: ["b.example.com"],
+    key: "lfd",
+    label: "La Famiglia DelGrosso",
+    domains: ["lafamigliadelgrosso.com", "www.lafamigliadelgrosso.com"],
   },
 ];
 ```
@@ -416,6 +434,17 @@ Seeding `site` docs (stable IDs recommended):
 - Studio structure filtering: apps/studio/structure.ts
 - Initial value templates: apps/studio/sanity.config.ts (or helper)
 - Slug uniqueness utils: used in relevant schemas
+
+### Current Repo Implementation (DGF + LFD)
+
+- **Workspace catalogue**: `apps/studio/sanity.config.ts` defines `siteWorkspaces` for DelGrosso Foods (`siteId: "DGF"`, workspace name `dgf`) and La Famiglia DelGrosso (`siteId: "LFD"`, workspace name `lfd`). The map feeds presentation origins, document templates, desk filters, and document locking.
+- **Creation guard rails**: the `newDocumentOptions` filter only surfaces templates that either match the active workspace suffix or are site-agnostic singletons (excluding `site`). `createPageTemplate(siteId)` pre-fills `site` references for `page` and `blog` types so editors never forget membership.
+- **Document locking**: `resolveLockTargets` in `sanity.config.ts` disables edits when a document’s membership doesn’t include the active workspace. Site-scoped documents (`page`, `blog`, `faq`, `recipeCategory`) lock to their `site` ref; multi-site types (`product`) lock unless the active site is included in `sites`.
+- **Desk structure**: `apps/studio/structure.ts` scopes every list via `$siteId` params and constructs per-site singleton IDs (e.g. `homePage-DGF`). Orderable lists such as blogs use `orderableDocumentListDeskItem` with the same filter.
+- **Presentation URLs**: the `presentationUrl` plugin routes the "Open in Presentation" action through `/presentation?preview=<slug>&siteId=<id>`. Provide `SANITY_STUDIO_PRESENTATION_URL` (fallback) or site-specific overrides `SANITY_STUDIO_PRESENTATION_URL_DGF` / `_LFD` so previews hit the right domain in each environment.
+- **Runtime resolution**: `apps/web/src/lib/site.ts` maps hosts to `siteId` with fallbacks for partial matches, exposes `resolveBrandKey`, and powers `getActiveSite()` used in `layout.tsx` to set `data-brand`. Update this file (and the `HOST_TO_SITE_ID` map) whenever a new hostname or site is introduced.
+- **Brand styling**: `apps/web/src/app/background.css` changes gradient variables based on `[data-brand="lfd"]`; add new brand blocks there instead of inline CSS variables. Shared utility classes should pull from Tailwind tokens.
+- **Query defaults**: `apps/web/src/lib/sanity/live.ts` wraps `defineLive` so any `sanityFetch` call automatically injects `siteId` if the caller omits it, keeping cache keys isolated per site without duplicating params in every query.
 
 ### Schema Snippets (Copy‑Paste)
 
@@ -537,7 +566,7 @@ import type { GetProductBySlugQueryResult } from "@/lib/sanity/sanity.types";
 
 ### CI/CD & Env Matrix
 
-- Studio: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, optional workspace labels.
+- Studio: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, optional workspace labels, `SANITY_STUDIO_PRESENTATION_URL`, and per-site overrides (`SANITY_STUDIO_PRESENTATION_URL_DGF`, `SANITY_STUDIO_PRESENTATION_URL_LFD`).
 - Web: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN` (server only), `VERCEL_*` as needed.
 - Next Image allowlist depends on `NEXT_PUBLIC_SANITY_PROJECT_ID` (apps/web/next.config.ts).
 

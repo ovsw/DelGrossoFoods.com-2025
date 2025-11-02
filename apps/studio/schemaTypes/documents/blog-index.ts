@@ -3,9 +3,12 @@ import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
-import { createSlug, isUnique } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
-import { pageBuilderField } from "../common";
+import { createSlug } from "../../utils/slug";
+import {
+  createSlugValidator,
+  isUniqueWithinSite,
+} from "../../utils/slug-validation";
+import { pageBuilderField, siteReferenceField } from "../common";
 
 export const blogIndex = defineType({
   name: "blogIndex",
@@ -15,6 +18,10 @@ export const blogIndex = defineType({
     "This is the main page that shows all your blog posts. You can customize how your blog listing page looks, what title it has, and which blog post you want to highlight at the top.",
   groups: GROUPS,
   fields: [
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.MAIN_CONTENT,
+    }),
     defineField({
       name: "title",
       type: "string",
@@ -38,7 +45,7 @@ export const blogIndex = defineType({
       options: {
         source: "title",
         slugify: createSlug,
-        isUnique: isUnique,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) =>
         Rule.required().custom(

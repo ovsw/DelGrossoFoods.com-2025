@@ -8,9 +8,9 @@ import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
-  createUniqueSlugRule,
+  isUniqueWithinSite,
 } from "../../utils/slug-validation";
-import { pageBuilderField } from "../common";
+import { pageBuilderField, siteReferenceField } from "../common";
 
 export const page = defineType({
   name: "page",
@@ -21,6 +21,10 @@ export const page = defineType({
     "Create a new page for your website, like an 'About Us' or 'Contact' page. Each page has its own web address and content that you can customize.",
   groups: GROUPS,
   fields: [
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.MAIN_CONTENT,
+    }),
     defineField({
       name: "title",
       type: "string",
@@ -64,11 +68,11 @@ export const page = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) =>
         Rule.required()
           .error("A URL slug is required for the page")
-          .custom(createUniqueSlugRule())
           .custom(createSlugValidator({ sanityDocumentType: "page" })),
     }),
     defineField({

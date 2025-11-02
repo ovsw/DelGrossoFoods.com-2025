@@ -202,6 +202,26 @@
   }
 }
 
+[data-brand="lfd"] {
+  --color-brand-green: #c49a3a;
+  --color-brand-green-text: #1e1507;
+  --color-brand-yellow: #821717;
+  --color-brand-yellow-text: #f8efe3;
+  --color-brand-red: #651114;
+  --color-brand-red-text: #f8efe3;
+
+  --color-brand-green-500: var(--color-brand-green);
+
+  --color-th-brown-400: #f6efe6;
+  --color-th-brown-500: #ede2cf;
+  --color-th-brown-600: #ddceb0;
+  --color-th-brown-700: #c5b294;
+
+  --color-th-green-500: #8e7b5b;
+  --color-th-green-600: #7a694c;
+  --color-th-green-700: #66563f;
+}
+
 @layer utilities {
   .page-builder > div:first-of-type > section.pt-section-default {
     padding-block-start: var(--section-spacing-page-top);

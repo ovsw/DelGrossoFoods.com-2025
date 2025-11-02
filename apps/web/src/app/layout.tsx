@@ -21,6 +21,7 @@ import { PreviewBar } from "@/components/systems/preview/preview-bar";
 import { Providers } from "@/components/systems/providers";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
 import { SanityLive } from "@/lib/sanity/live";
+import { getActiveSite } from "@/lib/site";
 
 const fontSerif = Libre_Baskerville({
   subsets: ["latin"],
@@ -46,11 +47,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const foxyConfig = resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN);
+  const { brand } = await getActiveSite();
 
   return (
     <html
       lang="en"
       className="light"
+      data-brand={brand}
       data-scroll-behavior="smooth"
       style={{ colorScheme: "light" } as React.CSSProperties}
     >

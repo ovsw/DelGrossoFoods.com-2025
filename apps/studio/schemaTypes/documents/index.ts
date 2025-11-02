@@ -16,6 +16,7 @@ import { recipeType } from "./recipeType";
 import { sauce } from "./sauce";
 import { sauceIndex } from "./sauce-index";
 import { settings } from "./settings";
+import { site } from "./site";
 import { storeLocator } from "./store-locator";
 
 export const singletons = [
@@ -33,6 +34,7 @@ export const singletons = [
 ];
 
 export const documents = [
+  site,
   blog,
   page,
   faq,

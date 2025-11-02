@@ -293,7 +293,7 @@ export function stringToPathname(input: string, options?: PathnameOptions) {
   return `/${withoutTrailingSlash}`.replace(/\/+/g, "/");
 }
 
-export function createPageTemplate() {
+export function createPageTemplate(siteId: string) {
   const pages = [
     {
       title: "Page",
@@ -305,15 +305,21 @@ export function createPageTemplate() {
     },
   ];
   return pages.map((page) => {
+    const templateId = `${page.type}-with-slug-${siteId.toLowerCase()}`;
     return {
       schemaType: page.type,
-      id: getTemplateName(page.type),
+      id: templateId,
       title: `${page.title} with slug`,
       value: (props: { slug?: string }) => {
+        const slugValue = props.slug
+          ? { slug: { current: props.slug, _type: "slug" } }
+          : {};
         return {
-          ...(props.slug
-            ? { slug: { current: props.slug, _type: "slug" } }
-            : {}),
+          site: {
+            _type: "reference",
+            _ref: siteId,
+          },
+          ...slugValue,
         };
       },
       parameters: [
@@ -332,17 +338,28 @@ export function createPageTemplate() {
  * In production, requires SANITY_STUDIO_PRESENTATION_URL to be set.
  * @throws {Error} If SANITY_STUDIO_PRESENTATION_URL is not set in production
  */
-export const getPresentationUrl = () => {
+export const getPresentationUrlForSite = (siteId: string) => {
   if (process.env.NODE_ENV === "development") {
-    return "http://localhost:3000";
-  }
-
-  const presentationUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
-  if (!presentationUrl) {
-    throw new Error(
-      "SANITY_STUDIO_PRESENTATION_URL must be set in production environment",
+    const envKey = `SANITY_STUDIO_PRESENTATION_URL_${siteId}`;
+    const override = process.env[envKey];
+    if (override) return override;
+    return (
+      process.env.SANITY_STUDIO_PRESENTATION_URL ?? "http://localhost:3000"
     );
   }
 
-  return presentationUrl;
+  const envKey = `SANITY_STUDIO_PRESENTATION_URL_${siteId}`;
+  const siteSpecific = process.env[envKey];
+  if (siteSpecific) return siteSpecific;
+
+  const base = process.env.SANITY_STUDIO_PRESENTATION_URL;
+  if (!base) {
+    throw new Error(
+      `Set SANITY_STUDIO_PRESENTATION_URL or ${envKey} to enable Presentation previews`,
+    );
+  }
+
+  return base;
 };
+
+export const getPresentationUrl = getPresentationUrlForSite;

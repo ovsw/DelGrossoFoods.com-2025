@@ -12,8 +12,9 @@ import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
-  createUniqueSlugRule,
+  isUniqueWithinSite,
 } from "../../utils/slug-validation";
+import { siteReferenceField } from "../common";
 
 export const blog = defineType({
   name: "blog",
@@ -26,6 +27,10 @@ export const blog = defineType({
     "A blog post that will be published on the website. Add a title, description, author, and content to create a new article for readers.",
   fields: [
     orderRankField({ type: "blog" }),
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.MAIN_CONTENT,
+    }),
     defineField({
       name: "title",
       type: "string",
@@ -68,10 +73,10 @@ export const blog = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) => [
         Rule.required().error("A URL slug is required"),
-        Rule.custom(createUniqueSlugRule()),
         Rule.custom(
           createSlugValidator({
             documentType: "Blog post",

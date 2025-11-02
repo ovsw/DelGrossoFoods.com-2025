@@ -31,6 +31,26 @@ export const productType = defineType({
       validation: (Rule) => Rule.required().error("Product name is required."),
     }),
     defineField({
+      name: "sites",
+      title: "Sites",
+      description: "Select every site where this product should appear",
+      type: "array",
+      group: "basic",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "site" }],
+          options: {
+            disableNew: true,
+          },
+        }),
+      ],
+      validation: (Rule) =>
+        Rule.required()
+          .min(1)
+          .error("Select at least one site for this product."),
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       title: "URL",

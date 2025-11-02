@@ -3,8 +3,9 @@ import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
-import { createSlug, isUnique } from "../../utils/slug";
-import { pageBuilderField } from "../common";
+import { createSlug } from "../../utils/slug";
+import { isUniqueWithinSite } from "../../utils/slug-validation";
+import { pageBuilderField, siteReferenceField } from "../common";
 
 export const recipeIndex = defineType({
   name: "recipeIndex",
@@ -14,6 +15,10 @@ export const recipeIndex = defineType({
     "This is the main page that shows all recipes. You can customize how the recipe listing page looks, what title and SEO settings you want to use.",
   groups: GROUPS,
   fields: [
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.HEADER,
+    }),
     defineField({
       name: "title",
       type: "string",
@@ -48,7 +53,7 @@ export const recipeIndex = defineType({
       options: {
         source: "title",
         slugify: createSlug,
-        isUnique: isUnique,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) => Rule.required(),
     }),

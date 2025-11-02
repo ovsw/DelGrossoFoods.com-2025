@@ -2,6 +2,26 @@ import { defineField } from "sanity";
 
 import { GROUP } from "../utils/constant";
 
+export const siteReferenceField = defineField({
+  name: "site",
+  title: "Site",
+  description:
+    "Select which website this content belongs to so editors see it in the correct workspace",
+  type: "reference",
+  to: [{ type: "site" }],
+  validation: (rule) => rule.required(),
+});
+
+export const sitesReferenceField = defineField({
+  name: "sites",
+  title: "Sites",
+  description:
+    "Choose every site where this content should appear. Use this for shared content across brands.",
+  type: "array",
+  of: [{ type: "reference", to: [{ type: "site" }] }],
+  validation: (rule) => rule.required().min(1),
+});
+
 export const richTextField = defineField({
   name: "richText",
   type: "richText",

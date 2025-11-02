@@ -5,7 +5,11 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSlugValidator,
+  isUniqueWithinSite,
+} from "../../utils/slug-validation";
+import { siteReferenceField } from "../common";
 
 export const historyPage = defineType({
   name: "historyPage",
@@ -16,6 +20,10 @@ export const historyPage = defineType({
     "The main history page showcasing the DelGrosso Foods timeline and additional content sections",
   groups: GROUPS,
   fields: [
+    defineField({
+      ...siteReferenceField,
+      group: GROUP.HEADER,
+    }),
     defineField({
       name: "title",
       title: "Title",
@@ -54,6 +62,7 @@ export const historyPage = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: isUniqueWithinSite,
       },
       validation: (Rule) =>
         Rule.required().custom(

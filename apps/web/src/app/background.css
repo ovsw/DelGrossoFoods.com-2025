@@ -1,3 +1,15 @@
+:root {
+  --app-background-noise-image: url("/images/bg/noise-red.svg");
+  --app-background-gradient-end: #e3d8b9;
+  --app-background-gradient-tint: 10%;
+}
+
+[data-brand="lfd"] {
+  --app-background-noise-image: url("/images/bg/noise-red.svg");
+  --app-background-gradient-end: #efe3cd;
+  --app-background-gradient-tint: 6%;
+}
+
 /* Site-specific background for web app (fixed to viewport, iOS-friendly) */
 html {
   background-color: var(--color-th-brown-400);
@@ -5,11 +17,16 @@ html {
 
 body {
   background-image:
-    url("/images/bg/noise-red.svg"),
+    var(--app-background-noise-image),
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--color-th-brown-400), transparent 10%) 0rem,
-      #e3d8b9 30rem
+      color-mix(
+          in oklab,
+          var(--color-th-brown-400),
+          transparent var(--app-background-gradient-tint)
+        )
+        0rem,
+      var(--app-background-gradient-end) 30rem
     );
   background-repeat: repeat, no-repeat;
   background-position:

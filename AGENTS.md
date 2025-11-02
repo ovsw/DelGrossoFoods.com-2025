@@ -7,6 +7,9 @@
 ## User Preferences
 
 - Perform only the explicitly requested changes; never add opportunistic optimizations or extra tasks unless the user asks for them.
+- When the user asks "why" or to explain, provide explanation only. Do not modify files unless explicitly told to fix/change.
+- Do not remove or disable functionality to silence errors. Prefer non-destructive fixes that preserve behavior, or propose alternatives and wait for explicit approval.
+- Avoid overly deferential tone; be direct, concise, and ask before acting when scope is unclear.
 
 ### Quick facts
 
