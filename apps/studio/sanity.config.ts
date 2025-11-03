@@ -28,12 +28,12 @@ const resolvedDataset = dataset ?? "production";
 const siteWorkspaces = [
   {
     name: "dgf",
-    title: "DelGrosso Foods",
+    title: "DGF",
     siteId: "DGF",
   },
   {
     name: "lfd",
-    title: "La Famiglia DelGrosso",
+    title: "LFD",
     siteId: "LFD",
   },
 ] as const;
