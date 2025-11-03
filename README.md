@@ -44,7 +44,8 @@ Clone the project. Make sure you have the following installed on your system:
 > - `SANITY_STUDIO_PROJECT_ID`
 > - `SANITY_STUDIO_DATASET`
 > - `SANITY_STUDIO_TITLE`
-> - `SANITY_STUDIO_PRESENTATION_URL`
+> - `SANITY_STUDIO_PRESENTATION_URL_DGF`
+> - `SANITY_STUDIO_PRESENTATION_URL_LFD`
 
 #### 3. Create the Next.JS `apps/next/.env` file with the following vriables
 
@@ -86,6 +87,44 @@ The Sanity 3 schemas for all document types are defined in the `studio/schemaTyp
 
 The Next.JS 15 front-end is in the `web/` folder, familiarize yourself with its structure to get started.
 
+## Multi-site preview & deployment
+
+This repo deploys **two** branded sites from the same codebase. Each brand maps to its own Vercel project and Sanity workspace. Preview, publishing, and static generation depend on a small set of environment variables and host mappings.
+
+### Environment matrix
+
+| Location                           | Variable                             | Value                                        |
+| ---------------------------------- | ------------------------------------ | -------------------------------------------- |
+| `apps/web` (local builds)          | `BUILD_SITE_ID`                      | `DGF` or `LFD` (set per build/start command) |
+| Vercel project → DGF               | `BUILD_SITE_ID`                      | `DGF`                                        |
+| Vercel project → LFD               | `BUILD_SITE_ID`                      | `LFD`                                        |
+| `apps/studio/.env` & Studio deploy | `SANITY_STUDIO_PRESENTATION_URL_DGF` | DGF preview origin (`https://dgf…`)          |
+| `apps/studio/.env` & Studio deploy | `SANITY_STUDIO_PRESENTATION_URL_LFD` | LFD preview origin (`https://lfd…`)          |
+
+Sanity Studio will refuse to open Presentation if either site-specific variable is missing (`apps/studio/utils/helper.ts`). Likewise, Next.js builds fail if `BUILD_SITE_ID` is absent (`apps/web/src/lib/site.ts`).
+
+### How preview routing works
+
+- Each Sanity workspace (DGF / LFD) is configured with Presentation origins in `sanity.config.ts`. The custom `presentationUrl` plugin reads the document’s `site` reference and opens the matching domain.
+- The Next.js app derives the site by Host header or `BUILD_SITE_ID`. During static generation, `BUILD_SITE_ID` tells Sanity queries which dataset slice to pull; at runtime, middleware resolves the host (`apps/web/src/lib/site.ts`).
+- Shared documents (e.g., sauces available on both brands) preview on the workspace domain the editor is currently using. The doc can still include both site associations in content logic.
+
+### Checklist before deploying
+
+1. **Vercel projects**: two projects pointing to the same repo/branch, each with the correct `BUILD_SITE_ID` and domain (`delgrossofoods.com` vs `delgrossosauce.com`).
+2. **Sanity env vars**: set both `SANITY_STUDIO_PRESENTATION_URL_*` variables in local `.env`, Vercel Studio deploy secrets, and Sanity CLI deploy contexts.
+3. **Sanity settings**: add both domains (and their staging subdomains) to CORS and Presentation allowed origins.
+4. **Hosts file (local)**: map `dgf.localhost` and `lfd.localhost` to `127.0.0.1`; keep the mkcert certificate covering `*.localhost`.
+5. **Build validation**: run `BUILD_SITE_ID=DGF pnpm --filter web build` and `BUILD_SITE_ID=LFD pnpm --filter web build` before pushing. Missing env vars or host mappings will fail fast.
+6. **Preview smoke test**: from each Sanity workspace, use “Open in Presentation” to confirm the correct domain opens with the expected content.
+
+### Common pitfalls
+
+- Forgetting to set `BUILD_SITE_ID` leads to the wrong site being statically generated or builds crashing in CI.
+- Omitting `SANITY_STUDIO_PRESENTATION_URL_<SITE>` prevents the Presentation button from working (helper throws immediately).
+- New domains must be added to `HOST_TO_SITE_ID` in `apps/web/src/lib/site.ts`; otherwise requests will error with “Unable to resolve site id for host…”.
+- DNS changes require matching updates to Sanity CORS + presentation origins, or editors will see blank previews.
+
 ### Deployment
 
 #### 1. Deploying Sanity Studio
@@ -98,16 +137,17 @@ The project includes a GitHub Actions workflow [`deploy-sanity.yml`](https://raw
 > - `SANITY_STUDIO_PROJECT_ID`
 > - `SANITY_STUDIO_DATASET`
 > - `SANITY_STUDIO_TITLE`
-> - `SANITY_STUDIO_PRESENTATION_URL`
+> - `SANITY_STUDIO_PRESENTATION_URL_DGF`
+> - `SANITY_STUDIO_PRESENTATION_URL_LFD`
 > - `SANITY_STUDIO_PRODUCTION_HOSTNAME`
 
 Set `SANITY_STUDIO_PRODUCTION_HOSTNAME` to whatever you want your deployed Sanity Studio hostname to be. Eg. for `SANITY_STUDIO_PRODUCTION_HOSTNAME=my-cool-project` you'll get a studio URL of `https://my-cool-project.sanity.studio` (and `<my-branch-name>-my-cool-project.sanity.studio` for PR previews builds done automatically via the `deploy-sanity.yml` github CI workflow when you open a PR.)
 
-Set `SANITY_STUDIO_PRESENTATION_URL` to your web app front-end URL (from the Vercel deployment). This URL is required for production deployments and should be:
+Set `SANITY_STUDIO_PRESENTATION_URL_DGF` and `SANITY_STUDIO_PRESENTATION_URL_LFD` to the presentation origins for each brand. These URLs are required for both local development and production deployments and should be:
 
-- Set in your GitHub repository secrets for CI/CD deployments
-- Set in your local environment if deploying manually with `npx sanity deploy`
-- Not needed for local development, where preview will automatically use http://localhost:3000
+- Added to your GitHub repository secrets for CI/CD deployments (both variables)
+- Added to your local `.env` files when deploying manually with `npx sanity deploy`
+- Kept in sync with the domains assigned to the DGF and LFD Vercel projects
 
 You can then manually deploy from your Studio directory (`/studio`) using:
 

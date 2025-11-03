@@ -338,33 +338,21 @@ export function createPageTemplate(siteId: string) {
 }
 
 /**
- * Determines the presentation URL based on the current environment.
- * Uses localhost:3000 for development.
- * In production, requires SANITY_STUDIO_PRESENTATION_URL to be set.
- * @throws {Error} If SANITY_STUDIO_PRESENTATION_URL is not set in production
+ * Resolves the Presentation origin for a given site workspace.
+ * Every site requires its own SANITY_STUDIO_PRESENTATION_URL_<SITEID> value;
+ * missing variables throw immediately so misconfigurations surface early.
  */
 export const getPresentationUrlForSite = (siteId: string) => {
-  if (process.env.NODE_ENV === "development") {
-    const envKey = `SANITY_STUDIO_PRESENTATION_URL_${siteId}`;
-    const override = process.env[envKey];
-    if (override) return override;
-    return (
-      process.env.SANITY_STUDIO_PRESENTATION_URL ?? "http://localhost:3000"
-    );
-  }
-
   const envKey = `SANITY_STUDIO_PRESENTATION_URL_${siteId}`;
-  const siteSpecific = process.env[envKey];
-  if (siteSpecific) return siteSpecific;
+  const origin = process.env[envKey];
 
-  const base = process.env.SANITY_STUDIO_PRESENTATION_URL;
-  if (!base) {
-    throw new Error(
-      `Set SANITY_STUDIO_PRESENTATION_URL or ${envKey} to enable Presentation previews`,
-    );
+  if (origin) {
+    return origin;
   }
 
-  return base;
+  throw new Error(
+    `Missing ${envKey}. Each site workspace requires its own Presentation origin.`,
+  );
 };
 
 export const getPresentationUrl = getPresentationUrlForSite;
