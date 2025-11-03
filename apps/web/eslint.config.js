@@ -4,6 +4,13 @@ import { nextJsConfig } from "@workspace/eslint-config/next-js";
 export default [
   ...nextJsConfig,
   {
+    settings: {
+      turbo: {
+        rootDir: ["../../"],
+      },
+    },
+  },
+  {
     ignores: ["**/next-env.d.ts", "**/.next/**"],
   },
   {

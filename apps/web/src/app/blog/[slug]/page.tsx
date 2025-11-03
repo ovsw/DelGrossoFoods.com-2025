@@ -8,6 +8,7 @@ import { client } from "@/lib/sanity/client";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryBlogPaths, queryBlogSlugPageData } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
+import { requireBuildSiteId } from "@/lib/site";
 
 async function fetchBlogSlugPageData(slug: string, stega = true) {
   return await sanityFetch({
@@ -18,7 +19,8 @@ async function fetchBlogSlugPageData(slug: string, stega = true) {
 }
 
 async function fetchBlogPaths() {
-  const slugs = await client.fetch(queryBlogPaths);
+  const siteId = requireBuildSiteId("blog pages");
+  const slugs = await client.fetch(queryBlogPaths, { siteId });
   const paths: { slug: string }[] = [];
   for (const slug of slugs) {
     if (!slug) continue;

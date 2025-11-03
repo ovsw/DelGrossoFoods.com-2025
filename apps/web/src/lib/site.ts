@@ -7,7 +7,7 @@ import {
   SITE_ID_COOKIE_NAME,
 } from "./site/constants";
 
-const DEFAULT_SITE_ID: KnownSiteId = "DGF";
+const BUILD_SITE_ID = normalizeSiteId(process.env.BUILD_SITE_ID);
 
 export const brandBySiteId = {
   DGF: "dgf",
@@ -17,14 +17,16 @@ export const brandBySiteId = {
 type BrandKey = (typeof brandBySiteId)[KnownSiteId];
 
 const HOST_TO_SITE_ID: Record<string, KnownSiteId> = {
-  "localhost:3000": DEFAULT_SITE_ID,
-  "127.0.0.1:3000": DEFAULT_SITE_ID,
+  "localhost:3000": "DGF",
+  "127.0.0.1:3000": "DGF",
   "dgf.localhost:3000": "DGF",
   "lfd.localhost:3000": "LFD",
+  "dgf-2025.vercel.app": "DGF",
+  "lfd-2025.vercel.app": "LFD",
   "delgrossofoods.com": "DGF",
   "www.delgrossofoods.com": "DGF",
-  "lafamigliadelgrosso.com": "LFD",
-  "www.lafamigliadelgrosso.com": "LFD",
+  "delgrossosauce.com": "LFD",
+  "www.delgrossosauce.com": "LFD",
 };
 
 const hostFallbacks: Array<{
@@ -49,8 +51,6 @@ const hostFallbacks: Array<{
   },
 ];
 
-const DEFAULT_BRAND = brandBySiteId[DEFAULT_SITE_ID];
-
 export async function resolveSiteId(): Promise<KnownSiteId> {
   const headerList = await headers();
   const headerSiteId = normalizeSiteId(headerList.get("x-dgf-site-id"));
@@ -66,9 +66,18 @@ export async function resolveSiteId(): Promise<KnownSiteId> {
     return cookieSiteId;
   }
 
-  const host = headerList.get("host")?.toLowerCase() ?? "";
+  const host = headerList.get("host")?.toLowerCase();
 
-  if (!host) return DEFAULT_SITE_ID;
+  if (!host) {
+    const buildSiteId = getBuildSiteId();
+    if (buildSiteId) {
+      return buildSiteId;
+    }
+
+    throw new Error(
+      "Unable to resolve site id: missing host header and BUILD_SITE_ID not set",
+    );
+  }
 
   if (host in HOST_TO_SITE_ID) {
     return HOST_TO_SITE_ID[host]!;
@@ -77,14 +86,30 @@ export async function resolveSiteId(): Promise<KnownSiteId> {
   const fallback = hostFallbacks.find(({ match }) => match(host));
   if (fallback) return fallback.siteId;
 
-  return DEFAULT_SITE_ID;
+  throw new Error(`Unable to resolve site id for host: ${host}`);
+}
+
+export function getBuildSiteId(): KnownSiteId | undefined {
+  return BUILD_SITE_ID;
+}
+
+export function requireBuildSiteId(context?: string): KnownSiteId {
+  if (BUILD_SITE_ID) {
+    return BUILD_SITE_ID;
+  }
+
+  const message =
+    "BUILD_SITE_ID environment variable must be set for static generation" +
+    (context ? ` (${context})` : "");
+
+  throw new Error(message);
 }
 
 export function resolveBrandKey(siteId: string): BrandKey {
   if (isKnownSiteId(siteId)) {
     return brandBySiteId[siteId];
   }
-  return DEFAULT_BRAND;
+  throw new Error(`Unknown site id: ${siteId}`);
 }
 
 export async function getActiveSite() {
