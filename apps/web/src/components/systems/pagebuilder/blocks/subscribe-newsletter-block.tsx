@@ -4,11 +4,13 @@ import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
+import { createDataAttribute } from "next-sanity";
 import { useFormStatus } from "react-dom";
 
 // import { newsletterSubmission } from "@/action/newsletter-submission";
 import { RichText } from "@/components/elements/rich-text";
 import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
+import { dataset, projectId, studioUrl } from "@/config";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
@@ -78,8 +80,47 @@ export function SubscribeNewsletterBlock({
   helperText,
   spacing,
   isPageTop = false,
-}: SubscribeNewsletterProps) {
+  sanityDocumentId,
+  sanityDocumentType,
+  _key,
+}: SubscribeNewsletterProps & {
+  sanityDocumentId?: string;
+  sanityDocumentType?: string;
+}) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const titleDataAttribute =
+    sanityDocumentId && sanityDocumentType
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].title`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+  const subTitleDataAttribute =
+    sanityDocumentId && sanityDocumentType
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].subTitle`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+  const helperTextDataAttribute =
+    sanityDocumentId && sanityDocumentType
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].helperText`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
 
   return (
     <Section
@@ -92,15 +133,20 @@ export function SubscribeNewsletterBlock({
         <div className="relative isolate overflow-hidden rounded-3xl bg-brand-green px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
           <SurfaceShineOverlay className="rounded-3xl" />
           <div className="relative z-10 mx-auto max-w-3xl space-y-8 text-center">
-            <h2 className="text-3xl font-semibold text-brand-green-text text-balance sm:text-4xl md:text-5xl">
+            <h2
+              className="text-3xl font-semibold text-brand-green-text text-balance sm:text-4xl md:text-5xl"
+              data-sanity={titleDataAttribute}
+            >
               {title}
             </h2>
             {subTitle ? (
-              <RichText
-                richText={subTitle}
-                invert
-                className="prose-base text-balance"
-              />
+              <div data-sanity={subTitleDataAttribute}>
+                <RichText
+                  richText={subTitle}
+                  invert
+                  className="prose-base text-balance"
+                />
+              </div>
             ) : null}
             <Form
               className="mx-auto grid w-full max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-0"
@@ -124,11 +170,13 @@ export function SubscribeNewsletterBlock({
               <SubscribeNewsletterButton className="sm:rounded-l-none" />
             </Form>
             {helperText ? (
-              <RichText
-                richText={helperText}
-                invert
-                className="prose-sm text-balance opacity-80"
-              />
+              <div data-sanity={helperTextDataAttribute}>
+                <RichText
+                  richText={helperText}
+                  invert
+                  className="prose-sm text-balance opacity-80"
+                />
+              </div>
             ) : null}
           </div>
         </div>

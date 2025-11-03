@@ -2,9 +2,11 @@ import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import Link from "next/link";
+import { createDataAttribute } from "next-sanity";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
+import { dataset, projectId, studioUrl } from "@/config";
 import {
   meatMap,
   tagMap,
@@ -48,7 +50,13 @@ export function FeaturedRecipesBlock({
   recipes,
   spacing,
   isPageTop = false,
-}: FeaturedRecipesBlockProps) {
+  sanityDocumentId,
+  sanityDocumentType,
+  _key,
+}: FeaturedRecipesBlockProps & {
+  sanityDocumentId?: string;
+  sanityDocumentType?: string;
+}) {
   if (!recipes?.length) {
     return null;
   }
@@ -65,17 +73,60 @@ export function FeaturedRecipesBlock({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           {eyebrow ? (
-            <Eyebrow text={eyebrow} className="text-brand-green" />
+            <Eyebrow
+              text={eyebrow}
+              className="text-brand-green"
+              data-sanity={
+                sanityDocumentId && sanityDocumentType
+                  ? createDataAttribute({
+                      id: sanityDocumentId,
+                      type: sanityDocumentType,
+                      path: `pageBuilder[_key=="${_key}"].eyebrow`,
+                      baseUrl: studioUrl,
+                      projectId,
+                      dataset,
+                    }).toString()
+                  : undefined
+              }
+            />
           ) : null}
 
           {title ? (
-            <HeadingTag className="mt-3 text-pretty text-3xl font-semibold tracking-tight text-th-dark-900 sm:text-4xl">
+            <HeadingTag
+              className="mt-3 text-pretty text-3xl font-semibold tracking-tight text-th-dark-900 sm:text-4xl"
+              data-sanity={
+                sanityDocumentId && sanityDocumentType
+                  ? createDataAttribute({
+                      id: sanityDocumentId,
+                      type: sanityDocumentType,
+                      path: `pageBuilder[_key=="${_key}"].title`,
+                      baseUrl: studioUrl,
+                      projectId,
+                      dataset,
+                    }).toString()
+                  : undefined
+              }
+            >
               {title}
             </HeadingTag>
           ) : null}
 
           {intro ? (
-            <p className="mt-4 text-pretty text-base text-th-dark-700 sm:text-lg">
+            <p
+              className="mt-4 text-pretty text-base text-th-dark-700 sm:text-lg"
+              data-sanity={
+                sanityDocumentId && sanityDocumentType
+                  ? createDataAttribute({
+                      id: sanityDocumentId,
+                      type: sanityDocumentType,
+                      path: `pageBuilder[_key=="${_key}"].intro`,
+                      baseUrl: studioUrl,
+                      projectId,
+                      dataset,
+                    }).toString()
+                  : undefined
+              }
+            >
               {intro}
             </p>
           ) : null}

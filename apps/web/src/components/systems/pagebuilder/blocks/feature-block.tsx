@@ -52,6 +52,42 @@ export function FeatureBlock({
         }).toString()
       : undefined;
 
+  const titleDataAttribute =
+    sanityDocumentId && sanityDocumentType && _key
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].title`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+
+  const badgeDataAttribute =
+    sanityDocumentId && sanityDocumentType && _key
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].badge`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+
+  const richTextDataAttribute =
+    sanityDocumentId && sanityDocumentType && _key
+      ? createDataAttribute({
+          id: sanityDocumentId,
+          type: sanityDocumentType,
+          path: `pageBuilder[_key=="${_key}"].richText`,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : undefined;
+
   const imageFrameClass = cn(
     "relative aspect-[4/3] ",
     isImageFit
@@ -98,15 +134,24 @@ export function FeatureBlock({
             {/* Left side content */}
             <div className="space-y-8 lg:pr-8">
               {badge && (
-                <Eyebrow text={badge} className="text-brand-green-text" />
+                <Eyebrow
+                  text={badge}
+                  className="text-brand-green-text"
+                  data-sanity={badgeDataAttribute}
+                />
               )}
               {title && (
-                <h2 className="text-3xl font-bold tracking-tight text-brand-green-text md:text-4xl lg:text-5xl">
+                <h2
+                  className="text-3xl font-bold tracking-tight text-brand-green-text md:text-4xl lg:text-5xl"
+                  data-sanity={titleDataAttribute}
+                >
                   {title}
                 </h2>
               )}
               {richText && (
-                <RichText richText={richText} invert className="max-w-none" />
+                <div data-sanity={richTextDataAttribute}>
+                  <RichText richText={richText} invert className="max-w-none" />
+                </div>
               )}
               {buttons && (
                 <div className="flex flex-wrap gap-4 pt-4">

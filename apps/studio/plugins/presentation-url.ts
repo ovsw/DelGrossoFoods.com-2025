@@ -109,7 +109,9 @@ export const presentationUrl = ({
           icon: EarthGlobeIcon,
           title: "Open in Presentation",
           onAction: handlePresentationOpen,
-          hidden: Boolean(presentation) || props.path.length > 0,
+          // Show on the document root only. Don't hide based on PresentationContext,
+          // since that context can be defined in Studio even when not actively previewing.
+          hidden: props.path.length > 0,
           renderAsButton: true,
           disabled: props.documentId === "root",
         };

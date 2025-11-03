@@ -164,7 +164,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.cta;
           return (
             <div key={`cta-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -172,7 +177,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.longForm;
           return (
             <div key={`longForm-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -180,7 +190,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.faqAccordion;
           return (
             <div key={`faqAccordion-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -201,7 +216,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.featureCardsIcon;
           return (
             <div key={`featureCardsIcon-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -212,7 +232,12 @@ function useBlockRenderer(id: string, type: string) {
               key={`subscribeNewsletter-${_key}`}
               data-sanity={dataAttribute}
             >
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -220,7 +245,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.imageLinkCards;
           return (
             <div key={`imageLinkCards-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }
@@ -228,7 +258,12 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.featuredRecipes;
           return (
             <div key={`featuredRecipes-${_key}`} data-sanity={dataAttribute}>
-              <Component {...block} isPageTop={isFirstBlock} />
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
             </div>
           );
         }

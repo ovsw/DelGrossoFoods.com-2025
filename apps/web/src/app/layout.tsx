@@ -7,7 +7,6 @@ import {
 } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
-import { VisualEditing } from "next-sanity";
 import { Suspense } from "react";
 
 import { AnnouncerGuard } from "@/components/elements/a11y/announcer-guard";
@@ -17,6 +16,7 @@ import { FoxycartProvider } from "@/components/features/cart/foxycart-provider";
 import { FooterServer, FooterSkeleton } from "@/components/features/footer";
 import { Header } from "@/components/features/header";
 import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-tolerance";
+import { PresentationVisualEditing } from "@/components/systems/preview/presentation-visual-editing";
 import { PreviewBar } from "@/components/systems/preview/preview-bar";
 import { Providers } from "@/components/systems/providers";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
@@ -86,12 +86,8 @@ export default async function RootLayout({
           <CombinedJsonLd includeWebsite includeOrganization />
           {/* FoxyCart Sidecart global listener */}
           <FoxycartProvider />
-          {(await draftMode()).isEnabled && (
-            <>
-              <PreviewBar />
-              <VisualEditing />
-            </>
-          )}
+          {(await draftMode()).isEnabled && <PreviewBar />}
+          <PresentationVisualEditing />
         </Providers>
         {/* {process.env.NODE_ENV === "development" &&
           process.env.PINY_VISUAL_SELECT === "true" && (
@@ -105,9 +101,7 @@ export default async function RootLayout({
             strategy="beforeInteractive"
           />
         ) : null}
-        <Suspense fallback={null}>
-          <SanityLive />
-        </Suspense>
+        <SanityLive />
       </body>
     </html>
   );

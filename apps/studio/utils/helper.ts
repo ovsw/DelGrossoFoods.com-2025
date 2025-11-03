@@ -10,12 +10,17 @@ export const isRelativeUrl = (url: string) =>
   url.startsWith("/") || url.startsWith("#") || url.startsWith("?");
 
 export const isValidUrl = (url: string) => {
+  if (typeof url !== "string") return false;
+  const value = url.trim();
+  if (!value) return false;
+  // Short-circuit for relative URLs to avoid constructing URL and spamming console
+  if (isRelativeUrl(value)) return true;
   try {
-    new URL(url);
+    // Only absolute URLs reach this point
+    new URL(value);
     return true;
-  } catch (e) {
-    console.error(e);
-    return isRelativeUrl(url);
+  } catch {
+    return false;
   }
 };
 

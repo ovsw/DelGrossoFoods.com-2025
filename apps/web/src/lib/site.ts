@@ -58,7 +58,7 @@ export async function resolveSiteId(): Promise<KnownSiteId> {
     return headerSiteId;
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const cookieSiteId = normalizeSiteId(
     cookieStore.get(SITE_ID_COOKIE_NAME)?.value,
   );

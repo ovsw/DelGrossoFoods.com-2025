@@ -9,7 +9,6 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: process.env.NODE_ENV === "production",
-  perspective: "published",
   // Always emit stega metadata for visible content so Presentation
   // click-to-edit works across environments. Use stegaClean only for
   // a11y/logic where needed.
