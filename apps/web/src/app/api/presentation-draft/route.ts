@@ -10,4 +10,6 @@ export const dynamic = "force-dynamic";
 export const { GET } = defineEnableDraftMode({
   // Force non-CDN + token for secret validation and draft access
   client: client.withConfig({ token, useCdn: false }),
+  // In dev, set Secure + SameSite=None so cookies are accepted in the Presentation iframe
+  secureDevMode: true,
 });
