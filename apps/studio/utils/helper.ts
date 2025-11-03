@@ -342,16 +342,37 @@ export function createPageTemplate(siteId: string) {
  * Every site requires its own SANITY_STUDIO_PRESENTATION_URL_<SITEID> value;
  * missing variables throw immediately so misconfigurations surface early.
  */
-export const getPresentationUrlForSite = (siteId: string) => {
-  const envKey = `SANITY_STUDIO_PRESENTATION_URL_${siteId}`;
-  const origin = process.env[envKey];
+// NOTE: Studio builds only inline statically referenced env vars.
+// Avoid dynamic process.env[envKey] lookups which are undefined in production bundles.
+const PRESENTATION_ORIGINS: Record<"DGF" | "LFD", string | undefined> = {
+  DGF: process.env.SANITY_STUDIO_PRESENTATION_URL_DGF,
+  LFD: process.env.SANITY_STUDIO_PRESENTATION_URL_LFD,
+};
 
-  if (origin) {
-    return origin;
+export const getPresentationUrlForSite = (siteId: string) => {
+  let origin: string | undefined;
+
+  switch (siteId) {
+    case "DGF":
+      origin = PRESENTATION_ORIGINS.DGF;
+      break;
+    case "LFD":
+      origin = PRESENTATION_ORIGINS.LFD;
+      break;
+    default:
+      origin = undefined;
+  }
+
+  if (origin) return origin;
+
+  if (siteId === "DGF" || siteId === "LFD") {
+    throw new Error(
+      `Missing SANITY_STUDIO_PRESENTATION_URL_${siteId}. Each site workspace requires its own Presentation origin.`,
+    );
   }
 
   throw new Error(
-    `Missing ${envKey}. Each site workspace requires its own Presentation origin.`,
+    `Unknown siteId "${siteId}" — add a presentation URL mapping.`,
   );
 };
 

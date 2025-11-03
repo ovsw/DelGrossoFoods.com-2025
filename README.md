@@ -155,6 +155,20 @@ You can then manually deploy from your Studio directory (`/studio`) using:
 npx sanity deploy
 ```
 
+##### Manual Studio host override (one-off testing)
+
+To deploy a temporary Studio without touching the main host, set an explicit hostname via `SANITY_STUDIO_HOSTNAME` (overrides the default host logic wired in `apps/studio/sanity.cli.ts`). Example:
+
+```bash
+cd apps/studio
+SANITY_STUDIO_HOSTNAME=delgrosso-sauces \
+SANITY_STUDIO_PRESENTATION_URL_DGF="https://<dgf-branch-domain>" \
+SANITY_STUDIO_PRESENTATION_URL_LFD="https://<lfd-branch-domain>" \
+npx sanity deploy
+```
+
+This publishes at `https://delgrosso-sauces.sanity.studio` while leaving `https://delgrossofoods.sanity.studio` unchanged. Remember to add the new Studio host and both preview domains to your Sanity project CORS settings with credentials enabled.
+
 **Note**: To use the live preview feature, your browser needs to enable third party cookies.
 
 #### 2. Next.js app Deployment to Vercel
