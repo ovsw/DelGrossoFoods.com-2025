@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -7,6 +8,11 @@ ref="${VERCEL_GIT_COMMIT_REF:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || e
 author_login="${VERCEL_GIT_COMMIT_AUTHOR_LOGIN:-}"
 author_name="${VERCEL_GIT_COMMIT_AUTHOR_NAME:-}"
 author="${author_login:-$author_name}"
+
+if [[ "$ref" == "feat/multisite-dgf-lfd" ]]; then
+  echo "🛑 Skipping build: branch feat/multisite-dgf-lfd deploys via dedicated project."
+  exit 0
+fi
 
 is_changesets_bump() {
   # 1) PRs from changesets use branches like `changeset-release/main`
