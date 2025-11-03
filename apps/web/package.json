@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --hostname 0.0.0.0",
+    "dev": "next dev --turbopack --hostname 0.0.0.0 --experimental-https --experimental-https-cert ../../dgf.localhost+4.pem --experimental-https-key ../../dgf.localhost+4-key.pem",
     "build": "next build",
     "start": "next start",
     "lint": "pnpm -w dlx eslint -c eslint.config.js . --ext .js,.jsx,.ts,.tsx",
