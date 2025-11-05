@@ -1,11 +1,10 @@
 import { EarthGlobeIcon } from "@sanity/icons";
 import { useToast } from "@sanity/ui";
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import {
-  defineDocumentFieldAction,
   definePlugin,
-  type DocumentFieldAction,
-  type DocumentFieldActionProps,
+  type DocumentActionComponent,
+  type DocumentActionProps,
   useClient,
   useGetFormValue,
 } from "sanity";
@@ -53,79 +52,72 @@ export const presentationUrl = ({
   previewOrigins,
 }: PresentationUrlPluginOptions) =>
   definePlugin(() => {
-    const openInPresentationFieldAction = defineDocumentFieldAction({
-      name: ACTION_NAME,
-      useAction: (props: DocumentFieldActionProps) => {
-        const presentation = useContext(PresentationContext);
-        const getFormValue = useGetFormValue();
-        const router = useRouter();
-        const toast = useToast();
-        const client = useClient();
+    const OpenInPresentationAction: DocumentActionComponent = (
+      props: DocumentActionProps,
+    ) => {
+      const presentation = useContext(PresentationContext);
+      const getFormValue = useGetFormValue();
+      const router = useRouter();
+      const toast = useToast();
+      const client = useClient();
 
-        const handlePresentationOpen = useCallback(async () => {
-          const slug = getFormValue(["slug", "current"]);
-          if (typeof slug !== "string" || slug.length === 0) {
-            toast.push({
-              title: "No slug found",
-              status: "error",
-              description:
-                "Please ensure the document has a valid slug before opening presentation.",
-            });
-            return;
-          }
-
-          const siteRef = getSiteRefFromForm(getFormValue);
-          const resolvedSiteId = await fetchSiteKey(client, siteRef);
-          const targetSiteId = resolvedSiteId ?? workspaceSiteId;
-
-          if (!previewOrigins[targetSiteId]) {
-            toast.push({
-              title: "Missing preview origin",
-              status: "error",
-              description: `Set SANITY_STUDIO_PRESENTATION_URL_${targetSiteId} to preview this site.`,
-            });
-            return;
-          }
-
-          const searchParams = new URLSearchParams({
-            preview: slug,
-            siteId: targetSiteId,
+      const handlePresentationOpen = async () => {
+        const slug = getFormValue(["slug", "current"]);
+        if (typeof slug !== "string" || slug.length === 0) {
+          toast.push({
+            title: "No slug found",
+            status: "error",
+            description:
+              "Please ensure the document has a valid slug before opening presentation.",
           });
+          props.onComplete?.();
+          return;
+        }
 
-          router.navigateUrl({
-            path: `/presentation?${searchParams.toString()}`,
+        const siteRef = getSiteRefFromForm(getFormValue);
+        const resolvedSiteId = await fetchSiteKey(client, siteRef);
+        const targetSiteId = resolvedSiteId ?? workspaceSiteId;
+
+        if (!previewOrigins[targetSiteId]) {
+          toast.push({
+            title: "Missing preview origin",
+            status: "error",
+            description: `Set SANITY_STUDIO_PRESENTATION_URL_${targetSiteId} to preview this site.`,
           });
-        }, [
-          client,
-          getFormValue,
-          router,
-          toast,
-          workspaceSiteId,
-          previewOrigins,
-        ]);
+          props.onComplete?.();
+          return;
+        }
 
-        return {
-          type: "action" as const,
-          icon: EarthGlobeIcon,
-          title: "Open in Presentation",
-          onAction: handlePresentationOpen,
-          // Show on the document root only. Don't hide based on PresentationContext,
-          // since that context can be defined in Studio even when not actively previewing.
-          hidden: props.path.length > 0,
-          renderAsButton: true,
-          disabled: props.documentId === "root",
-        };
-      },
-    });
+        const searchParams = new URLSearchParams({
+          preview: slug,
+          siteId: targetSiteId,
+        });
+
+        router.navigateUrl({
+          path: `/presentation?${searchParams.toString()}`,
+        });
+        props.onComplete?.();
+      };
+
+      return {
+        icon: EarthGlobeIcon,
+        label: "Open in Presentation",
+        title: "Open in Presentation",
+        onHandle: handlePresentationOpen,
+        disabled: props.id === "root",
+        hidden: Boolean(presentation),
+      };
+    };
+
+    OpenInPresentationAction.action = ACTION_NAME as any;
 
     return {
       name: "presentationUrl",
       document: {
-        unstable_fieldActions: (
-          previous: DocumentFieldAction[],
-        ): DocumentFieldAction[] => {
-          return [openInPresentationFieldAction, ...previous];
-        },
+        actions: (previousActions) => [
+          OpenInPresentationAction,
+          ...previousActions,
+        ],
       },
     };
   });
