@@ -130,30 +130,30 @@ Goal: Add `web-lfd` and `studio-lfd` by cloning the DGF pair, adjusting names/po
 
 Tasks: `web-lfd`
 
-- [ ] Copy `apps/web-dgf` → `apps/web-lfd`
-- [ ] Update app name/metadata
-- [ ] Set dev port to `3001` (e.g., `next dev --port 3001` or via env)
-- [ ] Add `.env.local` for LFD (same Sanity credentials)
-- [ ] Wire to `packages/sanity-config` (same as DGF)
-- [ ] Add `SITE_ID`/`SITE_SLUG` env to identify LFD in queries
+- [x] Copy `apps/web-dgf` → `apps/web-lfd`
+- [x] Update app name/metadata
+- [x] Set dev port to `3001` (e.g., `next dev --port 3001` or via env)
+- [x] Add `.env.local` for LFD (same Sanity credentials)
+- [x] Wire to `packages/sanity-config` (same as DGF)
+- [x] Add `SITE_ID`/`SITE_SLUG` env to identify LFD in queries
 
 Tasks: `studio-lfd`
 
-- [ ] Copy `apps/studio-dgf` → `apps/studio-lfd`
-- [ ] Update Studio name/title
-- [ ] Set dev port to `3334`
-- [ ] Add `.env` for LFD (same Sanity credentials)
-- [ ] Import schemas from `packages/sanity-schema`
-- [ ] Adjust desk/structure to filter to LFD documents (by `site` reference)
-- [ ] Configure Presentation plugin to target LFD:
-  - [ ] Local: `http://localhost:3001`
-  - [ ] Prod: `https://lfd-25.vercel.app` (via env)
+- [x] Copy `apps/studio-dgf` → `apps/studio-lfd`
+- [x] Update Studio name/title
+- [x] Set dev port to `3334`
+- [x] Add `.env` for LFD (same Sanity credentials)
+- [x] Import schemas from `packages/sanity-schema`
+- [x] Adjust desk/structure to filter to LFD documents (by `site` reference)
+- [x] Configure Presentation plugin to target LFD:
+  - [x] Local: `http://localhost:3001`
+  - [x] Prod: `https://lfd-25.vercel.app` (via env)
 
 Definition of Done
 
-- [ ] LFD Studio typegen OK: `pnpm --filter studio-lfd type`
-- [ ] LFD Web typecheck OK: `pnpm --filter web-lfd typecheck`
-- [ ] Both LFD dev servers run on 3001/3334
+- [x] LFD Studio typegen OK: `pnpm --filter studio-lfd type`
+- [x] LFD Web typecheck OK: `pnpm --filter web-lfd typecheck`
+- [x] Both LFD dev servers run on 3001/3334
 
 ---
 

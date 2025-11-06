@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
+    "dev:dgf": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
+    "dev:lfd": "turbo run dev --parallel --filter web-lfd --filter studio-lfd",
     "lint": "turbo lint",
     "check-types": "turbo check-types",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",

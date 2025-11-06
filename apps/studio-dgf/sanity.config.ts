@@ -21,6 +21,20 @@ import { structure } from "./structure";
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
 const dataset = process.env.SANITY_STUDIO_DATASET;
 const title = process.env.SANITY_STUDIO_TITLE;
+const previewOrigin =
+  process.env.NODE_ENV === "production"
+    ? getPresentationUrl()
+    : (process.env.SANITY_STUDIO_PREVIEW_ORIGIN ?? "http://localhost:3000");
+const allowedPreviewOrigins = Array.from(
+  new Set(
+    [
+      previewOrigin,
+      process.env.SANITY_STUDIO_PRESENTATION_URL,
+      process.env.SANITY_STUDIO_PREVIEW_ORIGIN,
+      "http://localhost:3001",
+    ].filter((origin): origin is string => Boolean(origin)),
+  ),
+);
 
 export default defineConfig({
   name: "default",
@@ -34,11 +48,12 @@ export default defineConfig({
         locations,
       },
       previewUrl: {
-        origin: getPresentationUrl(),
+        origin: previewOrigin,
         previewMode: {
           enable: "/api/presentation-draft",
         },
       },
+      allowOrigins: allowedPreviewOrigins,
     }),
     structureTool({
       structure,
