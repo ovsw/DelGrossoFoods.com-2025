@@ -2,10 +2,10 @@
  * One-time slug backfill for product and recipe documents.
  *
  * Usage (dry run first):
- *   pnpm -C apps/studio sanity exec scripts/backfill-slugs.ts -- --dry
+ *   pnpm --filter studio-dgf sanity exec scripts/backfill-slugs.ts -- --dry
  *
  * Apply changes:
- *   pnpm -C apps/studio sanity exec scripts/backfill-slugs.ts -- --with-user-token
+ *   pnpm --filter studio-dgf sanity exec scripts/backfill-slugs.ts -- --with-user-token
  *
  * Options:
  *   --dry               Preview changes without writing

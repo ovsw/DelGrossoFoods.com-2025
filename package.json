@@ -35,13 +35,13 @@
     "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
       "pnpm -w dlx prettier --write --ignore-unknown"
     ],
-    "apps/web/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js --fix",
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js"
+    "apps/web-dgf/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js --fix",
+      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js"
     ],
-    "apps/studio/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix",
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs"
+    "apps/studio-dgf/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs --fix",
+      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs"
     ],
     "packages/ui/**/*.{js,jsx,ts,tsx}": [
       "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix",

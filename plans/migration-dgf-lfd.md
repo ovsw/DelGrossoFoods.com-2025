@@ -90,8 +90,8 @@ Wiring
 
 Definition of Done
 
-- [x] Studio typegen passes: `pnpm --filter studio type`
-- [x] Web typecheck passes: `pnpm --filter web typecheck`
+- [x] Studio typegen passes: `pnpm --filter studio-dgf type`
+- [x] Web typecheck passes: `pnpm --filter web-dgf typecheck`
 - [x] App behavior unchanged
 
 Notes
@@ -106,17 +106,21 @@ Goal: Make the existing apps become the DGF pair without functional change.
 
 Tasks
 
-- [ ] Move `apps/web` → `apps/web-dgf`
-- [ ] Move `apps/studio` → `apps/studio-dgf`
-- [ ] Update root `package.json` lint-staged globs from specific `apps/web|studio` to cover new names (e.g., `apps/*/**/*` or explicit `web-dgf`, `studio-dgf`)
-- [ ] Update any hard-coded paths in docs/scripts
-- [ ] Ensure Next and Studio ports remain 3000/3333 for DGF
+- [x] Move `apps/web` → `apps/web-dgf`
+- [x] Move `apps/studio` → `apps/studio-dgf`
+- [x] Update root `package.json` lint-staged globs from specific `apps/web|studio` to cover new names (e.g., `apps/*/**/*` or explicit `web-dgf`, `studio-dgf`)
+- [x] Update any hard-coded paths in docs/scripts
+- [x] Ensure Next and Studio ports remain 3000/3333 for DGF
 
 Definition of Done
 
-- [ ] `pnpm --filter web-dgf typecheck` OK
-- [ ] `pnpm --filter studio-dgf type` OK
-- [ ] Local dev runs: `pnpm --filter web-dgf dev`, `pnpm --filter studio-dgf dev`
+- [x] `pnpm --filter web-dgf typecheck` OK
+- [x] `pnpm --filter studio-dgf type` OK
+- [x] Local dev runs: `pnpm --filter web-dgf dev`, `pnpm --filter studio-dgf dev`
+
+Notes
+
+- Verified Studio dev server on the default 3333 port after freeing the conflicting process.
 
 ---
 

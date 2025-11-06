@@ -2,10 +2,10 @@
  * One-time migration to rename page builder "Hero" blocks to "Feature".
  *
  * Always run a dry run first:
- *   pnpm -C apps/studio sanity exec scripts/migrate-hero-to-feature.ts -- --dry
+ *   pnpm --filter studio-dgf sanity exec scripts/migrate-hero-to-feature.ts -- --dry
  *
  * Apply the migration (requires write token or --with-user-token):
- *   pnpm -C apps/studio sanity exec scripts/migrate-hero-to-feature.ts -- --with-user-token
+ *   pnpm --filter studio-dgf sanity exec scripts/migrate-hero-to-feature.ts -- --with-user-token
  */
 
 import "dotenv/config";

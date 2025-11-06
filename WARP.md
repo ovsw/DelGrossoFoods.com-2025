@@ -9,10 +9,10 @@
 ### Quick facts
 
 - NEVER use tailwind classes like `text-[var(--color-th-dark-700)]` or `border-[var(--color-brand-green)]` for CSS variables that start with `--color-`. instead ALWAYS use the auto-generated utility classes - in this case `text-th-dark-700` or `border-brand-green`.
-- **Workspace layout**: `apps/web` (Next.js 15), `apps/studio` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
+- **Workspace layout**: `apps/web-dgf` (Next.js 15), `apps/studio-dgf` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
 - **Tooling**: pnpm (10.x), Node (>=22.12), Turbo (2.x), Prettier (3.x), ESLint (flat config).
 - **UI**: Use `shadcn` patterns via `packages/ui`. Do not add `shadcn-ui` dependency. Tailwind v4 only.
-- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web/src/lib/sanity`.
+- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web-dgf/src/lib/sanity`.
 
 ### Core commands
 
@@ -23,14 +23,14 @@
   - `pnpm check-types` → turbo check-types
   - `pnpm format` / `pnpm format:check`
 - Per package (run from repo root):
-  - Web: `pnpm -C apps/web dev|build|start|lint|lint:fix|typecheck|check`
-  - Studio: `pnpm --filter studio dev|build|deploy|lint|lint:fix|type|check`
+  - Web: `pnpm -C apps/web-dgf dev|build|start|lint|lint:fix|typecheck|check`
+  - Studio: `pnpm --filter studio-dgf dev|build|deploy|lint|lint:fix|type|check`
 
 ### Environment and secrets
 
 - Global env surfaced in build graph: `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `VERCEL_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, `VERCEL_ENV`, `NODE_ENV`.
-- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web/next.config.ts`.
-- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web/.env.local`, `apps/studio/.env`).
+- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web-dgf/next.config.ts`.
+- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web-dgf/.env.local`, `apps/studio-dgf/.env`).
 
 ### Operating procedures (AI agent)
 
@@ -42,7 +42,7 @@
 - When running pnpm for a specific workspace, prefer `pnpm --filter <workspace> ...` over `-C`/`--dir` so the commands work across pnpm versions.
 - When the user asks to “store” something in memory for this project, write it in this `AGENTS.md` file so it persists across sessions.
 - Do not roll in refactors or improvements that haven’t been explicitly requested; surface suggestions instead and wait for approval.
-- After every Sanity schema or GROQ query change, immediately run `pnpm --filter studio type` so the generated types stay in sync.
+- After every Sanity schema or GROQ query change, immediately run `pnpm --filter studio-dgf type` so the generated types stay in sync.
 
 ### Coding standards
 
@@ -53,16 +53,16 @@
   - Live announcements (standard):
     - Do not use Next's App Router Announcer for non-navigation events.
     - Use the global A11y Live Announcer pattern for "active" messages (e.g., add-to-cart, errors).
-    - Preferred API: `announce(message, politeness?)` from `apps/web/src/lib/a11y/announce.ts`.
+    - Preferred API: `announce(message, politeness?)` from `apps/web-dgf/src/lib/a11y/announce.ts`.
     - Under the hood this dispatches: `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`.
     - Keep messages short and human-readable; prefer `politeness: "polite"`; reserve `"assertive"` for errors.
     - **Important**: Any message sourced from Sanity content must be wrapped with `stegaClean(message)` before calling `announce(...)` to strip out stega metadata and prevent it from reaching screen readers.
     - "Passive" status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy's `data-fc-id` markers; don't elevate those to the global announcer.
     - Implementation references:
-      - Mount: `apps/web/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
-      - Announcer: `apps/web/src/components/elements/a11y/live-announcer.tsx` (listens for `a11y:announce`).
-      - Helper: `apps/web/src/lib/a11y/announce.ts`.
-      - Example usage (add-to-cart): `apps/web/src/components/features/cart/foxycart-provider.tsx`.
+      - Mount: `apps/web-dgf/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
+      - Announcer: `apps/web-dgf/src/components/elements/a11y/live-announcer.tsx` (listens for `a11y:announce`).
+      - Helper: `apps/web-dgf/src/lib/a11y/announce.ts`.
+      - Example usage (add-to-cart): `apps/web-dgf/src/components/features/cart/foxycart-provider.tsx`.
     - Stability: a guard keeps Next’s route announcer anchored (`AnnouncerGuard`) and a dev-only DOM tolerance prevents NotFoundError from third-party reparenting.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
 
@@ -167,12 +167,12 @@
 ### Theming (important)
 
 - **LIGHT-ONLY THEME**: The web app is light-only with no dark mode support anywhere in the application.
-- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web` is a no-op wrapper.
+- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web-dgf` is a no-op wrapper.
 - **NO DARK CLASSES**: Never add `dark:` Tailwind variants or dark-theme specific classes. All `dark:` classes have been purged from the codebase.
 - **HTML Color Scheme**: The root `layout.tsx` is hardcoded with `<html className="light" style={{ colorScheme: "light" }}>`.
 - **Future Theming**: If dark theme support is needed in the future, see `plans/adr-001-disable-theme-switching.md` for re-enable steps.
 
-### Next.js app (apps/web)
+### Next.js app (apps/web-dgf)
 
 - App Router under `src/app`. Pages: `page.tsx`; dynamic routes in bracketed folders.
 - SEO utilities in `src/lib/seo.ts`; sitemap and robots in `src/app/sitemap.ts` and `src/app/robots.ts`.
@@ -184,11 +184,11 @@
   - `<AnnouncerGuard />` ensures Next’s internal route announcer remains under `<body>`.
   - Development-only DOM tolerance (`DevDomRemoveTolerance`) is mounted to suppress NotFoundError caused by third-party DOM reparenting in dev.
 
-### Sanity studio (apps/studio)
+### Sanity studio (apps/studio-dgf)
 
 - Schemas under `studio/schemaTypes/**`. Always use `defineType` and `defineField`.
-- After schema changes or updating/adding queries in `apps/web/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
-  - Studio: `pnpm --filter studio run type` (extract + generate)
+- After schema changes or updating/adding queries in `apps/web-dgf/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
+  - Studio: `pnpm --filter studio-dgf run type` (extract + generate)
   - Then re-run web typecheck/build.
   - Keep web tightly coupled to generated types; derive UI types from generated query results where feasible.
 
@@ -197,7 +197,7 @@
 // IMPORTANT: We use next-sanity v10 Live Content API — do NOT use the older preview APIs.
 
 - Do NOT import or use legacy preview components from `next-sanity/preview` or `@sanity/preview-kit` (e.g. `LiveQuery`, `useLiveQuery`, `LiveQueryProvider`). They are deprecated for our setup.
-- DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web/src/lib/sanity/live.ts`).
+- DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web-dgf/src/lib/sanity/live.ts`).
   - Mount `<SanityLive />` at the end of the root layout body (already done).
   - Fetch page data with `sanityFetch` in server components. This auto-switches to the Live Content API when Draft Mode is enabled.
 - Keep Presentation metadata intact: never force `stega: false` for fetches that render visible content. This is required for:
@@ -215,10 +215,10 @@
 
 ### Sanity Types (tight coupling)
 
-- After schema or query edits (in `apps/web/src/lib/sanity/query.ts`), always run Studio typegen:
-  - `pnpm -C apps/studio type`
+- After schema or query edits (in `apps/web-dgf/src/lib/sanity/query.ts`), always run Studio typegen:
+  - `pnpm -C apps/studio-dgf type`
   - Then re-run web typecheck/build
-- Derive web UI types from generated query results in `apps/web/src/lib/sanity/sanity.types.ts` (e.g., `GetXQueryResult`) rather than hand-rolling shapes.
+- Derive web UI types from generated query results in `apps/web-dgf/src/lib/sanity/sanity.types.ts` (e.g., `GetXQueryResult`) rather than hand-rolling shapes.
 - Keep icons consistent (prefer `@sanity/icons`, fallback to `lucide-react`).
 - Follow GROQ rules: prefer explicit filtering and fragments; don’t expand images unless asked.
 
@@ -238,16 +238,16 @@
 
 ### Quality gates
 
-- Iteration (agents): `pnpm -C apps/web format && pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck` (skip build unless asked).
-- Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
-- For studio changes: `pnpm --filter studio lint:fix && pnpm --filter studio check`.
+- Iteration (agents): `pnpm -C apps/web-dgf format && pnpm -C apps/web-dgf lint:fix && pnpm -C apps/web-dgf typecheck` (skip build unless asked).
+- Pre-PR validation: `pnpm -C apps/web-dgf lint:fix && pnpm -C apps/web-dgf typecheck && pnpm -C apps/web-dgf build`.
+- For studio changes: `pnpm --filter studio-dgf lint:fix && pnpm --filter studio-dgf check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
 - Audible completion: `say -v Daniel -r 175 "Task finished"` (or use MCP server `say` → tool `speak`).
 
 ### Common task recipes
 
 - Add/modify a web component
-  - Place in `apps/web/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
+  - Place in `apps/web-dgf/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
   - Update imports where used; ensure a11y (labels, roles). Run web quality gates.
 
 - Add shared UI component
@@ -255,19 +255,19 @@
   - Bump consumer imports to `@workspace/ui/components` if new. Run root build to validate.
 
 - Add a Sanity schema
-  - Create under `apps/studio/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
-  - Run `pnpm --filter studio type`, then adjust web query/types as needed.
+  - Create under `apps/studio-dgf/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
+  - Run `pnpm --filter studio-dgf type`, then adjust web query/types as needed.
 
 - Add a Next.js route/page
-  - Create folder under `apps/web/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
+  - Create folder under `apps/web-dgf/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
   - If dynamic, ensure params typing and loading states. Run web quality gates.
 
 - Update a GROQ query + types
-  - Edit or add query in `apps/web/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
+  - Edit or add query in `apps/web-dgf/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
   - Update response types where consumed. Typecheck and verify builds.
 
 - Add an API route
-  - Create under `apps/web/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
+  - Create under `apps/web-dgf/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
   - Guard secrets via runtime envs; add edge/runtime config if relevant.
 
 ### Risk checklist before PR
@@ -280,7 +280,7 @@
 
 ---
 
-# Web App Rules (apps/web/\*\*)
+# Web App Rules (apps/web-dgf/\*\*)
 
 ## Component Structure
 
@@ -321,7 +321,7 @@ For buttons with directional arrows, use an RTL prop to correctly handle horizon
 
 ---
 
-# Studio App (apps/studio/\*\*)
+# Studio App (apps/studio-dgf/\*\*)
 
 ## Sanity Schema Rules
 

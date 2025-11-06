@@ -8,7 +8,7 @@ Migrate the history document type to historyPage
 - Use your user token for auth: the command includes --with-user-token.
 
 ## Run command:
-  cd apps/studio
+  cd apps/studio-dgf
   pnpm exec sanity exec scripts/migrate-history-to-history-page.ts --with-user-token
 
 ## What it does:
@@ -79,9 +79,9 @@ async function main(): Promise<void> {
     "   1. Update schema files (rename history.ts to history-page.ts)",
   );
   console.log("   2. Update GROQ queries in web app");
-  console.log("   3. Run: pnpm --filter studio type");
+  console.log("   3. Run: pnpm --filter studio-dgf type");
   console.log(
-    "   4. Validate: pnpm --filter web typecheck && pnpm --filter web build",
+    "   4. Validate: pnpm --filter web-dgf typecheck && pnpm --filter web-dgf build",
   );
 }
 

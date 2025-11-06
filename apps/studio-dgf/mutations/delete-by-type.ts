@@ -9,7 +9,7 @@ A reusable, batched Sanity deletion script and wired an npm script to execute it
 
 ## Run commands:
 - Dry run:
-  - cd apps/studio
+  - cd apps/studio-dgf
   - pnpm mut:delete-by-type -- --type=post --dry-run
 - Delete published only:
 pnpm mut:delete-by-type -- --type=post
