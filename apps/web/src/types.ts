@@ -9,7 +9,6 @@ import type {
   GetRecipeBySlugQueryResult,
   GetRecipeIndexPageQueryResult,
   GetSauceIndexPageQueryResult,
-  QueryBlogSlugPageDataResult,
   QueryHomePageDataResult,
   QueryImageTypeResult,
 } from "@/lib/sanity/sanity.types";
@@ -34,11 +33,28 @@ export type SanityImageProps = Omit<
   alt?: string | null;
 };
 
+// Generic portable text definitions for heading extraction (decoupled from blog types)
+export type SanityRichTextChild = {
+  readonly _type: "span";
+  readonly _key: string;
+  readonly text?: string;
+  readonly marks?: readonly string[];
+};
+
+export type SanityRichTextNode = {
+  readonly _type: string; // e.g., "block", "image"
+  readonly _key: string;
+  readonly style?: string;
+  readonly children?: readonly SanityRichTextChild[];
+};
+
 export type SanityRichTextProps =
-  NonNullable<QueryBlogSlugPageDataResult>["richText"];
+  | readonly SanityRichTextNode[]
+  | null
+  | undefined;
 
 export type SanityRichTextBlock = Extract<
-  NonNullable<NonNullable<SanityRichTextProps>[number]>,
+  SanityRichTextNode,
   { _type: "block" }
 >;
 

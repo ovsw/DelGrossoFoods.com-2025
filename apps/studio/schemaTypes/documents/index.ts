@@ -1,6 +1,3 @@
-import { author } from "./author";
-import { blog } from "./blog";
-import { blogIndex } from "./blog-index";
 import { contactPage } from "./contact-page";
 import { faq } from "./faq";
 import { footer } from "./footer";
@@ -20,7 +17,6 @@ import { storeLocator } from "./store-locator";
 
 export const singletons = [
   homePage,
-  blogIndex,
   sauceIndex,
   recipeIndex,
   productIndex,
@@ -33,10 +29,8 @@ export const singletons = [
 ];
 
 export const documents = [
-  blog,
   page,
   faq,
-  author,
   sauce,
   productType,
   recipeType,

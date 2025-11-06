@@ -141,7 +141,7 @@ async function main(): Promise<void> {
     let tx = client.transaction();
     for (const id of ids) tx = tx.delete(id);
 
-    await tx.commit({ tag: "mutations/delete-by-type" });
+    await tx.commit({ tag: "mutations-delete-by-type" });
 
     batchIndex += 1;
     totalDeleted += ids.length;

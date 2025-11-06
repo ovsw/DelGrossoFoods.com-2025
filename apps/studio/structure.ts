@@ -8,16 +8,13 @@ import {
 } from "@sanity/icons";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
-  BookMarked,
   CogIcon,
   File,
-  FileText,
   HomeIcon,
   MessageCircle,
   PanelBottom,
   PanelBottomIcon,
   Settings2,
-  User,
 } from "lucide-react";
 import type {
   StructureBuilder,
@@ -192,19 +189,12 @@ export const structure = (
         title: "Recipe Categories",
         icon: TagIcon,
       }),
-      createIndexListWithOrderableItems({
-        S,
-        index: { type: "blogIndex", icon: BookMarked },
-        list: { type: "blog", title: "Blogs", icon: FileText },
-        context,
-      }),
       createList({
         S,
         type: "faq",
         title: "FAQs",
         icon: MessageCircle,
       }),
-      createList({ S, type: "author", title: "Authors", icon: User }),
       S.divider(),
       S.listItem()
         .title("Site Configuration")

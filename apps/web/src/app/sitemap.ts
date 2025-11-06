@@ -9,10 +9,9 @@ const baseUrl = getBaseUrl();
 type SitemapEntry = { slug: string; lastModified?: string };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { slugPages, blogPages, saucePages, productPages, recipePages } =
+  const { slugPages, saucePages, productPages, recipePages } =
     (await client.fetch(querySitemapData)) as {
       slugPages: SitemapEntry[];
-      blogPages: SitemapEntry[];
       saucePages: SitemapEntry[];
       productPages: SitemapEntry[];
       recipePages: SitemapEntry[];
@@ -29,12 +28,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(page.lastModified ?? new Date()),
       changeFrequency: "weekly" as const,
       priority: 0.8,
-    })),
-    ...blogPages.map((page: SitemapEntry) => ({
-      url: `${baseUrl}${page.slug}`,
-      lastModified: new Date(page.lastModified ?? new Date()),
-      changeFrequency: "weekly" as const,
-      priority: 0.5,
     })),
     ...saucePages.map((page: SitemapEntry) => ({
       url: `${baseUrl}${page.slug}`,

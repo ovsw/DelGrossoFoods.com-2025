@@ -51,18 +51,18 @@ Goal: Eliminate legacy blog feature so it doesn’t affect scoping or queries.
 
 Tasks
 
-- [ ] Studio schemas: remove `blog`, `blog-index`, and `author` documents. Update `schemaTypes/documents/index.ts` exports.
-- [ ] Studio structure: remove blog desk items.
-- [ ] Studio presentation locations: remove blog resolvers.
-- [ ] Web: remove `/blog` routes and components.
-- [ ] Web: remove blog queries and fragments from `packages/sanity-config/query.ts` once moved.
-- [ ] Data: mutation to delete `blog` and `author` documents.
+- [x] Studio schemas: remove `blog`, `blog-index`, and `author` documents. Update `schemaTypes/documents/index.ts` exports.
+- [x] Studio structure: remove blog desk items.
+- [x] Studio presentation locations: remove blog resolvers.
+- [x] Web: remove `/blog` routes and components.
+- [x] Web: remove blog queries and fragments from `packages/sanity-config/query.ts` once moved.
+- [x] Data: mutation to delete `blog` and `author` documents.
 
 Definition of Done
 
-- [ ] Studio compiles without blog types
-- [ ] Web compiles with no blog imports/routes
-- [ ] No `blog`/`author` documents remain in dataset
+- [x] Studio compiles without blog types
+- [x] Web compiles with no blog imports/routes
+- [x] No `blog`/`author` documents remain in dataset
 
 ---
 

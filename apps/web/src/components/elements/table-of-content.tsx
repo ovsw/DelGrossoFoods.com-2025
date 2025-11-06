@@ -5,7 +5,11 @@ import Link from "next/link";
 import { type FC, useCallback, useMemo } from "react";
 import slugify from "slugify";
 
-import type { SanityRichTextBlock, SanityRichTextProps } from "@/types";
+import type {
+  SanityRichTextChild,
+  SanityRichTextNode,
+  SanityRichTextProps,
+} from "@/types";
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -42,16 +46,9 @@ interface TableOfContentState {
 
 type HeadingStyle = "h2" | "h3" | "h4" | "h5" | "h6";
 
-type SanityTextChild = {
-  readonly marks?: readonly string[];
-  readonly text?: string;
-  readonly _type: "span";
-  readonly _key: string;
-};
-
-type HeadingBlock = Extract<SanityRichTextBlock, { _type: "block" }> & {
+type HeadingBlock = SanityRichTextNode & {
   style: HeadingStyle;
-  children: readonly SanityTextChild[];
+  children: readonly SanityRichTextChild[];
 };
 
 // ============================================================================
@@ -91,7 +88,7 @@ function isValidHeadingStyle(style: unknown): style is HeadingStyle {
   return typeof style === "string" && style in HEADING_STYLES;
 }
 
-function isValidTextChild(child: unknown): child is SanityTextChild {
+function isValidTextChild(child: unknown): child is SanityRichTextChild {
   return (
     typeof child === "object" &&
     child !== null &&
@@ -104,7 +101,7 @@ function isValidTextChild(child: unknown): child is SanityTextChild {
 
 function hasValidTextChildren(
   children: unknown,
-): children is readonly SanityTextChild[] {
+): children is readonly SanityRichTextChild[] {
   return (
     Array.isArray(children) &&
     children.length > 0 &&
@@ -150,7 +147,9 @@ function createSlug(text: string): string {
   }
 }
 
-function extractTextFromChildren(children: readonly SanityTextChild[]): string {
+function extractTextFromChildren(
+  children: readonly SanityRichTextChild[],
+): string {
   try {
     return children
       .map((child) => child.text?.trim() ?? "")
