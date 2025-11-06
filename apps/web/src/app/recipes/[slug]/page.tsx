@@ -1,4 +1,6 @@
 // (kept imports tidy after refactor)
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getRecipeBySlugQuery } from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
@@ -7,8 +9,6 @@ import { RecipeDetailsSection } from "@/components/page-sections/recipe-page/rec
 import { RecipeHeroSection } from "@/components/page-sections/recipe-page/recipe-hero-section";
 import { RecipeRelatedRecipesSection } from "@/components/page-sections/recipe-page/recipe-related-recipes-section";
 import { RecipeRelatedSaucesSection } from "@/components/page-sections/recipe-page/recipe-related-sauces-section";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getRecipeBySlugQuery } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 import type { RecipeDetailData } from "@/types";
 import { handleErrors } from "@/utils";

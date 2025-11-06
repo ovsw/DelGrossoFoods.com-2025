@@ -1,10 +1,14 @@
-import LogoSvg from "@/components/elements/logo";
-import { sanityFetch } from "@/lib/sanity/live";
-import { queryGlobalSeoSettings, queryNavbarData } from "@/lib/sanity/query";
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  queryGlobalSeoSettings,
+  queryNavbarData,
+} from "@workspace/sanity-config/query";
 import type {
   QueryGlobalSeoSettingsResult,
   QueryNavbarDataResult,
-} from "@/lib/sanity/sanity.types";
+} from "@workspace/sanity-config/types";
+
+import LogoSvg from "@/components/elements/logo";
 
 import { NavbarClient, NavbarSkeletonResponsive } from "./navbar-client";
 

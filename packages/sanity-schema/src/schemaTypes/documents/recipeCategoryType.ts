@@ -1,12 +1,15 @@
 import { TagIcon } from "@sanity/icons"; // Using TagIcon for categories
 import { defineField, defineType } from "sanity";
 
+import { siteReferenceField } from "../common";
+
 export const recipeCategoryType = defineType({
   name: "recipeCategory",
   title: "Recipe Category",
   type: "document",
   icon: TagIcon,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       title: "Title",

@@ -1,8 +1,12 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  getRecipeByIdQuery,
+  getSaucesByIdsQuery,
+} from "@workspace/sanity-config/query";
+import type { GetSaucesByIdsQueryResult } from "@workspace/sanity-config/types";
+
 import { RelatedSaucesLayout } from "@/components/layouts/related-sauces-layout";
 import { SingleRelatedSauceLayout } from "@/components/layouts/single-related-sauce-layout";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getRecipeByIdQuery, getSaucesByIdsQuery } from "@/lib/sanity/query";
-import type { GetSaucesByIdsQueryResult } from "@/lib/sanity/sanity.types";
 import { handleErrors } from "@/utils";
 
 interface RecipeRelatedSaucesSectionProps {

@@ -1,5 +1,7 @@
-import { MarkerIcon } from "@sanity/icons";
+import { MessageSquare } from "lucide-react";
 import { defineField, defineType } from "sanity";
+
+import { siteReferenceField } from "../common";
 
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
@@ -7,21 +9,22 @@ import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import { createSlugValidator } from "../../utils/slug-validation";
 
-export const storeLocator = defineType({
-  name: "storeLocator",
-  title: "Store Locator Page",
+export const contactPage = defineType({
+  name: "contactPage",
+  title: "Contact Page",
   type: "document",
-  icon: MarkerIcon,
+  icon: MessageSquare,
   description:
-    "Manage the hero content, supporting sections, and SEO settings for the Where to Buy page",
+    "Manage the contact form page content, additional sections, and SEO settings",
   groups: GROUPS,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       type: "string",
       title: "Title",
       description:
-        "The main heading that appears on the page and helps visitors know they are in the right place",
+        "The main heading that appears at the top of the contact page",
       group: GROUP.MAIN_CONTENT,
       validation: (Rule) => Rule.required().error("A page title is required"),
     }),
@@ -30,7 +33,7 @@ export const storeLocator = defineType({
       type: "text",
       title: "Description",
       description:
-        "A short introduction that appears below the title and doubles as the search engine description",
+        "A brief introduction that appears below the title and helps set expectations for visitors",
       rows: 3,
       group: GROUP.MAIN_CONTENT,
       validation: (rule) => [
@@ -51,7 +54,7 @@ export const storeLocator = defineType({
       title: "Slug",
       type: "slug",
       description:
-        "The web address for the Where to Buy page. Keep this set to '/where-to-buy'.",
+        "The web address for the contact page. Keep this set to '/contact'.",
       group: GROUP.MAIN_CONTENT,
       options: {
         source: "title",
@@ -60,7 +63,7 @@ export const storeLocator = defineType({
       validation: (Rule) =>
         Rule.required().custom(
           createSlugValidator({
-            sanityDocumentType: "storeLocator",
+            sanityDocumentType: "contactPage",
           }),
         ),
     }),
@@ -69,7 +72,7 @@ export const storeLocator = defineType({
       title: "Additional Content Sections",
       type: "pageBuilder",
       description:
-        "Add optional content blocks like CTAs, FAQs, or promotions that support the store locator",
+        "Add optional content blocks like FAQs, contact information, or other sections that support the contact form",
       group: GROUP.MAIN_CONTENT,
     }),
     ...seoFields,
@@ -81,7 +84,7 @@ export const storeLocator = defineType({
       description: "description",
     },
     prepare: ({ title, description }) => ({
-      title: title || "Store Locator Page",
+      title: title || "Contact Page",
       subtitle: description,
     }),
   },

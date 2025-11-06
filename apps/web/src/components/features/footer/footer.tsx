@@ -1,3 +1,12 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  queryFooterData,
+  queryGlobalSeoSettings,
+} from "@workspace/sanity-config/query";
+import type {
+  QueryFooterDataResult,
+  QueryGlobalSeoSettingsResult,
+} from "@workspace/sanity-config/types";
 import Link from "next/link";
 
 import LogoSvg from "@/components/elements/logo";
@@ -8,12 +17,6 @@ import {
   XIcon,
   YoutubeIcon,
 } from "@/components/elements/social-icons";
-import { sanityFetch } from "@/lib/sanity/live";
-import { queryFooterData, queryGlobalSeoSettings } from "@/lib/sanity/query";
-import type {
-  QueryFooterDataResult,
-  QueryGlobalSeoSettingsResult,
-} from "@/lib/sanity/sanity.types";
 
 interface SocialLinksProps {
   data: NonNullable<QueryGlobalSeoSettingsResult>["socialLinks"];

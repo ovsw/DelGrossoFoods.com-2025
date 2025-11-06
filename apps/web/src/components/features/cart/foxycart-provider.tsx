@@ -1,11 +1,11 @@
 "use client";
 
+import { urlFor } from "@workspace/sanity-config/client";
 import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import { announce } from "@/lib/a11y/announce";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
-import { urlFor } from "@/lib/sanity/client";
 
 type AddToCartDetail = {
   id?: string | null;

@@ -1,7 +1,6 @@
+import type { SectionSpacing } from "@workspace/sanity-config/types";
 import type { SectionSpacingToken } from "@workspace/ui/components/section";
 import { stegaClean } from "next-sanity";
-
-import type { SectionSpacing } from "@/lib/sanity/sanity.types";
 
 type SectionSpacingInput =
   | SectionSpacing

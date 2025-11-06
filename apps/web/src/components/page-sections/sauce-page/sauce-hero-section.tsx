@@ -1,3 +1,4 @@
+import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
@@ -11,7 +12,6 @@ import { RichText } from "@/components/elements/rich-text";
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineDisplayName, toLineSlug } from "@/config/sauce-taxonomy";
-import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import type { SanityButtonProps } from "@/types";
 
 interface SauceHeroSectionProps {

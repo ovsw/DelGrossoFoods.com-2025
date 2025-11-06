@@ -16,10 +16,12 @@
 
 import "dotenv/config";
 
+import {
+  createSlug,
+  getDocTypePrefix,
+} from "@workspace/sanity-schema/utils/slug";
 import type { SlugSchemaType } from "sanity";
 import { getCliClient } from "sanity/cli";
-
-import { createSlug, getDocTypePrefix } from "../utils/slug";
 
 type DocType = "product" | "recipe";
 

@@ -1,6 +1,7 @@
 import "@workspace/ui/styles/globals.css";
 import "./background.css";
 
+import { SanityLive } from "@workspace/sanity-config/live";
 import {
   // Geist, Geist_Mono,
   Libre_Baskerville,
@@ -20,7 +21,6 @@ import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-toler
 import { PreviewBar } from "@/components/systems/preview/preview-bar";
 import { Providers } from "@/components/systems/providers";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
-import { SanityLive } from "@/lib/sanity/live";
 
 const fontSerif = Libre_Baskerville({
   subsets: ["latin"],

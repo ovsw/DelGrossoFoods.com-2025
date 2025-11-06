@@ -10,7 +10,7 @@ import {
   createSlugValidator,
   createUniqueSlugRule,
 } from "../../utils/slug-validation";
-import { pageBuilderField } from "../common";
+import { pageBuilderField, siteReferenceField } from "../common";
 
 export const page = defineType({
   name: "page",
@@ -21,6 +21,7 @@ export const page = defineType({
     "Create a new page for your website, like an 'About Us' or 'Contact' page. Each page has its own web address and content that you can customize.",
   groups: GROUPS,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       type: "string",

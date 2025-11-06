@@ -1,9 +1,10 @@
-import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
-import { sanityFetch } from "@/lib/sanity/live";
+import { sanityFetch } from "@workspace/sanity-config/live";
 import {
   getRecipeByIdQuery,
   getRecipesBySauceIdsQuery,
-} from "@/lib/sanity/query";
+} from "@workspace/sanity-config/query";
+
+import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
 import type { RecipeListItem } from "@/types";
 import { handleErrors } from "@/utils";
 

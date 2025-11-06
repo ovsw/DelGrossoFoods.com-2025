@@ -4,7 +4,7 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug, isUnique } from "../../utils/slug";
-import { pageBuilderField } from "../common";
+import { pageBuilderField, siteReferenceField } from "../common";
 
 export const sauceIndex = defineType({
   name: "sauceIndex",
@@ -14,6 +14,7 @@ export const sauceIndex = defineType({
     "This is the main page that shows all sauces. You can customize how the sauce listing page looks, what title and SEO settings you want to use.",
   groups: GROUPS,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       title: "Title",

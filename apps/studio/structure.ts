@@ -7,6 +7,8 @@ import {
   TagIcon,
 } from "@sanity/icons";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
+import type { SchemaType, SingletonType } from "@workspace/sanity-schema";
+import { getTitleCase } from "@workspace/sanity-schema/utils/helper";
 import {
   CogIcon,
   File,
@@ -20,9 +22,6 @@ import type {
   StructureBuilder,
   StructureResolverContext,
 } from "sanity/structure";
-
-import type { SchemaType, SingletonType } from "./schemaTypes";
-import { getTitleCase } from "./utils/helper";
 
 type Base<T = SchemaType> = {
   id?: string;

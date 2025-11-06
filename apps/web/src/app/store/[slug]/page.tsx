@@ -1,3 +1,6 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getProductBySlugQuery } from "@workspace/sanity-config/query";
+import type { GetProductBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
@@ -10,9 +13,6 @@ import { ProductHeroSection } from "@/components/page-sections/product-page/prod
 import { ProductRelatedRecipesSection } from "@/components/page-sections/product-page/product-related-recipes-section";
 import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getProductBySlugQuery } from "@/lib/sanity/query";
-import type { GetProductBySlugQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductDetailData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";

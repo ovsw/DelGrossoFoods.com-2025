@@ -11,7 +11,7 @@ import type {
   GetSauceIndexPageQueryResult,
   QueryHomePageDataResult,
   QueryImageTypeResult,
-} from "@/lib/sanity/sanity.types";
+} from "@workspace/sanity-config/types";
 
 export type PageBuilderBlockTypes = NonNullable<
   NonNullable<QueryHomePageDataResult>["pageBuilder"]

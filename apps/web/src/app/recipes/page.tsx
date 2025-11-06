@@ -1,15 +1,15 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  getAllRecipeCategoriesQuery,
+  getAllRecipesForIndexQuery,
+  getRecipeIndexPageQuery,
+} from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
-import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getAllRecipeCategoriesQuery,
-  getAllRecipesForIndexQuery,
-  getRecipeIndexPageQuery,
-} from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 import type {
   RecipeCategoryOption,

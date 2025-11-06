@@ -1,6 +1,8 @@
 import { ClockIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
+import { siteReferenceField } from "../common";
+
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
@@ -16,6 +18,7 @@ export const historyPage = defineType({
     "The main history page showcasing the DelGrosso Foods timeline and additional content sections",
   groups: GROUPS,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       title: "Title",

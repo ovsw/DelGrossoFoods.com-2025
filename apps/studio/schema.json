@@ -4290,6 +4290,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "title": {
         "type": "objectAttribute",
         "value": {
@@ -4468,6 +4498,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "title": {
         "type": "objectAttribute",
         "value": {
@@ -4645,6 +4705,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "title": {
         "type": "objectAttribute",
@@ -4939,6 +5029,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "label": {
         "type": "objectAttribute",
         "value": {
@@ -5145,6 +5265,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "label": {
         "type": "objectAttribute",
         "value": {
@@ -5277,6 +5427,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "label": {
         "type": "objectAttribute",
@@ -5417,6 +5597,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "title": {
         "type": "objectAttribute",
@@ -5651,6 +5861,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "title": {
         "type": "objectAttribute",
         "value": {
@@ -5883,6 +6123,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "title": {
         "type": "objectAttribute",
@@ -6155,6 +6425,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "title": {
         "type": "objectAttribute",
         "value": {
@@ -6318,6 +6618,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "title": {
         "type": "objectAttribute",
@@ -8685,6 +9015,36 @@
           "type": "string"
         }
       },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
+      },
       "title": {
         "type": "objectAttribute",
         "value": {
@@ -8736,6 +9096,36 @@
         "value": {
           "type": "string"
         }
+      },
+      "site": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "site"
+        },
+        "optional": false
       },
       "title": {
         "type": "objectAttribute",
@@ -9054,6 +9444,74 @@
           },
           "optional": true
         }
+      }
+    }
+  },
+  {
+    "name": "site",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "site"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "code": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "DGF"
+            },
+            {
+              "type": "string",
+              "value": "LFD"
+            }
+          ]
+        },
+        "optional": false
+      },
+      "description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
       }
     }
   },

@@ -1,7 +1,7 @@
+import { client } from "@workspace/sanity-config/client";
+import { querySitemapData } from "@workspace/sanity-config/query";
 import type { MetadataRoute } from "next";
 
-import { client } from "@/lib/sanity/client";
-import { querySitemapData } from "@/lib/sanity/query";
 import { getBaseUrl } from "@/utils";
 
 const baseUrl = getBaseUrl();

@@ -14,6 +14,7 @@ import { sauce } from "./sauce";
 import { sauceIndex } from "./sauce-index";
 import { settings } from "./settings";
 import { storeLocator } from "./store-locator";
+import { site } from "./site";
 
 export const singletons = [
   homePage,
@@ -29,6 +30,7 @@ export const singletons = [
 ];
 
 export const documents = [
+  site,
   page,
   faq,
   sauce,

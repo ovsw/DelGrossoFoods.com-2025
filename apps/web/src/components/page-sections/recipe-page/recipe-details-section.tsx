@@ -1,4 +1,5 @@
 "use client";
+import { urlFor } from "@workspace/sanity-config/client";
 import { InfoLabel } from "@workspace/ui/components/info-label";
 import { Section } from "@workspace/ui/components/section";
 import {
@@ -10,7 +11,6 @@ import {
 import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
 
-import { urlFor } from "@/lib/sanity/client";
 import type { RecipeDetailData } from "@/types";
 
 // Video poster dimensions constants

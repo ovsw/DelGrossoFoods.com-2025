@@ -1,12 +1,12 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getHistoryPageQuery } from "@workspace/sanity-config/query";
+import type { GetHistoryPageQueryResult } from "@workspace/sanity-config/types";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getHistoryPageQuery } from "@/lib/sanity/query";
-import type { GetHistoryPageQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {

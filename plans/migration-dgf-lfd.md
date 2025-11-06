@@ -72,27 +72,27 @@ Goal: Centralize Sanity client, live config, and queries; establish a shared sch
 
 Tasks
 
-- [ ] Create `packages/sanity-config` with minimal exports:
-  - [ ] `client.ts` (wraps `@sanity/client` with env parsing)
-  - [ ] `live.ts` (exports `defineLive` wiring for Next 15, no legacy preview APIs)
-  - [ ] `query.ts` (move existing queries from `apps/web/src/lib/sanity/query.ts`)
-  - [ ] `index.ts` exporting public API
-  - [ ] Types: export generated types or a clear interface for query results
-- [ ] Create `packages/sanity-schema`:
-  - [ ] Export all current schemas from `apps/studio/schemaTypes` as a single array
-  - [ ] Add a `site` document type (with stable IDs `site-DGF`, `site-LFD`)
-  - [ ] Add a required `site` reference ONLY to site‑scoped types (NOT to `sauce`, `product`, or `recipe`)
+- [x] Create `packages/sanity-config` with minimal exports:
+  - [x] `client.ts` (wraps `@sanity/client` with env parsing)
+  - [x] `live.ts` (exports `defineLive` wiring for Next 15, no legacy preview APIs)
+  - [x] `query.ts` (move existing queries from `apps/web/src/lib/sanity/query.ts`)
+  - [x] `index.ts` exporting public API
+  - [x] Types: export generated types or a clear interface for query results
+- [x] Create `packages/sanity-schema`:
+  - [x] Export all current schemas from `apps/studio/schemaTypes` as a single array
+  - [x] Add a `site` document type (with stable IDs `site-DGF`, `site-LFD`)
+  - [x] Add a required `site` reference ONLY to site‑scoped types (NOT to `sauce`, `product`, or `recipe`)
 
 Wiring
 
-- [ ] Update `apps/studio` (temporarily still named) to import schema array from `packages/sanity-schema`
-- [ ] Update `apps/web` to import from `packages/sanity-config` (`client`, `live`, `query`)
+- [x] Update `apps/studio` (temporarily still named) to import schema array from `packages/sanity-schema`
+- [x] Update `apps/web` to import from `packages/sanity-config` (`client`, `live`, `query`)
 
 Definition of Done
 
-- [ ] Studio typegen passes: `pnpm --filter studio type`
-- [ ] Web typecheck passes: `pnpm --filter web typecheck`
-- [ ] App behavior unchanged
+- [x] Studio typegen passes: `pnpm --filter studio type`
+- [x] Web typecheck passes: `pnpm --filter web typecheck`
+- [x] App behavior unchanged
 
 Notes
 

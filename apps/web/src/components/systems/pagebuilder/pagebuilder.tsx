@@ -1,11 +1,11 @@
 "use client";
 
 import { useOptimistic } from "@sanity/visual-editing/react";
+import type { QueryHomePageDataResult } from "@workspace/sanity-config/types";
 import { createDataAttribute } from "next-sanity";
 import { type ComponentType, useCallback, useMemo } from "react";
 
 import { dataset, projectId, studioUrl } from "@/config";
-import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import type { PageBuilderBlockTypes } from "@/types";
 
 import { CTABlock } from "./blocks/cta-block";

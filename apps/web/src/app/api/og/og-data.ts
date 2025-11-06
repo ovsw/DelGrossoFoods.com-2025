@@ -1,9 +1,10 @@
-import { client } from "@/lib/sanity/client";
+import { client } from "@workspace/sanity-config/client";
 import {
   queryGenericPageOGData,
   queryHomePageOGData,
   querySlugPageOGData,
-} from "@/lib/sanity/query";
+} from "@workspace/sanity-config/query";
+
 import { handleErrors } from "@/utils";
 
 export async function getHomePageOGData(id: string) {

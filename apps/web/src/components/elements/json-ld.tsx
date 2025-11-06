@@ -1,3 +1,6 @@
+import { client, urlFor } from "@workspace/sanity-config/client";
+import { querySettingsData } from "@workspace/sanity-config/query";
+import type { QuerySettingsDataResult } from "@workspace/sanity-config/types";
 import { stegaClean } from "next-sanity";
 import type {
   Answer,
@@ -13,9 +16,6 @@ import type {
   WithContext,
 } from "schema-dts";
 
-import { client, urlFor } from "@/lib/sanity/client";
-import { querySettingsData } from "@/lib/sanity/query";
-import type { QuerySettingsDataResult } from "@/lib/sanity/sanity.types";
 import { getBaseUrl, handleErrors } from "@/utils";
 
 interface RichTextChild {

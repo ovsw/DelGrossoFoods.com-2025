@@ -1,5 +1,9 @@
 "use client";
 
+import type {
+  QueryGlobalSeoSettingsResult,
+  QueryNavbarDataResult,
+} from "@workspace/sanity-config/types";
 import {
   Accordion,
   AccordionContent,
@@ -31,10 +35,6 @@ import { useEffect, useMemo, useState } from "react";
 import LogoSvg from "@/components/elements/logo";
 import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityIcon } from "@/components/elements/sanity-icon";
-import type {
-  QueryGlobalSeoSettingsResult,
-  QueryNavbarDataResult,
-} from "@/lib/sanity/sanity.types";
 
 interface MenuItem {
   title: string;

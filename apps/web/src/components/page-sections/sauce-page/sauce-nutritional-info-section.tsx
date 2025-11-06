@@ -1,3 +1,5 @@
+import { urlFor } from "@workspace/sanity-config/client";
+import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Button } from "@workspace/ui/components/button";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
@@ -9,8 +11,6 @@ import {
   type NutritionFactRow,
   NutritionFactsPanel,
 } from "@/components/elements/nutrition-facts-panel";
-import { urlFor } from "@/lib/sanity/client";
-import type { GetSauceBySlugQueryResult } from "@/lib/sanity/sanity.types";
 
 type SauceNutritionalInfoSectionProps = {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;

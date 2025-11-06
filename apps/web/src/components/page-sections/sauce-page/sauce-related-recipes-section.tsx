@@ -1,8 +1,8 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getRecipesBySauceIdQuery } from "@workspace/sanity-config/query";
 import type { JSX } from "react";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getRecipesBySauceIdQuery } from "@/lib/sanity/query";
 import type { RecipeListItem } from "@/types";
 import { handleErrors } from "@/utils";
 

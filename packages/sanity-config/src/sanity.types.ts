@@ -608,6 +608,12 @@ export type ContactPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   description?: string;
   slug: Slug;
@@ -638,6 +644,12 @@ export type StoreLocator = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   description?: string;
   slug: Slug;
@@ -668,6 +680,12 @@ export type HistoryPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   description?: string;
   pageHeaderImage?: {
@@ -720,6 +738,12 @@ export type Navbar = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   label: string;
   columns?: Array<
     | {
@@ -755,6 +779,12 @@ export type Footer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   label: string;
   subtitle?: string;
   columns?: Array<{
@@ -776,6 +806,12 @@ export type Settings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   label: string;
   siteTitle: string;
   siteDescription: string;
@@ -799,6 +835,12 @@ export type ProductIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title?: string;
   description?: string;
   pageHeaderImage?: {
@@ -839,6 +881,12 @@ export type RecipeIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title?: string;
   description?: string;
   pageHeaderImage?: {
@@ -879,6 +927,12 @@ export type SauceIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title?: string;
   description?: string;
   pageHeaderImage?: {
@@ -921,6 +975,12 @@ export type HomePage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title?: string;
   description?: string;
   slug: Slug;
@@ -949,6 +1009,12 @@ export type RecipeCategory = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   slug: Slug;
 };
@@ -1261,6 +1327,12 @@ export type Faq = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   richText?: RichText;
 };
@@ -1271,6 +1343,12 @@ export type Page = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   description?: string;
   slug: Slug;
@@ -1324,6 +1402,17 @@ export type CustomUrl = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "page";
   };
+};
+
+export type Site = {
+  _id: string;
+  _type: "site";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  code: "DGF" | "LFD";
+  description?: string;
 };
 
 export type SanityAssistInstructionTask = {
@@ -1719,6 +1808,7 @@ export type AllSanitySchemaTypes =
   | Page
   | Button
   | CustomUrl
+  | Site
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations
@@ -1752,7 +1842,7 @@ export type AllSanitySchemaTypes =
   | Slug
   | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ../web/src/lib/sanity/query.ts
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: queryImageType
 // Query: *[_type == "page" && defined(image)][0]{      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }  }.image
 export type QueryImageTypeResult = {
@@ -1778,6 +1868,12 @@ export type QueryHomePageDataResult = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string | null;
   description: string | null;
   slug: string;
@@ -2522,6 +2618,12 @@ export type QuerySlugPageDataResult = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  site: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "site";
+  };
   title: string;
   description?: string;
   slug: string;

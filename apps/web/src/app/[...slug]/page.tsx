@@ -1,10 +1,13 @@
+import { client } from "@workspace/sanity-config/client";
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  querySlugPageData,
+  querySlugPagePaths,
+} from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
-import { client } from "@/lib/sanity/client";
-import { sanityFetch } from "@/lib/sanity/live";
-import { querySlugPageData, querySlugPagePaths } from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 
 async function fetchSlugPageData(slug: string, stega = true) {

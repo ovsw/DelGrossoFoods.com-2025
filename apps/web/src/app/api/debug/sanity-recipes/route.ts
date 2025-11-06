@@ -1,5 +1,6 @@
-import { sanityFetch } from "@/lib/sanity/live";
-import { getAllRecipesForIndexQuery } from "@/lib/sanity/query";
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getAllRecipesForIndexQuery } from "@workspace/sanity-config/query";
+
 import { handleErrors } from "@/utils";
 
 export async function GET() {

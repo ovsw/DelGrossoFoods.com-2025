@@ -1,12 +1,12 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getStoreLocatorPageQuery } from "@workspace/sanity-config/query";
+import type { GetStoreLocatorPageQueryResult } from "@workspace/sanity-config/types";
 import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
 import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getStoreLocatorPageQuery } from "@/lib/sanity/query";
-import type { GetStoreLocatorPageQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {

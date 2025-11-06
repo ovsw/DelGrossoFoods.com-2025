@@ -1,10 +1,10 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getProductsBySauceIdQuery } from "@workspace/sanity-config/query";
+import type { GetProductsBySauceIdQueryResult } from "@workspace/sanity-config/types";
 import * as React from "react";
 
 import { RelatedProductsLayout } from "@/components/layouts/related-products-layout";
 import { SingleRelatedProductLayout } from "@/components/layouts/single-related-product-layout";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getProductsBySauceIdQuery } from "@/lib/sanity/query";
-import type { GetProductsBySauceIdQueryResult } from "@/lib/sanity/sanity.types";
 import { handleErrors } from "@/utils";
 
 interface SauceRelatedProductsSectionProps {

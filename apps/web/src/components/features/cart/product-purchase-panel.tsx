@@ -1,12 +1,12 @@
 "use client";
 
+import { urlFor } from "@workspace/sanity-config/client";
 import { Button } from "@workspace/ui/components/button";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import { resolveFoxyConfig } from "@/lib/foxy/config";
-import { urlFor } from "@/lib/sanity/client";
 import type { ProductDetailData } from "@/types";
 
 interface ProductPurchasePanelProps {

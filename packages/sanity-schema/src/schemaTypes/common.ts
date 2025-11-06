@@ -57,3 +57,16 @@ export const iconField = defineField({
   description:
     "Choose a small picture symbol to represent this item, like a home icon or shopping cart",
 });
+
+export const siteReferenceField = defineField({
+  name: "site",
+  title: "Site",
+  description:
+    "Select which site this document belongs to. This scopes the content to DelGrosso Foods or La Famiglia DelGrosso.",
+  type: "reference",
+  to: [{ type: "site" }],
+  validation: (Rule) => Rule.required(),
+  options: {
+    disableNew: true,
+  },
+});

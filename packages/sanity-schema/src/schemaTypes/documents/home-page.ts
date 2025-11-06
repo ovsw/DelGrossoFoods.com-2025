@@ -6,7 +6,7 @@ import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import { createSlugValidator } from "../../utils/slug-validation";
-import { homePageBuilderField } from "../common";
+import { homePageBuilderField, siteReferenceField } from "../common";
 
 export const homePage = defineType({
   name: "homePage",
@@ -17,6 +17,7 @@ export const homePage = defineType({
     "This is where you create the main page visitors see when they first come to your website. Think of it like the front door to your online home - you can add a welcoming title, a short description, and build the page with different sections like pictures, text, and buttons.",
   groups: GROUPS,
   fields: [
+    siteReferenceField,
     defineField({
       name: "title",
       type: "string",

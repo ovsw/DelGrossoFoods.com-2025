@@ -1,11 +1,11 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import { getContactPageQuery } from "@workspace/sanity-config/query";
+import type { GetContactPageQueryResult } from "@workspace/sanity-config/types";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { ContactFormSection } from "@/components/page-sections/contact-page/contact-form-section";
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
-import { sanityFetch } from "@/lib/sanity/live";
-import { getContactPageQuery } from "@/lib/sanity/query";
-import type { GetContactPageQueryResult } from "@/lib/sanity/sanity.types";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {

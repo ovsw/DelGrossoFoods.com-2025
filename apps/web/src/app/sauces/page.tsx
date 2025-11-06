@@ -1,13 +1,13 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  getAllSaucesForIndexQuery,
+  getSauceIndexPageQuery,
+} from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getAllSaucesForIndexQuery,
-  getSauceIndexPageQuery,
-} from "@/lib/sanity/query";
 import { parseSearchParams, type SauceQueryState } from "@/lib/sauces/url";
 import { getSEOMetadata } from "@/lib/seo";
 import type { SauceIndexPageData, SauceListItem } from "@/types";

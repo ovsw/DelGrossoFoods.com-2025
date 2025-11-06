@@ -1,14 +1,14 @@
+import { sanityFetch } from "@workspace/sanity-config/live";
+import {
+  getAllProductsForIndexQuery,
+  getProductIndexPageQuery,
+} from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
-import { sanityFetch } from "@/lib/sanity/live";
-import {
-  getAllProductsForIndexQuery,
-  getProductIndexPageQuery,
-} from "@/lib/sanity/query";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";

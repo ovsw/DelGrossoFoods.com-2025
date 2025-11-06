@@ -1,5 +1,10 @@
 import { assist } from "@sanity/assist";
 import { visionTool } from "@sanity/vision";
+import { schemaTypes } from "@workspace/sanity-schema";
+import {
+  createPageTemplate,
+  getPresentationUrl,
+} from "@workspace/sanity-schema/utils/helper";
 import { defineConfig } from "sanity";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
@@ -11,9 +16,7 @@ import { muxInput } from "sanity-plugin-mux-input";
 import { Logo } from "./components/logo";
 import { locations } from "./location";
 import { presentationUrl } from "./plugins/presentation-url";
-import { schemaTypes } from "./schemaTypes";
 import { structure } from "./structure";
-import { createPageTemplate, getPresentationUrl } from "./utils/helper";
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
 const dataset = process.env.SANITY_STUDIO_DATASET;
