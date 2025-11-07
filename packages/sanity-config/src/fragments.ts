@@ -68,6 +68,76 @@ export const richTextFragment = /* groq */ `
   }
 `;
 
+export const subTitleRichTextFragment = /* groq */ `
+  subTitle[]{
+    ...,
+    _type == "block" => {
+      ...,
+      ${markDefsFragment}
+    },
+    _type == "image" => {
+      ${imageFields},
+      "caption": caption
+    }
+  }
+`;
+
+export const helperTextRichTextFragment = /* groq */ `
+  helperText[]{
+    ...,
+    _type == "block" => {
+      ...,
+      ${markDefsFragment}
+    },
+    _type == "image" => {
+      ${imageFields},
+      "caption": caption
+    }
+  }
+`;
+
+export const introRichTextFragment = /* groq */ `
+  intro[]{
+    ...,
+    _type == "block" => {
+      ...,
+      ${markDefsFragment}
+    },
+    _type == "image" => {
+      ${imageFields},
+      "caption": caption
+    }
+  }
+`;
+
+export const bodyRichTextFragment = /* groq */ `
+  body[]{
+    ...,
+    _type == "block" => {
+      ...,
+      ${markDefsFragment}
+    },
+    _type == "image" => {
+      ${imageFields},
+      "caption": caption
+    }
+  }
+`;
+
+export const descriptionRichTextFragment = /* groq */ `
+  description[]{
+    ...,
+    _type == "block" => {
+      ...,
+      ${markDefsFragment}
+    },
+    _type == "image" => {
+      ${imageFields},
+      "caption": caption
+    }
+  }
+`;
+
 export const blogAuthorFragment = /* groq */ `
   authors[0]->{
     _id,
@@ -113,33 +183,42 @@ export const sectionSpacingFragment = /* groq */ `
 
 export const ctaBlock = /* groq */ `
   _type == "cta" => {
-    ...,
+    eyebrow,
+    title,
+    surfaceColor,
+    applySurfaceShine,
     ${richTextFragment},
-    ${buttonsFragment},
+    ${buttonsFragment}
   }
 `;
 
 export const imageLinkCardsBlock = /* groq */ `
   _type == "imageLinkCards" => {
-    ...,
+    eyebrow,
+    title,
     ${richTextFragment},
     ${buttonsFragment},
     "cards": array::compact(cards[]{
-      ...,
-      "openInNewTab": url.openInNewTab,
+      _key,
+      _type,
+      title,
+      description,
+      ${imageFragment},
       "href": select(
         url.type == "internal" => url.internal->slug.current,
         url.type == "external" => url.external,
         url.href
       ),
-      ${imageFragment},
+      "openInNewTab": url.openInNewTab
     })
   }
 `;
 
 export const featureBlock = /* groq */ `
   _type == "feature" => {
-    ...,
+    badge,
+    title,
+    imageFit,
     ${imageFragment},
     ${buttonsFragment},
     ${richTextFragment}
@@ -148,7 +227,9 @@ export const featureBlock = /* groq */ `
 
 export const featuredRecipesBlock = /* groq */ `
   _type == "featuredRecipes" => {
-    ...,
+    eyebrow,
+    title,
+    intro,
     "recipes": array::compact(recipes[]->{
       _id,
       name,
@@ -229,16 +310,34 @@ export const faqFragment = /* groq */ `
 
 export const faqAccordionBlock = /* groq */ `
   _type == "faqAccordion" => {
-    ...,
+    eyebrow,
+    title,
+    subtitle,
     ${faqFragment},
+    "link": link{
+      title,
+      description,
+      "url": {
+        "openInNewTab": url.openInNewTab,
+        "href": select(
+          url.type == "internal" => url.internal->slug.current,
+          url.type == "external" => url.external,
+          url.href
+        )
+      }
+    }
   }
 `;
 
 export const featureCardsIconBlock = /* groq */ `
   _type == "featureCardsIcon" => {
-    ...,
-    cards[]{
-      ...,
+    eyebrow,
+    title,
+    ${richTextFragment},
+    "cards": cards[]{
+      _key,
+      icon,
+      title,
       ${richTextFragment}
     }
   }
@@ -246,48 +345,67 @@ export const featureCardsIconBlock = /* groq */ `
 
 export const subscribeNewsletterBlock = /* groq */ `
   _type == "subscribeNewsletter" => {
-    ...,
-    ${richTextFragment},
-    ${buttonsFragment},
+    title,
+    ${subTitleRichTextFragment},
+    ${helperTextRichTextFragment}
   }
 `;
 
 export const threeProductPanelsBlock = /* groq */ `
   _type == "threeProductPanels" => {
-    ...,
+    eyebrow,
+    title,
+    subtitle,
     "panels": array::compact(panels[]{
-      ...,
-      ${richTextFragment},
-      ${buttonsFragment},
+      _key,
+      title,
+      shortDescription,
+      expandedDescription,
+      accentColor,
       ${imageFragment},
+      "ctaButton": ctaButton{
+        text,
+        variant,
+        _key,
+        _type,
+        "openInNewTab": url.openInNewTab,
+        "href": select(
+          url.type == "internal" => url.internal->slug.current,
+          url.type == "external" => url.external,
+          url.href
+        )
+      }
     })
   }
 `;
 
 export const longFormBlock = /* groq */ `
   _type == "longForm" => {
-    ...,
-    ${richTextFragment},
+    eyebrow,
+    title,
+    ${introRichTextFragment},
+    ${bodyRichTextFragment}
   }
 `;
 
 export const homeSlideshowBlock = /* groq */ `
   _type == "homeSlideshow" => {
-    ...,
-    slides[]{
-      ...,
+    "slides": array::compact(slides[]{
+      _key,
+      title,
+      subtitle,
+      ${descriptionRichTextFragment},
       ${imageFragment},
-      ${buttonsFragment},
-      ${richTextFragment}
-    }
+      ${buttonsFragment}
+    })
   }
 `;
 
 export const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
-    ...,
-    ${sectionSpacingFragment},
+    _key,
     _type,
+    ${sectionSpacingFragment},
     ${ctaBlock},
     ${featureBlock},
     ${featuredRecipesBlock},

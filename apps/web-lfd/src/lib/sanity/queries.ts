@@ -9,19 +9,25 @@ import { defineQuery } from "next-sanity";
 
 export const lfdHomePageQuery = defineQuery(`
   *[_type == "homePage" && site._ref == $siteId][0]{
-    ...,
     _id,
     _type,
-    "slug": slug.current,
     title,
     description,
+    seoTitle,
+    seoDescription,
+    "slug": slug.current,
     ${pageBuilderFragment}
   }
 `);
 
 export const lfdSlugPageQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{
-    ...,
+    _id,
+    _type,
+    title,
+    description,
+    seoTitle,
+    seoDescription,
     "slug": slug.current,
     ${pageBuilderFragment}
   }

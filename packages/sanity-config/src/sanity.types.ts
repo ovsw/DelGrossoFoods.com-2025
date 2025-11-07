@@ -2852,30 +2852,27 @@ export type GetProductBySlugQueryResult = {
 
 // Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfHomePageQuery
-// Query: *[_type == "homePage" && site._ref == $siteId][0]{    ...,    _id,    _type,    "slug": slug.current,    title,    description,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "homePage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type DgfHomePageQueryResult = {
   _id: string;
   _type: "homePage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
   title: string | null;
   description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   slug: string;
   pageBuilder: Array<
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -2938,19 +2935,17 @@ export type DgfHomePageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -3009,13 +3004,48 @@ export type DgfHomePageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -3070,38 +3100,17 @@ export type DgfHomePageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -3110,18 +3119,28 @@ export type DgfHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -3149,17 +3168,18 @@ export type DgfHomePageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -3221,13 +3241,17 @@ export type DgfHomePageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "homeSlideshow";
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
         slides: Array<{
-          title?: string;
+          _key: string;
+          title: string | null;
           subtitle: string;
           description: Array<
             | {
@@ -3239,11 +3263,20 @@ export type DgfHomePageQueryResult = {
                 }>;
                 style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
                 listItem?: "bullet" | "number";
-                markDefs?: Array<{
-                  customLink?: CustomUrl;
-                  _type: "customLink";
-                  _key: string;
-                }>;
+                markDefs: Array<
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                      openInNewTab: boolean | null;
+                      href: string | "#" | null;
+                    }
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                    }
+                > | null;
                 level?: number;
                 _type: "block";
                 _key: string;
@@ -3256,21 +3289,24 @@ export type DgfHomePageQueryResult = {
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
                 media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                caption?: string;
+                hotspot: {
+                  x: number;
+                  y: number;
+                } | null;
+                crop: {
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
+                } | null;
+                caption: string | null;
                 _type: "image";
                 _key: string;
+                id: string | null;
+                preview: string | null;
+                alt: null;
               }
           >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -3286,19 +3322,24 @@ export type DgfHomePageQueryResult = {
             } | null;
             alt: string;
           };
-          _type: "slide";
-          _key: string;
-          richText: null;
+          buttons: Array<{
+            text: string | null;
+            variant: null;
+            _key: string;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          }> | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -3363,6 +3404,8 @@ export type DgfHomePageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -3380,20 +3423,20 @@ export type DgfHomePageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -3402,15 +3445,24 @@ export type DgfHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -3420,23 +3472,34 @@ export type DgfHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -3445,16 +3508,25 @@ export type DgfHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -3463,29 +3535,41 @@ export type DgfHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -3501,73 +3585,40 @@ export type DgfHomePageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  ogTitle?: string;
-  ogDescription?: string;
 } | null;
 // Variable: dgfSlugPageQuery
-// Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    ...,    "slug": slug.current,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type DgfSlugPageQueryResult = {
   _id: string;
   _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
   title: string;
-  description?: string;
+  description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   slug: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
   pageBuilder: Array<
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -3630,19 +3681,17 @@ export type DgfSlugPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -3701,13 +3750,48 @@ export type DgfSlugPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -3762,38 +3846,17 @@ export type DgfSlugPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -3802,18 +3865,28 @@ export type DgfSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -3841,17 +3914,18 @@ export type DgfSlugPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -3913,12 +3987,15 @@ export type DgfSlugPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -3983,6 +4060,8 @@ export type DgfSlugPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -4000,20 +4079,20 @@ export type DgfSlugPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4022,15 +4101,24 @@ export type DgfSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -4040,23 +4128,34 @@ export type DgfSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4065,16 +4164,25 @@ export type DgfSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4083,29 +4191,41 @@ export type DgfSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -4121,36 +4241,17 @@ export type DgfSlugPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  seoNoIndex?: boolean;
-  ogTitle?: string;
-  ogDescription?: string;
 } | null;
 // Variable: dgfSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
@@ -4342,7 +4443,7 @@ export type DgfProductIndexPageQueryResult = {
   slug: string;
 } | null;
 // Variable: dgfHistoryPageQuery
-// Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type DgfHistoryPageQueryResult = {
   _id: string;
   _type: "historyPage";
@@ -4434,10 +4535,14 @@ export type DgfHistoryPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -4500,19 +4605,17 @@ export type DgfHistoryPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -4571,13 +4674,48 @@ export type DgfHistoryPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -4632,38 +4770,17 @@ export type DgfHistoryPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4672,18 +4789,28 @@ export type DgfHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -4711,17 +4838,18 @@ export type DgfHistoryPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -4783,12 +4911,15 @@ export type DgfHistoryPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -4853,6 +4984,8 @@ export type DgfHistoryPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -4870,20 +5003,20 @@ export type DgfHistoryPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4892,15 +5025,24 @@ export type DgfHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -4910,23 +5052,34 @@ export type DgfHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4935,16 +5088,25 @@ export type DgfHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -4953,29 +5115,41 @@ export type DgfHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -4991,22 +5165,20 @@ export type DgfHistoryPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
 // Variable: dgfStoreLocatorPageQuery
-// Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type DgfStoreLocatorPageQueryResult = {
   _id: string;
   _type: "storeLocator";
@@ -5017,10 +5189,14 @@ export type DgfStoreLocatorPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -5083,19 +5259,17 @@ export type DgfStoreLocatorPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -5154,13 +5328,48 @@ export type DgfStoreLocatorPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -5215,38 +5424,17 @@ export type DgfStoreLocatorPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -5255,18 +5443,28 @@ export type DgfStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -5294,17 +5492,18 @@ export type DgfStoreLocatorPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -5366,12 +5565,15 @@ export type DgfStoreLocatorPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -5436,6 +5638,8 @@ export type DgfStoreLocatorPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -5453,20 +5657,20 @@ export type DgfStoreLocatorPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -5475,15 +5679,24 @@ export type DgfStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -5493,23 +5706,34 @@ export type DgfStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -5518,16 +5742,25 @@ export type DgfStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -5536,29 +5769,41 @@ export type DgfStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -5574,22 +5819,20 @@ export type DgfStoreLocatorPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
 // Variable: dgfContactPageQuery
-// Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type DgfContactPageQueryResult = {
   _id: string;
   _type: "contactPage";
@@ -5608,10 +5851,14 @@ export type DgfContactPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -5674,19 +5921,17 @@ export type DgfContactPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -5745,13 +5990,48 @@ export type DgfContactPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -5806,38 +6086,17 @@ export type DgfContactPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -5846,18 +6105,28 @@ export type DgfContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -5885,17 +6154,18 @@ export type DgfContactPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -5957,12 +6227,15 @@ export type DgfContactPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -6027,6 +6300,8 @@ export type DgfContactPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -6044,20 +6319,20 @@ export type DgfContactPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6066,15 +6341,24 @@ export type DgfContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -6084,23 +6368,34 @@ export type DgfContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6109,16 +6404,25 @@ export type DgfContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6127,29 +6431,41 @@ export type DgfContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -6165,47 +6481,42 @@ export type DgfContactPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
 
 // Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdHomePageQuery
-// Query: *[_type == "homePage" && site._ref == $siteId][0]{    ...,    _id,    _type,    "slug": slug.current,    title,    description,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "homePage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type LfdHomePageQueryResult = {
   _id: string;
   _type: "homePage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
   title: string | null;
   description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   slug: string;
   pageBuilder: Array<
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -6268,19 +6579,17 @@ export type LfdHomePageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -6339,13 +6648,48 @@ export type LfdHomePageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -6400,38 +6744,17 @@ export type LfdHomePageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6440,18 +6763,28 @@ export type LfdHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -6479,17 +6812,18 @@ export type LfdHomePageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -6551,13 +6885,17 @@ export type LfdHomePageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "homeSlideshow";
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
         slides: Array<{
-          title?: string;
+          _key: string;
+          title: string | null;
           subtitle: string;
           description: Array<
             | {
@@ -6569,11 +6907,20 @@ export type LfdHomePageQueryResult = {
                 }>;
                 style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
                 listItem?: "bullet" | "number";
-                markDefs?: Array<{
-                  customLink?: CustomUrl;
-                  _type: "customLink";
-                  _key: string;
-                }>;
+                markDefs: Array<
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                      openInNewTab: boolean | null;
+                      href: string | "#" | null;
+                    }
+                  | {
+                      customLink?: CustomUrl;
+                      _type: "customLink";
+                      _key: string;
+                    }
+                > | null;
                 level?: number;
                 _type: "block";
                 _key: string;
@@ -6586,21 +6933,24 @@ export type LfdHomePageQueryResult = {
                   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
                 };
                 media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                caption?: string;
+                hotspot: {
+                  x: number;
+                  y: number;
+                } | null;
+                crop: {
+                  bottom: number;
+                  left: number;
+                  right: number;
+                  top: number;
+                } | null;
+                caption: string | null;
                 _type: "image";
                 _key: string;
+                id: string | null;
+                preview: string | null;
+                alt: null;
               }
           >;
-          buttons: Array<{
-            text: string | null;
-            variant: null;
-            _key: string;
-            _type: "button";
-            openInNewTab: boolean | null;
-            href: string | null;
-          }> | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -6616,19 +6966,24 @@ export type LfdHomePageQueryResult = {
             } | null;
             alt: string;
           };
-          _type: "slide";
-          _key: string;
-          richText: null;
+          buttons: Array<{
+            text: string | null;
+            variant: null;
+            _key: string;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          }> | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -6693,6 +7048,8 @@ export type LfdHomePageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -6710,20 +7067,20 @@ export type LfdHomePageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6732,15 +7089,24 @@ export type LfdHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -6750,23 +7116,34 @@ export type LfdHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6775,16 +7152,25 @@ export type LfdHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -6793,29 +7179,41 @@ export type LfdHomePageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -6831,73 +7229,40 @@ export type LfdHomePageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  ogTitle?: string;
-  ogDescription?: string;
 } | null;
 // Variable: lfdSlugPageQuery
-// Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    ...,    "slug": slug.current,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type LfdSlugPageQueryResult = {
   _id: string;
   _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
   title: string;
-  description?: string;
+  description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   slug: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
   pageBuilder: Array<
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -6960,19 +7325,17 @@ export type LfdSlugPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -7031,13 +7394,48 @@ export type LfdSlugPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -7092,38 +7490,17 @@ export type LfdSlugPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -7132,18 +7509,28 @@ export type LfdSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -7171,17 +7558,18 @@ export type LfdSlugPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -7243,12 +7631,15 @@ export type LfdSlugPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -7313,6 +7704,8 @@ export type LfdSlugPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -7330,20 +7723,20 @@ export type LfdSlugPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -7352,15 +7745,24 @@ export type LfdSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -7370,23 +7772,34 @@ export type LfdSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -7395,16 +7808,25 @@ export type LfdSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -7413,29 +7835,41 @@ export type LfdSlugPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -7451,36 +7885,17 @@ export type LfdSlugPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  seoNoIndex?: boolean;
-  ogTitle?: string;
-  ogDescription?: string;
 } | null;
 // Variable: lfdSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
@@ -7672,7 +8087,7 @@ export type LfdProductIndexPageQueryResult = {
   slug: string;
 } | null;
 // Variable: lfdHistoryPageQuery
-// Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type LfdHistoryPageQueryResult = {
   _id: string;
   _type: "historyPage";
@@ -7764,10 +8179,14 @@ export type LfdHistoryPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -7830,19 +8249,17 @@ export type LfdHistoryPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -7901,13 +8318,48 @@ export type LfdHistoryPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -7962,38 +8414,17 @@ export type LfdHistoryPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8002,18 +8433,28 @@ export type LfdHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -8041,17 +8482,18 @@ export type LfdHistoryPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -8113,12 +8555,15 @@ export type LfdHistoryPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -8183,6 +8628,8 @@ export type LfdHistoryPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -8200,20 +8647,20 @@ export type LfdHistoryPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8222,15 +8669,24 @@ export type LfdHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -8240,23 +8696,34 @@ export type LfdHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8265,16 +8732,25 @@ export type LfdHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8283,29 +8759,41 @@ export type LfdHistoryPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -8321,22 +8809,20 @@ export type LfdHistoryPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
 // Variable: lfdStoreLocatorPageQuery
-// Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type LfdStoreLocatorPageQueryResult = {
   _id: string;
   _type: "storeLocator";
@@ -8347,10 +8833,14 @@ export type LfdStoreLocatorPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -8413,19 +8903,17 @@ export type LfdStoreLocatorPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -8484,13 +8972,48 @@ export type LfdStoreLocatorPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -8545,38 +9068,17 @@ export type LfdStoreLocatorPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8585,18 +9087,28 @@ export type LfdStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -8624,17 +9136,18 @@ export type LfdStoreLocatorPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -8696,12 +9209,15 @@ export type LfdStoreLocatorPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -8766,6 +9282,8 @@ export type LfdStoreLocatorPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -8783,20 +9301,20 @@ export type LfdStoreLocatorPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8805,15 +9323,24 @@ export type LfdStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -8823,23 +9350,34 @@ export type LfdStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8848,16 +9386,25 @@ export type LfdStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -8866,29 +9413,41 @@ export type LfdStoreLocatorPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -8904,22 +9463,20 @@ export type LfdStoreLocatorPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
 // Variable: lfdContactPageQuery
-// Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    ...,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },    _type,      _type == "cta" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "feature" => {    ...,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    ...,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    ...,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),  },      _type == "featureCardsIcon" => {    ...,    cards[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  },      _type == "imageLinkCards" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      ...,      "openInNewTab": url.openInNewTab,      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "threeProductPanels" => {    ...,    "panels": array::compact(panels[]{      ...,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },    })  },      _type == "longForm" => {    ...,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },  },      _type == "homeSlideshow" => {    ...,    slides[]{      ...,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  }  }  }
+// Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  }  }  }
 export type LfdContactPageQueryResult = {
   _id: string;
   _type: "contactPage";
@@ -8938,10 +9495,14 @@ export type LfdContactPageQueryResult = {
     | {
         _key: string;
         _type: "cta";
-        surfaceColor?: "black" | "default" | "green" | "none" | "red";
-        applySurfaceShine?: boolean;
-        eyebrow?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        surfaceColor: "black" | "default" | "green" | "none" | "red" | null;
+        applySurfaceShine: boolean | null;
         richText: Array<
           | {
               children?: Array<{
@@ -9004,19 +9565,17 @@ export type LfdContactPageQueryResult = {
           openInNewTab: boolean | null;
           href: string | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "faqAccordion";
-        eyebrow?: string;
-        title: string;
-        subtitle?: string;
-        link?: {
-          title?: string;
-          description?: string;
-          url?: CustomUrl;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
         };
+        eyebrow: string | null;
+        title: string;
+        subtitle: string | null;
         faqs: Array<{
           _id: string;
           title: string;
@@ -9075,13 +9634,48 @@ export type LfdContactPageQueryResult = {
               }
           > | null;
         }>;
-        spacing: SectionSpacing;
+        link: {
+          title: string | null;
+          description: string | null;
+          url: {
+            openInNewTab: boolean | null;
+            href: string | null;
+          };
+        } | null;
       }
     | {
         _key: string;
         _type: "feature";
-        badge?: string;
-        title?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        badge: string | null;
+        title: string | null;
+        imageFit: "cover" | "fit" | null;
+        image: {
+          id: string | null;
+          preview: string | null;
+          hotspot: {
+            x: number;
+            y: number;
+          } | null;
+          crop: {
+            bottom: number;
+            left: number;
+            right: number;
+            top: number;
+          } | null;
+          alt: null;
+        } | null;
+        buttons: Array<{
+          text: string | null;
+          variant: null;
+          _key: string;
+          _type: "button";
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
         richText: Array<
           | {
               children?: Array<{
@@ -9136,38 +9730,17 @@ export type LfdContactPageQueryResult = {
               alt: null;
             }
         > | null;
-        image: {
-          id: string | null;
-          preview: string | null;
-          hotspot: {
-            x: number;
-            y: number;
-          } | null;
-          crop: {
-            bottom: number;
-            left: number;
-            right: number;
-            top: number;
-          } | null;
-          alt: null;
-        } | null;
-        imageFit?: "cover" | "fit";
-        buttons: Array<{
-          text: string | null;
-          variant: null;
-          _key: string;
-          _type: "button";
-          openInNewTab: boolean | null;
-          href: string | null;
-        }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featureCardsIcon";
-        eyebrow?: string;
-        title?: string;
-        richText?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        richText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -9176,18 +9749,28 @@ export type LfdContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         cards: Array<{
-          icon?: IconPicker;
-          title?: string;
+          _key: string;
+          icon: IconPicker | null;
+          title: string | null;
           richText: Array<{
             children?: Array<{
               marks?: Array<string>;
@@ -9215,17 +9798,18 @@ export type LfdContactPageQueryResult = {
             _type: "block";
             _key: string;
           }> | null;
-          _type: "featureCardIcon";
-          _key: string;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "featuredRecipes";
-        eyebrow?: string;
-        title?: string;
-        intro?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        intro: string | null;
         recipes: Array<{
           _id: string;
           name: string;
@@ -9287,12 +9871,15 @@ export type LfdContactPageQueryResult = {
             alt: null;
           };
         }>;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "imageLinkCards";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
         richText: Array<
           | {
@@ -9357,6 +9944,8 @@ export type LfdContactPageQueryResult = {
           href: string | null;
         }> | null;
         cards: Array<{
+          _key: string;
+          _type: "imageLinkCard";
           title: string;
           description: string;
           image: {
@@ -9374,20 +9963,20 @@ export type LfdContactPageQueryResult = {
             } | null;
             alt: null;
           } | null;
-          url?: CustomUrl;
-          _type: "imageLinkCard";
-          _key: string;
-          openInNewTab: boolean | null;
           href: string | null;
+          openInNewTab: boolean | null;
         }> | null;
-        spacing: SectionSpacing;
       }
     | {
         _key: string;
         _type: "longForm";
-        eyebrow?: string;
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        eyebrow: string | null;
         title: string;
-        intro?: Array<{
+        intro: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -9396,15 +9985,24 @@ export type LfdContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
+        }> | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -9414,23 +10012,34 @@ export type LfdContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
         }>;
-        spacing: SectionSpacing;
-        richText: null;
       }
     | {
         _key: string;
         _type: "subscribeNewsletter";
-        title?: string;
-        subTitle?: Array<{
+        spacing: {
+          spacingTop: "default" | "large" | "none" | "small";
+          spacingBottom: "default" | "large" | "none" | "small";
+        };
+        title: string | null;
+        subTitle: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -9439,16 +10048,25 @@ export type LfdContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        helperText?: Array<{
+        }> | null;
+        helperText: Array<{
           children?: Array<{
             marks?: Array<string>;
             text?: string;
@@ -9457,29 +10075,41 @@ export type LfdContactPageQueryResult = {
           }>;
           style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
           listItem?: "bullet" | "number";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
+          markDefs: Array<
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+                openInNewTab: boolean | null;
+                href: string | "#" | null;
+              }
+            | {
+                customLink?: CustomUrl;
+                _type: "customLink";
+                _key: string;
+              }
+          > | null;
           level?: number;
           _type: "block";
           _key: string;
-        }>;
-        spacing: SectionSpacing;
-        richText: null;
-        buttons: null;
+        }> | null;
       }
     | {
         _key: string;
         _type: "threeProductPanels";
-        eyebrow?: string;
-        title?: string;
-        subtitle?: string;
+        spacing: {
+          spacingTop: "default";
+          spacingBottom: "default";
+        };
+        eyebrow: string | null;
+        title: string | null;
+        subtitle: string | null;
         panels: Array<{
-          title?: string;
-          shortDescription?: string;
-          expandedDescription?: string;
+          _key: string;
+          title: string | null;
+          shortDescription: string | null;
+          expandedDescription: string | null;
+          accentColor: "black" | "green" | "red" | null;
           image: {
             id: string | null;
             preview: string | null;
@@ -9495,17 +10125,15 @@ export type LfdContactPageQueryResult = {
             } | null;
             alt: string | null;
           } | null;
-          accentColor?: "black" | "green" | "red";
-          ctaButton?: Button;
-          _type: "productPanel";
-          _key: string;
-          richText: null;
-          buttons: null;
+          ctaButton: {
+            text: string | null;
+            variant: null;
+            _key: null;
+            _type: "button";
+            openInNewTab: boolean | null;
+            href: string | null;
+          } | null;
         }>;
-        spacing: {
-          spacingTop: "default";
-          spacingBottom: "default";
-        };
       }
   > | null;
 } | null;
@@ -9529,10 +10157,10 @@ declare module "@sanity/client" {
     '\n  *[_type == "product"] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
     '\n  *[\n    _type == "product"\n    && defined(slug.current)\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetProductsBySauceIdQueryResult;
     '\n  *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    shippingCategory,\n    price,\n    weight,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    "sauces": array::compact(sauces[]->{\n      _id,\n      _type,\n      name,\n      line,\n      category,\n      "slug": slug.current,\n      "descriptionPlain": coalesce(pt::text(description), ""),\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    })\n  }\n': GetProductBySlugQueryResult;
-    '\n  *[_type == "homePage" && site._ref == $siteId][0]{\n    ...,\n    _id,\n    _type,\n    "slug": slug.current,\n    title,\n    description,\n    \n  pageBuilder[]{\n    ...,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "feature" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    ...,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    ...,\n    "panels": array::compact(panels[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    ...,\n    slides[]{\n      ...,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n\n  }\n\n  }\n':
+    '\n  *[_type == "homePage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    seoTitle,\n    seoDescription,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfHomePageQueryResult
       | LfdHomePageQueryResult;
-    '\n  *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{\n    ...,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    ...,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "feature" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    ...,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    ...,\n    "panels": array::compact(panels[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    ...,\n    slides[]{\n      ...,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n\n  }\n\n  }\n':
+    '\n  *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    seoTitle,\n    seoDescription,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfSlugPageQueryResult
       | LfdSlugPageQueryResult;
     '\n  *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current\n':
@@ -9565,13 +10193,13 @@ declare module "@sanity/client" {
     '\n  *[_type == "productIndex" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n':
       | DgfProductIndexPageQueryResult
       | LfdProductIndexPageQueryResult;
-    '\n  *[_type == "historyPage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current,\n    timeline{\n      markers[]{\n        heading,\n        subtitle,\n        content[]{\n          ...,\n          _type == "block" => {\n            ...,\n            \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n          },\n          _type == "image" => {\n            \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n\n          }\n        },\n        image{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "assetRef": asset._ref\n        }\n      }\n    },\n    \n  pageBuilder[]{\n    ...,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "feature" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    ...,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    ...,\n    "panels": array::compact(panels[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    ...,\n    slides[]{\n      ...,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n\n  }\n\n  }\n':
+    '\n  *[_type == "historyPage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current,\n    timeline{\n      markers[]{\n        heading,\n        subtitle,\n        content[]{\n          ...,\n          _type == "block" => {\n            ...,\n            \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n          },\n          _type == "image" => {\n            \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n\n          }\n        },\n        image{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "assetRef": asset._ref\n        }\n      }\n    },\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfHistoryPageQueryResult
       | LfdHistoryPageQueryResult;
-    '\n  *[_type == "storeLocator" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    ...,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "feature" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    ...,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    ...,\n    "panels": array::compact(panels[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    ...,\n    slides[]{\n      ...,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n\n  }\n\n  }\n':
+    '\n  *[_type == "storeLocator" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfStoreLocatorPageQueryResult
       | LfdStoreLocatorPageQueryResult;
-    '\n  *[_type == "contactPage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{\n      _id,\n      addressLines,\n      contactEmail,\n      tollFreePhone,\n      officePhone,\n      corporateWebsiteUrl\n    },\n    \n  pageBuilder[]{\n    ...,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    _type,\n    \n  _type == "cta" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "feature" => {\n    ...,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    ...,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    ...,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    ...,\n    cards[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      ...,\n      "openInNewTab": url.openInNewTab,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    ...,\n    "panels": array::compact(panels[]{\n      ...,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    ...,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    ...,\n    slides[]{\n      ...,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n\n  }\n\n  }\n':
+    '\n  *[_type == "contactPage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "slug": slug.current,\n    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{\n      _id,\n      addressLines,\n      contactEmail,\n      tollFreePhone,\n      officePhone,\n      corporateWebsiteUrl\n    },\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfContactPageQueryResult
       | LfdContactPageQueryResult;
   }
