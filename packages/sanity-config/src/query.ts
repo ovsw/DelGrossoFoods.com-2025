@@ -163,7 +163,7 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
     && defined(slug.current)
     && $sauceIds != null
     && count($sauceIds) > 0
-    && count((coalesce(dgfSauces[]._ref, []) + coalesce(lfdSauces[]._ref, []))[@ in $sauceIds]) > 0
+    && references(*[_id in $sauceIds]._id)
   ] | order(name asc){
     _id,
     name,
