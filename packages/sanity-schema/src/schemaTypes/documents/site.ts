@@ -24,8 +24,8 @@ export const site = defineType({
       type: "string",
       options: {
         list: [
-          { title: "DelGrosso Foods", value: "DGF" },
-          { title: "La Famiglia DelGrosso", value: "LFD" },
+          { title: "DGF", value: "DGF" },
+          { title: "LFD", value: "LFD" },
         ],
       },
       validation: (Rule) => Rule.required(),

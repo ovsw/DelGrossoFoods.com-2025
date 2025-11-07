@@ -5,7 +5,10 @@ import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
-import { createSlugValidator } from "../../utils/slug-validation";
+import {
+  createSiteScopedSlugUniqueness,
+  createSlugValidator,
+} from "../../utils/slug-validation";
 import { homePageBuilderField, siteReferenceField } from "../common";
 
 export const homePage = defineType({
@@ -55,6 +58,7 @@ export const homePage = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: createSiteScopedSlugUniqueness("homePage"),
       },
       validation: (Rule) =>
         Rule.required().custom(

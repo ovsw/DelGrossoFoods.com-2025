@@ -1,6 +1,7 @@
 /**
  * Validation utilities for URL slug formatting
  */
+import type { SlugValidationContext } from "sanity";
 
 export interface SlugValidationError {
   type: "required" | "format" | "characters" | "structure" | "prefix";
@@ -286,6 +287,50 @@ export function createUniqueSlugRule() {
     return true;
   };
 }
+
+export const createSiteScopedSlugUniqueness = (sanityDocumentType: string) => {
+  return async (
+    slug: string,
+    context: SlugValidationContext,
+  ): Promise<boolean> => {
+    if (!slug) return true;
+
+    type SiteScopedDocument = {
+      _id?: string;
+      site?: {
+        _ref?: string;
+      };
+    };
+
+    const document = context.document as SiteScopedDocument | undefined;
+    const siteRef = document?.site?._ref;
+    if (!siteRef) return true;
+
+    const baseId = document?._id?.replace(/^drafts\./, "");
+    const excludedIds = [
+      baseId,
+      baseId ? `drafts.${baseId}` : undefined,
+    ].filter((value): value is string => Boolean(value));
+
+    const client = context.getClient({ apiVersion: "2025-02-19" });
+    const duplicate = await client.fetch(
+      `defined(*[
+        _type == $type &&
+        site._ref == $siteRef &&
+        slug.current == $slug &&
+        !(_id in $excludedIds)
+      ][0]._id)`,
+      {
+        type: sanityDocumentType,
+        siteRef,
+        slug,
+        excludedIds,
+      },
+    );
+
+    return !duplicate;
+  };
+};
 
 /**
  * Validates slug with auto-configured document type options

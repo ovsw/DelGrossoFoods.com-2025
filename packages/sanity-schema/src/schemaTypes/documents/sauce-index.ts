@@ -3,7 +3,8 @@ import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
-import { createSlug, isUnique } from "../../utils/slug";
+import { createSlug } from "../../utils/slug";
+import { createSiteScopedSlugUniqueness } from "../../utils/slug-validation";
 import { pageBuilderField, siteReferenceField } from "../common";
 
 export const sauceIndex = defineType({
@@ -51,7 +52,7 @@ export const sauceIndex = defineType({
       options: {
         source: "title",
         slugify: createSlug,
-        isUnique: isUnique,
+        isUnique: createSiteScopedSlugUniqueness("sauceIndex"),
       },
       validation: (Rule) => Rule.required(),
     }),
