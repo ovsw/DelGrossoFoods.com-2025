@@ -1,20 +1,22 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getHistoryPageQuery } from "@workspace/sanity-config/query";
-import type { GetHistoryPageQueryResult } from "@workspace/sanity-config/types";
+import { getSiteParams } from "@workspace/sanity-config/site";
+import type { LfdHistoryPageQueryResult } from "@workspace/sanity-config/types";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
+import { lfdHistoryPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const historyData = await sanityFetch({
-    query: getHistoryPageQuery,
+    query: lfdHistoryPageQuery,
+    params: getSiteParams(),
   });
 
-  const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
+  const data = (historyData?.data ?? null) as LfdHistoryPageQueryResult | null;
 
   const rawTitle = data?.title ?? null;
   const rawDescription = data?.description ?? null;
@@ -35,10 +37,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HistoryPage() {
   const historyData = await sanityFetch({
-    query: getHistoryPageQuery,
+    query: lfdHistoryPageQuery,
+    params: getSiteParams(),
   });
 
-  const data = (historyData?.data ?? null) as GetHistoryPageQueryResult | null;
+  const data = (historyData?.data ?? null) as LfdHistoryPageQueryResult | null;
 
   // Transform Sanity data to match TimelineSection expected format
   const timelineData =

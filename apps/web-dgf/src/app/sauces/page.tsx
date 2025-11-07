@@ -1,13 +1,12 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  getAllSaucesForIndexQuery,
-  getSauceIndexPageQuery,
-} from "@workspace/sanity-config/query";
+import { getAllSaucesForIndexQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
+import { dgfSauceIndexPageQuery } from "@/lib/sanity/queries";
 import { parseSearchParams, type SauceQueryState } from "@/lib/sauces/url";
 import { getSEOMetadata } from "@/lib/seo";
 import type { SauceIndexPageData, SauceListItem } from "@/types";
@@ -17,7 +16,8 @@ import { handleErrors } from "@/utils";
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
     sanityFetch({
-      query: getSauceIndexPageQuery,
+      query: dgfSauceIndexPageQuery,
+      params: getSiteParams(),
     }),
   );
 
@@ -45,7 +45,9 @@ async function fetchSauces() {
 }
 
 async function fetchIndexCopy() {
-  return await handleErrors(sanityFetch({ query: getSauceIndexPageQuery }));
+  return await handleErrors(
+    sanityFetch({ query: dgfSauceIndexPageQuery, params: getSiteParams() }),
+  );
 }
 
 export default async function SaucesIndexPage({

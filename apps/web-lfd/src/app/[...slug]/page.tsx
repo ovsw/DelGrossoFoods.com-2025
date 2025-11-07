@@ -1,25 +1,23 @@
 import { client } from "@workspace/sanity-config/client";
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  querySlugPageData,
-  querySlugPagePaths,
-} from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
+import { lfdSlugPagePathsQuery, lfdSlugPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
 async function fetchSlugPageData(slug: string, stega = true) {
   return await sanityFetch({
-    query: querySlugPageData,
-    params: { slug: `/${slug}` },
+    query: lfdSlugPageQuery,
+    params: { ...getSiteParams(), slug: `/${slug}` },
     stega,
   });
 }
 
 async function fetchSlugPagePaths() {
-  const slugs = await client.fetch(querySlugPagePaths);
+  const slugs = await client.fetch(lfdSlugPagePathsQuery, getSiteParams());
   const paths: { slug: string[] }[] = [];
   for (const slug of slugs) {
     if (!slug) continue;

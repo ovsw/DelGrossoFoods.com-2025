@@ -1,8 +1,8 @@
 "use client";
 
 import type {
-  QueryGlobalSeoSettingsResult,
-  QueryNavbarDataResult,
+  LfdGlobalSeoSettingsQueryResult,
+  LfdNavbarQueryResult,
 } from "@workspace/sanity-config/types";
 import {
   Accordion,
@@ -93,7 +93,7 @@ function MobileNavbarAccordionColumn({
   setIsOpen,
   currentPath,
 }: {
-  column: NonNullable<NonNullable<QueryNavbarDataResult>["columns"]>[number];
+  column: NonNullable<NonNullable<LfdNavbarQueryResult>["columns"]>[number];
   setIsOpen: (isOpen: boolean) => void;
   currentPath: string;
 }) {
@@ -130,8 +130,8 @@ function MobileNavbar({
   navbarData,
   settingsData,
 }: {
-  navbarData: QueryNavbarDataResult;
-  settingsData: QueryGlobalSeoSettingsResult;
+  navbarData: LfdNavbarQueryResult;
+  settingsData: LfdGlobalSeoSettingsQueryResult;
 }) {
   const { siteTitle } = settingsData ?? {};
   const { columns, buttons } = navbarData ?? {};
@@ -219,7 +219,7 @@ function NavbarColumnLink({
   column,
 }: {
   column: Extract<
-    NonNullable<NonNullable<QueryNavbarDataResult>["columns"]>[number],
+    NonNullable<NonNullable<LfdNavbarQueryResult>["columns"]>[number],
     { type: "link" }
   >;
 }) {
@@ -255,7 +255,7 @@ export function NavbarColumn({
   column,
 }: {
   column: Extract<
-    NonNullable<NonNullable<QueryNavbarDataResult>["columns"]>[number],
+    NonNullable<NonNullable<LfdNavbarQueryResult>["columns"]>[number],
     { type: "column" }
   >;
 }) {
@@ -307,7 +307,7 @@ export function NavbarColumn({
 export function DesktopNavbar({
   navbarData,
 }: {
-  navbarData: QueryNavbarDataResult;
+  navbarData: LfdNavbarQueryResult;
 }) {
   const { columns, buttons } = navbarData ?? {};
 
@@ -338,8 +338,8 @@ export function NavbarClient({
   navbarData,
   settingsData,
 }: {
-  navbarData: QueryNavbarDataResult;
-  settingsData: QueryGlobalSeoSettingsResult;
+  navbarData: LfdNavbarQueryResult;
+  settingsData: LfdGlobalSeoSettingsQueryResult;
 }) {
   return (
     <nav aria-label="Primary">

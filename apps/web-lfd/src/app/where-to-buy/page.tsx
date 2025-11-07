@@ -1,21 +1,23 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getStoreLocatorPageQuery } from "@workspace/sanity-config/query";
-import type { GetStoreLocatorPageQueryResult } from "@workspace/sanity-config/types";
+import { getSiteParams } from "@workspace/sanity-config/site";
+import type { LfdStoreLocatorPageQueryResult } from "@workspace/sanity-config/types";
 import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
 import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
+import { lfdStoreLocatorPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const storeLocatorData = await sanityFetch({
-    query: getStoreLocatorPageQuery,
+    query: lfdStoreLocatorPageQuery,
+    params: getSiteParams(),
   });
 
   const data = (storeLocatorData?.data ??
-    null) as GetStoreLocatorPageQueryResult | null;
+    null) as LfdStoreLocatorPageQueryResult | null;
 
   const rawTitle = data?.title ?? null;
   const rawDescription = data?.description ?? null;
@@ -36,11 +38,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function WhereToBuyPage() {
   const storeLocatorData = await sanityFetch({
-    query: getStoreLocatorPageQuery,
+    query: lfdStoreLocatorPageQuery,
+    params: getSiteParams(),
   });
 
   const data = (storeLocatorData?.data ??
-    null) as GetStoreLocatorPageQueryResult | null;
+    null) as LfdStoreLocatorPageQueryResult | null;
 
   const heading = data?.title || "Find DelGrosso Near You";
   const intro =

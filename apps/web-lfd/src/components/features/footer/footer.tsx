@@ -1,11 +1,8 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  queryFooterData,
-  queryGlobalSeoSettings,
-} from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type {
-  QueryFooterDataResult,
-  QueryGlobalSeoSettingsResult,
+  LfdFooterQueryResult,
+  LfdGlobalSeoSettingsQueryResult,
 } from "@workspace/sanity-config/types";
 import Link from "next/link";
 
@@ -17,12 +14,16 @@ import {
   XIcon,
   YoutubeIcon,
 } from "@/components/elements/social-icons";
+import {
+  lfdFooterQuery,
+  lfdGlobalSeoSettingsQuery,
+} from "@/lib/sanity/queries";
 
 interface SocialLinksProps {
-  data: NonNullable<QueryGlobalSeoSettingsResult>["socialLinks"];
+  data: NonNullable<LfdGlobalSeoSettingsQueryResult>["socialLinks"];
 }
 
-type SettingsDataWithContact = NonNullable<QueryGlobalSeoSettingsResult> & {
+type SettingsDataWithContact = NonNullable<LfdGlobalSeoSettingsQueryResult> & {
   addressLines?: string[] | null;
   contactEmail?: string | null;
   tollFreePhone?: string | null;
@@ -30,17 +31,19 @@ type SettingsDataWithContact = NonNullable<QueryGlobalSeoSettingsResult> & {
 };
 
 interface FooterProps {
-  data: NonNullable<QueryFooterDataResult>;
+  data: NonNullable<LfdFooterQueryResult>;
   settingsData: SettingsDataWithContact;
 }
 
 export async function FooterServer() {
   const [response, settingsResponse] = await Promise.all([
     sanityFetch({
-      query: queryFooterData,
+      query: lfdFooterQuery,
+      params: getSiteParams(),
     }),
     sanityFetch({
-      query: queryGlobalSeoSettings,
+      query: lfdGlobalSeoSettingsQuery,
+      params: getSiteParams(),
     }),
   ]);
 

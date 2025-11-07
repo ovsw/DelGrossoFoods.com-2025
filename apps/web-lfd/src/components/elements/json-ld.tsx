@@ -1,21 +1,19 @@
-import { client, urlFor } from "@workspace/sanity-config/client";
-import { querySettingsData } from "@workspace/sanity-config/query";
-import type { QuerySettingsDataResult } from "@workspace/sanity-config/types";
+import { client } from "@workspace/sanity-config/client";
+import { getSiteParams } from "@workspace/sanity-config/site";
+import type { LfdSettingsQueryResult } from "@workspace/sanity-config/types";
 import { stegaClean } from "next-sanity";
 import type {
   Answer,
-  Article,
   ContactPoint,
   FAQPage,
   ImageObject,
   Organization,
-  Person,
   Question,
-  WebPage,
   WebSite,
   WithContext,
 } from "schema-dts";
 
+import { lfdSettingsQuery } from "@/lib/sanity/queries";
 import { getBaseUrl, handleErrors } from "@/utils";
 
 interface RichTextChild {
@@ -97,23 +95,11 @@ export function FaqJsonLd({ faqs }: FaqJsonLdProps) {
   return <JsonLdScript data={faqJsonLd} id="faq-json-ld" />;
 }
 
-function buildSafeImageUrl(image?: { id?: string | null }) {
-  if (!image?.id) {
-    return undefined;
-  }
-  return urlFor({ ...image, _id: image.id })
-    .size(1920, 1080)
-    .dpr(2)
-    .auto("format")
-    .quality(80)
-    .url();
-}
-
 // Article JSON-LD Component
 
 // Organization JSON-LD Component
 interface OrganizationJsonLdProps {
-  settings: QuerySettingsDataResult;
+  settings: LfdSettingsQueryResult;
 }
 
 export function OrganizationJsonLd({ settings }: OrganizationJsonLdProps) {
@@ -150,7 +136,7 @@ export function OrganizationJsonLd({ settings }: OrganizationJsonLdProps) {
 
 // Website JSON-LD Component
 interface WebSiteJsonLdProps {
-  settings: QuerySettingsDataResult;
+  settings: LfdSettingsQueryResult;
 }
 
 export function WebSiteJsonLd({ settings }: WebSiteJsonLdProps) {
@@ -175,7 +161,7 @@ export function WebSiteJsonLd({ settings }: WebSiteJsonLdProps) {
 
 // Combined JSON-LD Component for pages with multiple structured data
 interface CombinedJsonLdProps {
-  settings?: QuerySettingsDataResult;
+  settings?: LfdSettingsQueryResult;
   faqs?: FlexibleFaq[];
   includeWebsite?: boolean;
   includeOrganization?: boolean;
@@ -185,7 +171,9 @@ export async function CombinedJsonLd({
   includeWebsite = false,
   includeOrganization = false,
 }: CombinedJsonLdProps) {
-  const [res] = await handleErrors(client.fetch(querySettingsData));
+  const [res] = await handleErrors(
+    client.fetch(lfdSettingsQuery, getSiteParams()),
+  );
 
   const cleanSettings = stegaClean(res);
   return (

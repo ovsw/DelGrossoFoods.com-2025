@@ -42,6 +42,11 @@ const ACCENT_VAR_MAP: Record<AccentColor, string> = {
 const getAccentVar = (color: string): string =>
   ACCENT_VAR_MAP[(color as AccentColor) || "red"] || ACCENT_VAR_MAP.red;
 
+type CTAButton = SanityButtonProps & {
+  _key?: string | null;
+  href?: string | null;
+};
+
 const normalizeHref = (href?: string | null): string | undefined => {
   if (!href) {
     return undefined;
@@ -86,11 +91,12 @@ const ProductPanelCard = ({
     "--overlay-accent": accentValue,
     "--card-scale": 1,
   } as CSSProperties;
-  const ctaButton = panel.ctaButton
+  const rawCtaButton = panel.ctaButton as CTAButton | null;
+  const ctaButton = rawCtaButton
     ? {
-        ...panel.ctaButton,
-        _key: panel.ctaButton._key ?? `${panel._key}-cta`,
-        href: normalizeHref(panel.ctaButton.href),
+        ...rawCtaButton,
+        _key: rawCtaButton._key ?? `${panel._key}-cta`,
+        href: normalizeHref(rawCtaButton.href),
       }
     : null;
 

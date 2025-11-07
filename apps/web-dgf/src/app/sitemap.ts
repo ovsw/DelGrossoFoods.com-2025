@@ -1,7 +1,8 @@
 import { client } from "@workspace/sanity-config/client";
-import { querySitemapData } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { MetadataRoute } from "next";
 
+import { dgfSitemapQuery } from "@/lib/sanity/queries";
 import { getBaseUrl } from "@/utils";
 
 const baseUrl = getBaseUrl();
@@ -10,7 +11,7 @@ type SitemapEntry = { slug: string; lastModified?: string };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { slugPages, saucePages, productPages, recipePages } =
-    (await client.fetch(querySitemapData)) as {
+    (await client.fetch(dgfSitemapQuery, getSiteParams())) as {
       slugPages: SitemapEntry[];
       saucePages: SitemapEntry[];
       productPages: SitemapEntry[];

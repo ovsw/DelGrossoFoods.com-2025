@@ -1,6 +1,7 @@
 {
   "path": [
-    "../web/src/**/*.{ts,tsx,js,jsx}",
+    "../web-dgf/src/lib/sanity/**/*.ts",
+    "../web-lfd/src/lib/sanity/**/*.ts",
     "../../packages/sanity-config/src/**/*.ts"
   ],
   "schema": "schema.json",

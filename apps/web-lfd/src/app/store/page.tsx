@@ -1,14 +1,13 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  getAllProductsForIndexQuery,
-  getProductIndexPageQuery,
-} from "@workspace/sanity-config/query";
+import { getAllProductsForIndexQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
+import { lfdProductIndexPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
@@ -16,7 +15,8 @@ import { handleErrors } from "@/utils";
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
     sanityFetch({
-      query: getProductIndexPageQuery,
+      query: lfdProductIndexPageQuery,
+      params: getSiteParams(),
     }),
   );
   const data = (result?.data ?? null) as ProductIndexPageData | null;
@@ -45,7 +45,9 @@ async function fetchProducts() {
 }
 
 async function fetchIndexCopy() {
-  return await handleErrors(sanityFetch({ query: getProductIndexPageQuery }));
+  return await handleErrors(
+    sanityFetch({ query: lfdProductIndexPageQuery, params: getSiteParams() }),
+  );
 }
 
 export default async function ProductsIndexPage({

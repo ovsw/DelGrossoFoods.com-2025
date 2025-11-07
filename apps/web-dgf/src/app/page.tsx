@@ -1,14 +1,15 @@
-// import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { queryHomePageData } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
+import { dgfHomePageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
 async function fetchHomePageData() {
   return await sanityFetch({
-    query: queryHomePageData,
+    query: dgfHomePageQuery,
+    params: getSiteParams(),
   });
 }
 

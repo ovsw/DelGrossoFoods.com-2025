@@ -1,7 +1,7 @@
 "use client";
 
 import { useOptimistic } from "@sanity/visual-editing/react";
-import type { QueryHomePageDataResult } from "@workspace/sanity-config/types";
+import type { DgfHomePageQueryResult } from "@workspace/sanity-config/types";
 import { createDataAttribute } from "next-sanity";
 import { type ComponentType, useCallback, useMemo } from "react";
 
@@ -22,7 +22,7 @@ import type { PageBuilderBlockProps } from "./types";
 
 // More specific and descriptive type aliases
 type PageBuilderBlock = NonNullable<
-  NonNullable<QueryHomePageDataResult>["pageBuilder"]
+  NonNullable<DgfHomePageQueryResult>["pageBuilder"]
 >[number];
 
 export interface PageBuilderProps {

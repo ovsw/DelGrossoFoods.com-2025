@@ -1,24 +1,24 @@
 import type {
+  DgfHomePageQueryResult,
+  DgfProductIndexPageQueryResult,
+  DgfRecipeCategoriesQueryResult,
+  DgfRecipeIndexPageQueryResult,
+  DgfSauceIndexPageQueryResult,
   GetAllProductsForIndexQueryResult,
-  GetAllRecipeCategoriesQueryResult,
   GetAllRecipesForIndexQueryResult,
   GetAllSaucesForIndexQueryResult,
   GetProductBySlugQueryResult,
-  GetProductIndexPageQueryResult,
   GetProductsBySauceIdQueryResult,
   GetRecipeBySlugQueryResult,
-  GetRecipeIndexPageQueryResult,
-  GetSauceIndexPageQueryResult,
-  QueryHomePageDataResult,
   QueryImageTypeResult,
 } from "@workspace/sanity-config/types";
 
 export type PageBuilderBlockTypes = NonNullable<
-  NonNullable<QueryHomePageDataResult>["pageBuilder"]
+  NonNullable<DgfHomePageQueryResult>["pageBuilder"]
 >[number]["_type"];
 
 export type PagebuilderType<T extends PageBuilderBlockTypes> = Extract<
-  NonNullable<NonNullable<QueryHomePageDataResult>["pageBuilder"]>[number],
+  NonNullable<NonNullable<DgfHomePageQueryResult>["pageBuilder"]>[number],
   { _type: T }
 >;
 
@@ -61,19 +61,19 @@ export type SanityRichTextBlock = Extract<
 export type Maybe<T> = T | null | undefined;
 
 // Sauces index types derived from generated query result types (tight coupling)
-export type SauceIndexPageData = NonNullable<GetSauceIndexPageQueryResult>;
+export type SauceIndexPageData = NonNullable<DgfSauceIndexPageQueryResult>;
 export type SauceListItem = GetAllSaucesForIndexQueryResult[number];
 
 export type SortOrder = "az" | "za";
 
 // Products index types
-export type ProductIndexPageData = NonNullable<GetProductIndexPageQueryResult>;
+export type ProductIndexPageData = NonNullable<DgfProductIndexPageQueryResult>;
 export type ProductListItem = GetAllProductsForIndexQueryResult[number];
 export type SauceProductListItem = GetProductsBySauceIdQueryResult[number];
 export type ProductDetailData = NonNullable<GetProductBySlugQueryResult>;
 
 // Recipes index types
-export type RecipeIndexPageData = NonNullable<GetRecipeIndexPageQueryResult>;
+export type RecipeIndexPageData = NonNullable<DgfRecipeIndexPageQueryResult>;
 export type RecipeListItem = GetAllRecipesForIndexQueryResult[number];
-export type RecipeCategoryOption = GetAllRecipeCategoriesQueryResult[number];
+export type RecipeCategoryOption = DgfRecipeCategoriesQueryResult[number];
 export type RecipeDetailData = NonNullable<GetRecipeBySlugQueryResult>;

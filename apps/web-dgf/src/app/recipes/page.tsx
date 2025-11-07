@@ -1,15 +1,16 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  getAllRecipeCategoriesQuery,
-  getAllRecipesForIndexQuery,
-  getRecipeIndexPageQuery,
-} from "@workspace/sanity-config/query";
+import { getAllRecipesForIndexQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
+import {
+  dgfRecipeCategoriesQuery,
+  dgfRecipeIndexPageQuery,
+} from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 import type {
   RecipeCategoryOption,
@@ -21,7 +22,8 @@ import { handleErrors } from "@/utils";
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
     sanityFetch({
-      query: getRecipeIndexPageQuery,
+      query: dgfRecipeIndexPageQuery,
+      params: getSiteParams(),
     }),
   );
   const data = (result?.data ?? null) as RecipeIndexPageData | null;
@@ -46,11 +48,13 @@ async function fetchRecipes() {
   return await handleErrors(sanityFetch({ query: getAllRecipesForIndexQuery }));
 }
 async function fetchIndexCopy() {
-  return await handleErrors(sanityFetch({ query: getRecipeIndexPageQuery }));
+  return await handleErrors(
+    sanityFetch({ query: dgfRecipeIndexPageQuery, params: getSiteParams() }),
+  );
 }
 async function fetchCategories() {
   return await handleErrors(
-    sanityFetch({ query: getAllRecipeCategoriesQuery }),
+    sanityFetch({ query: dgfRecipeCategoriesQuery, params: getSiteParams() }),
   );
 }
 

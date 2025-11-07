@@ -41,7 +41,7 @@ function toSlide(
 ): HomeSlideshowSlide | null {
   if (!slide) return null;
 
-  const imageData = slide.image?.image;
+  const imageData = slide.image;
   if (!imageData?.id) {
     return null;
   }
@@ -56,7 +56,7 @@ function toSlide(
     description: slide.description ?? null,
     button: button ?? null,
     image: imageData,
-    imageAlt: slide.image?.alt ?? null,
+    imageAlt: imageData.alt ?? null,
   };
 }
 

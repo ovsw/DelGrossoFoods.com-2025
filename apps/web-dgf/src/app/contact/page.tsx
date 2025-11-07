@@ -1,19 +1,21 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getContactPageQuery } from "@workspace/sanity-config/query";
-import type { GetContactPageQueryResult } from "@workspace/sanity-config/types";
+import { getSiteParams } from "@workspace/sanity-config/site";
+import type { DgfContactPageQueryResult } from "@workspace/sanity-config/types";
 import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { ContactFormSection } from "@/components/page-sections/contact-page/contact-form-section";
 import { PageBuilder } from "@/components/systems/pagebuilder/pagebuilder";
+import { dgfContactPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const contactData = await sanityFetch({
-    query: getContactPageQuery,
+    query: dgfContactPageQuery,
+    params: getSiteParams(),
   });
 
-  const data = (contactData?.data ?? null) as GetContactPageQueryResult | null;
+  const data = (contactData?.data ?? null) as DgfContactPageQueryResult | null;
 
   const rawTitle = data?.title ?? null;
   const rawDescription = data?.description ?? null;
@@ -32,16 +34,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactPage() {
   const contactData = await sanityFetch({
-    query: getContactPageQuery,
+    query: dgfContactPageQuery,
+    params: getSiteParams(),
   });
 
-  const data = (contactData?.data ?? null) as GetContactPageQueryResult | null;
+  const data = (contactData?.data ?? null) as DgfContactPageQueryResult | null;
 
   const heading = data?.title || "Contact Us";
   const intro =
     data?.description ||
     "Get in touch with us about our La Famiglia DelGrosso pasta sauces or DelGrosso Foods products. We're here to help with any questions you might have.";
-  type ContactPageData = NonNullable<GetContactPageQueryResult>;
+  type ContactPageData = NonNullable<DgfContactPageQueryResult>;
   const siteSettings = data?.siteSettings ?? null;
   const contactInformation = siteSettings
     ? {

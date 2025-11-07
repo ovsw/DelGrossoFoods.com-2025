@@ -1,21 +1,22 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  queryGlobalSeoSettings,
-  queryNavbarData,
-} from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type {
-  QueryGlobalSeoSettingsResult,
-  QueryNavbarDataResult,
+  LfdGlobalSeoSettingsQueryResult,
+  LfdNavbarQueryResult,
 } from "@workspace/sanity-config/types";
 
 import LogoSvg from "@/components/elements/logo";
+import {
+  lfdGlobalSeoSettingsQuery,
+  lfdNavbarQuery,
+} from "@/lib/sanity/queries";
 
 import { NavbarClient, NavbarSkeletonResponsive } from "./navbar-client";
 
 export async function NavbarServer() {
   const [navbarData, settingsData] = await Promise.all([
-    sanityFetch({ query: queryNavbarData }),
-    sanityFetch({ query: queryGlobalSeoSettings }),
+    sanityFetch({ query: lfdNavbarQuery, params: getSiteParams() }),
+    sanityFetch({ query: lfdGlobalSeoSettingsQuery, params: getSiteParams() }),
   ]);
   return (
     <Navbar navbarData={navbarData.data} settingsData={settingsData.data} />
@@ -26,8 +27,8 @@ export function Navbar({
   navbarData,
   settingsData,
 }: {
-  navbarData: QueryNavbarDataResult;
-  settingsData: QueryGlobalSeoSettingsResult;
+  navbarData: LfdNavbarQueryResult;
+  settingsData: LfdGlobalSeoSettingsQueryResult;
 }) {
   const { siteTitle: settingsSiteTitle } = settingsData ?? {};
 
