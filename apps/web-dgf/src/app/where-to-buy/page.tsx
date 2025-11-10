@@ -7,6 +7,7 @@ import { stegaClean } from "next-sanity";
 
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
 import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import { dgfStoreLocatorPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
@@ -49,6 +50,18 @@ export default async function WhereToBuyPage() {
   const intro =
     data?.description ||
     "La Famiglia DelGrosso Pasta and Pizza Sauces are available at fine grocery stores across the United States. Select your state to find stores near you.";
+  const documentId = data?._id ?? null;
+  const documentType = data?._type ?? null;
+  const titleAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "title",
+  });
+  const descriptionAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "description",
+  });
 
   return (
     <main>
@@ -56,15 +69,24 @@ export default async function WhereToBuyPage() {
       <Section spacingTop="default" spacingBottom="default">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <div className="max-w-3xl text-start">
-            <h1 className="text-3xl font-bold sm:text-5xl text-brand-green">
+            <h1
+              className="text-3xl font-bold sm:text-5xl text-brand-green"
+              data-sanity={titleAttribute ?? undefined}
+            >
               {heading}
             </h1>
-            <p className="mt-4 text-xl leading-8 text-muted-foreground">
+            <p
+              className="mt-4 text-xl leading-8 text-muted-foreground"
+              data-sanity={descriptionAttribute ?? undefined}
+            >
               {intro}
             </p>
           </div>
 
-          <WhereToBuyClient />
+          <WhereToBuyClient
+            sanityDocumentId={documentId}
+            sanityDocumentType={documentType}
+          />
         </div>
       </Section>
     </main>

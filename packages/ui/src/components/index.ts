@@ -77,3 +77,12 @@ export {
   SheetTrigger,
 } from "./sheet";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export { WhereToBuyClient } from "./where-to-buy-client";
+export type {
+  WhereToBuyProductLine,
+  WhereToBuyProductLineInfo,
+  WhereToBuyProductLineLabels,
+  WhereToBuyStateStores,
+  WhereToBuyStoreChain,
+  WhereToBuyStoreLogos,
+} from "./where-to-buy-types";
