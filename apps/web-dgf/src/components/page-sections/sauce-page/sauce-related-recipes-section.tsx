@@ -1,5 +1,6 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
 import { getRecipesBySauceIdQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { JSX } from "react";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
@@ -20,7 +21,7 @@ export async function SauceRelatedRecipesSection({
   const [result] = await handleErrors(
     sanityFetch({
       query: getRecipesBySauceIdQuery,
-      params: { sauceId },
+      params: { ...getSiteParams(), sauceId },
     }),
   );
   const items = (result?.data ?? []) as RecipeListItem[];

@@ -115,7 +115,14 @@ export const getSauceBySlugQuery = defineQuery(`
 `);
 
 export const getAllRecipesForIndexQuery = defineQuery(`
-  *[_type == "recipe"] | order(name asc){
+  *[
+    _type == "recipe"
+    && (
+      !defined($siteCode)
+      || $siteCode != "LFD"
+      || "LFD" in coalesce(versions, [])
+    )
+  ] | order(name asc){
     _id,
     name,
     "slug": slug.current,
@@ -141,6 +148,11 @@ export const getRecipesBySauceIdQuery = defineQuery(`
     && defined(slug.current)
     && $sauceId != null
     && references($sauceId)
+    && (
+      !defined($siteCode)
+      || $siteCode != "LFD"
+      || "LFD" in coalesce(versions, [])
+    )
   ] | order(name asc){
     _id,
     name,
@@ -167,6 +179,11 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
     && $sauceIds != null
     && count($sauceIds) > 0
     && references(*[_id in $sauceIds]._id)
+    && (
+      !defined($siteCode)
+      || $siteCode != "LFD"
+      || "LFD" in coalesce(versions, [])
+    )
   ] | order(name asc){
     _id,
     name,
@@ -208,22 +225,34 @@ export const getRecipeByIdQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    dgfIngredients,
-    dgfDirections,
-    dgfNotes,
+    "dgfIngredients": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfIngredients
+    ),
+    "dgfDirections": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfDirections
+    ),
+    "dgfNotes": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfNotes
+    ),
     lfdIngredients,
     lfdDirections,
     lfdNotes,
-    dgfSauces[]->{
-      _id,
-      name,
-      "slug": slug.current,
-      line,
-      "mainImage": mainImage{
-        ${imageFields},
-        "alt": coalesce(alt, "")
+    "dgfSauces": select(
+      defined($siteCode) && $siteCode == "LFD" => [],
+      dgfSauces[]->{
+        _id,
+        name,
+        "slug": slug.current,
+        line,
+        "mainImage": mainImage{
+          ${imageFields},
+          "alt": coalesce(alt, "")
+        }
       }
-    },
+    ),
     lfdSauces[]->{
       _id,
       name,
@@ -259,22 +288,34 @@ export const getRecipeBySlugQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    dgfIngredients,
-    dgfDirections,
-    dgfNotes,
+    "dgfIngredients": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfIngredients
+    ),
+    "dgfDirections": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfDirections
+    ),
+    "dgfNotes": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      dgfNotes
+    ),
     lfdIngredients,
     lfdDirections,
     lfdNotes,
-    dgfSauces[]->{
-      _id,
-      name,
-      "slug": slug.current,
-      line,
-      "mainImage": mainImage{
-        ${imageFields},
-        "alt": coalesce(alt, "")
+    "dgfSauces": select(
+      defined($siteCode) && $siteCode == "LFD" => [],
+      dgfSauces[]->{
+        _id,
+        name,
+        "slug": slug.current,
+        line,
+        "mainImage": mainImage{
+          ${imageFields},
+          "alt": coalesce(alt, "")
+        }
       }
-    },
+    ),
     lfdSauces[]->{
       _id,
       name,

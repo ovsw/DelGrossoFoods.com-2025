@@ -46,12 +46,11 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
     hasBlocks(recipe.lfdNotes) ||
     (recipe.lfdSauces?.length ?? 0) > 0;
 
-  const available: VariantKey[] =
-    hasOriginal && hasPremium
-      ? ["original", "premium"]
-      : hasOriginal
-        ? ["original"]
-        : ["premium"];
+  const available: VariantKey[] = hasPremium
+    ? ["premium"]
+    : hasOriginal
+      ? ["original"]
+      : ["premium"];
 
   const [variant, setVariant] = useVariantState(available);
 
@@ -64,6 +63,10 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
 
   const originalSauces = mapSaucesToDisplay(recipe.dgfSauces);
   const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
+  const showOriginalSauces =
+    available.includes("original") && originalSauces.length > 0;
+  const showPremiumSauces =
+    available.includes("premium") && premiumSauces.length > 0;
 
   // We intentionally preserve stega metadata in visible rich text below.
   const video = recipe.video;
@@ -224,20 +227,21 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                   <InfoRow title="Tags">{tagBadges}</InfoRow>
                 ) : null}
 
-                {(originalSauces.length > 0 || premiumSauces.length > 0) && (
+                {(showOriginalSauces || showPremiumSauces) && (
                   <div className="md:col-span-2">
                     <InfoLabel asChild>
                       <dt>Sauces</dt>
                     </InfoLabel>
                     <dd className="mt-2 space-y-3">
-                      <SauceList
-                        title="DelGrosso Original Sauces:"
-                        items={originalSauces}
-                      />
-                      <SauceList
-                        title="La Famiglia DelGrosso sauces:"
-                        items={premiumSauces}
-                      />
+                      {showOriginalSauces ? (
+                        <SauceList
+                          title="DelGrosso Original Sauces:"
+                          items={originalSauces}
+                        />
+                      ) : null}
+                      {showPremiumSauces ? (
+                        <SauceList items={premiumSauces} />
+                      ) : null}
                     </dd>
                   </div>
                 )}

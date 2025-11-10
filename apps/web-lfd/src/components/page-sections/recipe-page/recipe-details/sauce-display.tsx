@@ -95,16 +95,21 @@ export function SauceList({
   title,
   items,
 }: {
-  title: string;
+  title?: string;
   items: SauceDisplayItem[];
 }) {
   if (items.length === 0) return null;
 
   return (
     <div data-html="c-sauce-list">
-      <div className="text-xs text-th-dark-600" data-html="c-sauce-list-title">
-        {title}
-      </div>
+      {title ? (
+        <div
+          className="text-xs text-th-dark-600"
+          data-html="c-sauce-list-title"
+        >
+          {title}
+        </div>
+      ) : null}
       <ul className="mt-2 space-y-3" data-html="c-sauce-list-items">
         {items.map((item) => (
           <li key={item.id}>

@@ -3,6 +3,7 @@ import {
   getRecipeByIdQuery,
   getRecipesBySauceIdsQuery,
 } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
 import type { RecipeListItem } from "@/types";
@@ -17,9 +18,14 @@ export async function RecipeRelatedRecipesSection({
 }: RecipeRelatedRecipesSectionProps) {
   if (!recipeId) return null;
 
+  const siteParams = getSiteParams();
+
   // Load the recipe to get related sauce IDs
   const [recipeResult] = await handleErrors(
-    sanityFetch({ query: getRecipeByIdQuery, params: { id: recipeId } }),
+    sanityFetch({
+      query: getRecipeByIdQuery,
+      params: { ...siteParams, id: recipeId },
+    }),
   );
   const recipe = recipeResult?.data as
     | (Record<string, unknown> & {
@@ -41,7 +47,7 @@ export async function RecipeRelatedRecipesSection({
   const [result] = await handleErrors(
     sanityFetch({
       query: getRecipesBySauceIdsQuery,
-      params: { sauceIds },
+      params: { ...siteParams, sauceIds },
     }),
   );
   let items = (result?.data ?? []) as RecipeListItem[];

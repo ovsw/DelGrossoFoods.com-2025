@@ -1,6 +1,7 @@
 // (kept imports tidy after refactor)
 import { sanityFetch } from "@workspace/sanity-config/live";
 import { getRecipeBySlugQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
@@ -21,7 +22,11 @@ async function fetchRecipe(slug: string): Promise<RecipeDetailData | null> {
   const [result] = await handleErrors(
     sanityFetch({
       query: getRecipeBySlugQuery,
-      params: { slug: normalizedSlug, prefixedSlug },
+      params: {
+        ...getSiteParams(),
+        slug: normalizedSlug,
+        prefixedSlug,
+      },
     }),
   );
 

@@ -1,5 +1,6 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
 import { getRecipesBySauceIdsQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
 import type { RecipeListItem } from "@/types";
@@ -51,7 +52,7 @@ export async function ProductRelatedRecipesSection({
   }>(
     sanityFetch({
       query: getRecipesBySauceIdsQuery,
-      params: { sauceIds: ids },
+      params: { ...getSiteParams(), sauceIds: ids },
     }),
   );
 

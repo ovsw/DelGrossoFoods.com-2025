@@ -1,5 +1,6 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
 import { getAllRecipesForIndexQuery } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 
 import { handleErrors } from "@/utils";
 
@@ -7,6 +8,7 @@ export async function GET() {
   const [result, errorMessage] = await handleErrors(
     sanityFetch({
       query: getAllRecipesForIndexQuery,
+      params: getSiteParams(),
     }),
   );
 

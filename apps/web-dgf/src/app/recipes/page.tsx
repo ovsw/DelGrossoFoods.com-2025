@@ -45,7 +45,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function fetchRecipes() {
-  return await handleErrors(sanityFetch({ query: getAllRecipesForIndexQuery }));
+  return await handleErrors(
+    sanityFetch({
+      query: getAllRecipesForIndexQuery,
+      params: getSiteParams(),
+    }),
+  );
 }
 async function fetchIndexCopy() {
   return await handleErrors(
