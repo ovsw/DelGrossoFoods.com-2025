@@ -34,6 +34,8 @@ export function WhereToBuyClient({
       productLineLabels={productLineLabels}
       storeLogos={storeLogos}
       productFilterOptions={[]}
+      forcedProductFilter="la-famiglia"
+      showProductLineBadges={false}
       rootProps={
         dataAttribute
           ? {

@@ -5,6 +5,7 @@ import { Info, Store } from "lucide-react";
 import Image from "next/image";
 import {
   type HTMLAttributes,
+  type JSX,
   useCallback,
   useEffect,
   useMemo,
@@ -17,6 +18,7 @@ import { Combobox, type ComboboxOption } from "./combobox";
 import type {
   WhereToBuyProductFilterOption,
   WhereToBuyProductLine,
+  WhereToBuyProductLineInfo,
   WhereToBuyProductLineLabels,
   WhereToBuyStoreChain,
   WhereToBuyStoreLogos,
@@ -47,6 +49,8 @@ export type WhereToBuyClientProps = {
   productLineLabels: WhereToBuyProductLineLabels;
   storeLogos: WhereToBuyStoreLogos;
   productFilterOptions?: WhereToBuyProductFilterOption[];
+  forcedProductFilter?: WhereToBuyProductLine;
+  showProductLineBadges?: boolean;
   rootProps?: WhereToBuyRootProps;
 };
 
@@ -56,6 +60,8 @@ export function WhereToBuyClient({
   productLineLabels,
   storeLogos,
   productFilterOptions,
+  forcedProductFilter,
+  showProductLineBadges = true,
   rootProps,
 }: WhereToBuyClientProps) {
   const [selectedState, setSelectedState] = useState<string>("");
@@ -100,12 +106,26 @@ export function WhereToBuyClient({
   const filteredStores = useMemo<WhereToBuyStoreChain[]>(() => {
     if (!selectedState) return [];
 
-    if (!showProductFilter || productFilter === "all") {
+    if (forcedProductFilter) {
+      return getStoresByState(selectedState, forcedProductFilter);
+    }
+
+    if (!showProductFilter) {
+      return getStoresByState(selectedState);
+    }
+
+    if (productFilter === "all") {
       return getStoresByState(selectedState);
     }
 
     return getStoresByState(selectedState, productFilter);
-  }, [selectedState, productFilter, getStoresByState, showProductFilter]);
+  }, [
+    selectedState,
+    productFilter,
+    getStoresByState,
+    showProductFilter,
+    forcedProductFilter,
+  ]);
 
   const resultsCount = filteredStores.length;
   const hasResults = resultsCount > 0;
@@ -205,6 +225,7 @@ export function WhereToBuyClient({
                   store={store}
                   productLineLabels={productLineLabels}
                   storeLogos={storeLogos}
+                  showProductLineBadges={showProductLineBadges}
                 />
               ))}
             </div>
@@ -227,15 +248,73 @@ type StoreCardProps = {
   store: WhereToBuyStoreChain;
   productLineLabels: WhereToBuyProductLineLabels;
   storeLogos: WhereToBuyStoreLogos;
+  showProductLineBadges: boolean;
 };
 
-function StoreCard({ store, productLineLabels, storeLogos }: StoreCardProps) {
+function StoreCard({
+  store,
+  productLineLabels,
+  storeLogos,
+  showProductLineBadges,
+}: StoreCardProps) {
   const logoPath = storeLogos[store.name];
   const hasLogo = Boolean(logoPath);
+  const productLineDetails = store.productLines.reduce<JSX.Element[]>(
+    (
+      acc: JSX.Element[],
+      pl: WhereToBuyProductLineInfo,
+      idx: number,
+    ): JSX.Element[] => {
+      const showAvailability = pl.availability === "select";
+      const showNote = Boolean(pl.note);
+      const shouldRender =
+        showProductLineBadges || showAvailability || showNote;
+
+      if (!shouldRender) {
+        return acc;
+      }
+
+      acc.push(
+        <div
+          key={`${store.name}-${pl.line}-${idx}`}
+          className="flex items-center gap-1 flex-wrap"
+        >
+          {showProductLineBadges && (
+            <Badge
+              variant={getProductLineBadgeVariant(pl.line)}
+              text={productLineLabels[pl.line]}
+              className="min-w-fit"
+            />
+          )}
+          {showAvailability && (
+            <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
+              <Info className="w-3 h-3 flex-shrink-0" />
+              <span>Select stores (call ahead)</span>
+            </span>
+          )}
+          {showNote && (
+            <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
+              <Info className="w-3 h-3 flex-shrink-0" />
+              <span>{pl.note}</span>
+            </span>
+          )}
+        </div>,
+      );
+
+      return acc;
+    },
+    [],
+  );
+  const hasProductLineDetails = productLineDetails.length > 0;
 
   return (
     <div className="bg-white/50 rounded-lg border border-input shadow-sm p-4 transition-shadow">
-      <div className="flex items-center gap-3 mb-3">
+      <div
+        className={cn(
+          "flex items-center gap-3",
+          hasProductLineDetails && "mb-3",
+        )}
+      >
         {hasLogo && logoPath ? (
           <div className="relative w-16 h-16 flex-shrink-0">
             <Image
@@ -254,29 +333,11 @@ function StoreCard({ store, productLineLabels, storeLogos }: StoreCardProps) {
         <h3 className="text-lg font-semibold">{store.name}</h3>
       </div>
 
-      <div className="flex items-center gap-2.5 flex-wrap">
-        {store.productLines.map((pl, idx) => (
-          <div key={idx} className="flex items-center gap-1 flex-wrap">
-            <Badge
-              variant={getProductLineBadgeVariant(pl.line)}
-              text={productLineLabels[pl.line]}
-              className="min-w-fit"
-            />
-            {pl.availability === "select" && (
-              <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-                <Info className="w-3 h-3 flex-shrink-0" />
-                <span>Select stores (call ahead)</span>
-              </span>
-            )}
-            {pl.note && (
-              <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-                <Info className="w-3 h-3 flex-shrink-0" />
-                <span>{pl.note}</span>
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
+      {hasProductLineDetails && (
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {productLineDetails}
+        </div>
+      )}
     </div>
   );
 }
@@ -292,6 +353,8 @@ function getProductLineBadgeVariant(
     case "la-famiglia":
       return "premium";
     case "specialty":
+      return "neutral";
+    default:
       return "neutral";
   }
 }
