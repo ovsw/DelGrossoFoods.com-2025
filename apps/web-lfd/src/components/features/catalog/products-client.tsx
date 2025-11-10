@@ -13,14 +13,7 @@ import { SearchField } from "@/components/elements/filterable/search-field";
 import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
 import { ProductCard } from "@/components/elements/product-card";
 import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
-import {
-  allLineSlugs,
-  allTypeSlugs,
-  lineMap,
-  type LineSlug,
-  typeMap,
-  type TypeSlug,
-} from "@/config/sauce-taxonomy";
+import { allTypeSlugs, typeMap, type TypeSlug } from "@/config/sauce-taxonomy";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useFirstPaint } from "@/hooks/use-first-paint";
 import { useUrlStateSync } from "@/hooks/use-url-state-sync";
@@ -38,12 +31,9 @@ type FiltersFormProps = {
   setSearch: (v: string) => void;
   packaging: PackagingSlug[];
   togglePackaging: (p: PackagingSlug, checked: boolean) => void;
-  productLine: LineSlug[];
-  toggleLine: (line: LineSlug, checked: boolean) => void;
   sauceType: ProductQueryState["sauceType"];
   setSauceType: (v: ProductQueryState["sauceType"]) => void;
   clearPackaging: () => void;
-  clearProductLine: () => void;
   clearSauceType: () => void;
 };
 
@@ -61,12 +51,9 @@ function FiltersForm({
   setSearch,
   packaging,
   togglePackaging,
-  productLine,
-  toggleLine,
   sauceType,
   setSauceType,
   clearPackaging,
-  clearProductLine,
   clearSauceType,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-product-search`;
@@ -103,28 +90,6 @@ function FiltersForm({
               "",
             ) as PackagingSlug;
             togglePackaging(slug, checked);
-          }}
-        />
-      </FilterGroupSection>
-
-      <div className="my-4 border-b border-input" />
-
-      <FilterGroupSection
-        title="Product Line"
-        showClear={productLine.length > 0}
-        onClear={clearProductLine}
-        contentClassName=""
-      >
-        <CheckboxList
-          items={allLineSlugs.map((slug) => ({
-            id: `${idPrefix}-line-${slug}`,
-            label: lineMap[slug].display,
-            checked: productLine.includes(slug),
-            ariaLabel: lineMap[slug].display,
-          }))}
-          onToggle={(id, checked) => {
-            const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug, checked);
           }}
         />
       </FilterGroupSection>
@@ -178,9 +143,6 @@ export function ProductsClient({ items, initialState }: Props) {
   const [packaging, setPackaging] = useState<PackagingSlug[]>([
     ...initialState.packaging,
   ]);
-  const [productLine, setProductLine] = useState<LineSlug[]>([
-    ...initialState.productLine,
-  ]);
   const [sauceType, setSauceType] = useState<ProductQueryState["sauceType"]>(
     initialState.sauceType,
   );
@@ -203,7 +165,6 @@ export function ProductsClient({ items, initialState }: Props) {
         const next = parseSearchParams(params);
         setSearch(next.search);
         setPackaging([...next.packaging]);
-        setProductLine([...next.productLine]);
         setSauceType(next.sauceType);
         setSort(next.sort);
       } finally {
@@ -222,11 +183,10 @@ export function ProductsClient({ items, initialState }: Props) {
     () => ({
       search: debouncedSearch,
       packaging,
-      productLine,
       sauceType,
       sort,
     }),
-    [debouncedSearch, packaging, productLine, sauceType, sort],
+    [debouncedSearch, packaging, sauceType, sort],
   );
 
   useUrlStateSync({
@@ -251,14 +211,10 @@ export function ProductsClient({ items, initialState }: Props) {
   const totalCount = items.length;
   const resultsCount = effectiveResults.length;
   const filtersActive =
-    Boolean(search) ||
-    packaging.length > 0 ||
-    productLine.length > 0 ||
-    sauceType !== "all";
+    Boolean(search) || packaging.length > 0 || sauceType !== "all";
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
     packaging,
-    productLine,
     sauceType,
     sort,
   });
@@ -266,15 +222,11 @@ export function ProductsClient({ items, initialState }: Props) {
   function clearAll() {
     setSearch("");
     setPackaging([]);
-    setProductLine([]);
     setSauceType("all");
     setSort("az");
   }
   function clearPackaging() {
     setPackaging([]);
-  }
-  function clearProductLine() {
-    setProductLine([]);
   }
   function clearSauceType() {
     setSauceType("all");
@@ -287,15 +239,6 @@ export function ProductsClient({ items, initialState }: Props) {
       return prev.filter((x) => x !== p);
     });
   }
-  function toggleLine(line: LineSlug, checked: boolean) {
-    setProductLine((prev) => {
-      if (checked) {
-        return prev.includes(line) ? prev : [...prev, line];
-      }
-      return prev.filter((l) => l !== line);
-    });
-  }
-
   return (
     <FilterableListLayout
       renderFilters={({ idPrefix }) => (
@@ -305,12 +248,9 @@ export function ProductsClient({ items, initialState }: Props) {
           setSearch={setSearch}
           packaging={packaging}
           togglePackaging={togglePackaging}
-          productLine={productLine}
-          toggleLine={toggleLine}
           sauceType={sauceType}
           setSauceType={setSauceType}
           clearPackaging={clearPackaging}
-          clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
         />
       )}
@@ -324,12 +264,6 @@ export function ProductsClient({ items, initialState }: Props) {
           text: packagingMap[slug].display,
           variant: "neutral" as const,
           onRemove: () => togglePackaging(slug, false),
-        })),
-        ...productLine.map((slug) => ({
-          key: `line-${slug}`,
-          text: lineMap[slug].display,
-          variant: slug,
-          onRemove: () => toggleLine(slug, false),
         })),
         ...(sauceType !== "all" && sauceType !== "mix"
           ? [

@@ -2,12 +2,7 @@ import type { IFuseOptions } from "fuse.js";
 
 import type { PackagingSlug } from "@/config/product-taxonomy";
 import { toPackagingSlug } from "@/config/product-taxonomy";
-import {
-  type LineSlug,
-  toLineSlug,
-  toTypeSlug,
-  type TypeSlug,
-} from "@/config/sauce-taxonomy";
+import { toTypeSlug, type TypeSlug } from "@/config/sauce-taxonomy";
 import {
   filterBySearch as filterBySearchShared,
   sortByName as sortByNameShared,
@@ -47,15 +42,6 @@ export function filterByPackaging(
   });
 }
 
-function getUniqueLines(item: ProductListItem): LineSlug[] {
-  const set = new Set<LineSlug>();
-  for (const v of itOrEmpty(item.sauceLines)) {
-    const slug = toLineSlug(v);
-    if (slug) set.add(slug);
-  }
-  return [...set];
-}
-
 function getUniqueTypes(item: ProductListItem): TypeSlug[] {
   const set = new Set<TypeSlug>();
   for (const v of itOrEmpty(item.sauceTypes)) {
@@ -67,21 +53,6 @@ function getUniqueTypes(item: ProductListItem): TypeSlug[] {
 
 function itOrEmpty<T>(arr: readonly T[] | null | undefined): readonly T[] {
   return Array.isArray(arr) ? arr : [];
-}
-
-export function filterByProductLine(
-  items: ProductListItem[],
-  lines: LineSlug[],
-): ProductListItem[] {
-  if (!lines?.length) return items;
-  const set = new Set<LineSlug>(lines);
-  return items.filter((it) => {
-    const unique = getUniqueLines(it);
-    if (unique.length !== 1) return false; // exclude mixed or none when line filter is active
-    const only = unique[0];
-    if (!only) return false;
-    return set.has(only);
-  });
 }
 
 export function filterBySauceType(
@@ -102,8 +73,7 @@ export function applyFiltersAndSort(
 ): ProductListItem[] {
   const afterSearch = filterBySearch(items, state.search);
   const afterPackaging = filterByPackaging(afterSearch, state.packaging);
-  const afterLine = filterByProductLine(afterPackaging, state.productLine);
-  const afterType = filterBySauceType(afterLine, state.sauceType);
+  const afterType = filterBySauceType(afterPackaging, state.sauceType);
   return sortByName(afterType, state.sort);
 }
 

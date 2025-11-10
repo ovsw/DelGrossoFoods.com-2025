@@ -4,7 +4,6 @@ import { Button } from "@workspace/ui/components/button";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { CheckboxList } from "@/components/elements/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/elements/filterable/filter-group-section";
 import { FilterableListLayout } from "@/components/elements/filterable/filterable-list-layout";
 import { RadioList } from "@/components/elements/filterable/radio-list";
@@ -12,12 +11,8 @@ import { SearchField } from "@/components/elements/filterable/search-field";
 import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
 import { SauceCard } from "@/components/elements/sauce-card";
 import {
-  allLineSlugs,
   allTypeSlugs,
-  getLineBadge,
   getTypeBadge,
-  lineMap,
-  type LineSlug,
   typeMap,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
@@ -36,11 +31,8 @@ type FiltersFormProps = {
   idPrefix?: string;
   search: string;
   setSearch: (v: string) => void;
-  productLine: LineSlug[];
-  toggleLine: (line: LineSlug, checked: boolean) => void;
   sauceType: SauceQueryState["sauceType"];
   setSauceType: (v: SauceQueryState["sauceType"]) => void;
-  clearProductLine: () => void;
   clearSauceType: () => void;
 };
 
@@ -52,11 +44,8 @@ function FiltersForm({
   idPrefix = "filters",
   search,
   setSearch,
-  productLine,
-  toggleLine,
   sauceType,
   setSauceType,
-  clearProductLine,
   clearSauceType,
 }: FiltersFormProps) {
   const searchId = `${idPrefix}-sauce-search`;
@@ -71,28 +60,6 @@ function FiltersForm({
         ariaLabel="Search sauces"
         visuallyHideLabel
       />
-
-      <hr className="my-4 border-input" />
-
-      <FilterGroupSection
-        title="Product Line"
-        showClear={productLine.length > 0}
-        onClear={clearProductLine}
-        contentClassName=""
-      >
-        <CheckboxList
-          items={allLineSlugs.map((slug) => ({
-            id: `${idPrefix}-line-${slug}`,
-            label: lineMap[slug].display,
-            checked: productLine.includes(slug),
-            ariaLabel: lineMap[slug].display,
-          }))}
-          onToggle={(id, checked) => {
-            const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug, checked);
-          }}
-        />
-      </FilterGroupSection>
 
       <hr className="my-4 border-input" />
 
@@ -134,9 +101,6 @@ export function SaucesClient({ items, initialState }: Props) {
   const pathname = usePathname();
 
   const [search, setSearch] = useState<string>(initialState.search);
-  const [productLine, setProductLine] = useState<LineSlug[]>([
-    ...initialState.productLine,
-  ]);
   const [sauceType, setSauceType] = useState<SauceQueryState["sauceType"]>(
     initialState.sauceType,
   );
@@ -161,7 +125,6 @@ export function SaucesClient({ items, initialState }: Props) {
         });
         const next = parseSearchParams(params);
         setSearch(next.search);
-        setProductLine([...next.productLine]);
         setSauceType(next.sauceType);
         setSort(next.sort);
       } finally {
@@ -178,8 +141,8 @@ export function SaucesClient({ items, initialState }: Props) {
   const debouncedSearch = useDebouncedValue(search, 200);
 
   const state: SauceQueryState = useMemo(
-    () => ({ search: debouncedSearch, productLine, sauceType, sort }),
-    [debouncedSearch, productLine, sauceType, sort],
+    () => ({ search: debouncedSearch, sauceType, sort }),
+    [debouncedSearch, sauceType, sort],
   );
 
   // Sync URL on state changes without triggering a Next.js navigation
@@ -205,11 +168,9 @@ export function SaucesClient({ items, initialState }: Props) {
 
   const totalCount = items.length;
   const resultsCount = effectiveResults.length;
-  const filtersActive =
-    Boolean(search.trim()) || productLine.length > 0 || sauceType !== "all";
+  const filtersActive = Boolean(search.trim()) || sauceType !== "all";
   const scrollKey = JSON.stringify({
     search: debouncedSearch,
-    productLine,
     sauceType,
     sort,
   });
@@ -225,26 +186,12 @@ export function SaucesClient({ items, initialState }: Props) {
 
   function clearAll() {
     setSearch("");
-    setProductLine([]);
     setSauceType("all");
     setSort("az");
   }
 
-  function clearProductLine() {
-    setProductLine([]);
-  }
-
   function clearSauceType() {
     setSauceType("all");
-  }
-
-  function toggleLine(line: LineSlug, checked: boolean) {
-    setProductLine((prev) => {
-      if (checked) {
-        return prev.includes(line) ? prev : [...prev, line];
-      }
-      return prev.filter((l) => l !== line);
-    });
   }
 
   return (
@@ -254,11 +201,8 @@ export function SaucesClient({ items, initialState }: Props) {
           idPrefix={idPrefix}
           search={search}
           setSearch={setSearch}
-          productLine={productLine}
-          toggleLine={toggleLine}
           sauceType={sauceType}
           setSauceType={setSauceType}
-          clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
         />
       )}
@@ -266,18 +210,7 @@ export function SaucesClient({ items, initialState }: Props) {
       resultsTotal={totalCount}
       isAnyActive={filtersActive}
       onClearAll={clearAll}
-      activeChips={[
-        ...productLine.map((slug) => {
-          const { text, variant } = getLineBadge(lineMap[slug].label);
-          return {
-            key: `line-${slug}`,
-            text,
-            variant,
-            onRemove: () => toggleLine(slug, false),
-          };
-        }),
-        ...(activeTypeChip ? [activeTypeChip] : []),
-      ]}
+      activeChips={activeTypeChip ? [activeTypeChip] : []}
       scrollToTopKey={scrollKey}
       skipScroll={firstPaint}
       sortControl={

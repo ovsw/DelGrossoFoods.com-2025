@@ -4,7 +4,6 @@ import {
   fromLineSlug,
   fromTypeSlug,
   type LineSlug,
-  toLineSlug,
   toTypeSlug,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
@@ -35,18 +34,6 @@ export function filterBySearch(
   return filterBySearchShared(items, search, fuseOptions);
 }
 
-export function filterByProductLine(
-  items: SauceListItem[],
-  lines: LineSlug[],
-): SauceListItem[] {
-  if (!lines?.length) return items;
-  const set = new Set<LineSlug>(lines);
-  return items.filter((it) => {
-    const slug = toLineSlug(it.line);
-    return slug ? set.has(slug) : false;
-  });
-}
-
 export function filterBySauceType(
   items: SauceListItem[],
   type: TypeSlug | "all",
@@ -63,8 +50,7 @@ export function applyFiltersAndSort(
   state: SauceQueryState,
 ): SauceListItem[] {
   const afterSearch = filterBySearch(items, state.search);
-  const afterLine = filterByProductLine(afterSearch, state.productLine);
-  const afterType = filterBySauceType(afterLine, state.sauceType);
+  const afterType = filterBySauceType(afterSearch, state.sauceType);
   return sortByName(afterType, state.sort);
 }
 

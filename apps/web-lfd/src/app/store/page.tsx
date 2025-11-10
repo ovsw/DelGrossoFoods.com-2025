@@ -38,9 +38,15 @@ export async function generateMetadata(): Promise<Metadata> {
   );
 }
 
+type ProductLineLabel = NonNullable<ProductListItem["sauceLines"]>[number];
+const EXCLUDED_PRODUCT_LINES: ProductLineLabel[] = ["Original", "Organic"];
+
 async function fetchProducts() {
   return await handleErrors(
-    sanityFetch({ query: getAllProductsForIndexQuery }),
+    sanityFetch({
+      query: getAllProductsForIndexQuery,
+      params: { excludeLines: EXCLUDED_PRODUCT_LINES },
+    }),
   );
 }
 

@@ -40,8 +40,15 @@ export async function generateMetadata(): Promise<Metadata> {
   );
 }
 
+const PREMIUM_LINE_FILTER: SauceListItem["line"] = "Ultra-Premium";
+
 async function fetchSauces() {
-  return await handleErrors(sanityFetch({ query: getAllSaucesForIndexQuery }));
+  return await handleErrors(
+    sanityFetch({
+      query: getAllSaucesForIndexQuery,
+      params: { line: PREMIUM_LINE_FILTER },
+    }),
+  );
 }
 
 async function fetchIndexCopy() {
