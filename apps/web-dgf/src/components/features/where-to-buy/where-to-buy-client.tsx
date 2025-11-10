@@ -192,7 +192,7 @@ function StoreCard({ store }: StoreCardProps) {
             />
           </div>
         ) : (
-          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-brand-green rounded">
+          <div className="flex-shrink-0 flex items-center justify-center bg-brand-green rounded w-16 h-16">
             <Store className="w-6 h-6 text-th-light-100" />
           </div>
         )}
