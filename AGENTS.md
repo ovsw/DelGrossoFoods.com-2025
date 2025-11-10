@@ -233,6 +233,12 @@ Restore steps (high level):
 - At the same time, you should call `stegaClean` for aria labels, logic, or alt text, or when using them in logic (e.g., spacing tokens, IDs, comparisons) - everywhere that's NOT going to be clickable by an editor - which means in elements that aren't directly visible on the page and that can't be clicked on by an editor viewing the page in preview mode or in Sanity Presentation.
 - When wiring click-to-edit surfaces, prefer wrapping the raw Sanity string or `data-sanity` spans instead of reformatting the value; if formatting is required, wrap substrings to keep individual field paths intact.
 - For custom Studio inputs, always forward `elementProps` (ref and event handlers) and pass through `readOnly` so Presentation can focus fields reliably.
+- **Shared components + Presentation**: when moving Sanity-driven UI into `packages/ui`, keep metadata wiring in the app layer:
+  - Add a helper (`apps/*/src/lib/sanity/presentation.ts`) that wraps `createDataAttribute` so each app can mint `data-sanity` strings with its own `projectId`, `dataset`, and `studioUrl`.
+  - Give the shared component an escape hatch such as `rootProps?: HTMLAttributes<HTMLDivElement> & { [key: \`data-${string}\`]?: string }` and spread those props onto the DOM node you need editable access to.
+  - Create a thin app-level wrapper that knows the Sanity document id/type/path, calls the helper, and passes the attribute via `rootProps`.
+  - When rendering the wrapper, forward the document metadata (e.g., `_id`, `_type`, `pageBuilder` field path) from the page/section so Presentation clicks still open the correct document.
+  - Full walkthrough lives in `guides/shared-component-presentation.md`. Follow it for every shared UI extraction so editors never lose click-to-edit coverage.
 
 ### Sanity Types (tight coupling)
 
