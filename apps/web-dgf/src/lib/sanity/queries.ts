@@ -40,6 +40,7 @@ export const dgfSlugPagePathsQuery = defineQuery(`
 export const dgfFooterQuery = defineQuery(`
   *[_type == "footer" && site._ref == $siteId][0]{
     _id,
+    _type,
     subtitle,
     columns[]{
       _key,
@@ -61,6 +62,7 @@ export const dgfFooterQuery = defineQuery(`
 export const dgfNavbarQuery = defineQuery(`
   *[_type == "navbar" && site._ref == $siteId][0]{
     _id,
+    _type,
     columns[]{
       _key,
       _type == "navbarColumn" => {

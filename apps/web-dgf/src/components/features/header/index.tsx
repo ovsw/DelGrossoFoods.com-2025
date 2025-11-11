@@ -60,7 +60,10 @@ export function Header() {
           <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
             {/* Logo */}
             <div className="flex-shrink-1">
-              <Link href="/">
+              <Link
+                href="/"
+                className="inline-flex rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
                 <LogoSvg className="h-7" />
               </Link>
             </div>

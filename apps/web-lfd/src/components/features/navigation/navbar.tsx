@@ -5,7 +5,6 @@ import type {
   LfdNavbarQueryResult,
 } from "@workspace/sanity-config/types";
 
-import LogoSvg from "@/components/elements/logo";
 import {
   lfdGlobalSeoSettingsQuery,
   lfdNavbarQuery,
@@ -30,17 +29,13 @@ export function Navbar({
   navbarData: LfdNavbarQueryResult;
   settingsData: LfdGlobalSeoSettingsQueryResult;
 }) {
-  const { siteTitle: settingsSiteTitle } = settingsData ?? {};
-
   return (
-    <header className="py-3 md:border-b">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-[auto_1fr] items-center gap-4">
-          <LogoSvg className="h-7" aria-label={settingsSiteTitle ?? "Logo"} />
-          <NavbarClient navbarData={navbarData} settingsData={settingsData} />
-        </div>
-      </div>
-    </header>
+    <NavbarClient
+      navbarData={navbarData}
+      settingsData={settingsData}
+      navbarDocumentId={navbarData?._id}
+      navbarDocumentType={navbarData?._type}
+    />
   );
 }
 

@@ -40,6 +40,7 @@ export const lfdSlugPagePathsQuery = defineQuery(`
 export const lfdFooterQuery = defineQuery(`
   *[_type == "footer" && site._ref == $siteId][0]{
     _id,
+    _type,
     subtitle,
     columns[]{
       _key,
@@ -61,6 +62,7 @@ export const lfdFooterQuery = defineQuery(`
 export const lfdNavbarQuery = defineQuery(`
   *[_type == "navbar" && site._ref == $siteId][0]{
     _id,
+    _type,
     columns[]{
       _key,
       _type == "navbarColumn" => {

@@ -54,8 +54,15 @@ export {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 export { Eyebrow } from "./eyebrow";
+export {
+  type FooterLegalItem,
+  type FooterNavColumn,
+  type FooterNavItem,
+  FooterShell,
+} from "./footer-shell";
 export { InfoLabel } from "./info-label";
 export { ListCard, type ListCardBadge, type ListCardProps } from "./list-card";
+export { NavbarShell, type NavbarShellProps } from "./navbar-shell";
 export {
   NavigationMenu,
   NavigationMenuContent,
@@ -100,6 +107,7 @@ export {
 } from "./sanity-image";
 export { SearchField } from "./search-field";
 export { Section } from "./section";
+export { SectionShell, type SectionShellProps } from "./section-shell";
 export {
   Sheet,
   SheetClose,

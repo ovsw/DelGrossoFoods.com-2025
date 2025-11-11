@@ -41,9 +41,10 @@
 
 ### 5. Global Chrome & Layout Skeletons
 
-- [ ] Design shared `NavbarShell`, `FooterShell`, and `SectionShell` components that own spacing, responsive grids, and token usage.
-- [ ] Create site-specific wrappers that fetch GROQ data, pass logos/menus/social links, and attach `data-sanity` attributes per field.
-- [ ] Validate keyboard/focus behavior and aria labels remain unchanged after swapping in the shells.
+- [x] Design shared `NavbarShell`, `FooterShell`, and `SectionShell` components that own spacing, responsive grids, and token usage.
+- [x] Create site-specific wrappers that fetch GROQ data, pass logos/menus/social links, and attach `data-sanity` attributes per field.
+- [x] Validate keyboard/focus behavior and aria labels remain unchanged after swapping in the shells.
+- [ ] Begin migrating existing page sections to `SectionShell` (or app-specific wrappers) so spacing/background logic is centralized.
 
 ### 6. Pagebuilder Blocks
 

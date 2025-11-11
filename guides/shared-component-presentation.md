@@ -131,6 +131,13 @@ Whenever you build one of these thin wrappers, mirror the following contract:
 - **Field-level tagging**: Pages/sections should still tag surrounding headings, paragraphs, and CTAs with their own attributes so editors can click exactly what they expect.
 - **Stega hygiene**: Keep stega metadata on all visible content; only call `stegaClean` when using text for aria labels, IDs, or announcer messages.
 
+### Global Chrome & Section Shells
+
+- **NavbarShell wrappers**: Server components fetch `navbar` + `settings` queries, then pass the Sanity document id/type to the client wrapper. Inside the client, create a small helper (closure) around `createPresentationDataAttribute` so every column, button, and link can request `data-sanity` for its GROQ path (e.g., `columns[_key == "..."].links[_key == "..."]`). Use `rootProps` for the overall shell, `buttonRootProps` for `SanityButtons`, and remember to tag both mobile and desktop variants so Presentation can follow along regardless of viewport.
+- **FooterShell wrappers**: Treat the footer doc + settings doc separately. Use two metadata helpers—one for `footer.columns` and another for `settings` fields (address, contact, social). Pass column-level props via `navColumns[].rootProps`, wrap titles in spans with their own attributes, and hand link-level attributes to the `<Link>` rendered inside each `FooterNavItem`. Social/contact links should point to the `settings` helper so editors jump directly to the correct field.
+- **SectionShell adoption**: When migrating page sections, replace direct `<Section>` usage with `<SectionShell>` (or a thin app-level wrapper) and forward `rootProps` plus `innerProps` for important editable nodes. Keep spacing/background decisions in the shell props instead of recreating padding/margin combinations per section.
+- **Skip duplicate skip-links**: `NavbarShell` can render its own skip link, but if the layout already provides one (e.g., `layout.tsx` anchors), omit the shell-level props to avoid duplicate announcements.
+
 ### 4. Forward Document Context from the Page/Section
 
 When a page or section renders the wrapper, pass the document metadata:
