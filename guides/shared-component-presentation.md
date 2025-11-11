@@ -41,13 +41,16 @@ Do the same in any sibling app (e.g., `apps/web-lfd`).
 
 In the shared UI component (inside `packages/ui`):
 
-1. Add an optional prop (e.g., `rootProps?: HTMLAttributes<HTMLDivElement> & DataAttributes`) so consumers can pass `data-*`, ARIA, or IDs.
-2. Spread those props onto the outermost wrapper:
+1. Import the shared typing helper from `packages/ui/src/lib/data-attributes.ts` (e.g., `RootProps<HTMLDivElement>` or `DataAttributes`) so every component handles metadata consistently.
+2. Add an optional prop (e.g., `rootProps?: RootProps<HTMLDivElement>`) so consumers can pass `data-*`, ARIA, or IDs.
+3. Spread those props onto the outermost wrapper:
 
 ```tsx
+import { type RootProps } from "../lib/data-attributes";
+
 export type WhereToBuyClientProps = {
   /* existing props */
-  rootProps?: HTMLAttributes<HTMLDivElement> & DataAttributes;
+  rootProps?: RootProps<HTMLDivElement>;
 };
 
 export function WhereToBuyClient({
@@ -117,6 +120,16 @@ export function WhereToBuyClient({
   );
 }
 ```
+
+### Wrapper Expectations Checklist
+
+Whenever you build one of these thin wrappers, mirror the following contract:
+
+- **Props**: Accept `sanityDocumentId`, `sanityDocumentType`, and `sanityFieldPath` (default `"pageBuilder"`) so the wrapper works for page sections, blocks, and feature clients without additional plumbing.
+- **Metadata fan-out**: Call `createPresentationDataAttribute` for each editable surface and pass it down via `rootProps` (and other slots like `imageProps` if the shared component exposes them) so every clickable element remains traceable in Presentation.
+- **Null safety**: If any part of the trio is missing, skip the attribute altogether—never fabricate IDs or reuse a stale string.
+- **Field-level tagging**: Pages/sections should still tag surrounding headings, paragraphs, and CTAs with their own attributes so editors can click exactly what they expect.
+- **Stega hygiene**: Keep stega metadata on all visible content; only call `stegaClean` when using text for aria labels, IDs, or announcer messages.
 
 ### 4. Forward Document Context from the Page/Section
 

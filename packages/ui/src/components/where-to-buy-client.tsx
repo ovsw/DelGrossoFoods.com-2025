@@ -3,15 +3,9 @@
 import Fuse, { type FuseResult } from "fuse.js";
 import { Info, Store } from "lucide-react";
 import Image from "next/image";
-import {
-  type HTMLAttributes,
-  type JSX,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { type JSX, useCallback, useEffect, useMemo, useState } from "react";
 
+import { type RootProps } from "../lib/data-attributes";
 import { cn } from "../lib/utils";
 import { Badge } from "./badge";
 import { Combobox, type ComboboxOption } from "./combobox";
@@ -23,12 +17,6 @@ import type {
   WhereToBuyStoreChain,
   WhereToBuyStoreLogos,
 } from "./where-to-buy-types";
-
-type DataAttributes = {
-  [K in `data-${string}`]?: string | number | undefined;
-};
-
-type WhereToBuyRootProps = HTMLAttributes<HTMLDivElement> & DataAttributes;
 
 type ProductFilter = "all" | WhereToBuyProductLine;
 
@@ -51,7 +39,7 @@ export type WhereToBuyClientProps = {
   productFilterOptions?: WhereToBuyProductFilterOption[];
   forcedProductFilter?: WhereToBuyProductLine;
   showProductLineBadges?: boolean;
-  rootProps?: WhereToBuyRootProps;
+  rootProps?: RootProps<HTMLDivElement>;
 };
 
 export function WhereToBuyClient({

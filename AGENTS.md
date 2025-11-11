@@ -853,3 +853,8 @@ import { dataset, projectId, studioUrl } from "@/config";
 - The path must be relative to the document root (e.g., starting with `pageBuilder[...]` for page builder blocks).
 - Always pass `baseUrl`, `projectId`, and `dataset` from config.
 - Call `.toString()` on the result before passing to `data-sanity`.
+
+## Memory: Presentation metadata helper
+
+- Shared metadata typing now lives in `packages/ui/src/lib/data-attributes.ts`. It exports `RootProps<T>` (extends `HTMLAttributes` plus `[data-*]` support) and `DataAttributes` for components that need extra slots.
+- Every shared component that exposes `rootProps`/`imageProps` should import these helpers instead of redefining `[data-*]` record types so Presentation wiring stays consistent across apps.
