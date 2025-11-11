@@ -1,7 +1,10 @@
-import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import {
+  RecipeCard as RecipeHighlightCard,
+  type RecipeCardBadge,
+  type RecipeCardSauce,
+} from "@workspace/ui/components/recipe-card";
 import { Section } from "@workspace/ui/components/section";
-import Link from "next/link";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -31,11 +34,6 @@ function isSanityImage(value: unknown): value is SanityImageProps {
 type RecipeSauceReference = {
   readonly name: string | null;
   readonly mainImage?: SanityImageProps;
-};
-
-type RecipeBadgeSpec = {
-  readonly text: string;
-  readonly variant?: BadgeVariant;
 };
 
 /**
@@ -153,113 +151,48 @@ export function FeaturedRecipesBlock({
                   ];
                 })
               : [];
-            const badges: RecipeBadgeSpec[] = [...meatBadges, ...tagBadges];
-            const cardClassName =
-              "group relative isolate flex h-full min-h-[36rem] flex-col overflow-hidden rounded-3xl bg-th-dark-900 text-th-light-100 shadow-xl transition-transform";
-            const cardInner = (
-              <>
-                {recipe.mainImage ? (
-                  <SanityImage
-                    image={recipe.mainImage}
-                    alt={stegaClean(
-                      recipe.mainImage.alt ?? recipe.name ?? "Recipe image",
-                    )}
-                    width={640}
-                    height={640}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-focus:scale-105 group-focus-visible:scale-105"
-                    loading="lazy"
-                  />
-                ) : null}
-
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-green/80 via-brand-green/40 to-brand-green/0"
-                  aria-hidden="true"
+            const badges: RecipeCardBadge[] = [...meatBadges, ...tagBadges];
+            const sauces: RecipeCardSauce[] = saucesWithMedia.map((sauce) => ({
+              name: sauce.name,
+              image: sauce.mainImage ? (
+                <SanityImage
+                  image={sauce.mainImage}
+                  alt={stegaClean(
+                    sauce.mainImage.alt ?? sauce.name ?? "Sauce jar",
+                  )}
+                  width={64}
+                  height={64}
+                  loading="lazy"
                 />
-                <div
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-green/95 via-brand-green/80 to-transparent"
-                  aria-hidden="true"
-                />
-
-                <div className="relative z-10 flex h-full flex-col justify-end gap-4 p-6 sm:p-8">
-                  {badges.length ? (
-                    <div className="flex flex-wrap items-center gap-2">
-                      {badges.map((badge, index) => (
-                        <Badge
-                          key={`${badge.text}-${index}`}
-                          text={badge.text}
-                          variant={badge.variant}
-                          className="text-xs font-medium"
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-
-                  <h3 className="text-2xl font-semibold leading-tight text-th-light-100">
-                    {recipe.name}
-                  </h3>
-
-                  {saucesWithMedia.length ? (
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-th-light-200">
-                      <span>with</span>
-                      {saucesWithMedia.map((sauce, index) => (
-                        <span
-                          key={`${sauce.name}-${index}`}
-                          className="inline-flex items-center gap-2"
-                        >
-                          {sauce.mainImage ? (
-                            <SanityImage
-                              image={sauce.mainImage}
-                              alt={stegaClean(
-                                sauce.mainImage.alt ??
-                                  sauce.name ??
-                                  "Sauce jar",
-                              )}
-                              width={64}
-                              height={64}
-                              className="h-8 w-8 shrink-0 rounded-full border border-th-light-100/40 bg-th-light-100/10 object-contain p-0.5 shadow-sm"
-                              loading="lazy"
-                            />
-                          ) : null}
-                          <span>
-                            {sauce.name}
-                            {index < saucesWithMedia.length - 1 ? "," : ""}
-                          </span>
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  <span className="inline-flex items-center text-sm font-semibold text-brand-green-text transition-colors group-hover:text-th-light-100 group-focus:text-th-light-100 group-focus-visible:text-th-light-100">
-                    View recipe{" "}
-                    <span aria-hidden="true" className="ml-1">
-                      &rarr;
-                    </span>
-                  </span>
-                </div>
-              </>
-            );
-
-            if (href) {
-              return (
-                <Link
-                  key={recipe._id}
-                  href={href}
-                  className={`${cardClassName} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green`}
-                  aria-label={`View recipe ${stegaClean(recipe.name ?? "")}`}
-                >
-                  {cardInner}
-                </Link>
-              );
-            }
+              ) : undefined,
+            }));
+            const titleText = recipe.name ?? "Featured recipe";
+            const ariaLabel = href
+              ? `View recipe ${stegaClean(titleText)}`
+              : stegaClean(titleText);
 
             return (
-              <article
+              <RecipeHighlightCard
                 key={recipe._id}
-                className={cardClassName}
-                aria-label={stegaClean(recipe.name ?? "Featured recipe")}
-              >
-                {cardInner}
-              </article>
+                href={href || undefined}
+                title={titleText}
+                ariaLabel={ariaLabel}
+                image={
+                  recipe.mainImage ? (
+                    <SanityImage
+                      image={recipe.mainImage}
+                      alt={stegaClean(
+                        recipe.mainImage.alt ?? recipe.name ?? "Recipe image",
+                      )}
+                      width={640}
+                      height={640}
+                      loading="lazy"
+                    />
+                  ) : undefined
+                }
+                badges={badges}
+                sauces={sauces}
+              />
             );
           })}
         </div>

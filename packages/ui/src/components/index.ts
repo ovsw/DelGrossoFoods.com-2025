@@ -65,6 +65,12 @@ export {
   PopoverTrigger,
 } from "./popover";
 export { RadioGroup, RadioGroupItem } from "./radio-group";
+export {
+  RecipeCard,
+  type RecipeCardBadge,
+  type RecipeCardProps,
+  type RecipeCardSauce,
+} from "./recipe-card";
 export { Section } from "./section";
 export {
   Sheet,
