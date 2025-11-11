@@ -35,7 +35,11 @@ export const queryGenericPageOGData = defineQuery(`
 export const getAllSaucesForIndexQuery = defineQuery(`
   *[
     _type == "sauce"
-    && (!defined($line) || line == $line)
+    && (
+      !defined($line)
+      || $line == null
+      || line == $line
+    )
   ] | order(name asc){
     _id,
     _type,
@@ -334,6 +338,7 @@ export const getAllProductsForIndexQuery = defineQuery(`
     _type == "product"
     && (
       !defined($excludeLines)
+      || $excludeLines == null
       || !defined(sauces)
       || count(
         (array::unique((sauces[]->line)[defined(@)]))[@ in $excludeLines]

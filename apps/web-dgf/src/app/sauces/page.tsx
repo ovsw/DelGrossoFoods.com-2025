@@ -41,7 +41,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function fetchSauces() {
-  return await handleErrors(sanityFetch({ query: getAllSaucesForIndexQuery }));
+  return await handleErrors(
+    sanityFetch({ query: getAllSaucesForIndexQuery, params: { line: null } }),
+  );
 }
 
 async function fetchIndexCopy() {

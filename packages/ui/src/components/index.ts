@@ -48,6 +48,7 @@ export {
 } from "./dropdown-menu";
 export { Eyebrow } from "./eyebrow";
 export { InfoLabel } from "./info-label";
+export { ListCard, type ListCardBadge, type ListCardProps } from "./list-card";
 export {
   NavigationMenu,
   NavigationMenuContent,

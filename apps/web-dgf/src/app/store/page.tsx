@@ -40,7 +40,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function fetchProducts() {
   return await handleErrors(
-    sanityFetch({ query: getAllProductsForIndexQuery }),
+    sanityFetch({
+      query: getAllProductsForIndexQuery,
+      params: { excludeLines: null },
+    }),
   );
 }
 

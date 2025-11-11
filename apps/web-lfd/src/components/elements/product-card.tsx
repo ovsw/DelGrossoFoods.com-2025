@@ -1,8 +1,9 @@
 "use client";
 
+import { ListCard } from "@workspace/ui/components/list-card";
 import { createDataAttribute } from "next-sanity";
 
-import { ListCard } from "@/components/list/list-card";
+import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
 import {
   getPackagingText,
@@ -24,6 +25,9 @@ function formatUSD(value: number | null | undefined): string | null {
     maximumFractionDigits: hasCents ? 2 : 0,
   }).format(value);
 }
+
+const DEFAULT_CARD_SIZES =
+  "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" as const;
 
 export function ProductCard({ item }: { item: ProductListItem }) {
   const {
@@ -110,6 +114,8 @@ export function ProductCard({ item }: { item: ProductListItem }) {
   }
 
   const href = buildHref("/store", slug);
+  const imageAttribute = createFieldAttribute("mainImage");
+
   return (
     <ListCard
       href={href}
@@ -117,17 +123,24 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       titleSecondary={secondaryText}
       titleSecondaryContent={secondaryContent}
       ariaLabel={`View ${accessibleName}`}
-      image={mainImage}
-      imageAlt={accessibleName}
       imageAspect="product"
-      imageWidth={800}
-      imageHeight={533}
       subtitle={subtitle}
       subtitleContent={subtitleContent}
       badges={badges}
-      sanityDocumentId={_id}
-      sanityDocumentType="product"
-      sanityFieldPath="mainImage"
+      image={
+        mainImage?.id ? (
+          <SanityImage
+            image={mainImage}
+            respectSanityCrop
+            width={800}
+            height={533}
+            alt={accessibleName}
+            mode="contain"
+            sizes={DEFAULT_CARD_SIZES}
+            data-sanity={imageAttribute}
+          />
+        ) : undefined
+      }
     />
   );
 }

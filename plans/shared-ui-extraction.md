@@ -29,9 +29,9 @@
 
 ### 3. Listing & Card System
 
-- [ ] Extract `ListCard` into `packages/ui` (presentation only: layout, badges, image slots, CTA styling).
-- [ ] Update `ProductCard`, `SauceCard`, and similar wrappers in both apps to compute badges/copy, then delegate rendering to the shared `ListCard` with `rootProps` + `imageProps` for Sanity metadata.
-- [ ] Smoke test catalog grids on both sites to confirm layout, hover, and link behavior remain intact.
+- [x] Extract `ListCard` into `packages/ui` (presentation only: layout, badges, image slots, CTA styling).
+- [x] Update `ProductCard`, `SauceCard`, and similar wrappers in both apps to compute badges/copy, then delegate rendering to the shared `ListCard` with `rootProps` + `imageProps` for Sanity metadata.
+- [x] Smoke test catalog grids on both sites to confirm layout, hover, and link behavior remain intact.
 
 ### 4. Catalog Feature Clients
 
