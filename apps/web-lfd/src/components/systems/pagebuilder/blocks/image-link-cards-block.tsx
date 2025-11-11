@@ -1,10 +1,10 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 
 import { CTACard } from "@/components/elements/image-link-card";
 import { RichText } from "@/components/elements/rich-text";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";

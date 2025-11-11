@@ -4,6 +4,7 @@ export {
   AccordionItem,
   AccordionTrigger,
 } from "./accordion";
+export { BackLink } from "./back-link";
 export { Badge, badgeVariants } from "./badge";
 export { Button, buttonVariants } from "./button";
 export { Checkbox } from "./checkbox";
@@ -64,6 +65,7 @@ export {
   PopoverContent,
   PopoverTrigger,
 } from "./popover";
+export { Prose } from "./prose";
 export { RadioGroup, RadioGroupItem } from "./radio-group";
 export {
   RecipeCard,
@@ -71,6 +73,18 @@ export {
   type RecipeCardProps,
   type RecipeCardSauce,
 } from "./recipe-card";
+export {
+  type SanityButtonContent,
+  SanityButtons,
+  type SanityButtonsProps,
+} from "./sanity-buttons";
+export {
+  createSanityImage,
+  type CreateSanityImageOptions,
+  type SanityImageComponent,
+  type SanityImageSource,
+  type SharedSanityImageProps,
+} from "./sanity-image";
 export { Section } from "./section";
 export {
   Sheet,
@@ -82,6 +96,14 @@ export {
   SheetTitle,
   SheetTrigger,
 } from "./sheet";
+export {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  XIcon,
+  YoutubeIcon,
+} from "./social-icons";
+export { SurfaceShineOverlay } from "./surface-shine-overlay";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 export { WhereToBuyClient } from "./where-to-buy-client";
 export type {

@@ -1,11 +1,11 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
+import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
-import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";

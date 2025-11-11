@@ -1,4 +1,5 @@
 "use client";
+import { Prose } from "@workspace/ui/components/prose";
 import Link from "next/link";
 import {
   PortableText,
@@ -8,7 +9,6 @@ import {
 
 import { parseChildrenToSlug } from "@/utils";
 
-import { Prose } from "./prose";
 import { SanityImage } from "./sanity-image";
 
 const components: Partial<PortableTextReactComponents> = {

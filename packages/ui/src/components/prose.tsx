@@ -1,7 +1,8 @@
-import { cn } from "@workspace/ui/lib/utils";
 import type { HTMLAttributes, PropsWithChildren } from "react";
 
-type ProseProps = HTMLAttributes<HTMLDivElement> & {
+import { cn } from "../lib/utils";
+
+export type ProseProps = HTMLAttributes<HTMLDivElement> & {
   /**
    * When true, use inverted typography colors suitable for dark surfaces.
    * This avoids forcing light-surface colors on nested elements.

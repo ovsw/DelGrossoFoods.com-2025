@@ -858,3 +858,8 @@ import { dataset, projectId, studioUrl } from "@/config";
 
 - Shared metadata typing now lives in `packages/ui/src/lib/data-attributes.ts`. It exports `RootProps<T>` (extends `HTMLAttributes` plus `[data-*]` support) and `DataAttributes` for components that need extra slots.
 - Every shared component that exposes `rootProps`/`imageProps` should import these helpers instead of redefining `[data-*]` record types so Presentation wiring stays consistent across apps.
+
+## Memory: Shared UI atoms
+
+- SanityImage, SurfaceShineOverlay, BackLink, SocialIcons, SanityButtons, and Prose now live in `packages/ui/src/components`. Apps should import them from `@workspace/ui/components/*`.
+- Each site keeps a thin `SanityImage` wrapper created via `createSanityImage({ projectId, dataset })` so dataset-specific config stays at the app layer.

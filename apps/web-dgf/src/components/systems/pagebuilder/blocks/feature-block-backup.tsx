@@ -1,8 +1,8 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
 
 import { RichText } from "@/components/elements/rich-text";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
 
 import type { PageBuilderBlockProps } from "../types";

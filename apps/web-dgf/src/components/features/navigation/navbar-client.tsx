@@ -19,6 +19,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@workspace/ui/components/navigation-menu";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import {
   Sheet,
   SheetContent,
@@ -33,7 +34,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import LogoSvg from "@/components/elements/logo";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityIcon } from "@/components/elements/sanity-icon";
 
 interface MenuItem {

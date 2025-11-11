@@ -1,6 +1,7 @@
 "use client";
 
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -8,7 +9,6 @@ import { createDataAttribute, stegaClean } from "next-sanity";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { RichText } from "@/components/elements/rich-text";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
 import type { SanityButtonProps, SanityImageProps } from "@/types";

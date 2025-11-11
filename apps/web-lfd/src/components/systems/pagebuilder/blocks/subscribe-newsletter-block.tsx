@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
 import { Section } from "@workspace/ui/components/section";
+import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
@@ -8,7 +9,6 @@ import { useFormStatus } from "react-dom";
 
 // import { newsletterSubmission } from "@/action/newsletter-submission";
 import { RichText } from "@/components/elements/rich-text";
-import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";

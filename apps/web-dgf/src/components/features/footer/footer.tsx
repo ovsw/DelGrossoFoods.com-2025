@@ -4,16 +4,16 @@ import type {
   DgfFooterQueryResult,
   DgfGlobalSeoSettingsQueryResult,
 } from "@workspace/sanity-config/types";
-import Link from "next/link";
-
-import LogoSvg from "@/components/elements/logo";
 import {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
   XIcon,
   YoutubeIcon,
-} from "@/components/elements/social-icons";
+} from "@workspace/ui/components/social-icons";
+import Link from "next/link";
+
+import LogoSvg from "@/components/elements/logo";
 import {
   dgfFooterQuery,
   dgfGlobalSeoSettingsQuery,

@@ -23,9 +23,9 @@
 
 ### 2. Shared Foundations (Atoms/Molecules)
 
-- [ ] Move `SanityImage`, `SurfaceShineOverlay`, `BackLink`, `SocialIcons`, `SanityButtons`, typography helpers, and any identical atoms into `packages/ui`.
-- [ ] Refactor app imports to use shared components while passing dataset/project IDs only where unavoidable (e.g., `SanityImage`).
-- [ ] Ensure each extracted component exposes `rootProps` and optional slots so wrappers can inject metadata or brand-specific nodes.
+- [x] Move `SanityImage`, `SurfaceShineOverlay`, `BackLink`, `SocialIcons`, `SanityButtons`, typography helpers, and any identical atoms into `packages/ui`.
+- [x] Refactor app imports to use shared components while passing dataset/project IDs only where unavoidable (e.g., `SanityImage`).
+- [x] Ensure each extracted component exposes `rootProps` and optional slots so wrappers can inject metadata or brand-specific nodes.
 
 ### 3. Listing & Card System
 

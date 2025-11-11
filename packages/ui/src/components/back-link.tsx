@@ -1,24 +1,29 @@
-import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
 import type { ReactNode } from "react";
 
-interface BackLinkProps {
-  readonly href: string;
-  readonly label: string;
-  readonly icon?: ReactNode;
-  readonly className?: string;
-}
+import { type RootProps } from "../lib/data-attributes";
+import { cn } from "../lib/utils";
+import { Button } from "./button";
+
+export type BackLinkProps = {
+  href: string;
+  label: string;
+  icon?: ReactNode;
+  className?: string;
+  rootProps?: RootProps<HTMLAnchorElement>;
+};
 
 export function BackLink({
   href,
   label,
   icon = <ArrowLeft className="size-4" aria-hidden="true" />,
   className,
+  rootProps,
 }: BackLinkProps) {
   const cleanedLabel = stegaClean(label);
+  const { className: linkClassName, ...restRootProps } = rootProps ?? {};
 
   return (
     <Button
@@ -34,7 +39,8 @@ export function BackLink({
       <Link
         href={href}
         aria-label={`Go back to ${cleanedLabel}`}
-        className="inline-flex items-center gap-2"
+        className={cn("inline-flex items-center gap-2", linkClassName)}
+        {...restRootProps}
       >
         <span aria-hidden>{icon}</span>
         <span>{label}</span>

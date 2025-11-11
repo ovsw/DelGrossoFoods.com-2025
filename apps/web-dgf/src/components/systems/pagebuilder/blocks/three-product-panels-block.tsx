@@ -1,11 +1,11 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
+import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import type { CSSProperties } from "react";
 
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
-import { SurfaceShineOverlay } from "@/components/elements/surface-shine-overlay";
 import { FeatureCardGridLayout } from "@/components/layouts/pagebuilder/feature-card-grid-layout";
 import { dataset, projectId, studioUrl } from "@/config";
 import type { SanityButtonProps } from "@/types";

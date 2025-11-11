@@ -1,5 +1,6 @@
 import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 import { BookOpen, ShoppingCart } from "lucide-react";
@@ -7,9 +8,8 @@ import { stegaClean } from "next-sanity";
 import type { ReactNode } from "react";
 import type { JSX } from "react";
 
-// import { BackLink } from "@/components/elements/back-link";
+// import { BackLink } from "@workspace/ui/components/back-link";
 import { RichText } from "@/components/elements/rich-text";
-import { SanityButtons } from "@/components/elements/sanity-buttons";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineDisplayName, toLineSlug } from "@/config/sauce-taxonomy";
 import type { SanityButtonProps } from "@/types";

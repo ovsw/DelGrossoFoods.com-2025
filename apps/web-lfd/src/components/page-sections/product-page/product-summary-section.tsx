@@ -1,9 +1,9 @@
 "use client";
 
+import { BackLink } from "@workspace/ui/components/back-link";
 import { InfoLabel } from "@workspace/ui/components/info-label";
 import { Section } from "@workspace/ui/components/section";
 
-import { BackLink } from "@/components/elements/back-link";
 import { RichText } from "@/components/elements/rich-text";
 import { ProductPurchasePanel } from "@/components/features/cart/product-purchase-panel";
 import type { ProductDetailData } from "@/types";

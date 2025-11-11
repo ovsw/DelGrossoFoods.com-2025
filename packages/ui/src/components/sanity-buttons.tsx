@@ -1,10 +1,10 @@
-import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
 import type { ComponentProps, JSX, ReactNode } from "react";
 
-import type { SanityButtonProps } from "@/types";
+import { type RootProps } from "../lib/data-attributes";
+import { cn } from "../lib/utils";
+import { Button } from "./button";
 
 type ButtonProps = ComponentProps<typeof Button>;
 type ButtonVariant = ButtonProps["variant"];
@@ -12,18 +12,31 @@ type ButtonSize = ButtonProps["size"];
 type ButtonSurface = ButtonProps["surface"];
 type NonNullButtonVariant = Exclude<ButtonVariant, null | undefined>;
 
-// Base shape we accept from content regardless of Sanity source
-type ContentButton = Omit<SanityButtonProps, "variant"> & { icon?: ReactNode };
+export type SanityButtonContent = {
+  _key?: string | null;
+  text?: string | null;
+  href?: string | null;
+  openInNewTab?: boolean | null;
+  icon?: ReactNode;
+};
 
-type SanityButtonsProps = {
-  buttons: ContentButton[] | null;
+export type SanityButtonsProps = {
+  buttons: SanityButtonContent[] | null | undefined;
   className?: string;
   buttonClassName?: string;
-  // Align with UI button size variant (no nulls)
   size?: ButtonSize;
   buttonVariants?: (ButtonVariant | null | undefined)[];
   surface?: ButtonSurface;
+  rootProps?: RootProps<HTMLDivElement>;
+  buttonRootProps?: (RootProps<HTMLAnchorElement> | undefined)[];
 };
+
+type SanityButtonProps = SanityButtonContent &
+  Omit<ButtonProps, "variant" | "surface"> & {
+    variant?: ButtonVariant;
+    surface?: ButtonSurface;
+    linkProps?: RootProps<HTMLAnchorElement>;
+  };
 
 function SanityButton({
   text,
@@ -33,16 +46,15 @@ function SanityButton({
   icon,
   variant,
   surface,
+  linkProps,
   ...props
-}: ContentButton &
-  Omit<ButtonProps, "variant" | "surface"> & {
-    variant?: ButtonVariant;
-    surface?: ButtonSurface;
-  }): JSX.Element {
+}: SanityButtonProps): JSX.Element {
   if (!href) {
     console.log("Link Broken", { text, href, openInNewTab });
     return <Button>Link Broken</Button>;
   }
+
+  const { className: linkClassName, ...restLinkProps } = linkProps ?? {};
 
   return (
     <Button
@@ -58,7 +70,8 @@ function SanityButton({
         rel={openInNewTab ? "noopener noreferrer" : undefined}
         aria-label={text ? `Navigate to ${stegaClean(text)}` : undefined}
         title={text ? `Click to visit ${stegaClean(text)}` : undefined}
-        className="flex items-center gap-2"
+        className={cn("flex items-center gap-2", linkClassName)}
+        {...restLinkProps}
       >
         {icon ? (
           <span aria-hidden className="flex items-center">
@@ -71,7 +84,6 @@ function SanityButton({
   );
 }
 
-// Sensible defaults for button variants
 const DEFAULT_BUTTON_VARIANTS: NonNullButtonVariant[] = [
   "default",
   "outline",
@@ -85,28 +97,39 @@ export function SanityButtons({
   size = "default",
   buttonVariants,
   surface,
+  rootProps,
+  buttonRootProps,
 }: SanityButtonsProps): JSX.Element | null {
   if (!buttons?.length) return null;
+  const { className: rootClassName, ...restRootProps } = rootProps ?? {};
 
   return (
-    <div className={cn("flex flex-col sm:flex-row gap-4", className)}>
+    <div
+      className={cn(
+        "flex flex-col sm:flex-row gap-4",
+        className,
+        rootClassName,
+      )}
+      {...restRootProps}
+    >
       {buttons.map((button, index) => {
-        // Determine variant: use provided variant, or fallback to defaults, or default to "default"
         const fallbackVariant: NonNullButtonVariant =
           DEFAULT_BUTTON_VARIANTS[index % DEFAULT_BUTTON_VARIANTS.length] ??
           "default";
         const providedVariant = buttonVariants?.[index];
         const variant =
           providedVariant == null ? fallbackVariant : providedVariant;
+        const linkProps = buttonRootProps?.[index];
 
         return (
           <SanityButton
-            key={`button-${button._key}`}
+            key={`button-${button._key ?? index}`}
             {...button}
             size={size}
             variant={variant}
             surface={surface}
             className={buttonClassName}
+            linkProps={linkProps}
           />
         );
       })}

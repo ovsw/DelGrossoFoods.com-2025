@@ -1,10 +1,14 @@
-import { cn } from "@workspace/ui/lib/utils";
+import type { JSX } from "react";
 
-interface SurfaceShineOverlayProps {
+import { cn } from "../lib/utils";
+
+export type SurfaceShineOverlayProps = {
   className?: string;
-}
+};
 
-export function SurfaceShineOverlay({ className }: SurfaceShineOverlayProps) {
+export function SurfaceShineOverlay({
+  className,
+}: SurfaceShineOverlayProps): JSX.Element {
   return (
     <div
       className={cn(
