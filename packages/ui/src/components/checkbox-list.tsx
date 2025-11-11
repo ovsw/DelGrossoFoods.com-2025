@@ -1,21 +1,26 @@
 "use client";
-import { Checkbox } from "@workspace/ui/components/checkbox";
 import type { ReactNode } from "react";
 
-export type CheckboxItem = {
+import { Checkbox } from "./checkbox";
+
+export type CheckboxListItem = {
   id: string;
   label: ReactNode;
   checked: boolean;
   ariaLabel?: string;
 };
 
-export type Props = {
-  items: CheckboxItem[];
+export type CheckboxListProps = {
+  items: CheckboxListItem[];
   onToggle: (id: string, checked: boolean) => void;
   className?: string;
 };
 
-export function CheckboxList({ items, onToggle, className }: Props) {
+export function CheckboxList({
+  items,
+  onToggle,
+  className,
+}: CheckboxListProps) {
   return (
     <div className={className ?? "mt-2 grid grid-cols-1 gap-2"}>
       {items.map((item) => {

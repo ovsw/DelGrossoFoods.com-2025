@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "./button";
 
 type Props = {
   onClear: () => void;

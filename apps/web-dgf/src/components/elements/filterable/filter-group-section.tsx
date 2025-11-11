@@ -1,8 +1,7 @@
 "use client";
+import { ClearSection } from "@workspace/ui/components/clear-section";
 import { cn } from "@workspace/ui/lib/utils";
 import type { ReactNode } from "react";
-
-import { ClearSection } from "./clear-section";
 
 type Props = {
   title: string;

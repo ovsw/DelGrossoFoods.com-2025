@@ -1,16 +1,16 @@
 "use client";
 import type { BadgeVariant } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import { CatalogFilterableListLayout } from "@workspace/ui/components/catalog-filterable-list-layout";
+import { CheckboxList } from "@workspace/ui/components/checkbox-list";
+import { RadioList } from "@workspace/ui/components/radio-list";
+import { SearchField } from "@workspace/ui/components/search-field";
+import { SortDropdown } from "@workspace/ui/components/sort-dropdown";
+import { useCatalogController } from "@workspace/ui/hooks/use-catalog-controller";
 // (checkbox/radio rendered via shared primitives)
-import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { CheckboxList } from "@/components/elements/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/elements/filterable/filter-group-section";
-import { FilterableListLayout } from "@/components/elements/filterable/filterable-list-layout";
-import { RadioList } from "@/components/elements/filterable/radio-list";
-import { SearchField } from "@/components/elements/filterable/search-field";
-import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
 import { ProductCard } from "@/components/elements/product-card";
 import { packagingMap, type PackagingSlug } from "@/config/product-taxonomy";
 import {
@@ -22,15 +22,13 @@ import {
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { useFirstPaint } from "@/hooks/use-first-paint";
-import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/products/filters";
 import {
   parseSearchParams,
   type ProductQueryState,
   serializeStateToParams,
 } from "@/lib/products/url";
-import type { ProductListItem, SortOrder } from "@/types";
+import type { ProductListItem } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
@@ -172,143 +170,106 @@ type Props = {
 };
 
 export function ProductsClient({ items, initialState }: Props) {
-  const pathname = usePathname();
-
-  const [search, setSearch] = useState<string>(initialState.search);
-  const [packaging, setPackaging] = useState<PackagingSlug[]>([
-    ...initialState.packaging,
-  ]);
-  const [productLine, setProductLine] = useState<LineSlug[]>([
-    ...initialState.productLine,
-  ]);
-  const [sauceType, setSauceType] = useState<ProductQueryState["sauceType"]>(
-    initialState.sauceType,
-  );
-  const [sort, setSort] = useState<SortOrder>(initialState.sort);
-
-  const applyingPopStateRef = useRef(false);
+  const [filters, setFilters] = useState<ProductQueryState>(initialState);
   useEffect(() => {
-    function handlePopState() {
-      applyingPopStateRef.current = true;
-      try {
-        const sp = new URLSearchParams(window.location.search);
-        const params: Record<string, string | string[] | undefined> = {};
-        sp.forEach((value, key) => {
-          if (params[key] === undefined) params[key] = value;
-          else
-            params[key] = ([] as string[])
-              .concat(params[key] as string[])
-              .concat(value);
-        });
-        const next = parseSearchParams(params);
-        setSearch(next.search);
-        setPackaging([...next.packaging]);
-        setProductLine([...next.productLine]);
-        setSauceType(next.sauceType);
-        setSort(next.sort);
-      } finally {
-        setTimeout(() => {
-          applyingPopStateRef.current = false;
-        }, 0);
-      }
-    }
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    setFilters(initialState);
+  }, [initialState]);
 
-  const debouncedSearch = useDebouncedValue(search, 200);
-
-  const state: ProductQueryState = useMemo(
+  const debouncedSearch = useDebouncedValue(filters.search, 200);
+  const queryState = useMemo(
     () => ({
+      ...filters,
       search: debouncedSearch,
-      packaging,
-      productLine,
-      sauceType,
-      sort,
     }),
-    [debouncedSearch, packaging, productLine, sauceType, sort],
+    [filters, debouncedSearch],
   );
 
-  useUrlStateSync({
-    pathname,
-    state,
-    serialize: serializeStateToParams,
-    suppress: applyingPopStateRef.current,
-  });
+  const { effectiveResults, resultsCount, totalCount, scrollKey, skipScroll } =
+    useCatalogController({
+      setState: setFilters,
+      queryState,
+      initialState,
+      items,
+      parseSearchParams,
+      serializeState: serializeStateToParams,
+      applyFiltersAndSort,
+      scrollStateSelector: (state) => ({
+        search: state.search,
+        packaging: state.packaging,
+        productLine: state.productLine,
+        sauceType: state.sauceType,
+        sort: state.sort,
+      }),
+    });
 
-  const results = useMemo(
-    () => applyFiltersAndSort(items, state),
-    [items, state],
-  );
-  const initialResults = useMemo(
-    () => applyFiltersAndSort(items, initialState),
-    [items, initialState],
-  );
-
-  const firstPaint = useFirstPaint();
-  const effectiveResults = firstPaint ? initialResults : results;
-
-  const totalCount = items.length;
-  const resultsCount = effectiveResults.length;
   const filtersActive =
-    Boolean(search) ||
-    packaging.length > 0 ||
-    productLine.length > 0 ||
-    sauceType !== "all";
-  const scrollKey = JSON.stringify({
-    search: debouncedSearch,
-    packaging,
-    productLine,
-    sauceType,
-    sort,
-  });
+    Boolean(filters.search) ||
+    filters.packaging.length > 0 ||
+    filters.productLine.length > 0 ||
+    filters.sauceType !== "all";
 
   function clearAll() {
-    setSearch("");
-    setPackaging([]);
-    setProductLine([]);
-    setSauceType("all");
-    setSort("az");
+    setFilters({
+      search: "",
+      packaging: [],
+      productLine: [],
+      sauceType: "all",
+      sort: "az",
+    });
   }
   function clearPackaging() {
-    setPackaging([]);
+    setFilters((prev) => ({ ...prev, packaging: [] }));
   }
   function clearProductLine() {
-    setProductLine([]);
+    setFilters((prev) => ({ ...prev, productLine: [] }));
   }
   function clearSauceType() {
-    setSauceType("all");
+    setFilters((prev) => ({ ...prev, sauceType: "all" }));
   }
   function togglePackaging(p: PackagingSlug, checked: boolean) {
-    setPackaging((prev) => {
-      if (checked) {
-        return prev.includes(p) ? prev : [...prev, p];
-      }
-      return prev.filter((x) => x !== p);
-    });
+    setFilters((prev) => ({
+      ...prev,
+      packaging: checked
+        ? prev.packaging.includes(p)
+          ? prev.packaging
+          : [...prev.packaging, p]
+        : prev.packaging.filter((x) => x !== p),
+    }));
   }
   function toggleLine(line: LineSlug, checked: boolean) {
-    setProductLine((prev) => {
-      if (checked) {
-        return prev.includes(line) ? prev : [...prev, line];
-      }
-      return prev.filter((l) => l !== line);
-    });
+    setFilters((prev) => ({
+      ...prev,
+      productLine: checked
+        ? prev.productLine.includes(line)
+          ? prev.productLine
+          : [...prev.productLine, line]
+        : prev.productLine.filter((l) => l !== line),
+    }));
   }
 
   return (
-    <FilterableListLayout
+    <CatalogFilterableListLayout
       renderFilters={({ idPrefix }) => (
         <FiltersForm
           idPrefix={idPrefix}
-          search={search}
-          setSearch={setSearch}
-          packaging={packaging}
+          search={filters.search}
+          setSearch={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              search: value,
+            }))
+          }
+          packaging={filters.packaging}
           togglePackaging={togglePackaging}
-          productLine={productLine}
+          productLine={filters.productLine}
           toggleLine={toggleLine}
-          sauceType={sauceType}
-          setSauceType={setSauceType}
+          sauceType={filters.sauceType}
+          setSauceType={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              sauceType: value,
+            }))
+          }
           clearPackaging={clearPackaging}
           clearProductLine={clearProductLine}
           clearSauceType={clearSauceType}
@@ -319,35 +280,42 @@ export function ProductsClient({ items, initialState }: Props) {
       isAnyActive={filtersActive}
       onClearAll={clearAll}
       activeChips={[
-        ...packaging.map((slug) => ({
+        ...filters.packaging.map((slug) => ({
           key: `pkg-${slug}`,
           text: packagingMap[slug].display,
           variant: "neutral" as const,
           onRemove: () => togglePackaging(slug, false),
         })),
-        ...productLine.map((slug) => ({
+        ...filters.productLine.map((slug) => ({
           key: `line-${slug}`,
           text: lineMap[slug].display,
           variant: slug,
           onRemove: () => toggleLine(slug, false),
         })),
-        ...(sauceType !== "all" && sauceType !== "mix"
+        ...(filters.sauceType !== "all" && filters.sauceType !== "mix"
           ? [
               {
-                key: `type-${sauceType}`,
-                text: typeMap[sauceType].display,
-                variant: sauceTypeToBadgeVariant[sauceType] ?? "neutral",
-                onRemove: () => setSauceType("all"),
+                key: `type-${filters.sauceType}`,
+                text: typeMap[filters.sauceType].display,
+                variant:
+                  sauceTypeToBadgeVariant[filters.sauceType] ?? "neutral",
+                onRemove: () =>
+                  setFilters((prev) => ({ ...prev, sauceType: "all" })),
               },
             ]
           : []),
       ]}
       scrollToTopKey={scrollKey}
-      skipScroll={firstPaint}
+      skipScroll={skipScroll}
       sortControl={
         <SortDropdown
-          value={sort}
-          onChange={(v) => setSort(v)}
+          value={filters.sort}
+          onChange={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              sort: value,
+            }))
+          }
           className="ms-auto"
         />
       }
@@ -368,6 +336,6 @@ export function ProductsClient({ items, initialState }: Props) {
           ))}
         </div>
       )}
-    </FilterableListLayout>
+    </CatalogFilterableListLayout>
   );
 }

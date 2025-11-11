@@ -1,6 +1,10 @@
 "use client";
-import { Badge, type BadgeVariant } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
+import { Filter } from "lucide-react";
+import React from "react";
+
+import { Badge, type BadgeVariant } from "./badge";
+import { Button } from "./button";
+import { ClearSection } from "./clear-section";
 import {
   Drawer,
   DrawerClose,
@@ -8,13 +12,16 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer";
-import { Filter } from "lucide-react";
-import React from "react";
-
-import { ClearSection } from "./clear-section";
+} from "./drawer";
 
 type FiltersRenderer = (args: { idPrefix: string }) => React.ReactNode;
+
+type ActiveChip = {
+  key: string;
+  text: string;
+  variant?: BadgeVariant;
+  onRemove?: () => void;
+};
 
 type Props = {
   renderFilters: FiltersRenderer;
@@ -25,22 +32,14 @@ type Props = {
   sortControl: React.ReactNode;
   children: React.ReactNode;
   resultsAnchorId?: string;
-  // When this key changes, layout scrolls to the results anchor
   scrollToTopKey?: unknown;
-  // Skip scrolling when true (e.g., first render)
   skipScroll?: boolean;
-  // Debounce for scroll to top
   scrollDebounceMs?: number;
-  // Active filter chips rendered above the grid (desktop) and under the Filters button (mobile)
-  activeChips?: Array<{
-    key: string;
-    text: string;
-    variant?: BadgeVariant;
-    onRemove?: () => void;
-  }>;
+  activeChips?: ActiveChip[];
+  rootProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
-export function FilterableListLayout({
+export function CatalogFilterableListLayout({
   renderFilters,
   resultsCount,
   resultsTotal,
@@ -53,16 +52,14 @@ export function FilterableListLayout({
   skipScroll = false,
   scrollDebounceMs = 200,
   activeChips = [],
+  rootProps,
 }: Props) {
-  // Debounced scroll-to-top when the provided key changes
   const prevKeyRef = React.useRef<unknown>(undefined);
   React.useEffect(() => {
-    // Prime the previous key on first render or when skipping scroll
     if (prevKeyRef.current === undefined || skipScroll) {
       prevKeyRef.current = scrollToTopKey;
       return;
     }
-    // Only act when the key actually changes
     if (Object.is(prevKeyRef.current, scrollToTopKey)) return;
     prevKeyRef.current = scrollToTopKey;
 
@@ -74,9 +71,12 @@ export function FilterableListLayout({
   }, [scrollToTopKey, skipScroll, resultsAnchorId, scrollDebounceMs]);
 
   const resultsSummary = `Showing ${resultsCount} out of ${resultsTotal}`;
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-      {/* Sidebar (desktop) */}
+    <div
+      className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8"
+      {...rootProps}
+    >
       <aside className="hidden lg:block">
         <div className="sticky top-32">
           <div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-hidden pe-2">
@@ -107,11 +107,8 @@ export function FilterableListLayout({
         </div>
       </aside>
 
-      {/* Main content */}
       <section className="min-w-0">
-        {/* Top bar */}
         <div className="mb-8 md:mb-6 flex items-center gap-2">
-          {/* Mobile filter button first on the left */}
           <div className="lg:hidden">
             <Drawer>
               <DrawerTrigger asChild>
@@ -155,18 +152,17 @@ export function FilterableListLayout({
             </Drawer>
           </div>
 
-          {/* Desktop chips inline with Sort on the right; fills available space */}
           {activeChips.length > 0 ? (
             <div className="hidden lg:flex flex-wrap gap-2 ms-2 flex-1">
-              {activeChips.map((c) => (
+              {activeChips.map((chip) => (
                 <button
-                  key={c.key}
+                  key={chip.key}
                   type="button"
-                  onClick={c.onRemove}
-                  aria-label={`Remove filter ${c.text}`}
+                  onClick={chip.onRemove}
+                  aria-label={`Remove filter ${chip.text}`}
                   className="cursor-pointer"
                 >
-                  <Badge text={`${c.text} ×`} variant={c.variant} />
+                  <Badge text={`${chip.text} ×`} variant={chip.variant} />
                 </button>
               ))}
             </div>
@@ -174,35 +170,27 @@ export function FilterableListLayout({
             <div className="hidden lg:block flex-1" />
           )}
 
-          {/* Mobile chips are rendered below the toolbar (see below) */}
-
-          {/* Sort dropdown on the right */}
           {sortControl}
         </div>
 
-        {/* Anchor at top of results for scroll-to-top on filter changes */}
         <div id={resultsAnchorId} aria-hidden="true" />
 
-        {/* Mobile active chips below toolbar: single accent color */}
         {activeChips.length > 0 ? (
           <div className="lg:hidden flex flex-wrap gap-2 mb-4">
-            {activeChips.map((c) => (
+            {activeChips.map((chip) => (
               <button
-                key={c.key}
+                key={chip.key}
                 type="button"
-                onClick={c.onRemove}
-                aria-label={`Remove filter ${c.text}`}
+                onClick={chip.onRemove}
+                aria-label={`Remove filter ${chip.text}`}
                 className="cursor-pointer"
               >
-                <Badge text={`${c.text} ×`} variant="accent" />
+                <Badge text={`${chip.text} ×`} variant="accent" />
               </button>
             ))}
           </div>
         ) : null}
 
-        {/* Desktop chips now inline with toolbar */}
-
-        {/* Grid */}
         {children}
       </section>
     </div>

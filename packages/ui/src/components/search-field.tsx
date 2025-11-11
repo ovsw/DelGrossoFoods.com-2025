@@ -1,9 +1,10 @@
 "use client";
-import { Button } from "@workspace/ui/components/button";
 import { Search as SearchIcon } from "lucide-react";
 import type { ChangeEvent } from "react";
 
-type Props = {
+import { Button } from "./button";
+
+type SearchFieldProps = {
   id: string;
   label: string;
   value: string;
@@ -11,6 +12,7 @@ type Props = {
   placeholder?: string;
   ariaLabel?: string;
   clearButtonVariant?: "secondary" | "ghost";
+  clearButtonLabel?: string;
   visuallyHideLabel?: boolean;
 };
 
@@ -22,8 +24,9 @@ export function SearchField({
   placeholder = "Search",
   ariaLabel,
   clearButtonVariant = "secondary",
+  clearButtonLabel = "Clear",
   visuallyHideLabel = false,
-}: Props) {
+}: SearchFieldProps) {
   return (
     <div role="search" aria-label={ariaLabel ?? label}>
       <label
@@ -57,7 +60,7 @@ export function SearchField({
             className="cursor-pointer"
             onClick={() => onChange("")}
           >
-            Clear
+            {clearButtonLabel}
           </Button>
         ) : null}
       </div>

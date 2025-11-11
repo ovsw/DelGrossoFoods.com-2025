@@ -1,14 +1,14 @@
 "use client";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { CatalogFilterableListLayout } from "@workspace/ui/components/catalog-filterable-list-layout";
+import { CheckboxList } from "@workspace/ui/components/checkbox-list";
+import { SearchField } from "@workspace/ui/components/search-field";
+import { SortDropdown } from "@workspace/ui/components/sort-dropdown";
+import { useCatalogController } from "@workspace/ui/hooks/use-catalog-controller";
+import { useEffect, useMemo, useState } from "react";
 
-import { CheckboxList } from "@/components/elements/filterable/checkbox-list";
 import { FilterGroupSection } from "@/components/elements/filterable/filter-group-section";
-import { FilterableListLayout } from "@/components/elements/filterable/filterable-list-layout";
-import { SearchField } from "@/components/elements/filterable/search-field";
-import { SortDropdown } from "@/components/elements/filterable/sort-dropdown";
 import { RecipeCard } from "@/components/elements/recipe-card";
 import {
   allMeatSlugs,
@@ -20,8 +20,6 @@ import {
 } from "@/config/recipe-taxonomy";
 import { allLineSlugs, lineMap, type LineSlug } from "@/config/sauce-taxonomy";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { useFirstPaint } from "@/hooks/use-first-paint";
-import { useUrlStateSync } from "@/hooks/use-url-state-sync";
 import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
   getCategorySlug,
@@ -29,7 +27,7 @@ import {
   type RecipeQueryState,
   serializeStateToParams,
 } from "@/lib/recipes/url";
-import type { RecipeCategoryOption, RecipeListItem, SortOrder } from "@/types";
+import type { RecipeCategoryOption, RecipeListItem } from "@/types";
 
 type FiltersFormProps = {
   idPrefix?: string;
@@ -233,154 +231,125 @@ type Props = {
 };
 
 export function RecipesClient({ items, initialState, categories }: Props) {
-  const pathname = usePathname();
-
-  const [search, setSearch] = useState(initialState.search);
-  const [productLine, setProductLine] = useState<LineSlug[]>([
-    ...initialState.productLine,
-  ]);
-  const [tags, setTags] = useState<RecipeTagSlug[]>([...initialState.tags]);
-  const [meats, setMeats] = useState<MeatSlug[]>([...initialState.meats]);
-  const [category, setCategory] = useState<string | "all">(
-    initialState.category,
-  );
-  const [hasVideo, setHasVideo] = useState<boolean>(initialState.hasVideo);
-  const [sort, setSort] = useState<SortOrder>(initialState.sort);
-
-  const applyingPopStateRef = useRef(false);
+  const [filters, setFilters] = useState<RecipeQueryState>(initialState);
   useEffect(() => {
-    function handlePopState() {
-      applyingPopStateRef.current = true;
-      try {
-        const sp = new URLSearchParams(window.location.search);
-        const params: Record<string, string | string[] | undefined> = {};
-        sp.forEach((value, key) => {
-          if (params[key] === undefined) params[key] = value;
-          else
-            params[key] = ([] as string[])
-              .concat(params[key] as string[])
-              .concat(value);
-        });
-        const next = parseSearchParams(params);
-        setSearch(next.search);
-        setProductLine([...next.productLine]);
-        setTags([...next.tags]);
-        setMeats([...next.meats]);
-        setCategory(next.category);
-        setHasVideo(next.hasVideo);
-        setSort(next.sort);
-      } finally {
-        setTimeout(() => {
-          applyingPopStateRef.current = false;
-        }, 0);
-      }
-    }
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    setFilters(initialState);
+  }, [initialState]);
 
-  const debouncedSearch = useDebouncedValue(search, 200);
-  const state: RecipeQueryState = useMemo(
+  const debouncedSearch = useDebouncedValue(filters.search, 200);
+  const queryState = useMemo(
     () => ({
+      ...filters,
       search: debouncedSearch,
-      productLine,
-      tags,
-      meats,
-      category,
-      hasVideo,
-      sort,
     }),
-    [debouncedSearch, productLine, tags, meats, category, hasVideo, sort],
+    [filters, debouncedSearch],
   );
 
-  useUrlStateSync({
-    pathname,
-    state,
-    serialize: serializeStateToParams,
-    suppress: applyingPopStateRef.current,
-  });
+  const { effectiveResults, resultsCount, totalCount, scrollKey, skipScroll } =
+    useCatalogController({
+      setState: setFilters,
+      queryState,
+      initialState,
+      items,
+      parseSearchParams,
+      serializeState: serializeStateToParams,
+      applyFiltersAndSort,
+      scrollStateSelector: (state) => ({
+        search: state.search,
+        productLine: state.productLine,
+        tags: state.tags,
+        meats: state.meats,
+        category: state.category,
+        hasVideo: state.hasVideo,
+        sort: state.sort,
+      }),
+    });
 
-  const results = useMemo(
-    () => applyFiltersAndSort(items, state),
-    [items, state],
-  );
-  const initialResults = useMemo(
-    () => applyFiltersAndSort(items, initialState),
-    [items, initialState],
-  );
-  const firstPaint = useFirstPaint();
-  const effectiveResults = firstPaint ? initialResults : results;
-  const totalCount = items.length;
-  const resultsCount = effectiveResults.length;
   const filtersActive =
-    Boolean(search) ||
-    productLine.length > 0 ||
-    tags.length > 0 ||
-    meats.length > 0 ||
-    category !== "all" ||
-    hasVideo;
+    Boolean(filters.search) ||
+    filters.productLine.length > 0 ||
+    filters.tags.length > 0 ||
+    filters.meats.length > 0 ||
+    filters.category !== "all" ||
+    filters.hasVideo;
 
-  // Key to trigger shared layout scroll behavior
   const resultsAnchorId = "recipes-results-top";
-  const scrollKey = JSON.stringify({
-    search: debouncedSearch,
-    productLine,
-    tags,
-    meats,
-    category,
-    hasVideo,
-    sort,
-  });
 
   function clearAll() {
-    setSearch("");
-    setProductLine([]);
-    setTags([]);
-    setMeats([]);
-    setCategory("all");
-    setHasVideo(false);
-    setSort("az");
+    setFilters({
+      search: "",
+      productLine: [],
+      tags: [],
+      meats: [],
+      category: "all",
+      hasVideo: false,
+      sort: "az",
+    });
   }
-  const clearProductLine = () => setProductLine([]);
-  const clearTags = () => setTags([]);
-  const clearMeats = () => setMeats([]);
-  const clearCategory = () => setCategory("all");
+  const clearProductLine = () =>
+    setFilters((prev) => ({ ...prev, productLine: [] }));
+  const clearTags = () => setFilters((prev) => ({ ...prev, tags: [] }));
+  const clearMeats = () => setFilters((prev) => ({ ...prev, meats: [] }));
+  const clearCategory = () =>
+    setFilters((prev) => ({ ...prev, category: "all" }));
   const toggleLine = (l: LineSlug, checked: boolean) =>
-    setProductLine((prev) => {
-      if (checked) {
-        return prev.includes(l) ? prev : [...prev, l];
-      }
-      return prev.filter((x) => x !== l);
-    });
+    setFilters((prev) => ({
+      ...prev,
+      productLine: checked
+        ? prev.productLine.includes(l)
+          ? prev.productLine
+          : [...prev.productLine, l]
+        : prev.productLine.filter((x) => x !== l),
+    }));
   const toggleTag = (t: RecipeTagSlug, checked: boolean) =>
-    setTags((prev) => {
-      if (checked) {
-        return prev.includes(t) ? prev : [...prev, t];
-      }
-      return prev.filter((x) => x !== t);
-    });
+    setFilters((prev) => ({
+      ...prev,
+      tags: checked
+        ? prev.tags.includes(t)
+          ? prev.tags
+          : [...prev.tags, t]
+        : prev.tags.filter((x) => x !== t),
+    }));
   const toggleMeat = (m: MeatSlug) =>
-    setMeats((prev) =>
-      prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m],
-    );
+    setFilters((prev) => ({
+      ...prev,
+      meats: prev.meats.includes(m)
+        ? prev.meats.filter((x) => x !== m)
+        : [...prev.meats, m],
+    }));
 
   return (
-    <FilterableListLayout
+    <CatalogFilterableListLayout
       renderFilters={({ idPrefix }) => (
         <FiltersForm
           idPrefix={idPrefix}
-          search={search}
-          setSearch={setSearch}
-          productLine={productLine}
+          search={filters.search}
+          setSearch={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              search: value,
+            }))
+          }
+          productLine={filters.productLine}
           toggleLine={toggleLine}
-          tags={tags}
+          tags={filters.tags}
           toggleTag={toggleTag}
-          meats={meats}
+          meats={filters.meats}
           toggleMeat={toggleMeat}
-          category={category}
-          setCategory={setCategory}
-          hasVideo={hasVideo}
-          setHasVideo={setHasVideo}
+          category={filters.category}
+          setCategory={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              category: value,
+            }))
+          }
+          hasVideo={filters.hasVideo}
+          setHasVideo={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              hasVideo: value,
+            }))
+          }
           clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}
@@ -393,42 +362,48 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       isAnyActive={filtersActive}
       onClearAll={clearAll}
       activeChips={[
-        ...productLine.map((slug) => ({
+        ...filters.productLine.map((slug) => ({
           key: `line-${slug}`,
           text: lineMap[slug].display,
           variant: slug,
           onRemove: () => toggleLine(slug, false),
         })),
-        ...tags.map((slug) => ({
+        ...filters.tags.map((slug) => ({
           key: `tag-${slug}`,
           text: tagMap[slug].display,
           variant: tagMap[slug].badgeVariant,
           onRemove: () => toggleTag(slug, false),
         })),
-        ...meats.map((slug) => ({
+        ...filters.meats.map((slug) => ({
           key: `meat-${slug}`,
           text: meatMap[slug].display,
           variant: "meat" as const,
           onRemove: () => toggleMeat(slug),
         })),
-        ...(hasVideo
+        ...(filters.hasVideo
           ? [
               {
                 key: "has-video",
                 text: "Has video",
                 variant: "neutral" as const,
-                onRemove: () => setHasVideo(false),
+                onRemove: () =>
+                  setFilters((prev) => ({ ...prev, hasVideo: false })),
               },
             ]
           : []),
       ]}
       scrollToTopKey={scrollKey}
-      skipScroll={firstPaint}
+      skipScroll={skipScroll}
       resultsAnchorId={resultsAnchorId}
       sortControl={
         <SortDropdown
-          value={sort}
-          onChange={(v) => setSort(v)}
+          value={filters.sort}
+          onChange={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              sort: value,
+            }))
+          }
           className="ms-auto"
         />
       }
@@ -449,6 +424,6 @@ export function RecipesClient({ items, initialState, categories }: Props) {
           ))}
         </div>
       )}
-    </FilterableListLayout>
+    </CatalogFilterableListLayout>
   );
 }

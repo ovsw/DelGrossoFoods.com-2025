@@ -1,25 +1,28 @@
 "use client";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@workspace/ui/components/radio-group";
 import type { ReactNode } from "react";
 
-export type RadioItem = {
+import { RadioGroup, RadioGroupItem } from "./radio-group";
+
+export type RadioListItem = {
   id: string;
   value: string;
   label: ReactNode;
   ariaLabel?: string;
 };
 
-type Props = {
+export type RadioListProps = {
   value: string;
   onChange: (value: string) => void;
-  items: RadioItem[];
+  items: RadioListItem[];
   className?: string;
 };
 
-export function RadioList({ value, onChange, items, className }: Props) {
+export function RadioList({
+  value,
+  onChange,
+  items,
+  className,
+}: RadioListProps) {
   return (
     <div className={className ?? "mt-2 grid grid-cols-1 gap-2"}>
       <RadioGroup value={value} onValueChange={onChange}>

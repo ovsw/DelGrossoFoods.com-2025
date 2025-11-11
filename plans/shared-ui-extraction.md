@@ -35,9 +35,9 @@
 
 ### 4. Catalog Feature Clients
 
-- [ ] Identify common UI/state management in `components/features/catalog/*-client.tsx` (filter toolbar, chips, grid, empty states).
-- [ ] Extract shared state machines + UI shells into `packages/ui` while keeping dataset queries and taxonomy mapping inside each app wrapper.
-- [ ] Provide extension points for site-specific copy (intro text, badge labels) via props/slots.
+- [x] Identify common UI/state management in `components/features/catalog/*-client.tsx` (filter toolbar, chips, grid, empty states).
+- [x] Extract shared state machines + UI shells into `packages/ui` while keeping dataset queries and taxonomy mapping inside each app wrapper.
+- [x] Provide extension points for site-specific copy (intro text, badge labels) via props/slots.
 
 ### 5. Global Chrome & Layout Skeletons
 
