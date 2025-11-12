@@ -2,7 +2,23 @@ import { defineField, defineType } from "sanity";
 
 import { createRadioListLayout, isValidUrl } from "../../utils/helper";
 
-const allLinkableTypes = [{ type: "page" }];
+// These document types back every routable page on DGF + LFD sites.
+// Keep in sync with the routes implemented under apps/web-*/src/app.
+const internalLinkTargetTypes = [
+  "homePage",
+  "page",
+  "historyPage",
+  "contactPage",
+  "storeLocator",
+  "sauceIndex",
+  "recipeIndex",
+  "productIndex",
+  "recipe",
+  "sauce",
+  "product",
+] as const;
+
+const allLinkableTypes = internalLinkTargetTypes.map((type) => ({ type }));
 
 export const customUrl = defineType({
   name: "customUrl",
