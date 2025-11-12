@@ -48,7 +48,7 @@ export type RecipeCardProps = {
 };
 
 const CARD_BASE_CLASS =
-  "group relative isolate flex h-full min-h-[36rem] flex-col overflow-hidden rounded-3xl bg-th-dark-900 text-th-light-100 shadow-xl transition-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green";
+  "group relative isolate flex h-full min-h-[36rem] flex-col overflow-hidden rounded-3xl bg-th-dark-900 text-th-light-100 shadow-xl transition-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red";
 
 function enhanceMedia(node?: RecipeCardMedia, className?: string) {
   if (!node || !isValidElement(node)) {

@@ -39,7 +39,7 @@ function SubscribeNewsletterButton({ className }: { className?: string }) {
         "bg-th-light-100 shadow-md shadow-black/15 transition duration-150",
         "sm:w-auto sm:justify-self-end sm:rounded-l-none sm:rounded-r-full",
         "hover:bg-th-light-100/95 hover:shadow-lg",
-        "focus-visible:ring-4 focus-visible:ring-th-light-100/60",
+        "focus-visible:ring-4 focus-visible:ring-brand-red/60",
         className,
       )}
       aria-label={pending ? "Subscribing..." : "Subscribe to newsletter"}
@@ -118,7 +118,7 @@ export function SubscribeNewsletterBlock({
                   required
                   aria-label="Email address"
                   placeholder="Enter your email address"
-                  className="w-full rounded-full border border-brand-green-text/30 bg-th-light-100 px-5 py-3 text-base text-th-dark-900 placeholder:text-th-dark-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green-text/40 sm:rounded-r-none"
+                  className="w-full rounded-full border border-brand-green-text/30 bg-th-light-100 px-5 py-3 text-base text-th-dark-900 placeholder:text-th-dark-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/40 sm:rounded-r-none"
                 />
               </div>
               <SubscribeNewsletterButton className="sm:rounded-l-none" />

@@ -79,7 +79,7 @@ export function CatalogFilterableListLayout({
     >
       <aside className="hidden lg:block">
         <div className="sticky top-32">
-          <div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-hidden pe-2">
+          <div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-visible pe-2">
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold">Filters</h2>
@@ -99,7 +99,7 @@ export function CatalogFilterableListLayout({
               <div className="border-b border-input" />
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto pt-4 filter-scroll-area">
-              <div className="pe-2 pb-8">
+              <div className="ps-2 pe-2 pb-8">
                 {renderFilters({ idPrefix: "desktop" })}
               </div>
             </div>

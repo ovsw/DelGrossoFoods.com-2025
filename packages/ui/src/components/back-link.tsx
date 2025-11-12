@@ -32,7 +32,7 @@ export function BackLink({
       asChild
       className={cn(
         "px-0 text-brand-green hover:bg-transparent hover:text-brand-green",
-        "focus-visible:ring-brand-green/50",
+        "focus-visible:ring-brand-red/50",
         className,
       )}
     >

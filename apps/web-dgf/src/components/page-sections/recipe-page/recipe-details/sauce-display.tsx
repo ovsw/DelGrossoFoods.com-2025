@@ -155,7 +155,7 @@ export function SauceLink({ item }: { item: SauceDisplayItem }) {
       <Link
         href={item.href}
         aria-label={`View sauce ${item.alt}`}
-        className="group inline-flex w-full items-center gap-3 rounded-md border border-brand-green/20 bg-th-light-100 px-3 py-2 transition-colors hover:bg-brand-green/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-th-light-100"
+        className="group inline-flex w-full items-center gap-3 rounded-md border border-brand-green/20 bg-th-light-100 px-3 py-2 transition-colors hover:bg-brand-green/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 focus-visible:ring-offset-th-light-100"
         data-html="c-sauce-link"
       >
         {content}

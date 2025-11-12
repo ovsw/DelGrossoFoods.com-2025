@@ -38,7 +38,7 @@ export function MobileNavPanel({
                   className={cn(
                     "block w-full px-3 py-3.5 text-base font-medium text-amber-900",
                     "transition-colors duration-200 hover:bg-black/5 hover:text-amber-800",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brown-400",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red",
                     isActive &&
                       "bg-black/5 text-amber-900 underline underline-offset-4 decoration-amber-800",
                   )}

@@ -16,7 +16,7 @@ const buttonVariants = cva(defaultStyles, {
       default:
         "bg-brand-green text-brand-green-text shadow-xs hover:bg-brand-green/90",
       destructive:
-        "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
+        "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-brand-red/20",
       outline:
         "border border-brand-green text-brand-green shadow-xs hover:bg-background/10  hover:text-brand-green",
       secondary:
@@ -35,7 +35,7 @@ const buttonVariants = cva(defaultStyles, {
     surface: {
       default: "",
       onDark:
-        "focus-visible:border-th-light-100 focus-visible:ring-th-light-100/45 focus-visible:ring-[3px]",
+        "focus-visible:border-th-light-100 focus-visible:ring-brand-red/45 focus-visible:ring-[3px]",
     },
   },
   compoundVariants: [
