@@ -1,0 +1,9 @@
+/* LFD theme overrides: keep DGF tokens, swap brand color to black */
+
+:root {
+  /* Make the brand color black for LFD while keeping all other tokens intact. */
+  --color-brand-green: var(--color-th-dark-900);
+  --color-brand-green-500: var(--color-brand-green);
+  /* Keep on-brand text high contrast (light) on the now-black brand background. */
+  --color-brand-green-text: var(--color-th-light-100);
+}

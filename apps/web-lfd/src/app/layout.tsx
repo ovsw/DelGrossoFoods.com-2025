@@ -1,4 +1,5 @@
 import "@workspace/ui/styles/globals.css";
+import "@workspace/ui/styles/lfd-theme.css";
 import "./background.css";
 
 import { SanityLive } from "@workspace/sanity-config/live";
