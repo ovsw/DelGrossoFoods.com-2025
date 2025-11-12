@@ -77,13 +77,16 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
 
 const SITE_SCOPED_COLLECTIONS: CollectionConfig[] = [
   { type: "page", title: "Pages", siteScoped: true },
-  { type: "faq", title: "FAQs", icon: MessageCircle, siteScoped: true },
   {
     type: "recipeCategory",
     title: "Recipe Categories",
     icon: TagIcon,
     siteScoped: true,
   },
+];
+
+const SHARED_COLLECTIONS: CollectionConfig[] = [
+  { type: "faq", title: "FAQs", icon: MessageCircle },
 ];
 
 const SITE_CONFIGURATION_SINGLETONS: SingletonConfig[] = [
@@ -191,6 +194,9 @@ export const createSiteStructure = ({
         createIndexedCollectionItem(S, config, siteCode, siteDocumentId),
       ),
       ...secondarySiteCollections.map((config) =>
+        createCollectionListItem(S, config, siteDocumentId),
+      ),
+      ...SHARED_COLLECTIONS.map((config) =>
         createCollectionListItem(S, config, siteDocumentId),
       ),
       S.divider(),

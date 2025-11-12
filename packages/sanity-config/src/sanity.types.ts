@@ -1327,12 +1327,6 @@ export type Faq = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
   title: string;
   richText?: RichText;
 };

@@ -2,7 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
 import { parseRichTextToString } from "../../utils/helper";
-import { richTextField, siteReferenceField } from "../common";
+import { richTextField } from "../common";
 
 export const faq = defineType({
   name: "faq",
@@ -12,7 +12,6 @@ export const faq = defineType({
     "A simple question and answer pair that helps visitors find information quickly. Think of it like writing down the questions customers often ask, along with clear answers.",
   icon: MessageCircle,
   fields: [
-    siteReferenceField,
     defineField({
       name: "title",
       title: "Question",
