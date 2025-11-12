@@ -38,7 +38,8 @@ npm-debug.log*
 # Sanity
 .sanity
 /apps/studio/exports
-/apps/studio/backups
+/apps/studio-dgf/backups/*
+/apps/studio-lfd/backups/*
 
 # playwright
 .playwright-mcp
