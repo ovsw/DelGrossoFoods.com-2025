@@ -1,5 +1,5 @@
 "use client";
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 
 import { SaucesClient } from "@/components/features/catalog/sauces-client";
 import type { SauceQueryState } from "@/lib/sauces/url";
@@ -12,10 +12,12 @@ type Props = {
 
 export function SaucesCatalogSection({ items, initialState }: Props) {
   return (
-    <Section spacingTop="default" spacingBottom="large">
-      <div className="container mx-auto px-4 md:px-6">
-        <SaucesClient items={items} initialState={initialState} />
-      </div>
-    </Section>
+    <SectionShell
+      spacingTop="default"
+      spacingBottom="large"
+      background="transparent"
+    >
+      <SaucesClient items={items} initialState={initialState} />
+    </SectionShell>
   );
 }

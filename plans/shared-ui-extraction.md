@@ -44,7 +44,11 @@
 - [x] Design shared `NavbarShell`, `FooterShell`, and `SectionShell` components that own spacing, responsive grids, and token usage.
 - [x] Create site-specific wrappers that fetch GROQ data, pass logos/menus/social links, and attach `data-sanity` attributes per field.
 - [x] Validate keyboard/focus behavior and aria labels remain unchanged after swapping in the shells.
-- [ ] Begin migrating existing page sections to `SectionShell` (or app-specific wrappers) so spacing/background logic is centralized.
+- [x] Begin migrating existing page sections to `SectionShell` (or app-specific wrappers) so spacing/background logic is centralized.
+  - `ProductSummarySection`, `ProductsCatalogSection`, `RecipesCatalogSection`, and `SaucesCatalogSection` now use `SectionShell` in both apps (directly on web-dgf, matching implementations on web-lfd).
+  - Added `SlideshowHeroSectionShell` wrapper for both brands and refactored each home slideshow section to consume it, preserving aria attributes via `rootProps`.
+  - `PageHeadingSection` in web-dgf and web-lfd now ride on `SectionShell` to centralize spacing/background seams while keeping Sanity metadata intact.
+  - `ProductHeroSection` now uses `SectionShell` in both apps, keeping the countertop background + image layout while delegating spacing/overflow control to the shell.
 
 ### 6. Pagebuilder Blocks
 

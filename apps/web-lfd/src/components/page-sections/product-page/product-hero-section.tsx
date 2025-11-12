@@ -1,4 +1,4 @@
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -26,14 +26,15 @@ export function ProductHeroSection({ product }: ProductHeroSectionProps) {
   const altText = productName || "Product Image";
 
   return (
-    <Section
+    <SectionShell
       spacingTop="page-top"
       spacingBottom="default"
-      fullBleed
+      background="transparent"
+      containerWidth="full"
       className="relative isolate overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600.jpg')] bg-cover bg-bottom"
+      innerClassName="relative w-full px-0"
     >
-      <div className="absolute inset-0 bg-white/10" aria-hidden="true" />
-      <div className="container relative mx-auto max-w-6xl px-4 md:px-0">
+      <div className="relative mx-auto max-w-6xl px-4 md:px-0">
         <div className="flex min-h-[360px] items-center justify-center">
           <SanityImage
             image={image}
@@ -43,6 +44,6 @@ export function ProductHeroSection({ product }: ProductHeroSectionProps) {
           />
         </div>
       </div>
-    </Section>
+    </SectionShell>
   );
 }

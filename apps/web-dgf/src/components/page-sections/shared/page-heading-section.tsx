@@ -1,4 +1,4 @@
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { cn } from "@workspace/ui/lib/utils";
 import { createDataAttribute, stegaClean } from "next-sanity";
 
@@ -70,11 +70,13 @@ export function PageHeadingSection({
   }
 
   return (
-    <Section
+    <SectionShell
       spacingTop="page-top"
       spacingBottom="default"
-      fullBleed
-      className="relative isolate overflow-hidden bg-brand-green"
+      background="brand"
+      className="overflow-hidden"
+      innerClassName="max-w-7xl pb-14 pt-6 lg:px-8"
+      allowOverflow={false}
     >
       <div className="absolute inset-0 -z-10">
         {heroBackgroundImage ? (
@@ -118,41 +120,39 @@ export function PageHeadingSection({
         />
       </div> */}
 
-      <div className="mx-auto max-w-7xl px-6 pb-14 pt-6 lg:px-8">
-        <div
-          className={cn(
-            "mx-auto max-w-2xl",
-            justification === "center"
-              ? "text-center lg:mx-auto"
-              : "text-start lg:mx-0",
-          )}
-        >
-          {heroEyebrow ? (
-            <p
-              className="text-sm font-semibold uppercase tracking-[0.2em] text-th-light-100/80"
-              data-sanity={eyebrowAttribute ?? undefined}
-            >
-              {heroEyebrow}
-            </p>
-          ) : null}
-          {heroTitle ? (
-            <h1
-              className="mt-4 text-5xl font-semibold tracking-tight text-th-light-100 sm:text-7xl"
-              data-sanity={titleAttribute ?? undefined}
-            >
-              {heroTitle}
-            </h1>
-          ) : null}
-          {heroDescription ? (
-            <p
-              className="mt-8 text-lg font-medium text-pretty text-th-light-100/80 sm:text-xl sm:leading-8"
-              data-sanity={descriptionAttribute ?? undefined}
-            >
-              {heroDescription}
-            </p>
-          ) : null}
-        </div>
+      <div
+        className={cn(
+          "mx-auto max-w-2xl",
+          justification === "center"
+            ? "text-center lg:mx-auto"
+            : "text-start lg:mx-0",
+        )}
+      >
+        {heroEyebrow ? (
+          <p
+            className="text-sm font-semibold uppercase tracking-[0.2em] text-th-light-100/80"
+            data-sanity={eyebrowAttribute ?? undefined}
+          >
+            {heroEyebrow}
+          </p>
+        ) : null}
+        {heroTitle ? (
+          <h1
+            className="mt-4 text-5xl font-semibold tracking-tight text-th-light-100 sm:text-7xl"
+            data-sanity={titleAttribute ?? undefined}
+          >
+            {heroTitle}
+          </h1>
+        ) : null}
+        {heroDescription ? (
+          <p
+            className="mt-8 text-lg font-medium text-pretty text-th-light-100/80 sm:text-xl sm:leading-8"
+            data-sanity={descriptionAttribute ?? undefined}
+          >
+            {heroDescription}
+          </p>
+        ) : null}
       </div>
-    </Section>
+    </SectionShell>
   );
 }

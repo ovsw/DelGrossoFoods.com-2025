@@ -1,5 +1,5 @@
 "use client";
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 
 import { RecipesClient } from "@/components/features/catalog/recipes-client";
 import type { RecipeQueryState } from "@/lib/recipes/url";
@@ -17,14 +17,16 @@ export function RecipesCatalogSection({
   categories,
 }: Props) {
   return (
-    <Section spacingTop="default" spacingBottom="large">
-      <div className="container mx-auto px-4 md:px-6">
-        <RecipesClient
-          items={items}
-          initialState={initialState}
-          categories={categories}
-        />
-      </div>
-    </Section>
+    <SectionShell
+      spacingTop="default"
+      spacingBottom="large"
+      background="transparent"
+    >
+      <RecipesClient
+        items={items}
+        initialState={initialState}
+        categories={categories}
+      />
+    </SectionShell>
   );
 }
