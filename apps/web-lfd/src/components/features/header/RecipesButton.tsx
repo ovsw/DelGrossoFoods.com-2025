@@ -10,6 +10,7 @@ type RecipesButtonProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   size?: "default" | "sm" | "lg" | "icon";
   href?: string;
   className?: string;
+  surface?: "default" | "onDark";
 };
 
 export function RecipesButton({
@@ -17,11 +18,21 @@ export function RecipesButton({
   size = "sm",
   href = "/recipes",
   className,
+  surface = "onDark",
   children,
   ...props
 }: RecipesButtonProps): JSX.Element {
   return (
-    <Button asChild variant={variant} size={size} className={cn(className)}>
+    <Button
+      asChild
+      variant={variant}
+      size={size}
+      surface={surface}
+      className={cn(
+        "border border-brand-red bg-brand-red text-brand-red-text font-semibold hover:bg-brand-red/90 focus-visible:border-brand-red focus-visible:ring-brand-red/40",
+        className,
+      )}
+    >
       <Link href={href} aria-label="Browse recipes" {...props}>
         {children ?? "Recipes"}
       </Link>

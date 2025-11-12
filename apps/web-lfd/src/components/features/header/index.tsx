@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@workspace/ui/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import LogoSvg from "@/components/elements/logo";
 import { useScrollVisibility } from "@/hooks/use-scroll-visibility";
 
 import { CartButton } from "./CartButton";
@@ -46,7 +46,7 @@ export function Header() {
       <div
         role="banner"
         className={cn(
-          "nav_wrap fixed top-0 right-0 left-0 z-50 transform px-4 sm:px-6 lg:px-8",
+          "nav_wrap fixed top-0 right-0 left-0 z-50 transform px-4 text-th-light-100 sm:px-6 lg:px-8",
           suppressTransitions ? "transition-none duration-0" : "transition-all",
           isVisible
             ? "translate-y-0 opacity-100 duration-300 ease-out"
@@ -55,13 +55,20 @@ export function Header() {
       >
         <nav
           aria-label="Main navigation"
-          className="nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg  bg-th-light-100 p-1 [box-shadow:var(--shadow-nav)]"
+          className="nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg border border-white/15 bg-black/85 p-1 text-th-light-100 [box-shadow:var(--shadow-nav)]"
         >
-          <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
+          <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-brand-yellow/60 bg-black px-4 sm:px-6 lg:px-8">
             {/* Logo */}
             <div className="flex-shrink-1">
               <Link href="/">
-                <LogoSvg className="h-7" />
+                <Image
+                  src="/images/logos/lfd-logo-light-short-p-500.png"
+                  alt="La Famiglia DelGrosso logo"
+                  width={500}
+                  height={96}
+                  className="h-7 w-auto"
+                  priority
+                />
               </Link>
             </div>
 
@@ -79,7 +86,6 @@ export function Header() {
               {/* Mobile Recipes Button */}
               <div>
                 <RecipesButton
-                  variant="accent"
                   size="sm"
                   className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
                   aria-label="Browse recipes"
@@ -90,7 +96,7 @@ export function Header() {
               </div>
               {/* Mobile Cart Button */}
               <div>
-                <CartButton variant="outline" />
+                <CartButton />
               </div>
 
               {/* Mobile menu button */}

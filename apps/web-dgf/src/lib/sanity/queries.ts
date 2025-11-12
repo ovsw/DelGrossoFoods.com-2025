@@ -230,6 +230,7 @@ export const dgfHistoryPageQuery = defineQuery(`
     "slug": slug.current,
     timeline{
       markers[]{
+        _key,
         heading,
         subtitle,
         content[]{

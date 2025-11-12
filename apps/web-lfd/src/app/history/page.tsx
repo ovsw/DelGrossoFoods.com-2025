@@ -2,11 +2,12 @@ import { sanityFetch } from "@workspace/sanity-config/live";
 import { getSiteParams } from "@workspace/sanity-config/site";
 import type { LfdHistoryPageQueryResult } from "@workspace/sanity-config/types";
 import type { Metadata } from "next";
-import { stegaClean } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { TimelineSection } from "@/components/page-sections/shared/timeline-section";
+import { dataset, projectId, studioUrl } from "@/config";
 import { lfdHistoryPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
@@ -43,22 +44,43 @@ export default async function HistoryPage() {
 
   const data = (historyData?.data ?? null) as LfdHistoryPageQueryResult | null;
 
+  const getTimelineImageAttribute = (fieldPath: string) =>
+    data?._id && data?._type
+      ? createDataAttribute({
+          id: data._id,
+          type: data._type,
+          path: fieldPath,
+          baseUrl: studioUrl,
+          projectId,
+          dataset,
+        }).toString()
+      : null;
+
   // Transform Sanity data to match TimelineSection expected format
   const timelineData =
-    data?.timeline?.markers?.map((marker) => ({
-      title: marker.heading || "",
-      subtitle: marker.subtitle || undefined,
-      content: marker.content ? <RichText richText={marker.content} /> : null,
-      image: marker.image?.id
-        ? {
-            id: marker.image.id,
-            alt: "",
-            hotspot: marker.image.hotspot ?? null,
-            crop: marker.image.crop ?? null,
-            preview: marker.image.preview ?? null,
-          }
-        : undefined,
-    })) || [];
+    data?.timeline?.markers?.map((marker) => {
+      const imagePath = marker._key
+        ? getTimelineImageAttribute(
+            `timeline.markers[_key=="${marker._key}"].image`,
+          )
+        : null;
+
+      return {
+        title: marker.heading || "",
+        subtitle: marker.subtitle || undefined,
+        content: marker.content ? <RichText richText={marker.content} /> : null,
+        image: marker.image?.id
+          ? {
+              id: marker.image.id,
+              alt: "",
+              hotspot: marker.image.hotspot ?? null,
+              crop: marker.image.crop ?? null,
+              preview: marker.image.preview ?? null,
+              dataAttribute: imagePath,
+            }
+          : undefined,
+      };
+    }) || [];
 
   // Don't render if no data is available
   if (!data) {

@@ -78,10 +78,7 @@ export function PageHeadingSection({
       innerClassName="max-w-7xl pb-14 pt-6 lg:px-8"
       allowOverflow={false}
     >
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden="true"
-      >
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         {heroBackgroundImage ? (
           <>
             <SanityImage
@@ -95,7 +92,7 @@ export function PageHeadingSection({
               sizes="100vw"
               data-sanity={backgroundImageAttribute ?? undefined}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/80 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/80 to-transparent" />
           </>
         ) : (
           <div className="absolute inset-0 bg-brand-green" />

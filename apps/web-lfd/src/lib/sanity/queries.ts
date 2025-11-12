@@ -230,6 +230,7 @@ export const lfdHistoryPageQuery = defineQuery(`
     "slug": slug.current,
     timeline{
       markers[]{
+        _key,
         heading,
         subtitle,
         content[]{

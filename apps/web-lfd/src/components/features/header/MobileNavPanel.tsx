@@ -17,16 +17,16 @@ export function MobileNavPanel({
   return (
     <div
       className={cn(
-        "nav_mobile_wrap overflow-hidden lg:hidden bg-light-100 will-change-transform",
+        "nav_mobile_wrap will-change-transform overflow-hidden bg-black text-th-light-100 lg:hidden",
         "transition-all",
         isMobileMenuOpen
-          ? "max-h-[100svh] opacity-100 translate-y-0 duration-300 ease-out"
-          : "max-h-0 opacity-0 -translate-y-2 duration-200 ease-in",
+          ? "max-h-[100svh] translate-y-0 opacity-100 duration-300 ease-out"
+          : "max-h-0 -translate-y-2 opacity-0 duration-200 ease-in",
       )}
     >
       <div className="nav_mobile_contain px-4 py-2">
         {/* Mobile Navigation Links */}
-        <ul className="nav_mobile_layout flex flex-col divide-y divide-th-brown-400/20 border-t ">
+        <ul className="nav_mobile_layout flex flex-col divide-y divide-white/10 border-t border-white/10">
           {navigationLinks.map((link, index) => {
             const isActive =
               currentPath === link.href ||
@@ -36,11 +36,11 @@ export function MobileNavPanel({
                 <Link
                   href={link.href}
                   className={cn(
-                    "block w-full px-3 py-3.5 text-base font-medium text-amber-900",
-                    "transition-colors duration-200 hover:bg-black/5 hover:text-amber-800",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red",
+                    "block w-full px-3 py-3.5 text-base font-medium text-th-light-100",
+                    "transition-colors duration-200 hover:bg-brand-yellow/15 hover:text-brand-yellow",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow",
                     isActive &&
-                      "bg-black/5 text-amber-900 underline underline-offset-4 decoration-amber-800",
+                      "bg-brand-yellow/10 text-brand-yellow underline decoration-brand-yellow/70 underline-offset-4",
                   )}
                   aria-current={isActive ? "page" : undefined}
                   style={{

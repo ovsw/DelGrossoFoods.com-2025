@@ -15,6 +15,7 @@ interface TimelineEntry {
     hotspot?: { x: number; y: number } | null;
     crop?: { top: number; bottom: number; left: number; right: number } | null;
     preview?: string | null;
+    dataAttribute?: string | null;
   } | null;
 }
 
@@ -127,6 +128,7 @@ export const TimelineLayout = ({ data }: TimelineLayoutProps) => {
                     }}
                     alt={item.image.alt || ""}
                     className="w-full max-w-md rounded-lg shadow-md"
+                    data-sanity={item.image.dataAttribute ?? undefined}
                   />
                 </div>
               )}

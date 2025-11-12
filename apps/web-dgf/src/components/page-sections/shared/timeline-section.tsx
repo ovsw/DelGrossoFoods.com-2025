@@ -20,6 +20,7 @@ interface TimelineSectionProps {
         right: number;
       } | null;
       preview?: string | null;
+      dataAttribute?: string | null;
     } | null;
   }>;
   className?: string;

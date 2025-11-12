@@ -15,10 +15,12 @@ export function MobileMenuToggle({
     <div className="lg:hidden">
       <Button
         variant="ghost"
+        surface="onDark"
         size="icon"
         onClick={toggleMobileMenu}
         className={cn(
-          "text-amber-900 hover:bg-amber-100 hover:text-amber-800",
+          "text-brand-yellow hover:bg-brand-yellow/15 hover:text-brand-yellow",
+          "focus-visible:border-brand-yellow focus-visible:ring-brand-yellow/60",
           "transition-colors duration-200",
         )}
         aria-expanded={isMobileMenuOpen}

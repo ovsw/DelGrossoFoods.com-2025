@@ -13,9 +13,9 @@ import {
   YoutubeIcon,
 } from "@workspace/ui/components/social-icons";
 import type { RootProps } from "@workspace/ui/lib/data-attributes";
+import Image from "next/image";
 import Link from "next/link";
 
-import LogoSvg from "@/components/elements/logo";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import {
   lfdFooterQuery,
@@ -322,7 +322,13 @@ export function Footer({ data, settingsData }: FooterProps) {
         aria-label={siteTitle}
         className="block w-[180px] text-brand-yellow"
       >
-        <LogoSvg className="h-auto w-full" />
+        <Image
+          src="/images/logos/lfd-logo-light-short-p-500.png"
+          alt="La Famiglia DelGrosso logo"
+          width={500}
+          height={96}
+          className="h-auto w-full"
+        />
       </Link>
       {addressBlock}
     </div>

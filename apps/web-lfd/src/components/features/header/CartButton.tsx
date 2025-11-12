@@ -11,12 +11,14 @@ import { resolveFoxyConfig } from "@/lib/foxy/config";
 type CartButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "accent";
   size?: "default" | "sm" | "lg" | "icon";
+  surface?: "default" | "onDark";
 };
 
 export function CartButton({
   className,
-  variant = "accent",
+  variant = "outline",
   size = "icon",
+  surface = "onDark",
   ariaLabel,
   ...props
 }: CartButtonProps & { ariaLabel?: string }): JSX.Element {
@@ -29,13 +31,22 @@ export function CartButton({
     ? `https://${foxyConfig.cartDomain}/cart?cart=view`
     : undefined;
 
+  const buttonThemeClasses = cn(
+    "border border-brand-yellow bg-transparent text-brand-yellow hover:bg-brand-yellow/10 focus-visible:border-brand-yellow focus-visible:ring-brand-yellow/40",
+  );
+
   if (href) {
     return (
       <Button
         asChild
         variant={variant}
         size={size}
-        className={cn("relative group cursor-pointer", className)}
+        surface={surface}
+        className={cn(
+          "relative group cursor-pointer",
+          buttonThemeClasses,
+          className,
+        )}
       >
         <a
           href={href}
@@ -56,7 +67,7 @@ export function CartButton({
           <span
             className={cn(
               "absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center",
-              "rounded-full bg-amber-700 px-1 text-[10px] font-semibold leading-none text-white",
+              "rounded-full bg-brand-yellow px-1 text-[10px] font-semibold leading-none text-brand-green",
               "transition-transform duration-200 ease-out motion-reduce:transition-none",
               "lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:scale-105",
             )}
@@ -84,7 +95,12 @@ export function CartButton({
       type="button"
       variant={variant}
       size={size}
-      className={cn("relative group cursor-pointer", className)}
+      surface={surface}
+      className={cn(
+        "relative group cursor-pointer",
+        buttonThemeClasses,
+        className,
+      )}
       aria-label={ariaLabel ?? "Open cart"}
       onClick={() =>
         console.error(
@@ -107,7 +123,7 @@ export function CartButton({
       <span
         className={cn(
           "absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center",
-          "rounded-full bg-amber-700 px-1 text-[10px] font-semibold leading-none text-white",
+          "rounded-full bg-brand-yellow px-1 text-[10px] font-semibold leading-none text-brand-green",
           "transition-transform duration-200 ease-out motion-reduce:transition-none",
           "lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:scale-105",
         )}
