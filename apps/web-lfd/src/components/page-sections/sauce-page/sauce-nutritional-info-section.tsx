@@ -2,7 +2,7 @@ import { urlFor } from "@workspace/sanity-config/client";
 import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Button } from "@workspace/ui/components/button";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
@@ -167,104 +167,102 @@ export function SauceNutritionalInfoSection({
     : "";
 
   return (
-    <Section
+    <SectionShell
       spacingTop="large"
       spacingBottom="default"
+      background="transparent"
+      innerClassName="container max-w-[64rem] mx-auto px-4 md:px-6"
       aria-labelledby="nutritional-info-heading"
     >
-      <div className="container max-w-[64rem] mx-auto px-4 md:px-6">
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <div className="grid grid-rows-[auto_1fr_auto] gap-6 items-center justify-items-center text-center lg:items-start lg:justify-items-start lg:text-left">
-            <Eyebrow text="Nutrition Facts" />
+      <div className="grid items-start gap-8 lg:grid-cols-2">
+        <div className="grid grid-rows-[auto_1fr_auto] gap-6 items-center justify-items-center text-center lg:items-start lg:justify-items-start lg:text-left">
+          <Eyebrow text="Nutrition Facts" />
 
-            <div className="grid w-full max-w-xl gap-8 text-left">
-              <div className="grid gap-4 text-center lg:text-left">
-                <h2
-                  id="nutritional-info-heading"
-                  className="text-4xl font-semibold text-brand-green lg:text-5xl"
-                >
-                  Nutritional Info
-                </h2>
-              </div>
-
-              <div className="grid gap-6">
-                {servingsSummaryText || servingDescriptionText ? (
-                  <div className="grid gap-2 text-left">
-                    <h3 className="text-xl font-semibold text-foreground">
-                      Serving Size
-                    </h3>
-                    <div className="text-sm text-muted-foreground">
-                      {servingsSummaryText ? (
-                        <p>{servingsSummaryText}</p>
-                      ) : null}
-                      {servingDescriptionText ? (
-                        <p>Serving size {servingDescriptionText}</p>
-                      ) : null}
-                    </div>
-                  </div>
-                ) : null}
-
-                {ingredients.length > 0 ? (
-                  <div className="grid gap-2 text-left">
-                    <h3 className="text-xl font-semibold text-foreground">
-                      Ingredients
-                    </h3>
-                    <ul className="text-sm text-muted-foreground">
-                      {ingredients.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {allergens.length > 0 ? (
-                  <div className="grid gap-2 text-left">
-                    <h3 className="text-xl font-semibold text-foreground">
-                      Allergens
-                    </h3>
-                    <ul className="text-sm text-muted-foreground">
-                      {allergens.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {/* Daily value guidance moved into NutritionFactsPanel footer */}
-              </div>
+          <div className="grid w-full max-w-xl gap-8 text-left">
+            <div className="grid gap-4 text-center lg:text-left">
+              <h2
+                id="nutritional-info-heading"
+                className="text-4xl font-semibold text-brand-green lg:text-5xl"
+              >
+                Nutritional Info
+              </h2>
             </div>
 
-            {labelImageUrl ? (
-              <Button
-                asChild
-                variant="outline"
-                className="w-full gap-2 sm:w-auto"
-                aria-label={labelButtonAriaLabel}
-              >
-                <Link
-                  href={labelImageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={labelAlt || labelButtonAriaLabel}
-                >
-                  <Search className="size-4" aria-hidden="true" />
-                  <span>View Full Label</span>
-                </Link>
-              </Button>
-            ) : null}
+            <div className="grid gap-6">
+              {servingsSummaryText || servingDescriptionText ? (
+                <div className="grid gap-2 text-left">
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Serving Size
+                  </h3>
+                  <div className="text-sm text-muted-foreground">
+                    {servingsSummaryText ? <p>{servingsSummaryText}</p> : null}
+                    {servingDescriptionText ? (
+                      <p>Serving size {servingDescriptionText}</p>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              {ingredients.length > 0 ? (
+                <div className="grid gap-2 text-left">
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Ingredients
+                  </h3>
+                  <ul className="text-sm text-muted-foreground">
+                    {ingredients.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {allergens.length > 0 ? (
+                <div className="grid gap-2 text-left">
+                  <h3 className="text-xl font-semibold text-foreground">
+                    Allergens
+                  </h3>
+                  <ul className="text-sm text-muted-foreground">
+                    {allergens.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {/* Daily value guidance moved into NutritionFactsPanel footer */}
+            </div>
           </div>
 
-          <div className="h-full w-full self-center">
-            <NutritionFactsPanel
-              servingsPerContainerText={servingsSummaryText}
-              servingDescriptionText={servingDescriptionText}
-              calories={calories}
-              rows={nutritionRows}
-              dailyValueNoteText={dailyValueNote}
-            />
-          </div>
+          {labelImageUrl ? (
+            <Button
+              asChild
+              variant="outline"
+              className="w-full gap-2 sm:w-auto"
+              aria-label={labelButtonAriaLabel}
+            >
+              <Link
+                href={labelImageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={labelAlt || labelButtonAriaLabel}
+              >
+                <Search className="size-4" aria-hidden="true" />
+                <span>View Full Label</span>
+              </Link>
+            </Button>
+          ) : null}
+        </div>
+
+        <div className="h-full w-full self-center">
+          <NutritionFactsPanel
+            servingsPerContainerText={servingsSummaryText}
+            servingDescriptionText={servingDescriptionText}
+            calories={calories}
+            rows={nutritionRows}
+            dailyValueNoteText={dailyValueNote}
+          />
         </div>
       </div>
-    </Section>
+    </SectionShell>
   );
 }

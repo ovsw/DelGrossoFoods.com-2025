@@ -25,14 +25,21 @@ const CONTAINER_WIDTH_CLASSES = {
   full: "w-full",
 } as const;
 
+const INNER_PADDING_CLASSES = {
+  default: "px-4 sm:px-6 lg:px-8",
+  none: "",
+} as const;
+
 export type SectionShellBackground = keyof typeof BACKGROUND_CLASSES;
 export type SectionShellDivider = keyof typeof DIVIDER_CLASSES;
 export type SectionShellContainerWidth = keyof typeof CONTAINER_WIDTH_CLASSES;
+export type SectionShellInnerPadding = keyof typeof INNER_PADDING_CLASSES;
 
 export interface SectionShellProps extends SectionProps {
   readonly background?: SectionShellBackground;
   readonly divider?: SectionShellDivider;
   readonly containerWidth?: SectionShellContainerWidth;
+  readonly innerPadding?: SectionShellInnerPadding;
   readonly innerProps?: RootProps<HTMLDivElement>;
   readonly innerClassName?: string;
   readonly allowOverflow?: boolean;
@@ -49,6 +56,7 @@ export function SectionShell({
   background = "surface",
   divider = "none",
   containerWidth = "default",
+  innerPadding = "default",
   innerProps,
   innerClassName,
   allowOverflow = false,
@@ -81,7 +89,7 @@ export function SectionShell({
         className={cn(
           CONTAINER_WIDTH_CLASSES[containerWidth],
           DIVIDER_CLASSES[divider],
-          "px-4 sm:px-6 lg:px-8",
+          INNER_PADDING_CLASSES[innerPadding],
           innerClassNameFromProps,
           innerClassName,
         )}

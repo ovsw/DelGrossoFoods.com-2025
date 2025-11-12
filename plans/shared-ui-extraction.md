@@ -49,6 +49,9 @@
   - Added `SlideshowHeroSectionShell` wrapper for both brands and refactored each home slideshow section to consume it, preserving aria attributes via `rootProps`.
   - `PageHeadingSection` in web-dgf and web-lfd now ride on `SectionShell` to centralize spacing/background seams while keeping Sanity metadata intact.
   - `ProductHeroSection` now uses `SectionShell` in both apps, keeping the countertop background + image layout while delegating spacing/overflow control to the shell.
+  - `RecipeHeroSection` (image + badges overlay) and `SauceHeroSection` (CTA hero) both run through `SectionShell` in each app so hero spacing + backgrounds are centralized while preserving overlays and Sanity metadata hooks.
+  - `RecipeDetailsSection` (tabs + sticky info) and `SauceNutritionalInfoSection` (nutrition panel) now use `SectionShell` across both apps, keeping sticky/grid behavior intact while removing bespoke container spacing.
+  - Shared sections (`SharedImageHeroSection`, `TimelineSection`) now render via `SectionShell`, so any page that reuses them inherits consistent spacing/background seams automatically.
 
 ### 6. Pagebuilder Blocks
 

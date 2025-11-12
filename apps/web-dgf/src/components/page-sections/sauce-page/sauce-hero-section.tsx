@@ -1,7 +1,7 @@
 import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { cn } from "@workspace/ui/lib/utils";
 import { BookOpen, ShoppingCart } from "lucide-react";
 import { stegaClean } from "next-sanity";
@@ -80,63 +80,63 @@ export function SauceHeroSection({
   const altText = image?.alt || `${cleanedName} sauce jar`;
 
   return (
-    <Section
+    <SectionShell
       spacingTop="page-top"
       spacingBottom="default"
-      fullBleed
+      background="transparent"
+      containerWidth="full"
       className={cn("relative", backgroundImage && "bg-cover bg-bottom")}
+      innerClassName="relative mx-auto max-w-6xl px-4 lg:pl-18"
       style={{ backgroundImage: `url('${backgroundImage}')` }}
     >
-      <div className="container  relative mx-auto max-w-6xl px-4 lg:pl-18">
-        <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
-          {/* Text stack: pure document flow with margins for grouping */}
-          <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0">
-            {/* Identity: eyebrow + title (tight proximity via margin) */}
-            <Eyebrow
-              text={lineSourceLabel}
-              className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
-            />
-            <h1
-              className={cn(
-                "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
-                useSoftTextShadow
-                  ? "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.25),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]"
-                  : "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
-              )}
-              style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
-            >
-              {sauceName}
-            </h1>
+      <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+        {/* Text stack: pure document flow with margins for grouping */}
+        <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0">
+          {/* Identity: eyebrow + title (tight proximity via margin) */}
+          <Eyebrow
+            text={lineSourceLabel}
+            className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
+          />
+          <h1
+            className={cn(
+              "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
+              useSoftTextShadow
+                ? "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.25),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]"
+                : "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
+            )}
+            style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
+          >
+            {sauceName}
+          </h1>
 
-            {/* Support: description (moderate from title) */}
-            <RichText
-              richText={sauce.description}
-              className="mt-5 sm:mt-6 lg:mt-7  italic text-foreground/80 md:text-lg max-w-[50ch]"
-            />
+          {/* Support: description (moderate from title) */}
+          <RichText
+            richText={sauce.description}
+            className="mt-5 sm:mt-6 lg:mt-7  italic text-foreground/80 md:text-lg max-w-[50ch]"
+          />
 
-            {/* Actions: CTAs (largest from copy) */}
-            <SanityButtons
-              buttons={buttons}
-              buttonClassName="w-full min-[350px]:w-auto"
-              className="mt-7 justify-center lg:justify-start flex-wrap min-[350px]:flex-row"
-              buttonVariants={["default", "secondary"]}
+          {/* Actions: CTAs (largest from copy) */}
+          <SanityButtons
+            buttons={buttons}
+            buttonClassName="w-full min-[350px]:w-auto"
+            className="mt-7 justify-center lg:justify-start flex-wrap min-[350px]:flex-row"
+            buttonVariants={["default", "secondary"]}
+          />
+        </div>
+
+        {image?.id ? (
+          <div className="flex w-full justify-center">
+            <SanityImage
+              image={image}
+              alt={altText}
+              width={420}
+              height={560}
+              respectSanityCrop={false}
+              className="max-h-118 w-full object-contain"
             />
           </div>
-
-          {image?.id ? (
-            <div className="flex w-full justify-center">
-              <SanityImage
-                image={image}
-                alt={altText}
-                width={420}
-                height={560}
-                respectSanityCrop={false}
-                className="max-h-118 w-full object-contain"
-              />
-            </div>
-          ) : null}
-        </div>
+        ) : null}
       </div>
-    </Section>
+    </SectionShell>
   );
 }

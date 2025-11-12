@@ -1,6 +1,6 @@
 "use client";
 
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 
 import { TimelineLayout } from "@/components/layouts/timeline-layout";
 
@@ -35,10 +35,14 @@ export function TimelineSection({
   }
 
   return (
-    <Section spacingTop="small" spacingBottom="large" className={className}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:mt-16">
-        <TimelineLayout data={timelineData} />
-      </div>
-    </Section>
+    <SectionShell
+      spacingTop="small"
+      spacingBottom="large"
+      background="transparent"
+      className={className}
+      innerClassName="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:mt-16"
+    >
+      <TimelineLayout data={timelineData} />
+    </SectionShell>
   );
 }

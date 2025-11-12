@@ -74,24 +74,32 @@ export function PageHeadingSection({
       spacingTop="page-top"
       spacingBottom="default"
       background="brand"
-      className="overflow-hidden"
+      className="overflow-hidden isolate"
       innerClassName="max-w-7xl pb-14 pt-6 lg:px-8"
       allowOverflow={false}
     >
-      <div className="absolute inset-0 -z-10">
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden="true"
+      >
         {heroBackgroundImage ? (
-          <SanityImage
-            image={heroBackgroundImage}
-            alt={cleanedBackgroundAlt}
-            loading="eager"
-            width={600}
-            className="size-full object-cover opacity-10"
-            decoding="async"
-            fetchPriority="high"
-            sizes="100vw"
-            data-sanity={backgroundImageAttribute ?? undefined}
-          />
-        ) : null}
+          <>
+            <SanityImage
+              image={heroBackgroundImage}
+              alt={cleanedBackgroundAlt}
+              loading="eager"
+              width={600}
+              className="size-full object-cover opacity-50"
+              decoding="async"
+              fetchPriority="high"
+              sizes="100vw"
+              data-sanity={backgroundImageAttribute ?? undefined}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/80 to-transparent" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-brand-green" />
+        )}
       </div>
       {/*
       <div
@@ -122,7 +130,7 @@ export function PageHeadingSection({
 
       <div
         className={cn(
-          "mx-auto max-w-2xl",
+          "relative z-10 mx-auto max-w-2xl",
           justification === "center"
             ? "text-center lg:mx-auto"
             : "text-start lg:mx-0",

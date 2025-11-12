@@ -1,5 +1,6 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { stegaClean } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
@@ -84,7 +85,15 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
   const altText = image?.alt || `${stegaClean(recipeName)} recipe`;
 
   return (
-    <div className="relative">
+    <SectionShell
+      spacingTop="none"
+      spacingBottom="default"
+      background="transparent"
+      containerWidth="full"
+      className="relative isolate"
+      innerPadding="none"
+      innerClassName="relative w-full"
+    >
       <div className="relative max-h-[85svh] min-h-[80vh] w-full overflow-hidden bg-muted">
         {image?.id ? (
           <SanityImage
@@ -126,6 +135,6 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
           )}
         </div>
       </div>
-    </div>
+    </SectionShell>
   );
 }

@@ -1,4 +1,4 @@
-import { Section } from "@workspace/ui/components/section";
+import { SectionShell } from "@workspace/ui/components/section-shell";
 import { cn } from "@workspace/ui/lib/utils";
 import type { JSX } from "react";
 
@@ -16,28 +16,30 @@ export function SharedImageHeroSection({
   overlayTone = "dark",
 }: SharedImageHeroSectionProps): JSX.Element {
   return (
-    <Section
+    <SectionShell
       spacingTop="page-top"
       spacingBottom="default"
-      fullBleed
+      background="transparent"
+      containerWidth="full"
       className={cn("relative isolate overflow-hidden")}
-      style={{ backgroundImage: `url('${backgroundSrc}')` }}
+      innerClassName="relative mx-auto max-w-6xl px-4 md:px-0"
     >
-      <div className="absolute inset-0 bg-cover bg-center" aria-hidden="true" />
-      {overlayTone === "dark" ? (
-        <div className="absolute inset-0 bg-gradient-to-t from-th-dark-900/70 via-th-dark-900/30 to-transparent" />
-      ) : null}
-
-      <div className="container relative mx-auto max-w-6xl px-4 md:px-0">
-        <div className="flex flex-col items-center gap-4 py-8 text-center lg:py-12">
-          <h1 className="text-4xl font-bold md:text-6xl">{title}</h1>
-          {subtitle ? (
-            <p className="text-base text-foreground/80 md:text-lg">
-              {subtitle}
-            </p>
-          ) : null}
-        </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${backgroundSrc}')` }}
+      >
+        {overlayTone === "dark" ? (
+          <div className="absolute inset-0 bg-gradient-to-t from-th-dark-900/80 via-th-dark-900/50 to-transparent" />
+        ) : null}
       </div>
-    </Section>
+
+      <div className="relative z-10 flex flex-col items-center gap-4 py-8 text-center lg:py-12">
+        <h1 className="text-4xl font-bold md:text-6xl">{title}</h1>
+        {subtitle ? (
+          <p className="text-base text-foreground/80 md:text-lg">{subtitle}</p>
+        ) : null}
+      </div>
+    </SectionShell>
   );
 }
