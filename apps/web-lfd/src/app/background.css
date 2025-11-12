@@ -1,8 +1,18 @@
 /* Site-specific background for web app (fixed to viewport, iOS-friendly) */
 html {
   background-color: var(--color-th-brown-400);
+  background-image: url("/images/bg/lfd-page-contentBg_square.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  background-attachment: fixed;
 }
 
+body {
+  background-color: transparent;
+}
+
+/* Previous background preserved for easy toggling:
 body {
   background-image:
     url("/images/bg/noise-red.svg"),
@@ -18,3 +28,4 @@ body {
   background-size: auto, auto;
   background-attachment: fixed, fixed;
 }
+*/
