@@ -46,11 +46,12 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
     hasBlocks(recipe.lfdNotes) ||
     (recipe.lfdSauces?.length ?? 0) > 0;
 
-  const available: VariantKey[] = hasPremium
-    ? ["premium"]
-    : hasOriginal
-      ? ["original"]
-      : ["premium"];
+  const available: VariantKey[] =
+    hasOriginal && hasPremium
+      ? ["original", "premium"]
+      : hasOriginal
+        ? ["original"]
+        : ["premium"];
 
   const [variant, setVariant] = useVariantState(available);
 
@@ -67,6 +68,21 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
     available.includes("original") && originalSauces.length > 0;
   const showPremiumSauces =
     available.includes("premium") && premiumSauces.length > 0;
+
+  const documentId = recipe._id ?? null;
+  const documentType = recipe._type ?? null;
+  const variantFieldPaths = {
+    original: {
+      ingredients: "dgfIngredients",
+      directions: "dgfDirections",
+      notes: "dgfNotes",
+    },
+    premium: {
+      ingredients: "lfdIngredients",
+      directions: "lfdDirections",
+      notes: "lfdNotes",
+    },
+  } as const;
 
   // We intentionally preserve stega metadata in visible rich text below.
   const video = recipe.video;
@@ -147,6 +163,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 <TabsContent
                   value="original"
                   lazyMount
+                  forceMount
                   className="rounded-md bg-th-light-100 p-6"
                   data-html="c-recipe-tabs-content-original"
                 >
@@ -154,11 +171,15 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                     ingredients={recipe.dgfIngredients}
                     directions={recipe.dgfDirections}
                     notes={recipe.dgfNotes}
+                    documentId={documentId}
+                    documentType={documentType}
+                    fieldPaths={variantFieldPaths.original}
                   />
                 </TabsContent>
                 <TabsContent
                   value="premium"
                   lazyMount
+                  forceMount
                   className="rounded-md bg-th-light-100 p-6"
                   data-html="c-recipe-tabs-content-premium"
                 >
@@ -166,6 +187,9 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                     ingredients={recipe.lfdIngredients}
                     directions={recipe.lfdDirections}
                     notes={recipe.lfdNotes}
+                    documentId={documentId}
+                    documentType={documentType}
+                    fieldPaths={variantFieldPaths.premium}
                   />
                 </TabsContent>
               </div>
@@ -188,6 +212,13 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 }
                 notes={
                   available[0] === "premium" ? recipe.lfdNotes : recipe.dgfNotes
+                }
+                documentId={documentId}
+                documentType={documentType}
+                fieldPaths={
+                  available[0] === "premium"
+                    ? variantFieldPaths.premium
+                    : variantFieldPaths.original
                 }
               />
             </div>
@@ -241,7 +272,10 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                       />
                     ) : null}
                     {showPremiumSauces ? (
-                      <SauceList items={premiumSauces} />
+                      <SauceList
+                        title="La Famiglia DelGrosso sauces:"
+                        items={premiumSauces}
+                      />
                     ) : null}
                   </dd>
                 </div>

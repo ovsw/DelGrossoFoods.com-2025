@@ -5,6 +5,10 @@ import { announce } from "@/lib/a11y/announce";
 
 type VariantKey = "original" | "premium";
 
+const isPresentationRoute = () =>
+  typeof window !== "undefined" &&
+  window.location.pathname.startsWith("/presentation");
+
 export function useVariantState(available: VariantKey[]) {
   // Guard against empty available array to prevent crashes
   if (available.length === 0) {
@@ -37,9 +41,11 @@ export function useVariantState(available: VariantKey[]) {
   const setAndSync = React.useCallback(
     (next: VariantKey) => {
       setValue(next);
-      const sp = new URLSearchParams(search.toString());
-      sp.set("line", next === "premium" ? "LaFamigliaDelGrosso" : "original");
-      router.replace(`${pathname}?${sp.toString()}`, { scroll: false });
+      if (!isPresentationRoute()) {
+        const sp = new URLSearchParams(search.toString());
+        sp.set("line", next === "premium" ? "LaFamigliaDelGrosso" : "original");
+        router.replace(`${pathname}?${sp.toString()}`, { scroll: false });
+      }
       const label =
         next === "premium" ? "La Famiglia version" : "Original version";
       announce(`Switched to ${label}.`);
