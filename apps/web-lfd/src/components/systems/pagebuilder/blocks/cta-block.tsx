@@ -12,13 +12,33 @@ import { resolveSectionSpacing } from "../utils/section-spacing";
 
 export type CTABlockProps = PageBuilderBlockProps<"cta">;
 
-const CTA_SURFACE_CONFIG = {
-  default: { background: "bg-brand-green", isDark: true },
-  red: { background: "bg-th-red-600", isDark: true },
-  green: { background: "bg-th-green-600", isDark: true },
-  black: { background: "bg-th-dark-900", isDark: true },
-  none: { background: undefined, isDark: false },
+const BRAND_YELLOW_SURFACE = {
+  background: "bg-brand-yellow",
+  isDark: false,
+  contentColor: "text-brand-yellow-text",
+  headingColor: "text-brand-yellow-text",
 } as const;
+
+const CTA_SURFACE_CONFIG = {
+  default: BRAND_YELLOW_SURFACE,
+  red: BRAND_YELLOW_SURFACE,
+  green: BRAND_YELLOW_SURFACE,
+  black: BRAND_YELLOW_SURFACE,
+  none: {
+    background: undefined,
+    isDark: false,
+    contentColor: undefined,
+    headingColor: "text-brand-green",
+  },
+} satisfies Record<
+  string,
+  {
+    background?: string;
+    isDark: boolean;
+    contentColor?: string;
+    headingColor?: string;
+  }
+>;
 
 type CTASurfaceColor = keyof typeof CTA_SURFACE_CONFIG;
 
@@ -49,9 +69,8 @@ export function CTABlock({
   const eyebrowVariant = surfaceStyle.isDark ? "onDark" : "onLight";
   const headingColor = surfaceStyle.isDark
     ? "text-th-light-100"
-    : colorKey === "none"
-      ? "text-brand-green"
-      : undefined;
+    : surfaceStyle.headingColor;
+  const contentTextColor = surfaceStyle.contentColor;
   // Rich text renders via Typography plugin. On dark surfaces, use inverted colors
   // directly via the RichText component; on light surfaces default colors apply.
   const buttonSurface = surfaceStyle.isDark ? "onDark" : undefined;
@@ -72,7 +91,12 @@ export function CTABlock({
           )}
         >
           {showOverlay ? <SurfaceShineOverlay /> : null}
-          <div className="text-center max-w-3xl mx-auto space-y-8">
+          <div
+            className={cn(
+              "text-center max-w-3xl mx-auto space-y-8",
+              contentTextColor,
+            )}
+          >
             {eyebrow && <Eyebrow text={eyebrow} variant={eyebrowVariant} />}
             <h2
               className={cn(
@@ -85,7 +109,7 @@ export function CTABlock({
             <RichText
               richText={richText}
               invert={surfaceStyle.isDark}
-              className={cn("prose-lg text-balance")}
+              className={cn("prose-lg text-balance", contentTextColor)}
             />
             <div className="flex justify-center">
               <SanityButtons
