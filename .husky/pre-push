@@ -3,17 +3,7 @@ set -e
 
 # Husky v10-compatible simple hook (no sourcing husky.sh)
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-echo "Running a11y lint on changed files (apps/web)…"
+echo "Running lint on all workspaces..."
 
-# Determine base for diff (default to origin/main)
-BASE=$(git merge-base HEAD origin/main 2>/dev/null || echo "")
-if [ -z "$BASE" ]; then
-  echo "Could not determine merge base with origin/main; running full lint."
-  pnpm -C apps/web -w dlx eslint -c eslint.config.js . || { echo "A11y lint failed. Aborting push."; exit 1; }
-  exit 0
-fi
-
-# Lint only changed web files using NUL-delimited paths (robust to spaces/newlines)
-git diff --name-only --diff-filter=ACMR -z "$BASE"...HEAD \
-  -- ':(glob)apps/web/**/*.js' ':(glob)apps/web/**/*.jsx' ':(glob)apps/web/**/*.ts' ':(glob)apps/web/**/*.tsx' \
-  | xargs -0 pnpm -w dlx eslint -c apps/web/eslint.config.js || { echo "A11y lint failed. Aborting push."; exit 1; }
+# Run turbo lint via pnpm
+pnpm lint || { echo "Lint failed. Aborting push."; exit 1; }
