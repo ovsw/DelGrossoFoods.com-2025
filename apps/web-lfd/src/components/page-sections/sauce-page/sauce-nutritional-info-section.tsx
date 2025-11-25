@@ -11,6 +11,7 @@ import {
   type NutritionFactRow,
   NutritionFactsPanel,
 } from "@/components/elements/nutrition-facts-panel";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 
 type SauceNutritionalInfoSectionProps = {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
@@ -41,12 +42,35 @@ function splitLines(value: string | null): string[] {
 export function SauceNutritionalInfoSection({
   sauce,
 }: SauceNutritionalInfoSectionProps) {
+  const documentId = sauce._id ?? null;
+  const documentType = sauce._type ?? null;
+
   const nutrition: Partial<NutritionData> = sauce.nutritionalInfo ?? {};
   const servingsPerContainer = clean(nutrition.servingsPerContainer);
   const servingSize = clean(nutrition.servingSize);
   const gramsPerServing = clean(nutrition.gramsPerServing);
   const calories = clean(nutrition.calories) || "0";
   const sauceName = clean(sauce.name);
+
+  // Get raw values (with stega) for clickable text
+  const rawServingsPerContainer =
+    typeof nutrition.servingsPerContainer === "string"
+      ? nutrition.servingsPerContainer
+      : null;
+  const rawServingSize =
+    typeof nutrition.servingSize === "string" ? nutrition.servingSize : null;
+  const rawGramsPerServing =
+    typeof nutrition.gramsPerServing === "string"
+      ? nutrition.gramsPerServing
+      : null;
+  const rawCalories =
+    typeof nutrition.calories === "string" && nutrition.calories.trim()
+      ? nutrition.calories
+      : null;
+  const rawIngredients =
+    typeof sauce.ingredients === "string" ? sauce.ingredients : "";
+  const rawAllergens =
+    typeof sauce.allergens === "string" ? sauce.allergens : "";
 
   const ingredients = splitLines(clean(sauce.ingredients ?? ""));
   const allergens = splitLines(clean(sauce.allergens ?? ""));
@@ -65,54 +89,156 @@ export function SauceNutritionalInfoSection({
       ? servingDescriptionParts.join(" ")
       : null;
 
+  // Generate data attributes for all nutrition fields
+  const caloriesDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "nutritionalInfo.calories",
+  });
+  const servingsPerContainerDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "nutritionalInfo.servingsPerContainer",
+  });
+  const servingSizeDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "nutritionalInfo.servingSize",
+  });
+  const gramsPerServingDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "nutritionalInfo.gramsPerServing",
+  });
+  const ingredientsDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "ingredients",
+  });
+  const allergensDataAttribute = createPresentationDataAttribute({
+    documentId,
+    documentType,
+    path: "allergens",
+  });
+
   const nutritionRows: NutritionFactRow[] = [
     {
       label: "Total Fat",
       value: clean(nutrition.totalFat),
       dailyValue: clean(nutrition.totalFatPerc),
       isBold: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.totalFat",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.totalFatPerc",
+      }),
     },
     {
       label: "Saturated Fat",
       value: clean(nutrition.saturatedFat),
       dailyValue: clean(nutrition.saturatedFatPerc),
       isIndented: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.saturatedFat",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.saturatedFatPerc",
+      }),
     },
     {
       label: "Trans Fat",
       value: clean(nutrition.transFat),
       srOnlyDailyText: "No recommended daily value",
       isIndented: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.transFat",
+      }),
     },
     {
       label: "Cholesterol",
       value: clean(nutrition.cholesterol),
       dailyValue: clean(nutrition.cholesterolPerc),
       isBold: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.cholesterol",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.cholesterolPerc",
+      }),
     },
     {
       label: "Sodium",
       value: clean(nutrition.sodium),
       dailyValue: clean(nutrition.sodiumPerc),
       isBold: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.sodium",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.sodiumPerc",
+      }),
     },
     {
       label: "Total Carbohydrates",
       value: clean(nutrition.totalCarbohydrate),
       dailyValue: clean(nutrition.totalCarbohydratePerc),
       isBold: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.totalCarbohydrate",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.totalCarbohydratePerc",
+      }),
     },
     {
       label: "Dietary Fiber",
       value: clean(nutrition.dietaryFiber),
       dailyValue: clean(nutrition.dietaryFiberPerc),
       isIndented: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.dietaryFiber",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.dietaryFiberPerc",
+      }),
     },
     {
       label: "Total Sugars",
       value: clean(nutrition.totalSugars),
       srOnlyDailyText: "No recommended daily value",
       isIndented: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.totalSugars",
+      }),
     },
     {
       label: "Includes",
@@ -120,6 +246,16 @@ export function SauceNutritionalInfoSection({
       dailyValue: clean(nutrition.addedSugarsPerc),
       isIndented: true,
       valueSuffix: " Added Sugars",
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.addedSugars",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.addedSugarsPerc",
+      }),
     },
     {
       label: "Protein",
@@ -127,27 +263,72 @@ export function SauceNutritionalInfoSection({
       srOnlyDailyText: "No recommended daily value",
       hasThickDivider: true,
       isBold: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.protein",
+      }),
     },
     {
       label: "Vitamin D",
       value: clean(nutrition.vitaminD),
       dailyValue: clean(nutrition.vitaminDPerc),
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.vitaminD",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.vitaminDPerc",
+      }),
     },
     {
       label: "Calcium",
       value: clean(nutrition.calcium),
       dailyValue: clean(nutrition.calciumPerc),
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.calcium",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.calciumPerc",
+      }),
     },
     {
       label: "Iron",
       value: clean(nutrition.iron),
       dailyValue: clean(nutrition.ironPerc),
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.iron",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.ironPerc",
+      }),
     },
     {
       label: "Potassium",
       value: clean(nutrition.potassium),
       dailyValue: clean(nutrition.potassiumPerc),
       hasThickDivider: true,
+      valueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.potassium",
+      }),
+      dailyValueDataAttribute: createPresentationDataAttribute({
+        documentId,
+        documentType,
+        path: "nutritionalInfo.potassiumPerc",
+      }),
     },
   ].filter((row) => row.value);
 
@@ -195,9 +376,56 @@ export function SauceNutritionalInfoSection({
                     Serving Size
                   </h3>
                   <div className="text-sm text-muted-foreground">
-                    {servingsSummaryText ? <p>{servingsSummaryText}</p> : null}
+                    {servingsSummaryText ? (
+                      <p>
+                        {servingsPerContainerDataAttribute ? (
+                          <>
+                            About{" "}
+                            <span
+                              data-sanity={servingsPerContainerDataAttribute}
+                            >
+                              {rawServingsPerContainer || servingsPerContainer}
+                            </span>{" "}
+                            servings per container.
+                          </>
+                        ) : (
+                          servingsSummaryText
+                        )}
+                      </p>
+                    ) : null}
                     {servingDescriptionText ? (
-                      <p>Serving size {servingDescriptionText}</p>
+                      <p>
+                        Serving size{" "}
+                        {servingSizeDataAttribute ||
+                        gramsPerServingDataAttribute ? (
+                          <>
+                            {servingSizeDataAttribute ? (
+                              <span data-sanity={servingSizeDataAttribute}>
+                                {rawServingSize || servingSize}
+                              </span>
+                            ) : (
+                              servingSize
+                            )}
+                            {rawGramsPerServing &&
+                            gramsPerServingDataAttribute ? (
+                              <>
+                                {" "}
+                                (
+                                <span
+                                  data-sanity={gramsPerServingDataAttribute}
+                                >
+                                  {rawGramsPerServing}g
+                                </span>
+                                )
+                              </>
+                            ) : gramsPerServing ? (
+                              ` (${gramsPerServing}g)`
+                            ) : null}
+                          </>
+                        ) : (
+                          servingDescriptionText
+                        )}
+                      </p>
                     ) : null}
                   </div>
                 </div>
@@ -209,8 +437,16 @@ export function SauceNutritionalInfoSection({
                     Ingredients
                   </h3>
                   <ul className="text-sm text-muted-foreground">
-                    {ingredients.map((item) => (
-                      <li key={item}>{item}</li>
+                    {ingredients.map((item, index) => (
+                      <li key={item}>
+                        {ingredientsDataAttribute ? (
+                          <span data-sanity={ingredientsDataAttribute}>
+                            {item}
+                          </span>
+                        ) : (
+                          item
+                        )}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -223,7 +459,15 @@ export function SauceNutritionalInfoSection({
                   </h3>
                   <ul className="text-sm text-muted-foreground">
                     {allergens.map((item) => (
-                      <li key={item}>{item}</li>
+                      <li key={item}>
+                        {allergensDataAttribute ? (
+                          <span data-sanity={allergensDataAttribute}>
+                            {item}
+                          </span>
+                        ) : (
+                          item
+                        )}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -257,9 +501,14 @@ export function SauceNutritionalInfoSection({
           <NutritionFactsPanel
             servingsPerContainerText={servingsSummaryText}
             servingDescriptionText={servingDescriptionText}
-            calories={calories}
+            calories={rawCalories ?? calories}
             rows={nutritionRows}
             dailyValueNoteText={dailyValueNote}
+            caloriesDataAttribute={caloriesDataAttribute}
+            servingsPerContainerDataAttribute={
+              servingsPerContainerDataAttribute
+            }
+            servingDescriptionDataAttribute={servingSizeDataAttribute}
           />
         </div>
       </div>
