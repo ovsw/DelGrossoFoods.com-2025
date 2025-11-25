@@ -101,8 +101,8 @@ export function SauceHeroSection({
             className={cn(
               "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
               useSoftTextShadow
-                ? "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.25),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]"
-                : "text-shadow-[1px_1px_1px_rgb(245_245_245_/_0.60),-1px_-1px_1px_rgb(245_245_245_/_0.60),-3px_-3px_20px_rgb(245_245_245_/_0.35),0px_1px_51px_rgb(245_245_245_/_0.75),0px_0px_101px_rgb(245_245_245_/_0.35),0px_0px_13px_rgb(245_245_245_/_0.15)]",
+                ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+                : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
             )}
             style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
           >
