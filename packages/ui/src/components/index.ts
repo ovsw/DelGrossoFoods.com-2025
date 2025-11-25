@@ -135,5 +135,4 @@ export type {
   WhereToBuyProductLineLabels,
   WhereToBuyStateStores,
   WhereToBuyStoreChain,
-  WhereToBuyStoreLogos,
 } from "./where-to-buy-types";

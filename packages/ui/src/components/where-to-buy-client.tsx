@@ -2,7 +2,6 @@
 
 import Fuse, { type FuseResult } from "fuse.js";
 import { Info, Store } from "lucide-react";
-import Image from "next/image";
 import { type JSX, useCallback, useEffect, useMemo, useState } from "react";
 
 import { type RootProps } from "../lib/data-attributes";
@@ -15,7 +14,6 @@ import type {
   WhereToBuyProductLineInfo,
   WhereToBuyProductLineLabels,
   WhereToBuyStoreChain,
-  WhereToBuyStoreLogos,
 } from "./where-to-buy-types";
 
 type ProductFilter = "all" | WhereToBuyProductLine;
@@ -35,7 +33,6 @@ export type WhereToBuyClientProps = {
     productLineFilter?: WhereToBuyProductLine,
   ) => WhereToBuyStoreChain[];
   productLineLabels: WhereToBuyProductLineLabels;
-  storeLogos: WhereToBuyStoreLogos;
   productFilterOptions?: WhereToBuyProductFilterOption[];
   forcedProductFilter?: WhereToBuyProductLine;
   showProductLineBadges?: boolean;
@@ -46,7 +43,6 @@ export function WhereToBuyClient({
   allStates,
   getStoresByState,
   productLineLabels,
-  storeLogos,
   productFilterOptions,
   forcedProductFilter,
   showProductLineBadges = true,
@@ -212,7 +208,6 @@ export function WhereToBuyClient({
                   key={store.name}
                   store={store}
                   productLineLabels={productLineLabels}
-                  storeLogos={storeLogos}
                   showProductLineBadges={showProductLineBadges}
                 />
               ))}
@@ -235,18 +230,14 @@ export function WhereToBuyClient({
 type StoreCardProps = {
   store: WhereToBuyStoreChain;
   productLineLabels: WhereToBuyProductLineLabels;
-  storeLogos: WhereToBuyStoreLogos;
   showProductLineBadges: boolean;
 };
 
 function StoreCard({
   store,
   productLineLabels,
-  storeLogos,
   showProductLineBadges,
 }: StoreCardProps) {
-  const logoPath = storeLogos[store.name];
-  const hasLogo = Boolean(logoPath);
   const productLineDetails = store.productLines.reduce<JSX.Element[]>(
     (
       acc: JSX.Element[],
@@ -303,21 +294,9 @@ function StoreCard({
           hasProductLineDetails && "mb-3",
         )}
       >
-        {hasLogo && logoPath ? (
-          <div className="relative w-16 h-16 flex-shrink-0">
-            <Image
-              src={logoPath}
-              alt={`${store.name} logo`}
-              fill
-              className="object-contain"
-              sizes="72px"
-            />
-          </div>
-        ) : (
-          <div className="flex-shrink-0 flex items-center justify-center bg-brand-green rounded w-16 h-16">
-            <Store className="w-6 h-6 text-th-light-100" />
-          </div>
-        )}
+        <div className="flex-shrink-0 flex items-center justify-center bg-brand-green rounded w-16 h-16">
+          <Store className="w-6 h-6 text-th-light-100" />
+        </div>
         <h3 className="text-lg font-semibold">{store.name}</h3>
       </div>
 

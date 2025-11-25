@@ -7,7 +7,6 @@ import {
   allStates,
   getStoresByState,
   productLineLabels,
-  storeLogos,
 } from "@/lib/stores/data";
 
 type WhereToBuyClientProps = {
@@ -32,7 +31,6 @@ export function WhereToBuyClient({
       allStates={allStates}
       getStoresByState={getStoresByState}
       productLineLabels={productLineLabels}
-      storeLogos={storeLogos}
       productFilterOptions={[]}
       forcedProductFilter="la-famiglia"
       showProductLineBadges={false}
