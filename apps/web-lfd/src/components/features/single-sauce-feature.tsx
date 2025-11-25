@@ -52,9 +52,7 @@ export function SingleSauceFeature({ item }: Props) {
         <div className="text-start">
           <Eyebrow text="Sauce Info" />
 
-          <h2 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
-            {item.name}
-          </h2>
+          <h2 className="heading-section">{item.name}</h2>
           <div className="my-6 flex flex-wrap items-center gap-1.5">
             <Badge
               text={lineBadge.text}

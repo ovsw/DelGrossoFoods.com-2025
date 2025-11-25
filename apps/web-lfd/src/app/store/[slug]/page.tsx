@@ -202,9 +202,7 @@ export default async function ProductDetailPage({
               <>
                 <div className="text-center">
                   <Eyebrow text="Pairs well with" />
-                  <h2 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
-                    Complementary sauces
-                  </h2>
+                  <h2 className="heading-section">Complementary sauces</h2>
                   <p className="mt-4 text-muted-foreground">
                     Build your next meal with these favorites from La Famiglia
                     DelGrosso.

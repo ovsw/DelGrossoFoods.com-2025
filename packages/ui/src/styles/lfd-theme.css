@@ -6,4 +6,8 @@
   --color-brand-green-500: var(--color-brand-green);
   /* Keep on-brand text high contrast (light) on the now-black brand background. */
   --color-brand-green-text: var(--color-th-light-100);
+
+  /* Semantic heading colors - LFD overrides */
+  --color-heading-on-light: var(--color-th-dark-900);
+  --color-heading-on-dark: var(--color-th-light-100);
 }

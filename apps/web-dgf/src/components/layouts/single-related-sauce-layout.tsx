@@ -51,9 +51,7 @@ export function SingleRelatedSauceLayout({
           <div className="text-start">
             <Eyebrow text="Featured sauce" />
 
-            <h3 className="mt-4 text-3xl font-semibold text-balance md:text-5xl">
-              {item.name}
-            </h3>
+            <h3 className="heading-section">{item.name}</h3>
 
             <div className="my-6 flex flex-wrap items-center gap-1.5">
               <Badge

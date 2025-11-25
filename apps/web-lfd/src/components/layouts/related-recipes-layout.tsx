@@ -28,11 +28,7 @@ export function RelatedRecipesLayout({
         {(title || eyebrow || description) && (
           <div className="flex flex-col items-center text-center">
             {eyebrow ? <Eyebrow text={eyebrow} /> : null}
-            {title ? (
-              <h2 className="mt-4 text-3xl font-semibold text-brand-green text-balance md:text-5xl">
-                {title}
-              </h2>
-            ) : null}
+            {title ? <h2 className="heading-section">{title}</h2> : null}
             {description ? (
               <p className="mt-4 max-w-2xl text-pretty text-muted-foreground">
                 {description}
