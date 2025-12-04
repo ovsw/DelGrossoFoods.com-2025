@@ -1,6 +1,7 @@
-import { Section } from "@workspace/ui/components/section";
-import { cn } from "@workspace/ui/lib/utils";
 import Image from "next/image";
+
+import { cn } from "../lib/utils";
+import { Section } from "./section";
 
 export interface SimpleHeroLayoutProps {
   readonly src: string;
@@ -10,6 +11,7 @@ export interface SimpleHeroLayoutProps {
   readonly objectFit?: "cover" | "contain";
   readonly priority?: boolean;
   readonly className?: string;
+  readonly imageClassName?: string;
   readonly sizes?: string;
   readonly quality?: number;
   readonly placeholder?: "blur" | "empty";
@@ -24,6 +26,7 @@ export function SimpleHeroLayout({
   objectFit = "contain",
   priority = false,
   className,
+  imageClassName,
   sizes,
   quality,
   placeholder,
@@ -36,7 +39,12 @@ export function SimpleHeroLayout({
       className={cn("relative isolate overflow-hidden", className)}
     >
       <div className="container relative mx-auto max-w-6xl px-4 md:px-0 lg:pt-20">
-        <div className={cn("image_wrapper flex items-center justify-center")}>
+        <div
+          className={cn(
+            "image_wrapper flex items-center justify-center",
+            "max-h-[60vh] md:max-h-[70vh]",
+          )}
+        >
           <Image
             src={src}
             alt={alt}
@@ -51,8 +59,9 @@ export function SimpleHeroLayout({
             placeholder={placeholder}
             blurDataURL={blurDataURL}
             className={cn(
-              "w-full",
+              "w-full h-auto",
               objectFit === "cover" ? "object-cover" : "object-contain",
+              imageClassName,
             )}
           />
         </div>

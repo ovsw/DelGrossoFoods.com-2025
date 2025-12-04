@@ -119,6 +119,10 @@ export {
   SheetTrigger,
 } from "./sheet";
 export {
+  SimpleHeroLayout,
+  type SimpleHeroLayoutProps,
+} from "./simple-hero-layout";
+export {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,

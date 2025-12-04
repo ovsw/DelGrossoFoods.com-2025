@@ -1,4 +1,4 @@
-import { SimpleHeroLayout } from "@/components/layouts/simple-hero-layout";
+import { SimpleHeroLayout } from "@workspace/ui/components/simple-hero-layout";
 
 export function WhereToBuyHeroSection() {
   return (
@@ -11,6 +11,7 @@ export function WhereToBuyHeroSection() {
       priority={true}
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
       quality={75}
+      imageClassName="max-h-[50vh]"
     />
   );
 }
