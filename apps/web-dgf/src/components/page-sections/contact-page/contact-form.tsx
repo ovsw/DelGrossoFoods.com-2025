@@ -5,12 +5,14 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
+import organicLogo from "@workspace/ui/src/images/logo_0000_organic.png";
+import dgfLogo from "@workspace/ui/src/images/logo_0001_dgf.png";
+import lfdLogo from "@workspace/ui/src/images/logo_0002_lfd-family-photo.png";
 import { CheckCircle, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import LogoSvg from "@/components/elements/logo";
 import { announce } from "@/lib/a11y/announce";
 
 const FORMSPARK_URL = process.env.NEXT_PUBLIC_FORMSPARK_URL;
@@ -22,7 +24,7 @@ interface ContactFormData {
   lastName: string;
   email: string;
   phone?: string;
-  brand: "la-famiglia" | "delgrosso-foods" | "";
+  brand: "la-famiglia" | "delgrosso-foods" | "organic" | "";
   message: string;
 }
 
@@ -218,43 +220,81 @@ export function ContactForm() {
               onValueChange={(value) => {
                 setValue(
                   "brand",
-                  value as "la-famiglia" | "delgrosso-foods" | "",
+                  value as "la-famiglia" | "delgrosso-foods" | "organic" | "",
                 );
               }}
-              className="space-y-3"
+              className="grid grid-cols-1 gap-4 sm:grid-cols-3"
               disabled={isSubmitting}
             >
-              <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                <RadioGroupItem value="la-famiglia" id="la-famiglia" />
+              <div className="relative flex flex-col items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors has-[button[data-state=checked]]:border-brand-red has-[button[data-state=checked]]:bg-red-50/30">
+                <div className="absolute top-3 left-3">
+                  <RadioGroupItem value="la-famiglia" id="la-famiglia" />
+                </div>
                 <label
                   htmlFor="la-famiglia"
-                  className="flex items-center space-x-3 cursor-pointer flex-1"
+                  className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
                 >
-                  <div className="relative h-8 w-20 flex-shrink-0 bg-black rounded">
+                  <div className="relative h-24 w-full">
                     <Image
-                      src="/images/logos/lfd-logo-light-short-p-500.png"
+                      src={lfdLogo}
                       alt="La Famiglia DelGrosso logo"
                       fill
-                      sizes="80px"
-                      className="object-contain object-left"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain object-center"
                     />
                   </div>
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-center">
                     La Famiglia DelGrosso
                   </span>
                 </label>
               </div>
 
-              <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                <RadioGroupItem value="delgrosso-foods" id="delgrosso-foods" />
+              <div className="relative flex flex-col items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors has-[button[data-state=checked]]:border-brand-red has-[button[data-state=checked]]:bg-red-50/30">
+                <div className="absolute top-3 left-3">
+                  <RadioGroupItem
+                    value="delgrosso-foods"
+                    id="delgrosso-foods"
+                  />
+                </div>
                 <label
                   htmlFor="delgrosso-foods"
-                  className="flex items-center space-x-3 cursor-pointer flex-1"
+                  className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
                 >
-                  <div className="h-8 w-auto flex-shrink-0">
-                    <LogoSvg className="h-8 w-auto" aria-hidden />
+                  <div className="relative h-24 w-full">
+                    <Image
+                      src={dgfLogo}
+                      alt="DelGrosso Foods logo"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain object-center"
+                    />
                   </div>
-                  <span className="text-sm font-medium">DelGrosso Foods</span>
+                  <span className="text-sm font-medium text-center">
+                    Original DelGrosso
+                  </span>
+                </label>
+              </div>
+
+              <div className="relative flex flex-col items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors has-[button[data-state=checked]]:border-brand-red has-[button[data-state=checked]]:bg-red-50/30">
+                <div className="absolute top-3 left-3">
+                  <RadioGroupItem value="organic" id="organic" />
+                </div>
+                <label
+                  htmlFor="organic"
+                  className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
+                >
+                  <div className="relative h-24 w-full">
+                    <Image
+                      src={organicLogo}
+                      alt="Organic logo"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain object-center"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-center">
+                    DelGrosso Organic
+                  </span>
                 </label>
               </div>
             </RadioGroup>
