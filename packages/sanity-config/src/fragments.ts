@@ -401,6 +401,23 @@ export const homeSlideshowBlock = /* groq */ `
   }
 `;
 
+export const homeSlideshowVerticalBlock = /* groq */ `
+  _type == "homeSlideshowVertical" => {
+    title,
+    subtitle,
+    ${descriptionRichTextFragment},
+    ${buttonsFragment},
+    "leftColumnImages": array::compact(leftColumnImages[]{
+      _key,
+      ${imageFields}
+    }),
+    "rightColumnImages": array::compact(rightColumnImages[]{
+      _key,
+      ${imageFields}
+    })
+  }
+`;
+
 export const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     _key,
@@ -415,7 +432,8 @@ export const pageBuilderFragment = /* groq */ `
     ${imageLinkCardsBlock},
     ${threeProductPanelsBlock},
     ${longFormBlock},
-    ${homeSlideshowBlock}
+    ${homeSlideshowBlock},
+    ${homeSlideshowVerticalBlock}
   }
 `;
 

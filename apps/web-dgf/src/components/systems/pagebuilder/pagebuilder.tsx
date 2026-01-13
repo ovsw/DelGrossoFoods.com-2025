@@ -14,6 +14,7 @@ import { FeatureBlock } from "./blocks/feature-block";
 import { FeatureCardsWithIconBlock } from "./blocks/feature-cards-with-icon-block";
 import { FeaturedRecipesBlock } from "./blocks/featured-recipes-block";
 import { HomeSlideshowBlock } from "./blocks/home-slideshow-block";
+import { HomeSlideshowVerticalBlock } from "./blocks/home-slideshow-vertical-block";
 import { ImageLinkCardsBlock } from "./blocks/image-link-cards-block";
 import { LongFormBlock } from "./blocks/long-form-block";
 import { SubscribeNewsletterBlock } from "./blocks/subscribe-newsletter-block";
@@ -52,6 +53,7 @@ const BLOCK_COMPONENTS = {
   imageLinkCards: ImageLinkCardsBlock,
   threeProductPanels: ThreeProductPanelsBlock,
   homeSlideshow: HomeSlideshowBlock,
+  homeSlideshowVertical: HomeSlideshowVerticalBlock,
   longForm: LongFormBlock,
 } satisfies BlockComponentMap;
 
@@ -249,6 +251,22 @@ function useBlockRenderer(id: string, type: string) {
           const Component = BLOCK_COMPONENTS.homeSlideshow;
           return (
             <div key={`homeSlideshow-${_key}`} data-sanity={dataAttribute}>
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
+            </div>
+          );
+        }
+        case "homeSlideshowVertical": {
+          const Component = BLOCK_COMPONENTS.homeSlideshowVertical;
+          return (
+            <div
+              key={`homeSlideshowVertical-${_key}`}
+              data-sanity={dataAttribute}
+            >
               <Component
                 {...block}
                 isPageTop={isFirstBlock}

@@ -3,6 +3,7 @@ import { faqAccordion } from "./faq-accordion";
 import { feature } from "./feature";
 import { featureCardsIcon } from "./feature-cards-icon";
 import { featuredRecipes } from "./featured-recipes";
+import { homeSlideshowVertical } from "./home-slideshow-vertical";
 import { homeSlideshow } from "./home-slideshow";
 import { imageLinkCards } from "./image-link-cards";
 import { longForm } from "./long-form";
@@ -21,7 +22,7 @@ const sharedBlocks = [
   threeProductPanels,
 ];
 
-const homeExclusiveBlocks = [homeSlideshow];
+const homeExclusiveBlocks = [homeSlideshow, homeSlideshowVertical];
 
 export const pageBuilderBlocks = sharedBlocks;
 export const homePageBuilderBlocks = [...sharedBlocks, ...homeExclusiveBlocks];
