@@ -5,14 +5,24 @@ import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
-import { createDataAttribute, stegaClean } from "next-sanity";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  createDataAttribute,
+  PortableText,
+  type PortableTextBlock,
+  type PortableTextReactComponents,
+  stegaClean,
+} from "next-sanity";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { buildSrc } from "sanity-image";
 
 import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
-import type { SanityButtonProps, SanityImageProps } from "@/types";
+import type {
+  SanityButtonProps,
+  SanityImageProps,
+  SanityRichTextProps,
+} from "@/types";
 
 import type { PageBuilderBlockProps } from "../types";
 
@@ -21,6 +31,53 @@ const IMAGE_WIDTH = 540;
 const IMAGE_HEIGHT = 960;
 const SANITY_BASE_URL =
   `https://cdn.sanity.io/images/${projectId}/${dataset}/` as const;
+
+const renderHeadingBlock = ({ children }: { children?: ReactNode }) => (
+  <span>{children}</span>
+);
+
+const UnderlineBoldMark = ({ children }: { children?: ReactNode }) => (
+  <span className="relative inline-flex pb-1">
+    <span className="relative z-10">{children}</span>
+    <svg
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.6rem] w-full"
+      viewBox="0 0 35 3"
+      width="100%"
+      height="100%"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      preserveAspectRatio="none"
+      style={{
+        transform: "scaleY(1.3)",
+        transformOrigin: "bottom",
+        bottom: "-0.25rem",
+      }}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M21.1766 0.0143388C18.8596 0.0455316 16.8659 0.12294 14.0298 0.291818C13.5191 0.322234 12.8286 0.362973 12.4955 0.382399C11.63 0.432833 9.42754 0.601489 8.35682 0.699322C6.24759 0.892066 3.23968 1.21502 2.1589 1.36481C1.93683 1.39559 1.60977 1.43759 1.43211 1.45816C0.807634 1.53046 0.248206 1.63411 0.14371 1.69686C-0.0587016 1.81841 -0.0485671 2.0408 0.182189 2.54121C0.351572 2.9085 0.488007 3.0269 0.705318 2.99505C0.77194 2.98528 1.18985 2.91749 1.634 2.84441C2.92926 2.63128 4.80022 2.40516 6.0755 2.30762C12.3685 1.82637 15.7104 1.66215 20.0864 1.6192C21.3967 1.60636 22.4814 1.58867 22.497 1.57994C22.5562 1.54667 30.4958 1.56343 31.9977 1.59999C32.8638 1.62105 33.7881 1.64217 34.0516 1.64687L34.5308 1.65542L34.6621 1.52414C34.8499 1.33635 34.9705 1.01591 34.9953 0.639157C35.0185 0.287082 34.9566 0.108583 34.7919 0.0527841C34.6706 0.0116377 23.6827 -0.0193701 21.1766 0.0143388Z"
+        fill="#DB2128"
+      />
+    </svg>
+  </span>
+);
+
+const HEADING_PORTABLE_TEXT_COMPONENTS: Partial<PortableTextReactComponents> = {
+  block: {
+    h2: renderHeadingBlock,
+    h3: renderHeadingBlock,
+    h4: renderHeadingBlock,
+    h5: renderHeadingBlock,
+    h6: renderHeadingBlock,
+    inline: renderHeadingBlock,
+    normal: renderHeadingBlock,
+  },
+  marks: {
+    strong: UnderlineBoldMark,
+  },
+};
 
 type HomeSlideshowVerticalBlockProps =
   PageBuilderBlockProps<"homeSlideshowVertical">;
@@ -58,7 +115,7 @@ function useColumnScrollMetrics(images: ColumnImage[]) {
 
 interface NormalizedContent {
   readonly title: string | null;
-  readonly subtitle: string | null;
+  readonly headingRichText: SanityRichTextProps;
   readonly description: unknown;
   readonly buttons: SanityButtonProps[];
   readonly leftImages: ColumnImage[];
@@ -80,7 +137,7 @@ function normalizeContent(
 ): NormalizedContent {
   return {
     title: block.title ?? null,
-    subtitle: block.subtitle ?? null,
+    headingRichText: block.headingRichText ?? null,
     description: block.description ?? null,
     buttons: block.buttons?.slice(0, 2) ?? [],
     leftImages: normalizeImages(block.leftColumnImages),
@@ -194,8 +251,14 @@ export function HomeSlideshowVerticalBlock(
 ) {
   const { _key, sanityDocumentId, sanityDocumentType, isPageTop } = props;
 
-  const { title, subtitle, description, buttons, leftImages, rightImages } =
-    useMemo(() => normalizeContent(props), [props]);
+  const {
+    title,
+    headingRichText,
+    description,
+    buttons,
+    leftImages,
+    rightImages,
+  } = useMemo(() => normalizeContent(props), [props]);
 
   const { ref: blockRef, isNearViewport } = useNearViewport();
 
@@ -222,7 +285,7 @@ export function HomeSlideshowVerticalBlock(
   );
 
   const {
-    subtitle: subtitleDataAttribute,
+    headingRichText: headingRichTextDataAttribute,
     title: titleDataAttribute,
     description: descriptionDataAttribute,
   } = useMemo(() => {
@@ -234,7 +297,7 @@ export function HomeSlideshowVerticalBlock(
       );
 
     return {
-      subtitle: createAttribute("subtitle"),
+      headingRichText: createAttribute("headingRichText"),
       title: createAttribute("title"),
       description: createAttribute("description"),
     };
@@ -295,7 +358,12 @@ export function HomeSlideshowVerticalBlock(
     hasPrefetchedImagesRef.current = true;
   }, [leftImages, rightImages, shouldPriorityLoadImages]);
 
-  if (!subtitle || !description || !hasImages) {
+  const headingContent =
+    Array.isArray(headingRichText) && headingRichText.length
+      ? headingRichText
+      : null;
+
+  if (!headingContent || !description || !hasImages) {
     return null;
   }
 
@@ -368,10 +436,7 @@ export function HomeSlideshowVerticalBlock(
                   <SanityImage
                     image={image}
                     alt={stegaClean(
-                      image.alt ??
-                        subtitle ??
-                        title ??
-                        "Home slideshow vertical image",
+                      image.alt ?? title ?? "Home slideshow vertical image",
                     )}
                     width={IMAGE_WIDTH}
                     height={IMAGE_HEIGHT}
@@ -398,10 +463,7 @@ export function HomeSlideshowVerticalBlock(
                 <SanityImage
                   image={image}
                   alt={stegaClean(
-                    image.alt ??
-                      subtitle ??
-                      title ??
-                      "Home slideshow vertical image",
+                    image.alt ?? title ?? "Home slideshow vertical image",
                   )}
                   width={IMAGE_WIDTH}
                   height={IMAGE_HEIGHT}
@@ -438,7 +500,15 @@ export function HomeSlideshowVerticalBlock(
               <Eyebrow text={title} data-sanity={titleDataAttribute} />
             ) : null}
             <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-              <span data-sanity={subtitleDataAttribute}>{subtitle}</span>
+              <span
+                data-sanity={headingRichTextDataAttribute}
+                className="block break-words"
+              >
+                <PortableText
+                  value={headingContent as PortableTextBlock[]}
+                  components={HEADING_PORTABLE_TEXT_COMPONENTS}
+                />
+              </span>
             </h1>
             <div
               data-sanity={descriptionDataAttribute}

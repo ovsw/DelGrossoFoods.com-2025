@@ -404,7 +404,17 @@ export const homeSlideshowBlock = /* groq */ `
 export const homeSlideshowVerticalBlock = /* groq */ `
   _type == "homeSlideshowVertical" => {
     title,
-    subtitle,
+    headingRichText[]{
+      ...,
+      _type == "block" => {
+        ...,
+        ${markDefsFragment}
+      },
+      _type == "image" => {
+        ${imageFields},
+        "caption": caption
+      }
+    },
     ${descriptionRichTextFragment},
     ${buttonsFragment},
     "leftColumnImages": array::compact(leftColumnImages[]{

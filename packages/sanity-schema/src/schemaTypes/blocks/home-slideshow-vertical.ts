@@ -15,12 +15,11 @@ export const homeSlideshowVertical = defineType({
       type: "string",
     }),
     defineField({
-      name: "subtitle",
-      title: "Headline",
+      name: "headingRichText",
+      title: "Heading Rich Text",
       description:
-        "Primary headline for the hero. Keep it brief and high impact",
-      type: "string",
-      validation: (Rule) => Rule.required(),
+        "Optional rich text version of the headline that enables inline styling (underlines, emphasis, etc.) while retaining the string headline for backwards compatibility.",
+      type: "richText",
     }),
     defineField({
       name: "description",
