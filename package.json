@@ -35,6 +35,11 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "pnpm": {
+    "overrides": {
+      "next": "15.5.9"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
       "pnpm -w dlx prettier --write --ignore-unknown"

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  next: 15.5.9
+
 importers:
   .:
     devDependencies:
@@ -4250,7 +4253,7 @@ packages:
     engines: { node: ">=18.18" }
     deprecated: This package is deprecated. Please use 'next-sanity/live' instead.
     peerDependencies:
-      next: ^14.1 || ^15.0.0-0
+      next: 15.5.9
       react: ^18.3 || ^19.0.0-0
 
   "@sanity/orderable-document-list@1.4.0":
@@ -4415,7 +4418,7 @@ packages:
       "@remix-run/react": ">= 2"
       "@sanity/client": ^7.8.2
       "@sveltejs/kit": ">= 2"
-      next: ">= 13 || >=14.3.0-canary.0 <14.3.0 || >=15.0.0-rc"
+      next: 15.5.9
       react: ^18.3 || >=19.0.0-rc
       react-dom: ^18.3 || >=19.0.0-rc
       react-is: ^18.3 || >=19.0.0-rc
@@ -9765,7 +9768,7 @@ packages:
     engines: { node: ">=20.19" }
     peerDependencies:
       "@sanity/client": ^7.8.2
-      next: ^15.1
+      next: 15.5.9
       react: ^19
       react-dom: ^19
       sanity: ^4.4.1
