@@ -5,6 +5,13 @@ node_modules
 .pnp
 .pnp.js
 
+# pnpm workspace symlinks (can appear at root in monorepos)
+/*@*
+/*:build:*
+/next
+/sanity
+/turbo
+
 # Local env files
 .env
 .env.local
