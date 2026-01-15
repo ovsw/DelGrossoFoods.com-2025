@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:dgf": "turbo run build --filter=web-dgf",
+    "build:lfd": "turbo run build --filter=web-lfd",
     "dev": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
     "dev:dgf": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
     "dev:lfd": "turbo run dev --parallel --filter web-lfd --filter studio-lfd",
