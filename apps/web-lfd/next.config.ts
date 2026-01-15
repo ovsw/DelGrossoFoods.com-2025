@@ -1,3 +1,4 @@
+// Dummy change to force Vercel to see a new commit and trigger a fresh build.
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
