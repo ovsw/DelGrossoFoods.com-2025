@@ -50,7 +50,7 @@ export const lineMap: Record<LineSlug, LineConfigItem> = {
   },
   premium: {
     label: "Ultra-Premium",
-    display: "Premium",
+    display: "Ultra Premium",
     displayName: "La Famiglia DelGrosso",
   },
 } as const;
