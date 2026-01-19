@@ -234,7 +234,7 @@ export function ContactForm() {
                   htmlFor="la-famiglia"
                   className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
                 >
-                  <div className="relative h-24 w-full">
+                  <div className="relative h-24 w-full max-w-[220px] mx-auto">
                     <Image
                       src={lfdLogo}
                       alt="La Famiglia DelGrosso logo"
@@ -260,7 +260,7 @@ export function ContactForm() {
                   htmlFor="delgrosso-foods"
                   className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
                 >
-                  <div className="relative h-24 w-full">
+                  <div className="relative h-24 w-full max-w-[220px] mx-auto">
                     <Image
                       src={dgfLogo}
                       alt="DelGrosso Foods logo"
@@ -283,7 +283,7 @@ export function ContactForm() {
                   htmlFor="organic"
                   className="flex flex-col items-center w-full cursor-pointer h-full justify-center gap-4 pt-4"
                 >
-                  <div className="relative h-24 w-full">
+                  <div className="relative h-24 w-full max-w-[220px] mx-auto">
                     <Image
                       src={organicLogo}
                       alt="Organic logo"
