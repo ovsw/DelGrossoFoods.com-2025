@@ -28,7 +28,12 @@ function formatUSD(value: number | null | undefined): string | null {
 const DEFAULT_CARD_SIZES =
   "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" as const;
 
-export function ProductCard({ item }: { item: ProductListItem }) {
+export type ProductCardProps = {
+  item: ProductListItem;
+  showBadges?: boolean;
+};
+
+export function ProductCard({ item, showBadges = true }: ProductCardProps) {
   const {
     _id,
     name,
@@ -84,6 +89,7 @@ export function ProductCard({ item }: { item: ProductListItem }) {
 
   // Badges: skip entirely for merchandise (other)
   const pkgSlug = toPackagingSlug(category);
+  const showCardBadges = showBadges && pkgSlug !== "other";
   const badges: {
     text: string;
     variant?:
@@ -96,7 +102,7 @@ export function ProductCard({ item }: { item: ProductListItem }) {
       | "salsa"
       | "sandwich";
   }[] = [];
-  if (pkgSlug !== "other") {
+  if (showCardBadges) {
     // Unique line badge (skip if mixed/none)
     const lineSlug = getUniqueLineSlug(sauceLines ?? undefined);
     if (lineSlug) {

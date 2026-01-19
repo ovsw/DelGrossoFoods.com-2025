@@ -201,7 +201,12 @@ export function SaucesClient({ items, initialState }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-y-12">
           {effectiveResults.map((item) => (
-            <SauceCard key={item._id} item={item} />
+            <SauceCard
+              key={item._id}
+              item={item}
+              showLineLabel={false}
+              showBadges={false}
+            />
           ))}
         </div>
       )}

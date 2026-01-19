@@ -8,12 +8,22 @@ import { getLineDisplayName, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
 import type { SauceListItem } from "@/types";
 
-export function SauceCard({ item }: { item: SauceListItem }) {
+export type SauceCardProps = {
+  item: SauceListItem;
+  showLineLabel?: boolean;
+  showBadges?: boolean;
+};
+
+export function SauceCard({
+  item,
+  showLineLabel = true,
+  showBadges = true,
+}: SauceCardProps) {
   const { name, slug, mainImage, line, category, _id, _type } = item;
-  const typeBadge = getTypeBadge(category);
+  const typeBadge = showBadges ? getTypeBadge(category) : null;
 
   // Get the display name from configuration (supports enhanced names like "La Famiglia DelGrosso")
-  const lineDisplayName = getLineDisplayName(line);
+  const lineDisplayName = showLineLabel ? getLineDisplayName(line) : null;
 
   const imageAttribute = mainImage?.id
     ? createDataAttribute({
@@ -48,7 +58,11 @@ export function SauceCard({ item }: { item: SauceListItem }) {
       }
       imageAspect="sauce"
       textAlign="center"
-      badges={[{ text: typeBadge.text, variant: typeBadge.variant }]}
+      badges={
+        showBadges && typeBadge
+          ? [{ text: typeBadge.text, variant: typeBadge.variant }]
+          : []
+      }
     />
   );
 }
