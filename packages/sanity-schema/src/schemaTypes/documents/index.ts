@@ -10,6 +10,7 @@ import { productType } from "./productType";
 import { recipeIndex } from "./recipe-index";
 import { recipeCategoryType } from "./recipeCategoryType";
 import { recipeType } from "./recipeType";
+import { retailer } from "./retailer";
 import { sauce } from "./sauce";
 import { sauceIndex } from "./sauce-index";
 import { settings } from "./settings";
@@ -33,6 +34,7 @@ export const documents = [
   site,
   page,
   faq,
+  retailer,
   sauce,
   productType,
   recipeType,

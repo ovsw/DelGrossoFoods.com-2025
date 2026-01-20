@@ -28,6 +28,7 @@ A modern, full-stack monorepo built with Next.js App Router, Sanity CMS, Shadcn 
 - Structured content with schemas
 - Live preview capabilities
 - Asset management
+- Tags input docs: see `docs/tags-input.md`
 
 #### 1. Download project files
 

@@ -15,6 +15,7 @@ import {
   PanelBottom,
   PanelBottomIcon,
   Settings2,
+  StoreIcon,
 } from "lucide-react";
 import type {
   StructureBuilder,
@@ -48,7 +49,6 @@ type IndexCollectionConfig = {
 const SITE_SINGLETONS: SingletonConfig[] = [
   { type: "homePage", title: "Home Page", icon: HomeIcon },
   { type: "historyPage", title: "History Page", icon: ClockIcon },
-  { type: "storeLocator", title: "Store Locator Page", icon: MarkerIcon },
   { type: "contactPage", title: "Contact Page", icon: MessageCircle },
 ];
 
@@ -160,6 +160,33 @@ const createIndexedCollectionItem = (
         ]),
     );
 
+const createWhereToBuyListItem = (
+  S: StructureBuilder,
+  siteCode: SiteCode,
+  siteDocumentId: string,
+) =>
+  S.listItem()
+    .title("Where to Buy")
+    .icon(MarkerIcon)
+    .child(
+      S.list()
+        .title("Where to Buy")
+        .items([
+          createSingletonListItem(
+            S,
+            {
+              type: "storeLocator",
+              title: "Where to Buy Page",
+              icon: MarkerIcon,
+            },
+            siteCode,
+          ),
+          S.documentTypeListItem("retailer")
+            .title("Retailers List")
+            .icon(StoreIcon),
+        ]),
+    );
+
 const createSiteDocumentListItem = (
   S: StructureBuilder,
   siteDocumentId: string,
@@ -193,6 +220,7 @@ export const createSiteStructure = ({
       ...INDEXED_COLLECTIONS.map((config) =>
         createIndexedCollectionItem(S, config, siteCode, siteDocumentId),
       ),
+      createWhereToBuyListItem(S, siteCode, siteDocumentId),
       ...secondarySiteCollections.map((config) =>
         createCollectionListItem(S, config, siteDocumentId),
       ),

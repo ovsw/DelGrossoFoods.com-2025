@@ -604,6 +604,18 @@ export type TimelineMarker = {
   };
 };
 
+export type Tags = Array<
+  {
+    _key: string;
+  } & Tag
+>;
+
+export type Tag = {
+  _type: "tag";
+  value?: string;
+  label?: string;
+};
+
 export type SectionSpacing = {
   _type: "sectionSpacing";
   spacingTop: "default" | "none" | "small" | "large";
@@ -1430,6 +1442,25 @@ export type Sauce = {
   };
 };
 
+export type Retailer = {
+  _id: string;
+  _type: "retailer";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  productLinesByState?: Array<{
+    productLine:
+      | "Original"
+      | "Organic"
+      | "LFD - pizza and pasta sauce"
+      | "LFD - Sloppy Joe Sauce";
+    states: Tags;
+    _type: "productLineStatesEntry";
+    _key: string;
+  }>;
+};
+
 export type Faq = {
   _id: string;
   _type: "faq";
@@ -1950,6 +1981,8 @@ export type AllSanitySchemaTypes =
   | Feature
   | Cta
   | TimelineMarker
+  | Tags
+  | Tag
   | SectionSpacing
   | HomePageBuilder
   | PageBuilder
@@ -1969,6 +2002,7 @@ export type AllSanitySchemaTypes =
   | Recipe
   | Product
   | Sauce
+  | Retailer
   | Faq
   | Page
   | Button
