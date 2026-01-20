@@ -62,7 +62,7 @@ export default async function RootLayout({
       >
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[80] focus:bg-primary focus:text-primary-foreground focus:px-3 focus:py-2 focus:rounded focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-ring"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[80] focus:bg-primary focus:text-primary-foreground focus:px-3 focus:py-2 focus:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Skip to main content
         </a>
