@@ -30,6 +30,9 @@ export default defineCliConfig({
     projectId,
     dataset,
   },
+  deployment: {
+    appId: "gojh93ufjfi3pwoabipz9tc2",
+  },
   studioHost: getStudioHost(),
   autoUpdates: false,
 });

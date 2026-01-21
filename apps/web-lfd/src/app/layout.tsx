@@ -9,7 +9,7 @@ import {
 } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
-import { VisualEditing } from "next-sanity";
+import { VisualEditing } from "next-sanity/visual-editing";
 import { Suspense } from "react";
 
 import { AnnouncerGuard } from "@/components/elements/a11y/announcer-guard";

@@ -105,21 +105,19 @@ export async function GET(request: Request): Promise<ImageResponse | Response> {
     );
 
     return new ImageResponse(
-      (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor,
-            color,
-          }}
-        >
-          <LogoSvg style={{ width, height }} />
-        </div>
-      ),
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor,
+          color,
+        }}
+      >
+        <LogoSvg style={{ width, height }} />
+      </div>,
       {
         width,
         height,

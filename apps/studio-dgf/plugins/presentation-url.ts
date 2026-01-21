@@ -1,63 +1,61 @@
 import { EarthGlobeIcon } from "@sanity/icons";
 import { useToast } from "@sanity/ui";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import {
-  defineDocumentFieldAction,
   definePlugin,
-  type DocumentFieldAction,
-  type DocumentFieldActionProps,
-  useGetFormValue,
+  type DocumentActionComponent,
+  type DocumentActionProps,
 } from "sanity";
 import { PresentationContext } from "sanity/_singletons";
 import { useRouter } from "sanity/router";
 
-const ACTION_NAME = "open-in-presentation";
+const OpenInPresentationAction: DocumentActionComponent = (
+  props: DocumentActionProps,
+) => {
+  const presentation = useContext(PresentationContext);
+  const router = useRouter();
+  const toast = useToast();
 
-const openInPresentationFieldAction = defineDocumentFieldAction({
-  name: ACTION_NAME,
-  useAction: (props: DocumentFieldActionProps) => {
-    const presentation = useContext(PresentationContext);
-    const getFormValue = useGetFormValue();
-    const router = useRouter();
-    const toast = useToast();
+  // Get slug from draft or published document
+  const slug = useMemo(() => {
+    const doc = props.draft || props.published;
+    return (doc?.slug as { current?: string } | undefined)?.current;
+  }, [props.draft, props.published]);
 
-    const handlePresentationOpen = useCallback(() => {
-      const slug = getFormValue(["slug", "current"]);
-      if (typeof slug !== "string" || !slug) {
-        toast.push({
-          title: "No slug found",
-          status: "error",
-          description:
-            "Please ensure the document has a valid slug before opening presentation.",
-        });
-        return;
-      }
-
-      router.navigateUrl({
-        path: `/presentation?preview=${encodeURIComponent(slug)}`,
+  const handlePresentationOpen = useCallback(() => {
+    if (typeof slug !== "string" || !slug) {
+      toast.push({
+        title: "No slug found",
+        status: "error",
+        description:
+          "Please ensure the document has a valid slug before opening presentation.",
       });
-    }, [getFormValue, router, toast]);
+      return;
+    }
 
-    return {
-      type: "action" as const,
-      icon: EarthGlobeIcon,
-      title: "Open in Presentation",
-      onAction: handlePresentationOpen,
-      hidden: Boolean(presentation) || props.path.length > 0,
-      renderAsButton: true,
-      disabled: props.documentId === "root",
-    };
-  },
-});
+    router.navigateUrl({
+      path: `/presentation?preview=${encodeURIComponent(slug)}`,
+    });
+  }, [slug, router, toast]);
+
+  // Hide action if already in presentation mode or if no slug is available
+  if (presentation || !slug) {
+    return null;
+  }
+
+  return {
+    label: "Open in Presentation",
+    icon: EarthGlobeIcon,
+    onHandle: handlePresentationOpen,
+  };
+};
 
 export const presentationUrl = definePlugin(() => {
   return {
     name: "presentationUrl",
     document: {
-      unstable_fieldActions: (
-        previous: DocumentFieldAction[],
-      ): DocumentFieldAction[] => {
-        return [openInPresentationFieldAction, ...previous];
+      actions: (previous) => {
+        return [...previous, OpenInPresentationAction];
       },
     },
   };

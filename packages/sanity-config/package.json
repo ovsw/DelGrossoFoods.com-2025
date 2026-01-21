@@ -7,7 +7,7 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./fragments": "./src/fragments.ts",
-    "./live": "./src/live.ts",
+    "./live": "./src/live.tsx",
     "./query": "./src/query.ts",
     "./site": "./src/site.ts",
     "./token": "./src/token.ts",
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@sanity/asset-utils": "^2.2.1",
-    "@sanity/client": "^7.10.0",
+    "@sanity/client": "^7.14.0",
     "@sanity/image-url": "^1.1.0",
     "@workspace/sanity-schema": "workspace:*",
-    "next-sanity": "^10.0.12"
+    "next-sanity": "^11.6.12"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

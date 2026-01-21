@@ -2,7 +2,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@workspace/ui", "@workspace/sanity-config"],
+  transpilePackages: [
+    "@workspace/ui",
+    "@workspace/sanity-config",
+    "next-sanity",
+  ],
   experimental: {
     reactCompiler: true,
     inlineCss: true,

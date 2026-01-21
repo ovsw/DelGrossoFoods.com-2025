@@ -70,7 +70,7 @@ const UrlPreview = styled.div`
 export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
   const document = useFormValue([]) as SanityDocument;
   const publishedId = getPublishedId(document?._id);
-  const validation = useValidationStatus(publishedId, document?._type);
+  const validation = useValidationStatus(publishedId, document?._type, false);
   const slugValidationError = useMemo(
     () =>
       validation.validation.find(
