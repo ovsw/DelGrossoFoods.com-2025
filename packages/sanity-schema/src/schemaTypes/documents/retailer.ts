@@ -147,6 +147,11 @@ export const retailer = defineType({
                   .unique()
                   .error("Each state should be listed once per product line."),
             }),
+            defineField({
+              name: "note",
+              title: "Note",
+              type: "richText",
+            }),
           ],
         }),
       ],

@@ -13,89 +13,65 @@
  */
 
 // Source: schema.json
+export type Link = {
+  title?: string;
+  description?: string;
+  url?: CustomUrl;
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type ImageLinkCardImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "imageLinkCard.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type ProductPanelImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "productPanel.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SeoImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "seoImage.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type SlideImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "slide.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt: string;
+  _type: "image";
+};
+
 export type HomeSlideshowVertical = {
   _type: "homeSlideshowVertical";
   title?: string;
-  headingRichText?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
-  description: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
+  headingRichText?: RichText;
+  description: RichText;
   buttons?: Array<
     {
       _key: string;
     } & Button
   >;
   leftColumnImages: Array<{
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -104,12 +80,7 @@ export type HomeSlideshowVertical = {
     _key: string;
   }>;
   rightColumnImages: Array<{
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -124,58 +95,13 @@ export type HomeSlideshow = {
   slides: Array<{
     title?: string;
     subtitle: string;
-    description: Array<
-      | {
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-          listItem?: "number" | "bullet";
-          markDefs?: Array<{
-            customLink?: CustomUrl;
-            _type: "customLink";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }
-      | {
-          asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-          };
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          caption?: string;
-          _type: "image";
-          _key: string;
-        }
-    >;
+    description: RichText;
     buttons?: Array<
       {
         _key: string;
       } & Button
     >;
-    image: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt: string;
-      _type: "image";
-    };
+    image: SlideImage;
     _type: "slide";
     _key: string;
   }>;
@@ -190,19 +116,7 @@ export type ThreeProductPanels = {
     title?: string;
     shortDescription?: string;
     expandedDescription?: string;
-    image?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    };
+    image?: ProductPanelImage;
     accentColor?: "red" | "green" | "black";
     ctaButton?: Button;
     _type: "productPanel";
@@ -299,40 +213,7 @@ export type ImageLinkCards = {
   _type: "imageLinkCards";
   eyebrow?: string;
   title: string;
-  richText?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
+  richText?: RichText;
   buttons?: Array<
     {
       _key: string;
@@ -341,18 +222,7 @@ export type ImageLinkCards = {
   cards?: Array<{
     title: string;
     description: string;
-    image?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
+    image?: ImageLinkCardImage;
     url?: CustomUrl;
     _type: "imageLinkCard";
     _key: string;
@@ -360,23 +230,24 @@ export type ImageLinkCards = {
   spacing: SectionSpacing;
 };
 
+export type FaqReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "faq";
+};
+
 export type FaqAccordion = {
   _type: "faqAccordion";
   eyebrow?: string;
   title: string;
   subtitle?: string;
-  link?: {
-    title?: string;
-    description?: string;
-    url?: CustomUrl;
-  };
-  faqs: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "faq";
-  }>;
+  link?: Link;
+  faqs: Array<
+    {
+      _key: string;
+    } & FaqReference
+  >;
   spacing: SectionSpacing;
 };
 
@@ -429,18 +300,23 @@ export type FeatureCardsIcon = {
   spacing: SectionSpacing;
 };
 
+export type RecipeReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "recipe";
+};
+
 export type FeaturedRecipes = {
   _type: "featuredRecipes";
   eyebrow?: string;
   title?: string;
   intro?: string;
-  recipes: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "recipe";
-  }>;
+  recipes: Array<
+    {
+      _key: string;
+    } & RecipeReference
+  >;
   spacing: SectionSpacing;
 };
 
@@ -448,47 +324,9 @@ export type Feature = {
   _type: "feature";
   badge?: string;
   title?: string;
-  richText?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
+  richText?: RichText;
   image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -509,40 +347,7 @@ export type Cta = {
   applySurfaceShine?: boolean;
   eyebrow?: string;
   title?: string;
-  richText?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
+  richText?: RichText;
   buttons?: Array<
     {
       _key: string;
@@ -551,51 +356,22 @@ export type Cta = {
   spacing: SectionSpacing;
 };
 
+export type Timeline = {
+  _type: "timeline";
+  markers?: Array<
+    {
+      _key: string;
+    } & TimelineMarker
+  >;
+};
+
 export type TimelineMarker = {
   _type: "timelineMarker";
   heading?: string;
   subtitle?: string;
-  content?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "inline";
-        listItem?: "number" | "bullet";
-        markDefs?: Array<{
-          customLink?: CustomUrl;
-          _type: "customLink";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }
-  >;
+  content?: RichText;
   image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -688,6 +464,12 @@ export type PageBuilder = Array<
     } & ThreeProductPanels)
 >;
 
+export type Button = {
+  _type: "button";
+  text?: string;
+  url?: CustomUrl;
+};
+
 export type RichText = Array<
   | {
       children?: Array<{
@@ -708,12 +490,7 @@ export type RichText = Array<
       _key: string;
     }
   | {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -723,40 +500,127 @@ export type RichText = Array<
     }
 >;
 
+export type HomePageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "homePage";
+};
+
+export type PageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "page";
+};
+
+export type HistoryPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "historyPage";
+};
+
+export type ContactPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "contactPage";
+};
+
+export type StoreLocatorReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "storeLocator";
+};
+
+export type SauceIndexReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sauceIndex";
+};
+
+export type RecipeIndexReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "recipeIndex";
+};
+
+export type ProductIndexReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "productIndex";
+};
+
+export type SauceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sauce";
+};
+
+export type ProductReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "product";
+};
+
+export type CustomUrl = {
+  _type: "customUrl";
+  type: "internal" | "external";
+  openInNewTab?: boolean;
+  external?: string;
+  href?: string;
+  internal?:
+    | HomePageReference
+    | PageReference
+    | HistoryPageReference
+    | ContactPageReference
+    | StoreLocatorReference
+    | SauceIndexReference
+    | RecipeIndexReference
+    | ProductIndexReference
+    | RecipeReference
+    | SauceReference
+    | ProductReference;
+};
+
+export type SiteReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "site";
+};
+
 export type ContactPage = {
   _id: string;
   _type: "contactPage";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title: string;
   description?: string;
   slug: Slug;
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   seoNoIndex?: boolean;
   seoHideFromLists?: boolean;
   ogTitle?: string;
   ogDescription?: string;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
 };
 
 export type StoreLocator = {
@@ -765,30 +629,14 @@ export type StoreLocator = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title: string;
   description?: string;
   slug: Slug;
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   seoNoIndex?: boolean;
   seoHideFromLists?: boolean;
   ogTitle?: string;
@@ -801,21 +649,11 @@ export type HistoryPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title: string;
   description?: string;
   pageHeaderImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -826,31 +664,27 @@ export type HistoryPage = {
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   seoNoIndex?: boolean;
   seoHideFromLists?: boolean;
   ogTitle?: string;
   ogDescription?: string;
 };
 
-export type Timeline = {
-  _type: "timeline";
-  markers?: Array<
-    {
-      _key: string;
-    } & TimelineMarker
-  >;
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type Navbar = {
@@ -859,12 +693,7 @@ export type Navbar = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   label: string;
   columns?: Array<
     | {
@@ -900,12 +729,7 @@ export type Footer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   label: string;
   subtitle?: string;
   columns?: Array<{
@@ -927,12 +751,7 @@ export type Settings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   label: string;
   siteTitle: string;
   siteDescription: string;
@@ -956,21 +775,11 @@ export type ProductIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title?: string;
   description?: string;
   pageHeaderImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -980,18 +789,7 @@ export type ProductIndex = {
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -1002,21 +800,11 @@ export type RecipeIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title?: string;
   description?: string;
   pageHeaderImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1026,18 +814,7 @@ export type RecipeIndex = {
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -1048,21 +825,11 @@ export type SauceIndex = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title?: string;
   description?: string;
   pageHeaderImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1074,18 +841,7 @@ export type SauceIndex = {
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -1096,30 +852,14 @@ export type HomePage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title?: string;
   description?: string;
   slug: Slug;
   pageBuilder?: HomePageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -1130,14 +870,16 @@ export type RecipeCategory = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title: string;
   slug: Slug;
+};
+
+export type RecipeCategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "recipeCategory";
 };
 
 export type Recipe = {
@@ -1149,37 +891,26 @@ export type Recipe = {
   name: string;
   slug: Slug;
   versions: Array<string>;
-  dgfSauces?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "sauce";
-  }>;
-  lfdSauces?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "sauce";
-  }>;
+  dgfSauces?: Array<
+    {
+      _key: string;
+    } & SauceReference
+  >;
+  lfdSauces?: Array<
+    {
+      _key: string;
+    } & SauceReference
+  >;
   tags?: Array<string>;
   meat?: Array<string>;
   serves?: string;
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "recipeCategory";
-  }>;
+  categories?: Array<
+    {
+      _key: string;
+    } & RecipeCategoryReference
+  >;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1188,12 +919,7 @@ export type Recipe = {
   video?: {
     asset: MuxVideo;
     posterImage?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -1311,6 +1037,18 @@ export type Recipe = {
   orderRank?: string;
 };
 
+export type MuxVideoAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "mux.videoAsset";
+};
+
+export type MuxVideo = {
+  _type: "mux.video";
+  asset?: MuxVideoAssetReference;
+};
+
 export type Product = {
   _id: string;
   _type: "product";
@@ -1325,20 +1063,13 @@ export type Product = {
   description?: RichText;
   price?: number;
   weight: number;
-  sauces?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "sauce";
-  }>;
+  sauces?: Array<
+    {
+      _key: string;
+    } & SauceReference
+  >;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1367,12 +1098,7 @@ export type Sauce = {
     | "13.5 oz.";
   description: RichText;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1380,12 +1106,7 @@ export type Sauce = {
     _type: "image";
   };
   labelFlatImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1428,12 +1149,7 @@ export type Sauce = {
   allergens?: string;
   authorName?: string;
   authorImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1456,6 +1172,7 @@ export type Retailer = {
       | "LFD - pizza and pasta sauce"
       | "LFD - Sloppy Joe Sauce";
     states: Tags;
+    note?: RichText;
     _type: "productLineStatesEntry";
     _key: string;
   }>;
@@ -1477,22 +1194,12 @@ export type Page = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  site: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "site";
-  };
+  site: SiteReference;
   title: string;
   description?: string;
   slug: Slug;
   image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1501,102 +1208,17 @@ export type Page = {
   pageBuilder?: PageBuilder;
   seoTitle?: string;
   seoDescription?: string;
-  seoImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  seoImage?: SeoImage;
   seoNoIndex?: boolean;
   ogTitle?: string;
   ogDescription?: string;
 };
 
-export type Button = {
-  _type: "button";
-  text?: string;
-  url?: CustomUrl;
-};
-
-export type CustomUrl = {
-  _type: "customUrl";
-  type: "internal" | "external";
-  openInNewTab?: boolean;
-  external?: string;
-  href?: string;
-  internal?:
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "homePage";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "historyPage";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "contactPage";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "storeLocator";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sauceIndex";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "recipeIndex";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "productIndex";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "recipe";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sauce";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "product";
-      };
+export type IconPicker = {
+  _type: "iconPicker";
+  provider?: string;
+  name?: string;
+  svg?: string;
 };
 
 export type Site = {
@@ -1648,14 +1270,16 @@ export type SanityAssistOutputField = {
   path?: string;
 };
 
+export type AssistInstructionContextReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "assist.instruction.context";
+};
+
 export type SanityAssistInstructionContext = {
   _type: "sanity.assist.instruction.context";
-  reference: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "assist.instruction.context";
-  };
+  reference: AssistInstructionContextReference;
 };
 
 export type AssistInstructionContext = {
@@ -1745,23 +1369,6 @@ export type SanityAssistSchemaTypeField = {
   >;
 };
 
-export type IconPicker = {
-  _type: "iconPicker";
-  provider?: string;
-  name?: string;
-  svg?: string;
-};
-
-export type MuxVideo = {
-  _type: "mux.video";
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "mux.videoAsset";
-  };
-};
-
 export type MuxVideoAsset = {
   _id: string;
   _type: "mux.videoAsset";
@@ -1786,6 +1393,7 @@ export type MuxAssetData = {
   max_stored_resolution?: string;
   passthrough?: string;
   encoding_tier?: string;
+  video_quality?: string;
   master_access?: string;
   aspect_ratio?: string;
   duration?: number;
@@ -1817,12 +1425,18 @@ export type MuxStaticRenditions = {
 
 export type MuxStaticRenditionFile = {
   _type: "mux.staticRenditionFile";
-  ext?: string;
   name?: string;
+  ext?: string;
+  height?: number;
   width?: number;
   bitrate?: number;
-  filesize?: number;
-  height?: number;
+  filesize?: string;
+  type?: string;
+  status?: string;
+  resolution_tier?: string;
+  resolution?: string;
+  id?: string;
+  passthrough?: string;
 };
 
 export type MuxPlaybackId = {
@@ -1876,20 +1490,16 @@ export type SanityImageDimensions = {
   aspectRatio: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  thumbHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -1912,6 +1522,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -1937,17 +1554,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -1955,42 +1561,53 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type AllSanitySchemaTypes =
+  | Link
+  | SanityImageAssetReference
+  | ImageLinkCardImage
+  | ProductPanelImage
+  | SeoImage
+  | SlideImage
   | HomeSlideshowVertical
   | HomeSlideshow
   | ThreeProductPanels
   | LongForm
   | SubscribeNewsletter
   | ImageLinkCards
+  | FaqReference
   | FaqAccordion
   | FeatureCardsIcon
+  | RecipeReference
   | FeaturedRecipes
   | Feature
   | Cta
+  | Timeline
   | TimelineMarker
   | Tags
   | Tag
   | SectionSpacing
   | HomePageBuilder
   | PageBuilder
+  | Button
   | RichText
+  | HomePageReference
+  | PageReference
+  | HistoryPageReference
+  | ContactPageReference
+  | StoreLocatorReference
+  | SauceIndexReference
+  | RecipeIndexReference
+  | ProductIndexReference
+  | SauceReference
+  | ProductReference
+  | CustomUrl
+  | SiteReference
   | ContactPage
+  | Slug
   | StoreLocator
   | HistoryPage
-  | Timeline
+  | SanityImageCrop
+  | SanityImageHotspot
   | Navbar
   | Footer
   | Settings
@@ -1999,20 +1616,23 @@ export type AllSanitySchemaTypes =
   | SauceIndex
   | HomePage
   | RecipeCategory
+  | RecipeCategoryReference
   | Recipe
+  | MuxVideoAssetReference
+  | MuxVideo
   | Product
   | Sauce
   | Retailer
   | Faq
   | Page
-  | Button
-  | CustomUrl
+  | IconPicker
   | Site
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations
   | SanityAssistOutputType
   | SanityAssistOutputField
+  | AssistInstructionContextReference
   | SanityAssistInstructionContext
   | AssistInstructionContext
   | SanityAssistInstructionUserInput
@@ -2020,8 +1640,6 @@ export type AllSanitySchemaTypes =
   | SanityAssistInstructionFieldRef
   | SanityAssistInstruction
   | SanityAssistSchemaTypeField
-  | IconPicker
-  | MuxVideo
   | MuxVideoAsset
   | MuxAssetData
   | MuxStaticRenditions
@@ -2032,15 +1650,20 @@ export type AllSanitySchemaTypes =
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
-  | SanityImageHotspot
-  | SanityImageCrop
-  | SanityFileAsset
-  | SanityImageAsset
   | SanityImageMetadata
-  | Geopoint
-  | Slug
-  | SanityAssetSourceData;
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
+
 export declare const internalGroqTypeReferenceTo: unique symbol;
+
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
+
 // Source: ../../packages/sanity-config/src/query.ts
 // Variable: queryImageType
 // Query: *[_type == "page" && defined(image)][0]{      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }  }.image
@@ -2059,6 +1682,8 @@ export type QueryImageTypeResult = {
   } | null;
   alt: null;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: queryHomePageOGData
 // Query: *[_type == "homePage" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QueryHomePageOGDataResult = {
@@ -2071,25 +1696,29 @@ export type QueryHomePageOGDataResult = {
   seoImage: string | null;
   date: string;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: querySlugPageOGData
 // Query: *[_type == "page" && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QuerySlugPageOGDataResult = {
   _id: string;
   _type: "page";
-  title: string | "";
+  title: string;
   description: string | "";
   image: string | null;
   dominantColor: string | null;
   seoImage: string | null;
   date: string;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: queryGenericPageOGData
 // Query: *[ defined(slug.current) && _id == $id][0]{      _id,  _type,  "title": coalesce(string(select(    defined(ogTitle) => ogTitle,    defined(seoTitle) => seoTitle,    _type == "sauce" => name,    _type == "product" => name,    _type == "recipe" => name,    title  )), ""),  "description": coalesce(string(select(    defined(ogDescription) => ogDescription,    defined(seoDescription) => seoDescription,    _type == "sauce" => pt::text(description),    _type == "product" => coalesce(pt::text(description), name),    _type == "recipe" => coalesce(pt::text(description), name),    description  )), ""),  "image": coalesce(    mainImage.asset->url,    image.asset->url  ) + "?w=566&h=566&dpr=2&fit=max",  "dominantColor": coalesce(    mainImage.asset->metadata.palette.dominant.background,    image.asset->metadata.palette.dominant.background  ),  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",  "date": coalesce(date, _createdAt)  }
 export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "contactPage";
-      title: string | "";
+      title: string;
       description: string | "";
       image: null;
       dominantColor: null;
@@ -2099,7 +1728,7 @@ export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "historyPage";
-      title: string | "";
+      title: string;
       description: string | "";
       image: null;
       dominantColor: null;
@@ -2119,7 +1748,7 @@ export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "page";
-      title: string | "";
+      title: string;
       description: string | "";
       image: string | null;
       dominantColor: string | null;
@@ -2199,7 +1828,7 @@ export type QueryGenericPageOGDataResult =
   | {
       _id: string;
       _type: "storeLocator";
-      title: string | "";
+      title: string;
       description: string | "";
       image: null;
       dominantColor: null;
@@ -2207,6 +1836,8 @@ export type QueryGenericPageOGDataResult =
       date: string;
     }
   | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getAllSaucesForIndexQuery
 // Query: *[    _type == "sauce"    && (      !defined($line)      || $line == null      || line == $line    )  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": mainImage.asset._ref,      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
 export type GetAllSaucesForIndexQueryResult = Array<{
@@ -2233,6 +1864,8 @@ export type GetAllSaucesForIndexQueryResult = Array<{
     alt: string | null;
   };
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getSaucesByIdsQuery
 // Query: *[    _type == "sauce"    && _id in $sauceIds    && defined(slug.current)  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    }  }
 export type GetSaucesByIdsQueryResult = Array<{
@@ -2259,6 +1892,8 @@ export type GetSaucesByIdsQueryResult = Array<{
     alt: string | "";
   } | null;
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getSauceBySlugQuery
 // Query: *[_type == "sauce" && slug.current in [$slug, $prefixedSlug]][0]{    _id,    _type,    name,    "slug": slug.current,    colorHex,    line,    category,    "description": description[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    "labelFlatImage": labelFlatImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    authorName,    "authorImage": authorImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    nutritionalInfo,    ingredients,    allergens  }
 export type GetSauceBySlugQueryResult = {
@@ -2298,12 +1933,7 @@ export type GetSauceBySlugQueryResult = {
         _key: string;
       }
     | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
+        asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot: {
           x: number;
@@ -2405,6 +2035,8 @@ export type GetSauceBySlugQueryResult = {
   ingredients: string | null;
   allergens: string | null;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getAllRecipesForIndexQuery
 // Query: *[    _type == "recipe"    && (      !defined($siteCode)      || $siteCode != "LFD"      || "LFD" in coalesce(versions, [])    )  ] | order(name asc){    _id,    name,    "slug": slug.current,    tags,    meat,    versions,    "hasVideo": defined(video.asset.asset._ref),    "categories": array::compact(categories[]->{ _id, title, slug }),    "descriptionPlain": "",    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right }    },    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))  }
 export type GetAllRecipesForIndexQueryResult = Array<{
@@ -2437,6 +2069,8 @@ export type GetAllRecipesForIndexQueryResult = Array<{
   };
   sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getRecipesBySauceIdQuery
 // Query: *[    _type == "recipe"    && defined(slug.current)    && $sauceId != null    && references($sauceId)    && (      !defined($siteCode)      || $siteCode != "LFD"      || "LFD" in coalesce(versions, [])    )  ] | order(name asc){    _id,    name,    "slug": slug.current,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "descriptionPlain": "",    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right }    },    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))  }
 export type GetRecipesBySauceIdQueryResult = Array<{
@@ -2468,9 +2102,13 @@ export type GetRecipesBySauceIdQueryResult = Array<{
   };
   sauceLines: Array<"Organic" | "Original" | "Ultra-Premium"> | null;
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getRecipesBySauceIdsQuery
 // Query: *[    _type == "recipe"    && defined(slug.current)    && $sauceIds != null    && count($sauceIds) > 0    && references(*[_id in $sauceIds]._id)    && (      !defined($siteCode)      || $siteCode != "LFD"      || "LFD" in coalesce(versions, [])    )  ] | order(name asc){    _id,    name,    "slug": slug.current,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "descriptionPlain": "",    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right }    },    "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))  }
 export type GetRecipesBySauceIdsQueryResult = Array<never>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getRecipeByIdQuery
 // Query: *[    _type == "recipe"    && _id == $id  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "video":   select(    defined(video.asset.asset._ref) => {      "playbackId": video.asset.asset->playbackId,      "assetId": video.asset.asset->assetId,      "status": video.asset.asset->status,      "thumbTime": video.asset.asset->thumbTime,      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),      "posterImage": video.posterImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt      }    }  ),    "dgfIngredients": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfIngredients    ),    "dgfDirections": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfDirections    ),    "dgfNotes": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfNotes    ),    lfdIngredients,    lfdDirections,    lfdNotes,    "dgfSauces": select(      defined($siteCode) && $siteCode == "LFD" => [],      dgfSauces[]->{        _id,        name,        "slug": slug.current,        line,        "mainImage": mainImage{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "alt": coalesce(alt, "")        }      }    ),    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
 export type GetRecipeByIdQueryResult = {
@@ -2678,6 +2316,8 @@ export type GetRecipeByIdQueryResult = {
     } | null;
   }> | null;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getRecipeBySlugQuery
 // Query: *[    _type == "recipe"    && slug.current in [$slug, $prefixedSlug]  ][0]{    _id,    _type,    name,    "slug": slug.current,    serves,    tags,    meat,    versions,    "categories": array::compact(categories[]->{ _id, title, slug }),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "video":   select(    defined(video.asset.asset._ref) => {      "playbackId": video.asset.asset->playbackId,      "assetId": video.asset.asset->assetId,      "status": video.asset.asset->status,      "thumbTime": video.asset.asset->thumbTime,      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),      "posterImage": video.posterImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt      }    }  ),    "dgfIngredients": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfIngredients    ),    "dgfDirections": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfDirections    ),    "dgfNotes": select(      defined($siteCode) && $siteCode == "LFD" => null,      dgfNotes    ),    lfdIngredients,    lfdDirections,    lfdNotes,    "dgfSauces": select(      defined($siteCode) && $siteCode == "LFD" => [],      dgfSauces[]->{        _id,        name,        "slug": slug.current,        line,        "mainImage": mainImage{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "alt": coalesce(alt, "")        }      }    ),    lfdSauces[]->{      _id,      name,      "slug": slug.current,      line,      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    }  }
 export type GetRecipeBySlugQueryResult = {
@@ -2885,6 +2525,8 @@ export type GetRecipeBySlugQueryResult = {
     } | null;
   }> | null;
 } | null;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getAllProductsForIndexQuery
 // Query: *[    _type == "product"    && (      !defined($excludeLines)      || $excludeLines == null      || !defined(sauces)      || count(        (array::unique((sauces[]->line)[defined(@)]))[@ in $excludeLines]      ) == 0    )  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    sku,    category,    price,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "sauceLines": array::unique((sauces[]->line)[defined(@)]),    "sauceTypes": array::unique((sauces[]->category)[defined(@)])  }
 export type GetAllProductsForIndexQueryResult = Array<{
@@ -2916,6 +2558,8 @@ export type GetAllProductsForIndexQueryResult = Array<{
     "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
   > | null;
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getProductsBySauceIdQuery
 // Query: *[    _type == "product"    && defined(slug.current)    && references($sauceId)  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    sku,    category,    price,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": {      "id": coalesce(mainImage.asset._ref, ""),      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    },    "sauceLines": array::unique((sauces[]->line)[defined(@)]),    "sauceTypes": array::unique((sauces[]->category)[defined(@)])  }
 export type GetProductsBySauceIdQueryResult = Array<{
@@ -2947,6 +2591,8 @@ export type GetProductsBySauceIdQueryResult = Array<{
     "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
   > | null;
 }>;
+
+// Source: ../../packages/sanity-config/src/query.ts
 // Variable: getProductBySlugQuery
 // Query: *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{    _id,    _type,    name,    "slug": slug.current,    sku,    category,    shippingCategory,    price,    weight,    "description": description[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    },    "sauces": array::compact(sauces[]->{      _id,      _type,      name,      line,      category,      "slug": slug.current,      "descriptionPlain": coalesce(pt::text(description), ""),      "mainImage": mainImage{          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "alt": coalesce(alt, "")      }    })  }
 export type GetProductBySlugQueryResult = {
@@ -2988,12 +2634,7 @@ export type GetProductBySlugQueryResult = {
         _key: string;
       }
     | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
+        asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot: {
           x: number;
@@ -3107,12 +2748,7 @@ export type DgfHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -3183,12 +2819,7 @@ export type DgfHomePageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -3280,12 +2911,7 @@ export type DgfHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -3396,7 +3022,7 @@ export type DgfHomePageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -3415,7 +3041,7 @@ export type DgfHomePageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -3431,7 +3057,7 @@ export type DgfHomePageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -3487,12 +3113,7 @@ export type DgfHomePageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -3574,12 +3195,7 @@ export type DgfHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -3628,12 +3244,7 @@ export type DgfHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -3732,12 +3343,7 @@ export type DgfHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -3959,6 +3565,8 @@ export type DgfHomePageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSlugPageQuery
 // Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type DgfSlugPageQueryResult = {
@@ -4010,12 +3618,7 @@ export type DgfSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -4086,12 +3689,7 @@ export type DgfSlugPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -4183,12 +3781,7 @@ export type DgfSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -4299,7 +3892,7 @@ export type DgfSlugPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -4318,7 +3911,7 @@ export type DgfSlugPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -4334,7 +3927,7 @@ export type DgfSlugPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -4388,12 +3981,7 @@ export type DgfSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -4615,9 +4203,13 @@ export type DgfSlugPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
 export type DgfSlugPagePathsQueryResult = Array<string>;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfFooterQuery
 // Query: *[_type == "footer" && site._ref == $siteId][0]{    _id,    _type,    subtitle,    columns[]{      _key,      title,      links[]{        _key,        name,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        ),      }    }  }
 export type DgfFooterQueryResult = {
@@ -4635,6 +4227,8 @@ export type DgfFooterQueryResult = {
     }> | null;
   }> | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfNavbarQuery
 // Query: *[_type == "navbar" && site._ref == $siteId][0]{    _id,    _type,    columns[]{      _key,      _type == "navbarColumn" => {        "type": "column",        title,        links[]{          _key,          name,          icon,          description,          "openInNewTab": url.openInNewTab,          "href": select(            url.type == "internal" => url.internal->slug.current,            url.type == "external" => url.external,            url.href          )        }      },      _type == "navbarLink" => {        "type": "link",        name,        description,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  }
 export type DgfNavbarQueryResult = {
@@ -4672,6 +4266,8 @@ export type DgfNavbarQueryResult = {
     href: string | null;
   }> | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfGlobalSeoSettingsQuery
 // Query: *[_type == "settings" && site._ref == $siteId][0]{    _id,    _type,    siteTitle,    siteDescription,    addressLines,    contactEmail,    tollFreePhone,    officePhone,    socialLinks{      linkedin,      facebook,      twitter,      instagram,      youtube    }  }
 export type DgfGlobalSeoSettingsQueryResult = {
@@ -4691,6 +4287,8 @@ export type DgfGlobalSeoSettingsQueryResult = {
     youtube: string | null;
   } | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSettingsQuery
 // Query: *[_type == "settings" && site._ref == $siteId][0]{    _id,    _type,    siteTitle,    siteDescription,    "socialLinks": socialLinks,    "contactEmail": contactEmail,  }
 export type DgfSettingsQueryResult = {
@@ -4707,6 +4305,8 @@ export type DgfSettingsQueryResult = {
   } | null;
   contactEmail: string | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSitemapQuery
 // Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type DgfSitemapQueryResult = {
@@ -4727,6 +4327,8 @@ export type DgfSitemapQueryResult = {
     lastModified: string;
   }>;
 };
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSauceIndexPageQuery
 // Query: *[_type == "sauceIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type DgfSauceIndexPageQueryResult = {
@@ -4735,7 +4337,7 @@ export type DgfSauceIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -4751,6 +4353,8 @@ export type DgfSauceIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfRecipeIndexPageQuery
 // Query: *[_type == "recipeIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type DgfRecipeIndexPageQueryResult = {
@@ -4759,7 +4363,7 @@ export type DgfRecipeIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -4775,6 +4379,8 @@ export type DgfRecipeIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfRecipeCategoriesQuery
 // Query: *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){    _id,    title,    slug  }
 export type DgfRecipeCategoriesQueryResult = Array<{
@@ -4782,6 +4388,8 @@ export type DgfRecipeCategoriesQueryResult = Array<{
   title: string;
   slug: Slug;
 }>;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfProductIndexPageQuery
 // Query: *[_type == "productIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type DgfProductIndexPageQueryResult = {
@@ -4790,7 +4398,7 @@ export type DgfProductIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -4806,6 +4414,8 @@ export type DgfProductIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfHistoryPageQuery
 // Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        _key,        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type DgfHistoryPageQueryResult = {
@@ -4814,7 +4424,7 @@ export type DgfHistoryPageQueryResult = {
   title: string;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -4863,12 +4473,7 @@ export type DgfHistoryPageQueryResult = {
             _key: string;
           }
         | {
-            asset?: {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-            };
+            asset?: SanityImageAssetReference;
             media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
@@ -4937,12 +4542,7 @@ export type DgfHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -5013,12 +4613,7 @@ export type DgfHistoryPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -5110,12 +4705,7 @@ export type DgfHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -5226,7 +4816,7 @@ export type DgfHistoryPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -5245,7 +4835,7 @@ export type DgfHistoryPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -5261,7 +4851,7 @@ export type DgfHistoryPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -5315,12 +4905,7 @@ export type DgfHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -5542,6 +5127,8 @@ export type DgfHistoryPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfStoreLocatorPageQuery
 // Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type DgfStoreLocatorPageQueryResult = {
@@ -5591,12 +5178,7 @@ export type DgfStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -5667,12 +5249,7 @@ export type DgfStoreLocatorPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -5764,12 +5341,7 @@ export type DgfStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -5880,7 +5452,7 @@ export type DgfStoreLocatorPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -5899,7 +5471,7 @@ export type DgfStoreLocatorPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -5915,7 +5487,7 @@ export type DgfStoreLocatorPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -5969,12 +5541,7 @@ export type DgfStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -6196,6 +5763,8 @@ export type DgfStoreLocatorPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfContactPageQuery
 // Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type DgfContactPageQueryResult = {
@@ -6253,12 +5822,7 @@ export type DgfContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -6329,12 +5893,7 @@ export type DgfContactPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -6426,12 +5985,7 @@ export type DgfContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -6542,7 +6096,7 @@ export type DgfContactPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -6561,7 +6115,7 @@ export type DgfContactPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -6577,7 +6131,7 @@ export type DgfContactPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -6631,12 +6185,7 @@ export type DgfContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -6911,12 +6460,7 @@ export type LfdHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -6987,12 +6531,7 @@ export type LfdHomePageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -7084,12 +6623,7 @@ export type LfdHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -7200,7 +6734,7 @@ export type LfdHomePageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -7219,7 +6753,7 @@ export type LfdHomePageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -7235,7 +6769,7 @@ export type LfdHomePageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -7291,12 +6825,7 @@ export type LfdHomePageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -7378,12 +6907,7 @@ export type LfdHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -7432,12 +6956,7 @@ export type LfdHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -7536,12 +7055,7 @@ export type LfdHomePageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -7763,6 +7277,8 @@ export type LfdHomePageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSlugPageQuery
 // Query: *[_type == "page" && slug.current == $slug && site._ref == $siteId][0]{    _id,    _type,    title,    description,    seoTitle,    seoDescription,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type LfdSlugPageQueryResult = {
@@ -7814,12 +7330,7 @@ export type LfdSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -7890,12 +7401,7 @@ export type LfdSlugPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -7987,12 +7493,7 @@ export type LfdSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -8103,7 +7604,7 @@ export type LfdSlugPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -8122,7 +7623,7 @@ export type LfdSlugPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -8138,7 +7639,7 @@ export type LfdSlugPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -8192,12 +7693,7 @@ export type LfdSlugPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -8419,9 +7915,13 @@ export type LfdSlugPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
 export type LfdSlugPagePathsQueryResult = Array<string>;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdFooterQuery
 // Query: *[_type == "footer" && site._ref == $siteId][0]{    _id,    _type,    subtitle,    columns[]{      _key,      title,      links[]{        _key,        name,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        ),      }    }  }
 export type LfdFooterQueryResult = {
@@ -8439,6 +7939,8 @@ export type LfdFooterQueryResult = {
     }> | null;
   }> | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdNavbarQuery
 // Query: *[_type == "navbar" && site._ref == $siteId][0]{    _id,    _type,    columns[]{      _key,      _type == "navbarColumn" => {        "type": "column",        title,        links[]{          _key,          name,          icon,          description,          "openInNewTab": url.openInNewTab,          "href": select(            url.type == "internal" => url.internal->slug.current,            url.type == "external" => url.external,            url.href          )        }      },      _type == "navbarLink" => {        "type": "link",        name,        description,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },  }
 export type LfdNavbarQueryResult = {
@@ -8476,6 +7978,8 @@ export type LfdNavbarQueryResult = {
     href: string | null;
   }> | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdGlobalSeoSettingsQuery
 // Query: *[_type == "settings" && site._ref == $siteId][0]{    _id,    _type,    siteTitle,    siteDescription,    addressLines,    contactEmail,    tollFreePhone,    officePhone,    socialLinks{      linkedin,      facebook,      twitter,      instagram,      youtube    }  }
 export type LfdGlobalSeoSettingsQueryResult = {
@@ -8495,6 +7999,8 @@ export type LfdGlobalSeoSettingsQueryResult = {
     youtube: string | null;
   } | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSettingsQuery
 // Query: *[_type == "settings" && site._ref == $siteId][0]{    _id,    _type,    siteTitle,    siteDescription,    "socialLinks": socialLinks,    "contactEmail": contactEmail,  }
 export type LfdSettingsQueryResult = {
@@ -8511,6 +8017,8 @@ export type LfdSettingsQueryResult = {
   } | null;
   contactEmail: string | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSitemapQuery
 // Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type LfdSitemapQueryResult = {
@@ -8531,6 +8039,8 @@ export type LfdSitemapQueryResult = {
     lastModified: string;
   }>;
 };
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSauceIndexPageQuery
 // Query: *[_type == "sauceIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type LfdSauceIndexPageQueryResult = {
@@ -8539,7 +8049,7 @@ export type LfdSauceIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -8555,6 +8065,8 @@ export type LfdSauceIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdRecipeIndexPageQuery
 // Query: *[_type == "recipeIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type LfdRecipeIndexPageQueryResult = {
@@ -8563,7 +8075,7 @@ export type LfdRecipeIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -8579,6 +8091,8 @@ export type LfdRecipeIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdRecipeCategoriesQuery
 // Query: *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){    _id,    title,    slug  }
 export type LfdRecipeCategoriesQueryResult = Array<{
@@ -8586,6 +8100,8 @@ export type LfdRecipeCategoriesQueryResult = Array<{
   title: string;
   slug: Slug;
 }>;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdProductIndexPageQuery
 // Query: *[_type == "productIndex" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current  }
 export type LfdProductIndexPageQueryResult = {
@@ -8594,7 +8110,7 @@ export type LfdProductIndexPageQueryResult = {
   title: string | null;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -8610,6 +8126,8 @@ export type LfdProductIndexPageQueryResult = {
   };
   slug: string;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdHistoryPageQuery
 // Query: *[_type == "historyPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "pageHeaderImage": select(      defined(pageHeaderImage.asset._ref) => {        "id": pageHeaderImage.asset._ref,        "preview": pageHeaderImage.asset->metadata.lqip,        "hotspot": pageHeaderImage.hotspot{ x, y },        "crop": pageHeaderImage.crop{ bottom, left, right, top },        "alt": pageHeaderImage.alt      }    ),    "slug": slug.current,    timeline{      markers[]{        _key,        heading,        subtitle,        content[]{          ...,          _type == "block" => {            ...,              markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }          },          _type == "image" => {              image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  }          }        },        image{            "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,          "assetRef": asset._ref        }      }    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type LfdHistoryPageQueryResult = {
@@ -8618,7 +8136,7 @@ export type LfdHistoryPageQueryResult = {
   title: string;
   description: string | null;
   pageHeaderImage: {
-    id: string | null;
+    id: string;
     preview: string | null;
     hotspot: {
       x: number;
@@ -8667,12 +8185,7 @@ export type LfdHistoryPageQueryResult = {
             _key: string;
           }
         | {
-            asset?: {
-              _ref: string;
-              _type: "reference";
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-            };
+            asset?: SanityImageAssetReference;
             media?: unknown;
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
@@ -8741,12 +8254,7 @@ export type LfdHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -8817,12 +8325,7 @@ export type LfdHistoryPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -8914,12 +8417,7 @@ export type LfdHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -9030,7 +8528,7 @@ export type LfdHistoryPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -9049,7 +8547,7 @@ export type LfdHistoryPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -9065,7 +8563,7 @@ export type LfdHistoryPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -9119,12 +8617,7 @@ export type LfdHistoryPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -9346,6 +8839,8 @@ export type LfdHistoryPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdStoreLocatorPageQuery
 // Query: *[_type == "storeLocator" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type LfdStoreLocatorPageQueryResult = {
@@ -9395,12 +8890,7 @@ export type LfdStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -9471,12 +8961,7 @@ export type LfdStoreLocatorPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -9568,12 +9053,7 @@ export type LfdStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -9684,7 +9164,7 @@ export type LfdStoreLocatorPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -9703,7 +9183,7 @@ export type LfdStoreLocatorPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -9719,7 +9199,7 @@ export type LfdStoreLocatorPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -9773,12 +9253,7 @@ export type LfdStoreLocatorPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -10000,6 +9475,8 @@ export type LfdStoreLocatorPageQueryResult = {
       }
   > | null;
 } | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdContactPageQuery
 // Query: *[_type == "contactPage" && site._ref == $siteId][0]{    _id,    _type,    title,    description,    "slug": slug.current,    "siteSettings": *[_type == "settings" && site._ref == $siteId][0]{      _id,      addressLines,      contactEmail,      tollFreePhone,      officePhone,      corporateWebsiteUrl    },      pageBuilder[]{    _key,    _type,      "spacing": {    "spacingTop": coalesce(spacing.spacingTop, "default"),    "spacingBottom": coalesce(spacing.spacingBottom, "default")  },      _type == "cta" => {    eyebrow,    title,    surfaceColor,    applySurfaceShine,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  },      _type == "feature" => {    badge,    title,    imageFit,      image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "featuredRecipes" => {    eyebrow,    title,    intro,    "recipes": array::compact(recipes[]->{      _id,      name,      "slug": slug.current,      versions,      meat,      tags,      "dgfSauces": array::compact(dgfSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "lfdSauces": array::compact(lfdSauces[]->{        _id,        name,        "mainImage": select(          defined(mainImage.asset._ref) => {            "id": mainImage.asset._ref,            "preview": mainImage.asset->metadata.lqip,            "hotspot": mainImage.hotspot{              x,              y            },            "crop": mainImage.crop{              bottom,              left,              right,              top            },            "alt": mainImage.alt          }        )      }),      "mainImage": select(        defined(mainImage.asset._ref) => {          "id": mainImage.asset._ref,          "preview": mainImage.asset->metadata.lqip,          "hotspot": mainImage.hotspot{            x,            y          },          "crop": mainImage.crop{            bottom,            left,            right,            top          },          "alt": mainImage.alt        }      )    })  },      _type == "faqAccordion" => {    eyebrow,    title,    subtitle,      "faqs": array::compact(faqs[]->{    _id,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  }),    "link": link{      title,      description,      "url": {        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    }  },      _type == "featureCardsIcon" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },    "cards": cards[]{      _key,      icon,      title,        richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }    }  },      _type == "subscribeNewsletter" => {    title,      subTitle[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      helperText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "imageLinkCards" => {    eyebrow,    title,      richText[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "cards": array::compact(cards[]{      _key,      _type,      title,      description,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "href": select(        url.type == "internal" => url.internal->slug.current,        url.type == "external" => url.external,        url.href      ),      "openInNewTab": url.openInNewTab    })  },      _type == "threeProductPanels" => {    eyebrow,    title,    subtitle,    "panels": array::compact(panels[]{      _key,      title,      shortDescription,      expandedDescription,      accentColor,        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },      "ctaButton": ctaButton{        text,        variant,        _key,        _type,        "openInNewTab": url.openInNewTab,        "href": select(          url.type == "internal" => url.internal->slug.current,          url.type == "external" => url.external,          url.href        )      }    })  },      _type == "longForm" => {    eyebrow,    title,      intro[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      body[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  }  },      _type == "homeSlideshow" => {    "slides": array::compact(slides[]{      _key,      title,      subtitle,        description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },        image {      "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt  },        buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }    })  },      _type == "homeSlideshowVertical" => {    title,    headingRichText[]{      ...,      _type == "block" => {        ...,          markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }      },      _type == "image" => {          "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,        "caption": caption      }    },      description[]{    ...,    _type == "block" => {      ...,        markDefs[]{    ...,      ...customLink{    openInNewTab,    "href": select(      type == "internal" => internal->slug.current,      type == "external" => external,      "#"    ),  }  }    },    _type == "image" => {        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "caption": caption    }  },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  },    "leftColumnImages": array::compact(leftColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    }),    "rightColumnImages": array::compact(rightColumnImages[]{      _key,        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt    })  }  }  }
 export type LfdContactPageQueryResult = {
@@ -10057,12 +9534,7 @@ export type LfdContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -10133,12 +9605,7 @@ export type LfdContactPageQueryResult = {
                 _key: string;
               }
             | {
-                asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                };
+                asset?: SanityImageAssetReference;
                 media?: unknown;
                 hotspot: {
                   x: number;
@@ -10230,12 +9697,7 @@ export type LfdContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
@@ -10346,7 +9808,7 @@ export type LfdContactPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -10365,7 +9827,7 @@ export type LfdContactPageQueryResult = {
             _id: string;
             name: string;
             mainImage: {
-              id: string | null;
+              id: string;
               preview: string | null;
               hotspot: {
                 x: number;
@@ -10381,7 +9843,7 @@ export type LfdContactPageQueryResult = {
             };
           }> | null;
           mainImage: {
-            id: string | null;
+            id: string;
             preview: string | null;
             hotspot: {
               x: number;
@@ -10435,12 +9897,7 @@ export type LfdContactPageQueryResult = {
               _key: string;
             }
           | {
-              asset?: {
-                _ref: string;
-                _type: "reference";
-                _weak?: boolean;
-                [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
+              asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot: {
                 x: number;
