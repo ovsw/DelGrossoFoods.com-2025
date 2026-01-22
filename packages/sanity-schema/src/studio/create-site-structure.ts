@@ -34,11 +34,17 @@ type SingletonConfig = {
   icon?: Icon;
 };
 
+type SiteFilter = {
+  filter: string;
+  params?: Record<string, unknown>;
+};
+
 type CollectionConfig = {
   type: SchemaType;
   title: string;
   icon?: Icon;
   siteScoped?: boolean;
+  siteFilters?: Partial<Record<SiteCode, SiteFilter>>;
 };
 
 type IndexCollectionConfig = {
@@ -55,7 +61,16 @@ const SITE_SINGLETONS: SingletonConfig[] = [
 const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
   {
     index: { type: "sauceIndex", title: "Sauce Index Page", icon: DropIcon },
-    collection: { type: "sauce", title: "Sauces", icon: DropIcon },
+    collection: {
+      type: "sauce",
+      title: "Sauces",
+      icon: DropIcon,
+      siteFilters: {
+        LFD: {
+          filter: 'line == "Ultra-Premium"',
+        },
+      },
+    },
   },
   {
     index: {
@@ -63,7 +78,17 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
       title: "Product Index Page",
       icon: PackageIcon,
     },
-    collection: { type: "product", title: "Products", icon: PackageIcon },
+    collection: {
+      type: "product",
+      title: "Products",
+      icon: PackageIcon,
+      siteFilters: {
+        LFD: {
+          filter:
+            'count(sauces[_ref in *[_type == "sauce" && line == "Ultra-Premium"]._id]) > 0',
+        },
+      },
+    },
   },
   {
     index: {
@@ -71,7 +96,16 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
       title: "Recipe Index Page",
       icon: DocumentTextIcon,
     },
-    collection: { type: "recipe", title: "Recipes", icon: DocumentTextIcon },
+    collection: {
+      type: "recipe",
+      title: "Recipes",
+      icon: DocumentTextIcon,
+      siteFilters: {
+        LFD: {
+          filter: 'count(versions[@ == "LFD"]) > 0',
+        },
+      },
+    },
   },
 ];
 
@@ -123,6 +157,7 @@ const createCollectionListItem = (
   S: StructureBuilder,
   config: CollectionConfig,
   siteDocumentId: string,
+  siteCode: SiteCode,
 ) => {
   const title = config.title ?? getTitleCase(config.type);
   const icon = config.icon ?? File;
@@ -137,6 +172,20 @@ const createCollectionListItem = (
           .filter("_type == $type && site._ref == $siteId")
           .params({ type: config.type, siteId: siteDocumentId }),
       );
+  }
+
+  const siteFilter = config.siteFilters?.[siteCode];
+  if (siteFilter && !config.siteScoped) {
+    const listBuilder = S.documentList()
+      .title(title)
+      .schemaType(config.type)
+      .filter(siteFilter.filter);
+
+    if (siteFilter.params) {
+      listBuilder.params(siteFilter.params);
+    }
+
+    return S.listItem().title(title).icon(icon).child(listBuilder);
   }
 
   return S.documentTypeListItem(config.type).title(title).icon(icon);
@@ -156,7 +205,12 @@ const createIndexedCollectionItem = (
         .title(config.index.title)
         .items([
           createSingletonListItem(S, config.index, siteCode),
-          createCollectionListItem(S, config.collection, siteDocumentId),
+          createCollectionListItem(
+            S,
+            config.collection,
+            siteDocumentId,
+            siteCode,
+          ),
         ]),
     );
 
@@ -215,17 +269,22 @@ export const createSiteStructure = ({
       ),
       S.divider(),
       primarySiteCollection
-        ? createCollectionListItem(S, primarySiteCollection, siteDocumentId)
+        ? createCollectionListItem(
+            S,
+            primarySiteCollection,
+            siteDocumentId,
+            siteCode,
+          )
         : null,
       ...INDEXED_COLLECTIONS.map((config) =>
         createIndexedCollectionItem(S, config, siteCode, siteDocumentId),
       ),
       createWhereToBuyListItem(S, siteCode, siteDocumentId),
       ...secondarySiteCollections.map((config) =>
-        createCollectionListItem(S, config, siteDocumentId),
+        createCollectionListItem(S, config, siteDocumentId, siteCode),
       ),
       ...SHARED_COLLECTIONS.map((config) =>
-        createCollectionListItem(S, config, siteDocumentId),
+        createCollectionListItem(S, config, siteDocumentId, siteCode),
       ),
       S.divider(),
       S.listItem()
