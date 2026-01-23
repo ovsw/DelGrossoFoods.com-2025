@@ -12,6 +12,7 @@ import type { JSX } from "react";
 import { RichText } from "@/components/elements/rich-text";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineDisplayName, toLineSlug } from "@/config/sauce-taxonomy";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { SanityButtonProps } from "@/types";
 
 interface SauceHeroSectionProps {
@@ -25,6 +26,11 @@ export function SauceHeroSection({
   const rawName = sauce.name ?? "";
   const cleanedName = stegaClean(rawName);
   const sauceName = String(rawName).trim();
+
+  const rawAuthorName = sauce.authorName ?? "";
+  const cleanedAuthorName = stegaClean(rawAuthorName).trim();
+  const authorName = String(rawAuthorName).trim();
+  const hasAuthorName = cleanedAuthorName.length > 0;
 
   const rawColorHex = sauce.colorHex ?? "";
   const cleanedColorHex = stegaClean(rawColorHex).trim();
@@ -77,7 +83,47 @@ export function SauceHeroSection({
       }
     : null;
 
+  const authorImage = sauce.authorImage
+    ? {
+        id: sauce.authorImage.id,
+        preview: sauce.authorImage.preview,
+        hotspot: sauce.authorImage.hotspot,
+        crop: sauce.authorImage.crop,
+        alt: sauce.authorImage.alt,
+      }
+    : null;
+
   const altText = image?.alt || `${cleanedName} sauce jar`;
+  const authorAltText = authorImage?.alt || cleanedAuthorName || "Sauce author";
+
+  const createDataAttribute = (path: string) =>
+    createPresentationDataAttribute({
+      documentId: sauce._id,
+      documentType: sauce._type,
+      path,
+    });
+
+  const authorNameAttribute = hasAuthorName
+    ? createDataAttribute("authorName")
+    : null;
+  const authorImageAttribute = authorImage?.id
+    ? createDataAttribute("authorImage")
+    : null;
+  const sauceNameAttribute = sauceName ? createDataAttribute("name") : null;
+
+  const titleShadowClassName = useSoftTextShadow
+    ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+    : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]";
+
+  const authorNameClassName = cn(
+    "text-3xl leading-[1.05] font-bold text-balance sm:text-4xl lg:text-5xl",
+    titleShadowClassName,
+  );
+
+  const sauceNameClassName = cn(
+    "max-w-md text-xl leading-[1.1] font-bold text-balance sm:text-2xl lg:text-4xl",
+    titleShadowClassName,
+  );
 
   return (
     <SectionShell
@@ -95,24 +141,48 @@ export function SauceHeroSection({
           {/* Identity: eyebrow + title (tight proximity via margin) */}
           <Eyebrow
             text={lineSourceLabel}
-            className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
+            className="mb-1.5 sm:mb-5 border-brand-green text-start text-th-dark-900/70"
           />
-          <h1
-            className={cn(
-              "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
-              useSoftTextShadow
-                ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
-                : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
-            )}
-            style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
-          >
-            {sauceName}
-          </h1>
+          <div className="flex min-w-0 flex-nowrap items-center justify-center gap-4 lg:justify-start">
+            {authorImage?.id ? (
+              <SanityImage
+                image={authorImage}
+                alt={authorAltText}
+                width={240}
+                height={240}
+                data-sanity={authorImageAttribute ?? undefined}
+                className="h-auto w-auto max-h-24 max-w-24 shrink-0 object-contain sm:max-h-28 sm:max-w-28 lg:max-h-32 lg:max-w-32"
+              />
+            ) : null}
+
+            <div className="min-w-0 flex-1 text-start">
+              {hasAuthorName ? (
+                <p
+                  className={authorNameClassName}
+                  data-sanity={authorNameAttribute ?? undefined}
+                  style={
+                    hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                  }
+                >
+                  {authorName}
+                </p>
+              ) : null}
+              <h1
+                className={sauceNameClassName}
+                data-sanity={sauceNameAttribute ?? undefined}
+                style={
+                  hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                }
+              >
+                {sauceName}
+              </h1>
+            </div>
+          </div>
 
           {/* Support: description (moderate from title) */}
           <RichText
             richText={sauce.description}
-            className="mt-5 sm:mt-6 lg:mt-7  italic text-foreground/80 md:text-lg max-w-[50ch]"
+            className="mt-5 sm:mt-6 lg:mt-7 italic text-start text-foreground/80 md:text-lg max-w-[50ch]"
           />
 
           {/* Actions: CTAs (largest from copy) */}
