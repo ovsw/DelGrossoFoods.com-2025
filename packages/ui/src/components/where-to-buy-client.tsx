@@ -1,8 +1,8 @@
 "use client";
 
 import Fuse, { type FuseResult } from "fuse.js";
-import { Info, Store } from "lucide-react";
-import { type JSX, useCallback, useEffect, useMemo, useState } from "react";
+import { Info } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { type RootProps } from "../lib/data-attributes";
 import { cn } from "../lib/utils";
@@ -11,19 +11,19 @@ import { Combobox, type ComboboxOption } from "./combobox";
 import type {
   WhereToBuyProductFilterOption,
   WhereToBuyProductLine,
-  WhereToBuyProductLineInfo,
   WhereToBuyProductLineLabels,
   WhereToBuyStoreChain,
 } from "./where-to-buy-types";
+import { whereToBuyProductLines } from "./where-to-buy-types";
 
 type ProductFilter = "all" | WhereToBuyProductLine;
 
 const defaultProductFilterOptions: WhereToBuyProductFilterOption[] = [
   { value: "all", label: "All Products" },
-  { value: "original", label: "Original Sauces" },
-  { value: "organic", label: "Organic Sauces" },
-  { value: "la-famiglia", label: "La Famiglia DelGrosso" },
-  { value: "specialty", label: "Sloppy Joe, Salsa & Meatballs" },
+  ...whereToBuyProductLines.map((line) => ({
+    value: line,
+    label: line,
+  })),
 ];
 
 export type WhereToBuyClientProps = {
@@ -157,7 +157,7 @@ export function WhereToBuyClient({
               <div className="relative">
                 <select
                   id="product-select"
-                  className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="w-full appearance-none rounded-md border border-brand-green bg-white/70 px-3 py-2 text-base font-normal text-brand-green shadow-xs ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   value={productFilter}
                   onChange={(e) =>
                     setProductFilter(e.currentTarget.value as ProductFilter)
@@ -170,7 +170,7 @@ export function WhereToBuyClient({
                     </option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-muted-foreground">
+                <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-brand-green/80">
                   ▾
                 </span>
               </div>
@@ -202,16 +202,16 @@ export function WhereToBuyClient({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <ul className="grid gap-3 sm:grid-cols-2">
               {filteredStores.map((store) => (
-                <StoreCard
+                <StoreRow
                   key={store.name}
                   store={store}
                   productLineLabels={productLineLabels}
                   showProductLineBadges={showProductLineBadges}
                 />
               ))}
-            </div>
+            </ul>
           )}
         </div>
       )}
@@ -227,85 +227,63 @@ export function WhereToBuyClient({
   );
 }
 
-type StoreCardProps = {
+type StoreRowProps = {
   store: WhereToBuyStoreChain;
   productLineLabels: WhereToBuyProductLineLabels;
   showProductLineBadges: boolean;
 };
 
-function StoreCard({
+function StoreRow({
   store,
   productLineLabels,
   showProductLineBadges,
-}: StoreCardProps) {
-  const productLineDetails = store.productLines.reduce<JSX.Element[]>(
-    (
-      acc: JSX.Element[],
-      pl: WhereToBuyProductLineInfo,
-      idx: number,
-    ): JSX.Element[] => {
-      const showAvailability = pl.availability === "select";
-      const showNote = Boolean(pl.note);
-      const shouldRender =
-        showProductLineBadges || showAvailability || showNote;
+}: StoreRowProps) {
+  const productLineDetails = store.productLines.map((pl, idx) => {
+    const showAvailability = pl.availability === "select";
+    const showNote = Boolean(pl.note);
+    const shouldRender = showProductLineBadges || showAvailability || showNote;
 
-      if (!shouldRender) {
-        return acc;
-      }
+    if (!shouldRender) {
+      return null;
+    }
 
-      acc.push(
-        <div
-          key={`${store.name}-${pl.line}-${idx}`}
-          className="flex items-center gap-1 flex-wrap"
-        >
-          {showProductLineBadges && (
-            <Badge
-              variant={getProductLineBadgeVariant(pl.line)}
-              text={productLineLabels[pl.line]}
-              className="min-w-fit"
-            />
-          )}
-          {showAvailability && (
-            <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-              <Info className="w-3 h-3 flex-shrink-0" />
-              <span>Select stores (call ahead)</span>
-            </span>
-          )}
-          {showNote && (
-            <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-              <Info className="w-3 h-3 flex-shrink-0" />
-              <span>{pl.note}</span>
-            </span>
-          )}
-        </div>,
-      );
-
-      return acc;
-    },
-    [],
-  );
-  const hasProductLineDetails = productLineDetails.length > 0;
+    return (
+      <div
+        key={`${store.name}-${pl.line}-${idx}`}
+        className="flex flex-wrap items-center gap-2"
+      >
+        {showProductLineBadges && (
+          <Badge
+            variant={getProductLineBadgeVariant(pl.line)}
+            text={productLineLabels[pl.line]}
+            className="min-w-fit"
+          />
+        )}
+        {showAvailability && (
+          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
+            <Info className="w-3 h-3 flex-shrink-0" />
+            <span>Select stores (call ahead)</span>
+          </span>
+        )}
+        {showNote && (
+          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
+            <Info className="w-3 h-3 flex-shrink-0" />
+            <span>{pl.note}</span>
+          </span>
+        )}
+      </div>
+    );
+  });
+  const hasProductLineDetails = productLineDetails.some(Boolean);
 
   return (
-    <div className="bg-white/50 rounded-lg border border-input shadow-sm p-4 transition-shadow">
-      <div
-        className={cn(
-          "flex items-center gap-3",
-          hasProductLineDetails && "mb-3",
-        )}
-      >
-        <div className="flex-shrink-0 flex items-center justify-center bg-brand-green rounded w-16 h-16">
-          <Store className="w-6 h-6 text-th-light-100" />
-        </div>
-        <h3 className="text-lg font-semibold">{store.name}</h3>
-      </div>
+    <li className="rounded-lg border border-input bg-white/50 px-4 py-3">
+      <h3 className="text-base font-semibold sm:text-lg">{store.name}</h3>
 
       {hasProductLineDetails && (
-        <div className="flex items-center gap-2.5 flex-wrap">
-          {productLineDetails}
-        </div>
+        <div className="mt-2 flex flex-col gap-2">{productLineDetails}</div>
       )}
-    </div>
+    </li>
   );
 }
 
@@ -313,14 +291,14 @@ function getProductLineBadgeVariant(
   line: WhereToBuyProductLine,
 ): "original" | "organic" | "premium" | "neutral" {
   switch (line) {
-    case "original":
+    case "Original":
       return "original";
-    case "organic":
+    case "Organic":
       return "organic";
-    case "la-famiglia":
+    case "LFD - pizza and pasta sauce":
       return "premium";
-    case "specialty":
-      return "neutral";
+    case "LFD - Sloppy Joe Sauce":
+      return "premium";
     default:
       return "neutral";
   }

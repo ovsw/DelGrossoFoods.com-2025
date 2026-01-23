@@ -1,8 +1,11 @@
-export type WhereToBuyProductLine =
-  | "original"
-  | "organic"
-  | "la-famiglia"
-  | "specialty";
+export const whereToBuyProductLines = [
+  "Original",
+  "Organic",
+  "LFD - pizza and pasta sauce",
+  "LFD - Sloppy Joe Sauce",
+] as const;
+
+export type WhereToBuyProductLine = (typeof whereToBuyProductLines)[number];
 
 export type WhereToBuyProductLineInfo = {
   line: WhereToBuyProductLine;

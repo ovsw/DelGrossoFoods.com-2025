@@ -8,8 +8,15 @@ import { stegaClean } from "next-sanity";
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
 import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
-import { lfdStoreLocatorPageQuery } from "@/lib/sanity/queries";
+import {
+  lfdRetailersQuery,
+  lfdStoreLocatorPageQuery,
+} from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
+import {
+  buildWhereToBuyData,
+  type RetailerDocument,
+} from "@/lib/where-to-buy/retailers";
 
 export async function generateMetadata(): Promise<Metadata> {
   const storeLocatorData = await sanityFetch({
@@ -38,13 +45,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function WhereToBuyPage() {
-  const storeLocatorData = await sanityFetch({
-    query: lfdStoreLocatorPageQuery,
-    params: getSiteParams(),
-  });
+  const [storeLocatorData, retailersData] = await Promise.all([
+    sanityFetch({
+      query: lfdStoreLocatorPageQuery,
+      params: getSiteParams(),
+    }),
+    sanityFetch({
+      query: lfdRetailersQuery,
+      params: getSiteParams(),
+    }),
+  ]);
 
   const data = (storeLocatorData?.data ??
     null) as LfdStoreLocatorPageQueryResult | null;
+  const retailers = (retailersData?.data ?? []) as RetailerDocument[];
+  const { storeLocations, allStates, productLineLabels, productFilterOptions } =
+    buildWhereToBuyData(retailers);
 
   const heading = data?.title || "Find DelGrosso Near You";
   const intro =
@@ -86,6 +102,10 @@ export default async function WhereToBuyPage() {
           <WhereToBuyClient
             sanityDocumentId={documentId}
             sanityDocumentType={documentType}
+            allStates={allStates}
+            storeLocations={storeLocations}
+            productLineLabels={productLineLabels}
+            productFilterOptions={productFilterOptions}
           />
         </div>
       </Section>

@@ -140,3 +140,4 @@ export type {
   WhereToBuyStateStores,
   WhereToBuyStoreChain,
 } from "./where-to-buy-types";
+export { whereToBuyProductLines } from "./where-to-buy-types";

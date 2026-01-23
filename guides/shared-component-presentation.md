@@ -78,24 +78,31 @@ Inside each app, build a thin wrapper that:
 
 ```tsx
 import { WhereToBuyClient as SharedWhereToBuyClient } from "@workspace/ui/components/where-to-buy-client";
+import type {
+  WhereToBuyProductFilterOption,
+  WhereToBuyProductLineLabels,
+  WhereToBuyStateStores,
+} from "@workspace/ui/components/where-to-buy-types";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
-import {
-  allStates,
-  getStoresByState,
-  productLineLabels,
-  storeLogos,
-} from "@/lib/stores/data";
 
 type Props = {
   sanityDocumentId?: string | null;
   sanityDocumentType?: string | null;
   sanityFieldPath?: string | null;
+  allStates: string[];
+  storeLocations: WhereToBuyStateStores[];
+  productLineLabels: WhereToBuyProductLineLabels;
+  productFilterOptions: WhereToBuyProductFilterOption[];
 };
 
 export function WhereToBuyClient({
   sanityDocumentId,
   sanityDocumentType,
   sanityFieldPath = "pageBuilder",
+  allStates,
+  storeLocations,
+  productLineLabels,
+  productFilterOptions,
 }: Props) {
   const dataAttribute = createPresentationDataAttribute({
     documentId: sanityDocumentId,
@@ -106,9 +113,16 @@ export function WhereToBuyClient({
   return (
     <SharedWhereToBuyClient
       allStates={allStates}
-      getStoresByState={getStoresByState}
       productLineLabels={productLineLabels}
-      storeLogos={storeLogos}
+      productFilterOptions={productFilterOptions}
+      getStoresByState={(state, productLineFilter) => {
+        const found = storeLocations.find((entry) => entry.state === state);
+        if (!found) return [];
+        if (!productLineFilter) return found.stores;
+        return found.stores.filter((store) =>
+          store.productLines.some((line) => line.line === productLineFilter),
+        );
+      }}
       rootProps={
         dataAttribute
           ? {

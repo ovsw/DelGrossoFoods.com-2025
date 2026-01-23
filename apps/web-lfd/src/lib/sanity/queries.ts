@@ -264,6 +264,22 @@ export const lfdStoreLocatorPageQuery = defineQuery(`
   }
 `);
 
+export const lfdRetailersQuery = defineQuery(`
+  *[_type == "retailer"] | order(name asc) {
+    _id,
+    _type,
+    name,
+    productLinesByState[]{
+      productLine,
+      note,
+      states[]{
+        label,
+        value
+      }
+    }
+  }
+`);
+
 export const lfdContactPageQuery = defineQuery(`
   *[_type == "contactPage" && site._ref == $siteId][0]{
     _id,
