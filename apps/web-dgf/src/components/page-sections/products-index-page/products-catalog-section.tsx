@@ -16,6 +16,7 @@ export function ProductsCatalogSection({ items, initialState }: Props) {
       spacingTop="default"
       spacingBottom="large"
       background="transparent"
+      allowOverflow
     >
       <ProductsClient items={items} initialState={initialState} />
     </SectionShell>

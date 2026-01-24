@@ -16,6 +16,7 @@ export function SaucesCatalogSection({ items, initialState }: Props) {
       spacingTop="default"
       spacingBottom="large"
       background="transparent"
+      allowOverflow
     >
       <SaucesClient items={items} initialState={initialState} />
     </SectionShell>

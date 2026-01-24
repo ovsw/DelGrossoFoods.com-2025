@@ -21,6 +21,7 @@ export function RecipesCatalogSection({
       spacingTop="default"
       spacingBottom="large"
       background="transparent"
+      allowOverflow
     >
       <RecipesClient
         items={items}
