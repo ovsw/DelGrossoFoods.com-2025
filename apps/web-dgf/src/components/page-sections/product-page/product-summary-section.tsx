@@ -1,12 +1,21 @@
 "use client";
 
+import type { GetSauceBySlugQueryResult } from "@workspace/sanity-config/types";
 import { BackLink } from "@workspace/ui/components/back-link";
 import { InfoLabel } from "@workspace/ui/components/info-label";
 import { SectionShell } from "@workspace/ui/components/section-shell";
+import { stegaClean } from "next-sanity";
 
 import { RichText } from "@/components/elements/rich-text";
+import { SanityImage } from "@/components/elements/sanity-image";
 import { ProductPurchasePanel } from "@/components/features/cart/product-purchase-panel";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { ProductDetailData } from "@/types";
+
+type PremiumSauceAuthor = Pick<
+  NonNullable<GetSauceBySlugQueryResult>,
+  "_id" | "_type" | "authorName" | "authorImage"
+>;
 
 interface ProductSummarySectionProps {
   readonly product: ProductDetailData;
@@ -14,6 +23,7 @@ interface ProductSummarySectionProps {
   readonly priceText: string | null;
   readonly weightText: string | null;
   readonly shippingText: string | null;
+  readonly premiumSauceAuthor?: PremiumSauceAuthor | null;
 }
 
 export function ProductSummarySection({
@@ -22,7 +32,37 @@ export function ProductSummarySection({
   priceText,
   weightText,
   shippingText,
+  premiumSauceAuthor,
 }: ProductSummarySectionProps) {
+  const authorName = premiumSauceAuthor?.authorName ?? "";
+  const cleanedAuthorName = stegaClean(authorName).trim();
+  const showAuthorName = cleanedAuthorName.length > 0;
+  const authorImage = premiumSauceAuthor?.authorImage ?? null;
+  const showAuthorImage = Boolean(authorImage?.id);
+  const showPremiumAuthor = showAuthorName || showAuthorImage;
+
+  const authorNameAttribute =
+    showPremiumAuthor && premiumSauceAuthor
+      ? createPresentationDataAttribute({
+          documentId: premiumSauceAuthor._id,
+          documentType: premiumSauceAuthor._type,
+          path: "authorName",
+        })
+      : null;
+  const authorImageAttribute =
+    showAuthorImage && premiumSauceAuthor
+      ? createPresentationDataAttribute({
+          documentId: premiumSauceAuthor._id,
+          documentType: premiumSauceAuthor._type,
+          path: "authorImage",
+        })
+      : null;
+
+  const authorAltText = authorImage?.alt || cleanedAuthorName || "Sauce author";
+
+  const productNameClassName =
+    "text-4xl font-semibold text-brand-green text-balance lg:text-5xl";
+
   return (
     <SectionShell
       spacingTop="large"
@@ -36,9 +76,33 @@ export function ProductSummarySection({
 
       <div className="grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="grid gap-6 text-center md:text-left">
-          <h1 className="text-4xl font-semibold text-brand-green text-balance lg:text-5xl">
-            {product.name}
-          </h1>
+          {showPremiumAuthor ? (
+            <div className="flex min-w-0 flex-nowrap items-center justify-center gap-4 md:justify-start">
+              {showAuthorImage ? (
+                <SanityImage
+                  image={authorImage}
+                  alt={authorAltText}
+                  width={240}
+                  height={240}
+                  data-sanity={authorImageAttribute ?? undefined}
+                  className="h-auto w-auto max-h-24 max-w-24 shrink-0 object-contain sm:max-h-28 sm:max-w-28"
+                />
+              ) : null}
+              <div className="min-w-0 text-center md:text-left">
+                {showAuthorName ? (
+                  <p
+                    className="text-2xl font-semibold text-brand-green/90 text-balance md:text-3xl"
+                    data-sanity={authorNameAttribute ?? undefined}
+                  >
+                    {authorName}
+                  </p>
+                ) : null}
+                <h1 className={productNameClassName}>{product.name}</h1>
+              </div>
+            </div>
+          ) : (
+            <h1 className={productNameClassName}>{product.name}</h1>
+          )}
           {product.description?.length ? (
             <RichText
               richText={product.description}
