@@ -37,7 +37,7 @@ export function ProductSummarySection({
   const authorName = premiumSauceAuthor?.authorName ?? "";
   const cleanedAuthorName = stegaClean(authorName).trim();
   const showAuthorName = cleanedAuthorName.length > 0;
-  const authorImage = premiumSauceAuthor?.authorImage ?? null;
+  const authorImage = premiumSauceAuthor?.authorImage;
   const showAuthorImage = Boolean(authorImage?.id);
   const showPremiumAuthor = showAuthorName || showAuthorImage;
 
@@ -78,7 +78,7 @@ export function ProductSummarySection({
         <div className="grid gap-6 text-center md:text-left">
           {showPremiumAuthor ? (
             <div className="flex min-w-0 flex-nowrap items-center justify-center gap-4 md:justify-start">
-              {showAuthorImage ? (
+              {authorImage?.id ? (
                 <SanityImage
                   image={authorImage}
                   alt={authorAltText}
