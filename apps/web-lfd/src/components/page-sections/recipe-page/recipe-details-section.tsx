@@ -1,14 +1,6 @@
-"use client";
 import { urlFor } from "@workspace/sanity-config/client";
 import { InfoLabel } from "@workspace/ui/components/info-label";
 import { SectionShell } from "@workspace/ui/components/section-shell";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@workspace/ui/components/tabs";
-import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
 
 import type { RecipeDetailData } from "@/types";
@@ -18,13 +10,11 @@ const VIDEO_POSTER_WIDTH = 1280;
 const VIDEO_POSTER_HEIGHT = 720;
 
 import {
-  BrandTabLabel,
   hasBlocks,
   InfoRow,
   mapSaucesToDisplay,
   RecipeBadges,
   SauceList,
-  useVariantState,
   VariantContent,
   type VariantKey,
 } from "./recipe-details";
@@ -53,7 +43,25 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
         ? ["original"]
         : ["premium"];
 
-  const [variant, setVariant] = useVariantState(available);
+  const hasOriginalText =
+    hasBlocks(recipe.dgfIngredients) ||
+    hasBlocks(recipe.dgfDirections) ||
+    hasBlocks(recipe.dgfNotes);
+  const hasPremiumText =
+    hasBlocks(recipe.lfdIngredients) ||
+    hasBlocks(recipe.lfdDirections) ||
+    hasBlocks(recipe.lfdNotes);
+  const primaryVariant: VariantKey = "premium";
+  const secondaryVariant: VariantKey = "original";
+  const defaultVariant: VariantKey = available[0] ?? primaryVariant;
+  const selectedVariant: VariantKey =
+    hasPremiumText && available.includes(primaryVariant)
+      ? primaryVariant
+      : hasOriginalText && available.includes(secondaryVariant)
+        ? secondaryVariant
+        : available.includes(primaryVariant)
+          ? primaryVariant
+          : defaultVariant;
 
   // If neither variant has any content, don't render the section
   if (!hasOriginal && !hasPremium) {
@@ -102,7 +110,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
 
   return (
     <SectionShell
-      spacingTop="default"
+      spacingTop="none"
       spacingBottom="large"
       background="transparent"
       allowOverflow
@@ -124,105 +132,28 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
               className="mb-8"
             />
           ) : null}
-          {available.length > 1 ? (
-            <Tabs
-              value={variant}
-              onValueChange={(v) => setVariant(v as VariantKey)}
-              className="w-full"
-              data-html="c-recipe-tabs"
-            >
-              <TabsList
-                className="pl-2 flex items-end gap-0 -mb-px min-h-24"
-                data-html="c-recipe-tabs-list"
-              >
-                <TabsTrigger
-                  value="original"
-                  className={cn(
-                    "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
-                    "rounded-tl-sm border-brand-green/80 bg-brand-green/90 text-brand-green-text hover:bg-brand-green aria-selected:border-brand-green aria-selected:bg-brand-green aria-selected:text-brand-green-text aria-selected:rounded-tr-sm",
-                  )}
-                  data-html="c-recipe-tabs-trigger-original"
-                >
-                  <BrandTabLabel variant="original" />
-                </TabsTrigger>
-                <TabsTrigger
-                  value="premium"
-                  className={cn(
-                    "cursor-pointer rounded-none rounded-b-none border px-4 py-3 text-base font-medium transition-all opacity-80 hover:opacity-90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40 aria-selected:opacity-100 aria-selected:py-4",
-                    "rounded-tr-sm border-l-0 border-th-dark-900/80 bg-th-dark-900/90 text-th-light-100 hover:bg-th-dark-900 aria-selected:border-th-dark-900 aria-selected:bg-th-dark-900 aria-selected:text-th-light-100 aria-selected:rounded-tl-sm",
-                  )}
-                  data-html="c-recipe-tabs-trigger-premium"
-                >
-                  <BrandTabLabel variant="premium" />
-                </TabsTrigger>
-              </TabsList>
-              <div
-                className="space-y-10"
-                data-html="c-recipe-tabs-content-wrapper"
-              >
-                <TabsContent
-                  value="original"
-                  lazyMount
-                  forceMount
-                  className="rounded-md bg-th-light-100 p-6"
-                  data-html="c-recipe-tabs-content-original"
-                >
-                  <VariantContent
-                    ingredients={recipe.dgfIngredients}
-                    directions={recipe.dgfDirections}
-                    notes={recipe.dgfNotes}
-                    documentId={documentId}
-                    documentType={documentType}
-                    fieldPaths={variantFieldPaths.original}
-                  />
-                </TabsContent>
-                <TabsContent
-                  value="premium"
-                  lazyMount
-                  forceMount
-                  className="rounded-md bg-th-light-100 p-6"
-                  data-html="c-recipe-tabs-content-premium"
-                >
-                  <VariantContent
-                    ingredients={recipe.lfdIngredients}
-                    directions={recipe.lfdDirections}
-                    notes={recipe.lfdNotes}
-                    documentId={documentId}
-                    documentType={documentType}
-                    fieldPaths={variantFieldPaths.premium}
-                  />
-                </TabsContent>
-              </div>
-            </Tabs>
-          ) : (
-            <div
-              className="rounded-md bg-th-light-100 p-6"
-              data-html="c-recipe-single-variant"
-            >
-              <VariantContent
-                ingredients={
-                  available[0] === "premium"
-                    ? recipe.lfdIngredients
-                    : recipe.dgfIngredients
-                }
-                directions={
-                  available[0] === "premium"
-                    ? recipe.lfdDirections
-                    : recipe.dgfDirections
-                }
-                notes={
-                  available[0] === "premium" ? recipe.lfdNotes : recipe.dgfNotes
-                }
-                documentId={documentId}
-                documentType={documentType}
-                fieldPaths={
-                  available[0] === "premium"
-                    ? variantFieldPaths.premium
-                    : variantFieldPaths.original
-                }
-              />
-            </div>
-          )}
+          <div className="space-y-10" data-html="c-recipe-single-variant">
+            <VariantContent
+              ingredients={
+                selectedVariant === "premium"
+                  ? recipe.lfdIngredients
+                  : recipe.dgfIngredients
+              }
+              directions={
+                selectedVariant === "premium"
+                  ? recipe.lfdDirections
+                  : recipe.dgfDirections
+              }
+              notes={
+                selectedVariant === "premium"
+                  ? recipe.lfdNotes
+                  : recipe.dgfNotes
+              }
+              documentId={documentId}
+              documentType={documentType}
+              fieldPaths={variantFieldPaths[selectedVariant]}
+            />
+          </div>
         </div>
 
         {/* Right: Info panel */}
