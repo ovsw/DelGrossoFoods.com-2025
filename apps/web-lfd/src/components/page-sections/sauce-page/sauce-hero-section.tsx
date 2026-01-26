@@ -115,13 +115,11 @@ export function SauceHeroSection({
     ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
     : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]";
 
-  const authorNameClassName = cn(
-    "text-3xl leading-[1.05] font-bold text-balance sm:text-4xl lg:text-5xl",
-    titleShadowClassName,
-  );
+  const authorNameClassName =
+    "block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl";
 
   const sauceNameClassName = cn(
-    "max-w-md text-xl leading-[1.1] font-bold text-balance sm:text-2xl lg:text-4xl",
+    "block text-3xl leading-[1.1] font-bold text-balance sm:text-4xl lg:text-5xl lg:leading-[1] max-w-[10ch]",
     titleShadowClassName,
   );
 
@@ -156,25 +154,27 @@ export function SauceHeroSection({
             ) : null}
 
             <div className="min-w-0 flex-1 text-start">
-              {hasAuthorName ? (
-                <p
+              <h1
+                className={cn(
+                  "mx-auto lg:mx-0",
+                  "flex flex-col items-start gap-1",
+                )}
+              >
+                <span
                   className={authorNameClassName}
                   data-sanity={authorNameAttribute ?? undefined}
+                >
+                  {authorName}
+                </span>
+                <span
+                  className={sauceNameClassName}
+                  data-sanity={sauceNameAttribute ?? undefined}
                   style={
                     hasValidHeroColor ? { color: cleanedColorHex } : undefined
                   }
                 >
-                  {authorName}
-                </p>
-              ) : null}
-              <h1
-                className={sauceNameClassName}
-                data-sanity={sauceNameAttribute ?? undefined}
-                style={
-                  hasValidHeroColor ? { color: cleanedColorHex } : undefined
-                }
-              >
-                {sauceName}
+                  {sauceName}
+                </span>
               </h1>
             </div>
           </div>

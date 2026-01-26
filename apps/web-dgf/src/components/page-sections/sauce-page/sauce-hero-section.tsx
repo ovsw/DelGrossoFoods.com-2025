@@ -124,16 +124,16 @@ export function SauceHeroSection({
       innerClassName="relative mx-auto max-w-6xl px-4 lg:pl-18"
       style={{ backgroundImage: `url('${backgroundImage}')` }}
     >
-      <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+      <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-end">
         {/* Text stack: pure document flow with margins for grouping */}
-        <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0">
+        <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0 lg:mt-auto">
           {/* Identity: eyebrow + title (tight proximity via margin) */}
           <Eyebrow
             text={lineSourceLabel}
             className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
           />
           {showAuthor ? (
-            <div className="flex min-w-0 flex-nowrap items-center justify-center gap-4 lg:justify-start">
+            <div className="flex min-w-0 flex-nowrap items-end justify-center gap-4 lg:justify-start">
               {authorImage?.id ? (
                 <SanityImage
                   image={authorImage}
@@ -141,44 +141,55 @@ export function SauceHeroSection({
                   width={240}
                   height={240}
                   data-sanity={authorImageAttribute ?? undefined}
-                  className="h-auto w-auto max-h-24 max-w-24 shrink-0 object-contain sm:max-h-28 sm:max-w-28"
+                  className="h-auto w-auto max-h-32 max-w-32 shrink-0 object-contain sm:max-h-32 sm:max-w-32"
                 />
               ) : null}
-              <div className="min-w-0 text-center lg:text-start">
-                {hasAuthorName ? (
-                  <p
-                    className="text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl"
-                    data-sanity={authorNameAttribute ?? undefined}
-                  >
-                    {authorName}
-                  </p>
-                ) : null}
+              <div className="min-w-0 text-left lg:text-start">
                 <h1
                   className={cn(
-                    "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
-                    useSoftTextShadow
-                      ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
-                      : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
+                    "mx-auto lg:mx-0",
+                    "flex flex-col items-start gap-1",
                   )}
-                  style={
-                    hasValidHeroColor ? { color: cleanedColorHex } : undefined
-                  }
                 >
-                  {sauceName}
+                  {hasAuthorName ? (
+                    <span
+                      className="block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl"
+                      data-sanity={authorNameAttribute ?? undefined}
+                    >
+                      {authorName}
+                    </span>
+                  ) : null}
+                  <span
+                    className={cn(
+                      "block text-3xl leading-[1.1] font-bold text-balance lg:text-5xl lg:leading-[1] max-w-[10ch]",
+                      useSoftTextShadow
+                        ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+                        : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
+                    )}
+                    style={
+                      hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                    }
+                  >
+                    {sauceName}
+                  </span>
                 </h1>
               </div>
             </div>
           ) : (
-            <h1
-              className={cn(
-                "mx-auto max-w-[10ch] text-5xl leading-[1.1] font-bold text-balance lg:mx-0 lg:max-w-[13ch] lg:text-6xl lg:leading-[1]",
-                useSoftTextShadow
-                  ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
-                  : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
-              )}
-              style={hasValidHeroColor ? { color: cleanedColorHex } : undefined}
-            >
-              {sauceName}
+            <h1 className="mx-auto max-w-[10ch] lg:mx-0 lg:max-w-[13ch]">
+              <span
+                className={cn(
+                  "block text-5xl leading-[1.1] font-bold text-balance lg:text-6xl lg:leading-[1]",
+                  useSoftTextShadow
+                    ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+                    : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
+                )}
+                style={
+                  hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                }
+              >
+                {sauceName}
+              </span>
             </h1>
           )}
 
