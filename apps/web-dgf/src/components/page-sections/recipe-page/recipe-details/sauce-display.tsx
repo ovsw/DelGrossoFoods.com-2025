@@ -9,14 +9,7 @@ import { normalizeSauceHref } from "./utils";
 type RecipeSauce = NonNullable<
   NonNullable<RecipeDetailData["dgfSauces"]>[number]
 >;
-
-export type SauceDisplayItem = {
-  id: string;
-  name: string;
-  href: string | null;
-  image: SanityImageProps | null;
-  alt: string;
-};
+type RecipeOrganicSauce = NonNullable<RecipeDetailData["organicSauce"]>;
 
 type SanityImageProps = {
   id: string | null;
@@ -30,12 +23,19 @@ type SanityImageProps = {
   } | null;
 };
 
-function toSanityImageData(
+export type SauceDisplayItem = {
+  id: string;
+  name: string;
+  href: string | null;
+  image: SanityImageProps | null;
+  alt: string;
+};
+
+const toSanityImageData = (
   image: RecipeSauce["mainImage"],
-): SanityImageProps | null {
+): SanityImageProps | null => {
   if (!image || typeof image !== "object") return null;
 
-  // Handle new imageFields structure
   const assetRef = image.id;
   if (!assetRef || typeof assetRef !== "string") return null;
 
@@ -48,47 +48,56 @@ function toSanityImageData(
     hotspot,
     crop,
   };
+};
+
+function toDisplayItem(
+  sauce: RecipeSauce | RecipeOrganicSauce | null | undefined,
+): SauceDisplayItem | null {
+  if (!sauce) return null;
+
+  const name = sauce.name ?? "Sauce";
+  const cleanedName = stegaClean(name);
+  const accessibleName =
+    typeof cleanedName === "string" && cleanedName.trim().length > 0
+      ? cleanedName.trim()
+      : name;
+  const rawAlt = sauce.mainImage?.alt;
+  const cleanedAlt = rawAlt ? stegaClean(rawAlt) : accessibleName;
+  const altText =
+    typeof cleanedAlt === "string" && cleanedAlt.trim().length > 0
+      ? cleanedAlt.trim()
+      : accessibleName;
+
+  const rawSlug = sauce.slug ?? null;
+  const slugValue =
+    typeof rawSlug === "string" && rawSlug.length > 0
+      ? (stegaClean(rawSlug) ?? rawSlug)
+      : rawSlug;
+  const slugString =
+    typeof slugValue === "string" && slugValue.length > 0 ? slugValue : null;
+
+  return {
+    id: sauce._id,
+    name,
+    href: normalizeSauceHref(slugString),
+    image: toSanityImageData(sauce.mainImage ?? null),
+    alt: altText,
+  };
 }
 
 export function mapSaucesToDisplay(
   sauces: RecipeDetailData["dgfSauces"],
 ): SauceDisplayItem[] {
   return (sauces ?? [])
-    .map((sauce) => {
-      if (!sauce) return null;
-
-      const name = sauce.name ?? "Sauce";
-      const cleanedName = stegaClean(name);
-      const accessibleName =
-        typeof cleanedName === "string" && cleanedName.trim().length > 0
-          ? cleanedName.trim()
-          : name;
-      const rawAlt = sauce.mainImage?.alt;
-      const cleanedAlt = rawAlt ? stegaClean(rawAlt) : accessibleName;
-      const altText =
-        typeof cleanedAlt === "string" && cleanedAlt.trim().length > 0
-          ? cleanedAlt.trim()
-          : accessibleName;
-
-      const rawSlug = sauce.slug ?? null;
-      const slugValue =
-        typeof rawSlug === "string" && rawSlug.length > 0
-          ? (stegaClean(rawSlug) ?? rawSlug)
-          : rawSlug;
-      const slugString =
-        typeof slugValue === "string" && slugValue.length > 0
-          ? slugValue
-          : null;
-
-      return {
-        id: sauce._id,
-        name,
-        href: normalizeSauceHref(slugString),
-        image: toSanityImageData(sauce.mainImage ?? null),
-        alt: altText,
-      } satisfies SauceDisplayItem;
-    })
+    .map(toDisplayItem)
     .filter(Boolean) as SauceDisplayItem[];
+}
+
+export function mapOrganicSauceToDisplay(
+  sauce: RecipeDetailData["organicSauce"],
+): SauceDisplayItem[] {
+  const item = toDisplayItem(sauce);
+  return item ? [item] : [];
 }
 
 export function SauceList({

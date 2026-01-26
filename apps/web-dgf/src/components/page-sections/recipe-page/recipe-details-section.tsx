@@ -12,6 +12,7 @@ const VIDEO_POSTER_HEIGHT = 720;
 import {
   hasBlocks,
   InfoRow,
+  mapOrganicSauceToDisplay,
   mapSaucesToDisplay,
   RecipeBadges,
   SauceList,
@@ -74,8 +75,10 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
   const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
   const showOriginalSauces =
     available.includes("original") && originalSauces.length > 0;
+  const organicSauces = mapOrganicSauceToDisplay(recipe.organicSauce);
   const showPremiumSauces =
     available.includes("premium") && premiumSauces.length > 0;
+  const showOrganicSauces = organicSauces.length > 0;
 
   const documentId = recipe._id ?? null;
   const documentType = recipe._type ?? null;
@@ -190,7 +193,9 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 <InfoRow title="Tags">{tagBadges}</InfoRow>
               ) : null}
 
-              {(showOriginalSauces || showPremiumSauces) && (
+              {(showOriginalSauces ||
+                showPremiumSauces ||
+                showOrganicSauces) && (
                 <div className="md:col-span-2">
                   <InfoLabel asChild>
                     <dt>Sauces</dt>
@@ -200,6 +205,12 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                       <SauceList
                         title="DelGrosso Original Sauces:"
                         items={originalSauces}
+                      />
+                    ) : null}
+                    {showOrganicSauces ? (
+                      <SauceList
+                        title="DelGrosso Organic Sauces:"
+                        items={organicSauces}
                       />
                     ) : null}
                     {showPremiumSauces ? (

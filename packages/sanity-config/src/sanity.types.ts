@@ -980,6 +980,7 @@ export type Recipe = {
     _type: "block";
     _key: string;
   }>;
+  organicSauce?: SauceReference;
   lfdIngredients: Array<{
     children?: Array<{
       marks?: Array<string>;

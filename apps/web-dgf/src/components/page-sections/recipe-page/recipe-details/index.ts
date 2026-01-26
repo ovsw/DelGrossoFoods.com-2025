@@ -1,5 +1,6 @@
 export { InfoRow, RecipeBadges } from "./recipe-info";
 export {
+  mapOrganicSauceToDisplay,
   mapSaucesToDisplay,
   type SauceDisplayItem,
   SauceLink,

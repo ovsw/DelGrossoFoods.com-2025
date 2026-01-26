@@ -6307,6 +6307,14 @@
         },
         "optional": true
       },
+      "organicSauce": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "sauce.reference"
+        },
+        "optional": true
+      },
       "lfdIngredients": {
         "type": "objectAttribute",
         "value": {

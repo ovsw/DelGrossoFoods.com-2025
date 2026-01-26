@@ -257,6 +257,19 @@ export const getRecipeByIdQuery = defineQuery(`
         }
       }
     ),
+    "organicSauce": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      organicSauce->{
+        _id,
+        name,
+        "slug": slug.current,
+        line,
+        "mainImage": mainImage{
+          ${imageFields},
+          "alt": coalesce(alt, "")
+        }
+      }
+    ),
     lfdSauces[]->{
       _id,
       name,
@@ -310,6 +323,19 @@ export const getRecipeBySlugQuery = defineQuery(`
     "dgfSauces": select(
       defined($siteCode) && $siteCode == "LFD" => [],
       dgfSauces[]->{
+        _id,
+        name,
+        "slug": slug.current,
+        line,
+        "mainImage": mainImage{
+          ${imageFields},
+          "alt": coalesce(alt, "")
+        }
+      }
+    ),
+    "organicSauce": select(
+      defined($siteCode) && $siteCode == "LFD" => null,
+      organicSauce->{
         _id,
         name,
         "slug": slug.current,

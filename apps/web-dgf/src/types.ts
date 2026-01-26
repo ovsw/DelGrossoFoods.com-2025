@@ -76,4 +76,12 @@ export type ProductDetailData = NonNullable<GetProductBySlugQueryResult>;
 export type RecipeIndexPageData = NonNullable<DgfRecipeIndexPageQueryResult>;
 export type RecipeListItem = GetAllRecipesForIndexQueryResult[number];
 export type RecipeCategoryOption = DgfRecipeCategoriesQueryResult[number];
-export type RecipeDetailData = NonNullable<GetRecipeBySlugQueryResult>;
+type RecipeDetailQueryResult = NonNullable<GetRecipeBySlugQueryResult>;
+type RecipeDetailSauce = Extract<
+  NonNullable<RecipeDetailQueryResult["dgfSauces"]>[number],
+  { _id: string }
+>;
+
+export type RecipeDetailData = RecipeDetailQueryResult & {
+  organicSauce?: RecipeDetailSauce | null;
+};

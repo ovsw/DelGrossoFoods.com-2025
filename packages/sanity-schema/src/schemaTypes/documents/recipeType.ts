@@ -1,6 +1,7 @@
 import {
   BlockContentIcon,
   DocumentTextIcon,
+  DropIcon,
   ImageIcon,
   TagIcon,
 } from "@sanity/icons";
@@ -21,6 +22,19 @@ const isVersionSelected = (
   const versions = document?.versions;
   return versions?.includes(version) || false;
 };
+
+const studioSiteCode = process.env.SANITY_STUDIO_SITE_CODE;
+const isDgfStudio = studioSiteCode === "DGF";
+const versionOptions = isDgfStudio
+  ? [
+      { title: "DGF", value: "DGF" },
+      { title: "Organic", value: "Organic" },
+      { title: "LFD", value: "LFD" },
+    ]
+  : [
+      { title: "DGF", value: "DGF" },
+      { title: "LFD", value: "LFD" },
+    ];
 
 export const recipeType = defineType({
   name: "recipe",
@@ -45,6 +59,15 @@ export const recipeType = defineType({
       title: "LFD Content",
       icon: BlockContentIcon,
     },
+    ...(isDgfStudio
+      ? [
+          {
+            name: "organic-sauce",
+            title: "Organic Sauce",
+            icon: DropIcon,
+          },
+        ]
+      : []),
   ],
   fieldsets: [{ name: "extra-info", options: { columns: 2 } }],
   fields: [
@@ -88,10 +111,7 @@ export const recipeType = defineType({
       type: "array",
       of: [{ type: "string" }],
       options: {
-        list: [
-          { title: "DGF", value: "DGF" },
-          { title: "LFD", value: "LFD" },
-        ],
+        list: versionOptions,
         layout: "grid",
       },
       validation: (rule) =>
@@ -249,6 +269,19 @@ export const recipeType = defineType({
       group: "dgf-content",
       description: "Optional notes, tips, or variations for the recipe.",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
+    }),
+    defineField({
+      name: "organicSauce",
+      title: "Organic Sauce",
+      type: "reference",
+      to: [{ type: "sauce" }],
+      group: "organic-sauce",
+      description: "Select an organic sauce (DGF only).",
+      options: {
+        filter: 'line == "Organic"',
+      },
+      hidden: ({ document }) =>
+        !(isDgfStudio && isVersionSelected(document, "Organic")),
     }),
     defineField({
       name: "lfdIngredients",
