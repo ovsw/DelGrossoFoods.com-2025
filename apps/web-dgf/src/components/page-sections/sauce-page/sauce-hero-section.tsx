@@ -176,7 +176,7 @@ export function SauceHeroSection({
               </div>
             </div>
           ) : (
-            <h1 className="mx-auto max-w-[10ch] lg:mx-0 lg:max-w-[13ch]">
+            <h1 className="mx-auto max-w-[46ch] lg:mx-0">
               <span
                 className={cn(
                   "block text-5xl leading-[1.1] font-bold text-balance lg:text-6xl lg:leading-[1]",
