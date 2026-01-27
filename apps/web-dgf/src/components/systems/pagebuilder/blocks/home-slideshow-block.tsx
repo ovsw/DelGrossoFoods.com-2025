@@ -84,6 +84,8 @@ export function HomeSlideshowBlock({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [lastChangeWasManual, setLastChangeWasManual] = useState(false);
 
   useEffect(() => {
     setCurrentSlide(0);
@@ -112,11 +114,13 @@ export function HomeSlideshowBlock({
 
   const handleNextSlide = useCallback(() => {
     if (totalSlides <= 1) return;
+    setLastChangeWasManual(true);
     queueSlideChange((current, total) => (current + 1) % total);
   }, [queueSlideChange, totalSlides]);
 
   const handlePrevSlide = useCallback(() => {
     if (totalSlides <= 1) return;
+    setLastChangeWasManual(true);
     queueSlideChange((current, total) => (current - 1 + total) % total);
   }, [queueSlideChange, totalSlides]);
 
@@ -124,20 +128,50 @@ export function HomeSlideshowBlock({
     (index: number) => {
       if (totalSlides <= 1 || index === currentSlide) return;
       if (index < 0 || index >= totalSlides) return;
+      setLastChangeWasManual(true);
       queueSlideChange(() => index);
     },
     [currentSlide, queueSlideChange, totalSlides],
   );
 
   useEffect(() => {
-    if (totalSlides <= 1) return;
+    if (totalSlides <= 1 || prefersReducedMotion) return;
 
     const intervalId = window.setInterval(() => {
+      setLastChangeWasManual(false);
       queueSlideChange((current, total) => (current + 1) % total);
     }, SLIDE_DURATION);
 
     return () => window.clearInterval(intervalId);
-  }, [queueSlideChange, totalSlides]);
+  }, [queueSlideChange, totalSlides, prefersReducedMotion]);
+
+  useEffect(() => {
+    const mediaQuery =
+      typeof window !== "undefined"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+
+    if (!mediaQuery) return;
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    if ("addEventListener" in mediaQuery) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+
+    const legacyMediaQuery = mediaQuery as MediaQueryList & {
+      addListener: (listener: (event: MediaQueryListEvent) => void) => void;
+      removeListener: (listener: (event: MediaQueryListEvent) => void) => void;
+    };
+
+    legacyMediaQuery.addListener(handleChange);
+    return () => legacyMediaQuery.removeListener(handleChange);
+  }, []);
 
   useEffect(() => {
     setHasMounted(true);
@@ -188,11 +222,11 @@ export function HomeSlideshowBlock({
       className="relative w-full justify-center overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg')] bg-cover bg-bottom pt-36 pb-16"
       role="region"
       aria-label="DelGrosso Sauce Lines Slideshow"
-      aria-live="polite"
+      aria-live={lastChangeWasManual ? "polite" : "off"}
     >
       <div className="mx-auto flex max-w-7xl transform flex-col items-center justify-center gap-8 lg:flex-row lg:items-stretch lg:justify-start ">
         <div className="container mx-auto flex w-full flex-col items-center justify-end  px-6 text-center md:text-left lg:grid lg:grid-cols-[minmax(24rem,44%)_minmax(0,1fr)] lg:items-end lg:max-w-5xl">
-          <div className="flex w-full max-w-[20rem] flex-col items-center justify-end  py-6 md:grid md:max-w-none md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-10 md:py-8 lg:order-1 lg:max-w-[26rem] lg:grid-cols-1 lg:justify-items-center lg:gap-10 lg:py-10">
+          <div className="flex w-full max-w-[20rem] flex-col items-center justify-end pt-6 md:grid md:max-w-none md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-10 md:pt-8 lg:order-1 lg:max-w-[26rem] lg:grid-cols-1 lg:justify-items-center lg:gap-10 lg:pt-10">
             <div className="mb-4 w-full max-w-[18rem] -rotate-2 transform bg-white p-2 shadow-lg hover:rotate-0 md:mb-0 md:max-w-[20rem] md:justify-self-start md:me-8 md:p-4 lg:me-0 lg:justify-self-center">
               <Image
                 priority={true}
@@ -210,7 +244,7 @@ export function HomeSlideshowBlock({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: TRANSITION_DURATION_S }}
-                className="flex w-full flex-col items-center text-center md:items-start md:text-left lg:items-center lg:text-center"
+                className="flex w-full min-h-[16rem] flex-col items-center text-center md:min-h-[18rem] md:items-start md:text-left lg:min-h-[20rem] lg:items-center lg:text-center"
               >
                 {current.title ? (
                   <Eyebrow

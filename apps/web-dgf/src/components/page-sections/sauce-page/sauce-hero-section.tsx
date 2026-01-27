@@ -126,7 +126,13 @@ export function SauceHeroSection({
     >
       <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-end">
         {/* Text stack: pure document flow with margins for grouping */}
-        <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0 lg:mt-auto">
+        <div
+          className={cn(
+            "text-center max-w-prose mx-auto lg:mx-0 lg:mt-auto",
+            "min-h-[22rem] lg:min-h-[24rem]",
+            "lg:text-start",
+          )}
+        >
           {/* Identity: eyebrow + title (tight proximity via margin) */}
           <Eyebrow
             text={lineSourceLabel}
