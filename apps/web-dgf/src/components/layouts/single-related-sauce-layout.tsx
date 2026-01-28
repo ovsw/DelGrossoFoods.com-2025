@@ -30,7 +30,7 @@ export function SingleRelatedSauceLayout({
     <div className="mt-16">
       <div className="grid items-center gap-8 md:gap-10 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5 flex justify-center lg:justify-start">
-          <div className="aspect-[33/40] relative overflow-hidden mx-auto w-full max-w-[360px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-none">
+          <div className="aspect-[33/40] relative mx-auto w-full max-w-[360px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-none">
             {item.mainImage?.id ? (
               <SanityImage
                 image={item.mainImage}

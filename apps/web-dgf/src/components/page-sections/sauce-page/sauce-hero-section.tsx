@@ -123,6 +123,7 @@ export function SauceHeroSection({
       className={cn("relative", backgroundImage && "bg-cover bg-bottom")}
       innerClassName="relative mx-auto max-w-6xl px-4 lg:pl-18"
       style={{ backgroundImage: `url('${backgroundImage}')` }}
+      allowOverflow
     >
       <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-end">
         {/* Text stack: pure document flow with margins for grouping */}

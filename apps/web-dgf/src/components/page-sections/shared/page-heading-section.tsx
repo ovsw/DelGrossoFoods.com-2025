@@ -74,9 +74,9 @@ export function PageHeadingSection({
       spacingTop="page-top"
       spacingBottom="default"
       background="brand"
-      className="overflow-hidden isolate"
+      className="isolate"
       innerClassName="max-w-7xl pb-14 pt-6 lg:px-8"
-      allowOverflow={false}
+      allowOverflow
     >
       <div className="absolute inset-0 z-0" aria-hidden="true">
         {heroBackgroundImage ? (

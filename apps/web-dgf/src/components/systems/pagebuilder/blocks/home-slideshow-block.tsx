@@ -219,7 +219,7 @@ export function HomeSlideshowBlock({
 
   return (
     <div
-      className="relative w-full justify-center overflow-hidden bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg')] bg-cover bg-bottom pt-36 pb-16"
+      className="relative w-full justify-center bg-[url('/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg')] bg-cover bg-bottom pt-36 pb-16"
       role="region"
       aria-label="DelGrosso Sauce Lines Slideshow"
       aria-live={lastChangeWasManual ? "polite" : "off"}

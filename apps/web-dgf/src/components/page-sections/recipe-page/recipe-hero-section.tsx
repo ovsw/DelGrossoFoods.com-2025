@@ -10,6 +10,7 @@ import {
   toMeatSlug,
   toRecipeTagSlug,
 } from "@/config/recipe-taxonomy";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { RecipeDetailData } from "@/types";
 
 interface RecipeHeroSectionProps {
@@ -83,6 +84,11 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
     : null;
 
   const altText = image?.alt || `${stegaClean(recipeName)} recipe`;
+  const imageAttribute = createPresentationDataAttribute({
+    documentId: recipe._id,
+    documentType: recipe._type,
+    path: "mainImage",
+  });
 
   return (
     <SectionShell
@@ -93,8 +99,9 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
       className="relative isolate"
       innerPadding="none"
       innerClassName="relative w-full"
+      allowOverflow
     >
-      <div className="relative max-h-[85svh] min-h-[80vh] w-full overflow-hidden bg-muted">
+      <div className="relative max-h-[85svh] min-h-[80vh] w-full bg-muted">
         {image?.id ? (
           <SanityImage
             image={image}
@@ -103,6 +110,7 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
             height={1200}
             className="absolute inset-0 h-full w-full object-cover"
             mode="cover"
+            data-sanity={imageAttribute ?? undefined}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-muted">
@@ -112,7 +120,7 @@ export function RecipeHeroSection({ recipe }: RecipeHeroSectionProps) {
           </div>
         )}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-th-dark-900/70 via-th-dark-900/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-th-dark-900/70 via-th-dark-900/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
         <div className="container mx-auto lg:max-w-6xl">
           {eyebrowText && (
