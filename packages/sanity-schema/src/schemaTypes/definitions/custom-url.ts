@@ -13,12 +13,20 @@ const internalLinkTargetTypes = [
   "sauceIndex",
   "recipeIndex",
   "productIndex",
-  "recipe",
-  "sauce",
-  "product",
 ] as const;
 
 const allLinkableTypes = internalLinkTargetTypes.map((type) => ({ type }));
+
+type SiteLinkDocument = {
+  site?: {
+    _ref?: string;
+  };
+};
+
+const typeList = `[${internalLinkTargetTypes
+  .map((type) => `"${type}"`)
+  .join(", ")}]`;
+const baseTypeFilter = `_type in ${typeList}`;
 
 export const customUrl = defineType({
   name: "customUrl",
@@ -76,7 +84,10 @@ export const customUrl = defineType({
       type: "reference",
       description:
         "Select which page on your website this link should point to",
-      options: { disableNew: true },
+      options: {
+        disableNew: true,
+        filter: baseTypeFilter,
+      },
       hidden: ({ parent }) => parent?.type !== "internal",
       to: allLinkableTypes,
       validation: (rule) => [
@@ -85,6 +96,33 @@ export const customUrl = defineType({
           if (type === "internal" && !value?._ref)
             return "internal can't be empty";
           return true;
+        }),
+        rule.custom(async (value, context) => {
+          const type = (context.parent as { type?: string })?.type;
+          if (type !== "internal" || !value?._ref) return true;
+
+          const document = context.document as SiteLinkDocument | undefined;
+          const siteId = document?.site?._ref;
+
+          const client = context.getClient({ apiVersion: "2025-02-19" });
+          const referenced = await client.fetch<{
+            _type?: string;
+            site?: { _ref?: string };
+          }>(`*[_id == $id][0]{ _type, site }`, { id: value._ref });
+
+          if (!referenced) return true;
+
+          const referencedSiteId = referenced.site?._ref;
+          if (!siteId) {
+            return referencedSiteId
+              ? "Internal link must point to a site-specific page or a global page."
+              : true;
+          }
+
+          const isGlobalPage = !referencedSiteId && referenced._type === "page";
+          if (referencedSiteId === siteId || isGlobalPage) return true;
+
+          return "Internal link must match the current site's content.";
         }),
       ],
     }),

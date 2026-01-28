@@ -3546,66 +3546,6 @@
     }
   },
   {
-    "type": "type",
-    "name": "sauce.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "sauce"
-    }
-  },
-  {
-    "type": "type",
-    "name": "product.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "product"
-    }
-  },
-  {
     "name": "customUrl",
     "type": "type",
     "value": {
@@ -3692,18 +3632,6 @@
               {
                 "type": "inline",
                 "name": "productIndex.reference"
-              },
-              {
-                "type": "inline",
-                "name": "recipe.reference"
-              },
-              {
-                "type": "inline",
-                "name": "sauce.reference"
-              },
-              {
-                "type": "inline",
-                "name": "product.reference"
               }
             ]
           },
@@ -5474,6 +5402,36 @@
         },
         "optional": false
       }
+    }
+  },
+  {
+    "type": "type",
+    "name": "sauce.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "sauce"
     }
   },
   {

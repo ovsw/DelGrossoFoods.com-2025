@@ -27,18 +27,28 @@ export const button = defineType({
       title: "text",
       externalUrl: "url.external",
       urlType: "url.type",
-      internalUrl: "url.internal->slug.current",
+      internalUrl: "url.internal.slug.current",
       openInNewTab: "url.openInNewTab",
     },
     prepare: ({ title, externalUrl, urlType, internalUrl, openInNewTab }) => {
       const url = urlType === "external" ? externalUrl : internalUrl;
+      const normalizedInternal =
+        urlType === "internal" && url ? url.replace(/^\/+/, "") : url;
+      const normalizedUrl =
+        urlType === "internal" && normalizedInternal
+          ? `/${normalizedInternal}`
+          : url;
       const newTabIndicator = openInNewTab ? " ↗" : "";
-      const truncatedUrl =
-        url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      const truncatedUrl = normalizedUrl
+        ? normalizedUrl.length > 30
+          ? `${normalizedUrl.substring(0, 30)}...`
+          : normalizedUrl
+        : "Select a URL";
+      const label = urlType ? `${urlType} • ` : "";
 
       return {
         title: title || "Untitled Button",
-        subtitle: `${truncatedUrl}${newTabIndicator}`,
+        subtitle: `${label}${truncatedUrl}${newTabIndicator}`,
       };
     },
   },
