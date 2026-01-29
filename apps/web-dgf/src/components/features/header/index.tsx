@@ -16,19 +16,33 @@ import { MobileMenuToggle } from "./MobileMenuToggle";
 import { MobileNavPanel } from "./MobileNavPanel";
 import { RecipesButton } from "./RecipesButton";
 
-export function Header() {
+type HeaderLink = { href: string; label: string };
+type HeaderCtaButton = {
+  text: string;
+  href: string;
+  openInNewTab?: boolean | null;
+  dataAttribute?: string | null;
+};
+
+type HeaderProps = {
+  navigationLinks: HeaderLink[];
+  ctaButton?: HeaderCtaButton;
+};
+
+export function Header({ navigationLinks, ctaButton }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isVisible, suppressTransitions } = useScrollVisibility();
   const pathname = usePathname();
-
-  const navigationLinks = [
-    { href: "/sauces", label: "Sauces" },
-    { href: "/store", label: "Store" },
-    { href: "/history", label: "History" },
-    { href: "/where-to-buy", label: "Where to Buy" },
-    { href: "/contact", label: "Contact" },
-    // { href: '/recipes', label: 'Recipes' },
-  ];
+  const ctaLabel = ctaButton?.text ?? "Recipes";
+  const ctaHref = ctaButton?.href ?? "/recipes";
+  const ctaLinkProps = {
+    ...(ctaButton?.openInNewTab
+      ? { target: "_blank", rel: "noopener noreferrer" }
+      : {}),
+    ...(ctaButton?.dataAttribute
+      ? { "data-sanity": ctaButton.dataAttribute }
+      : {}),
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -75,7 +89,14 @@ export function Header() {
             />
 
             {/* Desktop Search and Cart */}
-            <DesktopActions />
+            <DesktopActions
+              ctaButton={{
+                text: ctaLabel,
+                href: ctaHref,
+                openInNewTab: ctaButton?.openInNewTab,
+                dataAttribute: ctaButton?.dataAttribute,
+              }}
+            />
 
             {/* Mobile actions group */}
             <div className="flex items-center space-x-4 lg:hidden">
@@ -86,8 +107,10 @@ export function Header() {
                   size="sm"
                   className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
                   aria-label="Browse recipes"
+                  href={ctaHref}
+                  {...ctaLinkProps}
                 >
-                  <span className="max-[450px]:hidden">Recipes</span>
+                  <span className="max-[450px]:hidden">{ctaLabel}</span>
                   <CookbookIcon className="hidden size-5 max-[450px]:block" />
                 </RecipesButton>
               </div>

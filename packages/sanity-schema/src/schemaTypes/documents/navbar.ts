@@ -154,9 +154,8 @@ export const navbar = defineType({
       name: "columns",
       type: "array",
       title: "Navigation Structure",
-      description:
-        "Build your navigation menu using columns and links. Add either a column of links or individual links.",
-      of: [navbarColumn, navbarLink],
+      description: "Build your navigation menu using individual links.",
+      of: [navbarLink],
     }),
     buttonsField,
   ],

@@ -3,6 +3,7 @@
 import type {
   DgfGlobalSeoSettingsQueryResult,
   DgfNavbarQueryResult,
+  IconPicker,
 } from "@workspace/sanity-config/types";
 import {
   Accordion,
@@ -41,7 +42,22 @@ import { SanityIcon } from "@/components/elements/sanity-icon";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 
 type NavbarData = NonNullable<DgfNavbarQueryResult>;
-type NavbarColumnEntry = NonNullable<NavbarData["columns"]>[number];
+type NavbarLinkEntry = NonNullable<NavbarData["columns"]>[number];
+type NavbarColumnLinkEntry = {
+  _key: string;
+  name: string | null;
+  description: string | null;
+  icon?: IconPicker | null;
+  href: string | null;
+  openInNewTab?: boolean | null;
+};
+type NavbarColumnEntry = {
+  _key: string;
+  type: "column";
+  title: string | null;
+  links?: NavbarColumnLinkEntry[] | null;
+};
+type NavbarEntry = NavbarLinkEntry | NavbarColumnEntry;
 
 type PresentationAttributeGetter = (path?: string | null) => string | null;
 
@@ -138,7 +154,7 @@ function MobileNavbarAccordionColumn({
   currentPath,
   getDataAttribute,
 }: {
-  column: NavbarColumnEntry;
+  column: NavbarEntry;
   setIsOpen: (isOpen: boolean) => void;
   currentPath: string;
   getDataAttribute: PresentationAttributeGetter;
@@ -313,7 +329,7 @@ function NavbarColumnLink({
   currentPath,
   getDataAttribute,
 }: {
-  column: Extract<NavbarColumnEntry, { type: "link" }>;
+  column: Extract<NavbarEntry, { type: "link" }>;
   currentPath: string;
   getDataAttribute: PresentationAttributeGetter;
 }) {
@@ -351,7 +367,7 @@ function NavbarColumn({
   currentPath,
   getDataAttribute,
 }: {
-  column: Extract<NavbarColumnEntry, { type: "column" }>;
+  column: Extract<NavbarEntry, { type: "column" }>;
   currentPath: string;
   getDataAttribute: PresentationAttributeGetter;
 }) {
@@ -421,7 +437,7 @@ function DesktopNavigation({
   currentPath,
   getDataAttribute,
 }: {
-  columns: NavbarData["columns"];
+  columns: NavbarEntry[] | null | undefined;
   currentPath: string;
   getDataAttribute: PresentationAttributeGetter;
 }) {

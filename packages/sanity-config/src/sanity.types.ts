@@ -678,27 +678,12 @@ export type Navbar = {
   _rev: string;
   site: SiteReference;
   label: string;
-  columns?: Array<
-    | {
-        title?: string;
-        links: Array<{
-          icon?: IconPicker;
-          name?: string;
-          description?: string;
-          url?: CustomUrl;
-          _type: "navbarColumnLink";
-          _key: string;
-        }>;
-        _type: "navbarColumn";
-        _key: string;
-      }
-    | {
-        name?: string;
-        url?: CustomUrl;
-        _type: "navbarLink";
-        _key: string;
-      }
-  >;
+  columns?: Array<{
+    name?: string;
+    url?: CustomUrl;
+    _type: "navbarLink";
+    _key: string;
+  }>;
   buttons?: Array<
     {
       _key: string;
@@ -4266,29 +4251,14 @@ export type DgfFooterQueryResult = {
 export type DgfNavbarQueryResult = {
   _id: string;
   _type: "navbar";
-  columns: Array<
-    | {
-        _key: string;
-        type: "link";
-        name: string | null;
-        description: null;
-        openInNewTab: boolean | null;
-        href: string | null;
-      }
-    | {
-        _key: string;
-        type: "column";
-        title: string | null;
-        links: Array<{
-          _key: string;
-          name: string | null;
-          icon: IconPicker | null;
-          description: string | null;
-          openInNewTab: boolean | null;
-          href: string | null;
-        }>;
-      }
-  > | null;
+  columns: Array<{
+    _key: string;
+    type: "link";
+    name: string | null;
+    description: null;
+    openInNewTab: boolean | null;
+    href: string | null;
+  }> | null;
   buttons: Array<{
     text: string | null;
     variant: null;
@@ -7999,29 +7969,14 @@ export type LfdFooterQueryResult = {
 export type LfdNavbarQueryResult = {
   _id: string;
   _type: "navbar";
-  columns: Array<
-    | {
-        _key: string;
-        type: "link";
-        name: string | null;
-        description: null;
-        openInNewTab: boolean | null;
-        href: string | null;
-      }
-    | {
-        _key: string;
-        type: "column";
-        title: string | null;
-        links: Array<{
-          _key: string;
-          name: string | null;
-          icon: IconPicker | null;
-          description: string | null;
-          openInNewTab: boolean | null;
-          href: string | null;
-        }>;
-      }
-  > | null;
+  columns: Array<{
+    _key: string;
+    type: "link";
+    name: string | null;
+    description: null;
+    openInNewTab: boolean | null;
+    href: string | null;
+  }> | null;
   buttons: Array<{
     text: string | null;
     variant: null;

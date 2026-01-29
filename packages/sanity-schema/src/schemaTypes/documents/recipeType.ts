@@ -59,15 +59,12 @@ export const recipeType = defineType({
       title: "LFD Content",
       icon: BlockContentIcon,
     },
-    ...(isDgfStudio
-      ? [
-          {
-            name: "organic-sauce",
-            title: "Organic Sauce",
-            icon: DropIcon,
-          },
-        ]
-      : []),
+    {
+      name: "organic-sauce",
+      title: "Organic Sauce",
+      icon: DropIcon,
+      hidden: () => !isDgfStudio,
+    },
   ],
   fieldsets: [{ name: "extra-info", options: { columns: 2 } }],
   fields: [
