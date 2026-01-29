@@ -1,6 +1,5 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
-import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import type { CSSProperties } from "react";
@@ -120,7 +119,7 @@ const ProductPanelCard = ({
       aria-label={`${stegaClean(panel.title)} product panel`}
       style={accentCssVars}
     >
-      <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} />
+      {/* <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} /> */}
       <div
         className={cn(
           "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",

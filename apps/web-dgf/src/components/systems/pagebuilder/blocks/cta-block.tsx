@@ -1,7 +1,6 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { Section } from "@workspace/ui/components/section";
-import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { stegaClean } from "next-sanity";
 
@@ -36,7 +35,6 @@ export function CTABlock({
   spacing,
   isPageTop = false,
   surfaceColor = "default",
-  applySurfaceShine = false,
 }: CTABlockProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
   const rawSurfaceColor = stegaClean(surfaceColor) ?? "default";
@@ -45,7 +43,6 @@ export function CTABlock({
     : "default";
   const surfaceStyle = CTA_SURFACE_CONFIG[colorKey];
   const hasSurfaceFrame = colorKey !== "none";
-  const showOverlay = hasSurfaceFrame && Boolean(stegaClean(applySurfaceShine));
   const eyebrowVariant = surfaceStyle.isDark ? "onDark" : "onLight";
   const headingColor = surfaceStyle.isDark
     ? "text-th-light-100"
@@ -71,7 +68,7 @@ export function CTABlock({
             hasSurfaceFrame ? "rounded-3xl px-4 py-16" : undefined,
           )}
         >
-          {showOverlay ? <SurfaceShineOverlay /> : null}
+          {/* <SurfaceShineOverlay /> */}
           <div className="text-center max-w-3xl mx-auto space-y-8">
             {eyebrow && <Eyebrow text={eyebrow} variant={eyebrowVariant} />}
             <h2

@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@workspace/ui/components/button";
 import { Section } from "@workspace/ui/components/section";
-import { SurfaceShineOverlay } from "@workspace/ui/components/surface-shine-overlay";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import Form from "next/form";
@@ -90,7 +89,7 @@ export function SubscribeNewsletterBlock({
     >
       <div className="container mx-auto px-4 md:px-8">
         <div className="relative isolate overflow-hidden rounded-3xl bg-brand-green px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-          <SurfaceShineOverlay className="rounded-3xl" />
+          {/* <SurfaceShineOverlay className="rounded-3xl" /> */}
           <div className="relative z-10 mx-auto max-w-3xl space-y-8 text-center">
             <h2 className="text-3xl font-semibold text-brand-green-text text-balance sm:text-4xl md:text-5xl">
               {title}
