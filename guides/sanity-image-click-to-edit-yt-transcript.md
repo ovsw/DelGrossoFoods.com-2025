@@ -138,4 +138,4 @@ case "feature": {
 
 ### Reference Implementation
 
-See `apps/web/src/components/systems/pagebuilder/blocks/feature-block.tsx` for the complete working implementation that handles both image clarity and click-to-edit functionality.
+See `apps/web-dgf/src/components/systems/pagebuilder/blocks/feature-block.tsx` for the complete working implementation that handles both image clarity and click-to-edit functionality.

@@ -248,7 +248,7 @@
   - Add `DevDomRemoveTolerance` (development only) to make `insertBefore`, `replaceChild`, and `removeChild` tolerant when reference/child nodes have been reparented by the Sidecart.
   - Mount both in root layout after `<SanityLive />`, before the Foxy provider.
   - Add `A11yLiveAnnouncer` and standardize active announcements via `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`. Refactor `FoxycartProvider` to use the global announcer (remove local sr-only live region).
-  - Add `announce(message, politeness?)` helper in `apps/web/src/lib/a11y/announce.ts` so developers import a single function instead of hand-crafting `CustomEvent`s.
+  - Add `announce(message, politeness?)` helper in `apps/web-dgf/src/lib/a11y/announce.ts` so developers import a single function instead of hand-crafting `CustomEvent`s.
 
   Notes
   - Production behavior is unchanged; the tolerance runs only in `NODE_ENV=development`.
@@ -350,7 +350,7 @@
 
 - [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`d32e957`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/d32e957965eb1a42d17900cb96ba8c54f71ad2e6) Thanks [@ovsw](https://github.com/ovsw)! - Add slug fields to Product and Recipe schemas and add a slug backfill script for the development dataset.
   - Add `slug` field to `productType` and `recipeType` documents in Studio
-  - Implement `apps/studio/scripts/backfill-slugs.ts` to populate slugs for all Product and Recipe documents in the dev dataset
+  - Implement `apps/studio-dgf/scripts/backfill-slugs.ts` to populate slugs for all Product and Recipe documents in the dev dataset
   - Regenerate Sanity types consumed by Web (`sanity.types.ts`)
 
 - [#59](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/59) [`6a8fbfa`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a8fbfac5c54752792a9e8072bc1cdd037c1e8dd) Thanks [@ovsw](https://github.com/ovsw)! - Improve OG data for products and recipes and extend sitemap coverage.
@@ -426,7 +426,7 @@
 - [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`5741fcd`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/5741fcd19d028eee7b7af746cf7f07cba954d625) Thanks [@ovsw](https://github.com/ovsw)! - Make `LogoSvg` accept full SVG props and fix potential id collisions; rename file to `elements/logo.tsx` and update imports.
   - Extend `LogoSvg` props to `ComponentPropsWithoutRef<'svg'>` and spread onto `<svg>` to allow `aria-*`, `role`, `id`, and other SVG attributes
   - Remove hardcoded `id="a"` to avoid potential collisions in composed pages and OG rendering
-  - Rename `apps/web/src/components/elements/Logo.tsx` → `apps/web/src/components/elements/Logo.tsx` and update all imports (`navbar`, `navbar-client`, `footer`, `api/logo`, `api/og`, `header`)
+  - Rename `apps/web-dgf/src/components/elements/Logo.tsx` → `apps/web-dgf/src/components/elements/logo.tsx` and update all imports (`navbar`, `navbar-client`, `footer`, `api/logo`, `api/og`, `header`)
 
 - [#49](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/49) [`6a10ecc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/6a10eccc583e7060b55b3b367223caece8872ea9) Thanks [@ovsw](https://github.com/ovsw)! - Make brand logo code-owned and remove CMS logo.
   - Replace header, nav, and footer logos with inline `LogoSvg` (currentColor theming)
@@ -453,7 +453,7 @@
 ### Minor Changes
 
 - [#47](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/47) [`7ab121c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7ab121c4a563fe81dfd3d36f88fdb96cd933096b) Thanks [@ovsw](https://github.com/ovsw)! - Introduce background color, noise texture, and top gradient via background.css
-  - Import `background.css` in `apps/web/src/app/layout.tsx`
+  - Import `background.css` in `apps/web-dgf/src/app/layout.tsx`
   - Add `public/images/bg/noise-red.svg` asset
   - Adjust `packages/ui` global styles to support background layering
 

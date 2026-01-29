@@ -9,9 +9,9 @@ The project is organized into applications and shared packages:
 ### Applications
 
 - **`apps/web-dgf`**: The Next.js 15 frontend for Del Grosso Foods.
-- **`apps/studio-dgf`**: The Sanity v4 Studio for Del Grosso Foods.
+- **`apps/studio-dgf`**: The Sanity v5 Studio for Del Grosso Foods.
 - **`apps/web-lfd`**: The Next.js 15 frontend for La Famiglia Del Grosso.
-- **`apps/studio-lfd`**: The Sanity v4 Studio for La Famiglia Del Grosso.
+- **`apps/studio-lfd`**: The Sanity v5 Studio for La Famiglia Del Grosso.
 
 ### Packages
 
@@ -25,7 +25,7 @@ The project is organized into applications and shared packages:
 - **Package Manager**: pnpm (10.x)
 - **Build System**: Turbo (2.x)
 - **Framework**: Next.js 15 (App Router)
-- **CMS**: Sanity v4
+- **CMS**: Sanity v5
 - **Styling**: Tailwind CSS v4
 - **Language**: TypeScript (Strict)
 
@@ -54,7 +54,7 @@ We follow a strict component organization strategy in the web apps (`apps/web-*`
 
 We maintain tight coupling between Sanity schemas and TypeScript types.
 
-1.  **Schema Changes**: Edit schemas in `apps/studio-*/schemaTypes`.
+1.  **Schema Changes**: Edit schemas in `packages/sanity-schema/src/schemaTypes`.
 2.  **Type Generation**: Run `pnpm --filter studio-dgf type` (or `studio-lfd`) to extract and generate types.
 3.  **Web Consumption**: The web app uses these generated types for queries.
 
@@ -113,7 +113,7 @@ To start development for a specific site (Web + Studio):
 - **Del Grosso Foods**: `pnpm run dev:dgf`
 - **La Famiglia Del Grosso**: `pnpm run dev:lfd`
 
-This starts Next.js on `http://localhost:3000` (or `3001` for lfd) and Sanity Studio on `http://localhost:3333`.
+This starts Next.js on `http://localhost:3000` (or `3001` for LFD) and Sanity Studio on `http://localhost:3333` (or `3334` for LFD).
 
 ## Development Conventions
 

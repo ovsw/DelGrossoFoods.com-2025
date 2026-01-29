@@ -1,5 +1,5 @@
 /*
-A reusable, batched Sanity deletion script and wired an npm script to execute it. 
+A reusable, batched Sanity deletion script and wired an npm script to execute it.
 
 ## How to use
 - Set env so the CLI knows your project/dataset (already pulled from sanity.cli.ts):
@@ -9,7 +9,7 @@ A reusable, batched Sanity deletion script and wired an npm script to execute it
 
 ## Run commands:
 - Dry run:
-  - cd apps/studio-dgf
+  - cd apps/studio-lfd
   - pnpm mut:delete-by-type -- --type=post --dry-run
 - Delete published only:
 pnpm mut:delete-by-type -- --type=post

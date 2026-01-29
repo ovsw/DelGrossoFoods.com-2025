@@ -152,7 +152,7 @@
 ### Patch Changes
 
 - [#47](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/47) [`7ab121c`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/7ab121c4a563fe81dfd3d36f88fdb96cd933096b) Thanks [@ovsw](https://github.com/ovsw)! - Introduce background color, noise texture, and top gradient via background.css
-  - Import `background.css` in `apps/web/src/app/layout.tsx`
+  - Import `background.css` in `apps/web-dgf/src/app/layout.tsx`
   - Add `public/images/bg/noise-red.svg` asset
   - Adjust `packages/ui` global styles to support background layering
 
