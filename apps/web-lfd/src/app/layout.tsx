@@ -17,7 +17,7 @@ import { A11yLiveAnnouncer } from "@/components/elements/a11y/live-announcer";
 import { CombinedJsonLd } from "@/components/elements/json-ld";
 import { FoxycartProvider } from "@/components/features/cart/foxycart-provider";
 import { FooterServer, FooterSkeleton } from "@/components/features/footer";
-import { Header } from "@/components/features/header";
+import { HeaderServer } from "@/components/features/header/header-server";
 import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-tolerance";
 import { PreviewBar } from "@/components/systems/preview/preview-bar";
 import { Providers } from "@/components/systems/providers";
@@ -67,7 +67,7 @@ export default async function RootLayout({
           Skip to main content
         </a>
         <Providers>
-          <Header />
+          <HeaderServer />
           <main id="main">{children}</main>
 
           <Suspense fallback={<FooterSkeleton />}>

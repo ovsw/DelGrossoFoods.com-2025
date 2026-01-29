@@ -1,3 +1,4 @@
+import type { ReferenceFilterResolver, ReferenceOptions } from "sanity";
 import { defineField, defineType } from "sanity";
 
 import { createRadioListLayout, isValidUrl } from "../../utils/helper";
@@ -27,6 +28,23 @@ const typeList = `[${internalLinkTargetTypes
   .map((type) => `"${type}"`)
   .join(", ")}]`;
 const baseTypeFilter = `_type in ${typeList}`;
+const siteScopedFilter = `${baseTypeFilter} && (site._ref == $siteId || (_type == "page" && !defined(site._ref)))`;
+
+const internalReferenceOptions: ReferenceOptions = {
+  disableNew: true,
+  filter: (({ document }) => {
+    const siteId = (document as SiteLinkDocument | undefined)?.site?._ref;
+    if (!siteId) {
+      return {
+        filter: baseTypeFilter,
+      };
+    }
+    return {
+      filter: siteScopedFilter,
+      params: { siteId },
+    };
+  }) satisfies ReferenceFilterResolver,
+};
 
 export const customUrl = defineType({
   name: "customUrl",
@@ -84,10 +102,7 @@ export const customUrl = defineType({
       type: "reference",
       description:
         "Select which page on your website this link should point to",
-      options: {
-        disableNew: true,
-        filter: baseTypeFilter,
-      },
+      options: internalReferenceOptions,
       hidden: ({ parent }) => parent?.type !== "internal",
       to: allLinkableTypes,
       validation: (rule) => [

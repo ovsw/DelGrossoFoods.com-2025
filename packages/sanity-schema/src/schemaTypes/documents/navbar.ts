@@ -140,7 +140,10 @@ export const navbar = defineType({
   icon: PanelTop,
   description: "Configure the main navigation structure for your site",
   fields: [
-    siteReferenceField,
+    {
+      ...siteReferenceField,
+      hidden: true,
+    },
     defineField({
       name: "label",
       type: "string",
