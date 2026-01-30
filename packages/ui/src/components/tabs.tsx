@@ -64,13 +64,18 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
 interface TabsContentProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> {
+  /**
+   * Keep the tab content mounted even when inactive. Useful when consumers rely
+   * on persistent DOM nodes (e.g., Sanity Presentation data attributes).
+   */
+  forceMount?: true;
   lazyMount?: boolean;
 }
 
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   TabsContentProps
->(({ className, lazyMount: _lazyMount, ...props }, ref) => {
+>(({ className, lazyMount: _lazyMount, forceMount, ...props }, ref) => {
   // For lazyMount, we can rely on Radix UI's built-in behavior
   // Radix UI TabsContent only renders when the tab is active
   // The lazyMount prop is kept for API compatibility but doesn't change behavior
@@ -78,6 +83,7 @@ const TabsContent = React.forwardRef<
   return (
     <TabsPrimitive.Content
       ref={ref}
+      forceMount={forceMount}
       className={cn("block", className)}
       {...props}
     />

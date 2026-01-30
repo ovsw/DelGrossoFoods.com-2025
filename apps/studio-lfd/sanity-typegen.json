@@ -1,0 +1,10 @@
+{
+  "path": [
+    "../web-dgf/src/lib/sanity/**/*.ts",
+    "../web-lfd/src/lib/sanity/**/*.ts",
+    "../../packages/sanity-config/src/**/*.ts"
+  ],
+  "schema": "schema.json",
+  "generates": "../../packages/sanity-config/src/sanity.types.ts",
+  "overloadClientMethods": true
+}

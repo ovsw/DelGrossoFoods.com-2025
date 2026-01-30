@@ -1,0 +1,28 @@
+{
+  "name": "@workspace/sanity-config",
+  "version": "1.20.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./fragments": "./src/fragments.ts",
+    "./live": "./src/live.tsx",
+    "./query": "./src/query.ts",
+    "./site": "./src/site.ts",
+    "./token": "./src/token.ts",
+    "./types": "./src/sanity.types.ts"
+  },
+  "dependencies": {
+    "@sanity/asset-utils": "^2.2.1",
+    "@sanity/client": "^7.14.0",
+    "@sanity/image-url": "^1.1.0",
+    "@workspace/sanity-schema": "workspace:*",
+    "next-sanity": "^11.6.12"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@types/node": "^20.19.11"
+  }
+}

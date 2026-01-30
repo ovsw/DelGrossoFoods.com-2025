@@ -4,7 +4,17 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "build:dgf": "turbo run build --filter=web-dgf",
+    "build:lfd": "turbo run build --filter=web-lfd",
+    "build:studio-dgf": "pnpm --filter studio-dgf run build",
+    "build:studio-lfd": "pnpm --filter studio-lfd run build",
+    "start:studio-dgf": "pnpm --filter studio-dgf run start",
+    "start:studio-lfd": "pnpm --filter studio-lfd run start",
+    "deploy:studio-dgf": "pnpm --filter studio-dgf run deploy",
+    "deploy:studio-lfd": "pnpm --filter studio-lfd run deploy",
+    "dev": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
+    "dev:dgf": "turbo run dev --parallel --filter web-dgf --filter studio-dgf",
+    "dev:lfd": "turbo run dev --parallel --filter web-lfd --filter studio-lfd",
     "lint": "turbo lint",
     "check-types": "turbo check-types",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",
@@ -31,17 +41,22 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "pnpm": {
+    "overrides": {
+      "next": "15.5.9"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}": [
       "pnpm -w dlx prettier --write --ignore-unknown"
     ],
-    "apps/web/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js --fix",
-      "pnpm -w dlx eslint -c apps/web/eslint.config.js"
+    "apps/web-dgf/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js --fix",
+      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js"
     ],
-    "apps/studio/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs --fix",
-      "pnpm -w dlx eslint -c apps/studio/eslint.config.mjs"
+    "apps/studio-dgf/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs --fix",
+      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs"
     ],
     "packages/ui/**/*.{js,jsx,ts,tsx}": [
       "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix",

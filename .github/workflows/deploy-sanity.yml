@@ -4,7 +4,8 @@ on:
     branches-ignore:
       - "feat/multisite-dgf-lfd"
     paths:
-      - "apps/studio/**"
+      - "apps/studio-dgf/**"
+      - "apps/studio-lfd/**"
       - ".github/workflows/deploy-sanity.yml"
   workflow_dispatch:
 
@@ -14,9 +15,18 @@ permissions:
 
 jobs:
   deploy:
-    name: Build and Deploy Sanity Studio
+    name: Build and Deploy Sanity Studio – ${{ matrix.displayName }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      matrix:
+        include:
+          - displayName: "DGF Studio"
+            workingDirectory: "./apps/studio-dgf"
+            siteCode: "DGF"
+          - displayName: "LFD Studio"
+            workingDirectory: "./apps/studio-lfd"
+            siteCode: "LFD"
     env:
       SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
       NODE_OPTIONS: "--max_old_space_size=4096"
@@ -24,8 +34,9 @@ jobs:
       SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_STUDIO_PROJECT_ID }}
       SANITY_STUDIO_DATASET: ${{ vars.SANITY_STUDIO_DATASET }}
       SANITY_STUDIO_TITLE: ${{ vars.SANITY_STUDIO_TITLE }}
-      SANITY_STUDIO_PRESENTATION_URL: ${{ vars.SANITY_STUDIO_PRESENTATION_URL }}
-      SANITY_STUDIO_PRODUCTION_HOSTNAME: ${{ vars.SANITY_STUDIO_PRODUCTION_HOSTNAME }}
+      SANITY_STUDIO_PRESENTATION_URL: ${{ vars['SANITY_STUDIO_PRESENTATION_URL_' + matrix.siteCode] || vars.SANITY_STUDIO_PRESENTATION_URL }}
+      SANITY_STUDIO_PRODUCTION_HOSTNAME: ${{ vars['SANITY_STUDIO_PRODUCTION_HOSTNAME_' + matrix.siteCode] || vars.SANITY_STUDIO_PRODUCTION_HOSTNAME }}
+      SANITY_STUDIO_SITE_CODE: ${{ matrix.siteCode }}
       HOST_NAME: ${{ github.head_ref || github.ref_name }}
 
     steps:
@@ -60,7 +71,7 @@ jobs:
 
       - name: Build Sanity Studio (Dependabot)
         if: steps.check-dependabot.outputs.is_dependabot == 'true'
-        working-directory: ./apps/studio
+        working-directory: ${{ matrix.workingDirectory }}
         run: |
           echo "Building Sanity Studio for Dependabot..."
           pnpm run build
@@ -69,7 +80,7 @@ jobs:
 
       - name: Deploy Sanity Studio
         if: steps.check-dependabot.outputs.is_dependabot != 'true'
-        working-directory: ./apps/studio
+        working-directory: ${{ matrix.workingDirectory }}
         run: |
           echo "Deploying Sanity Studio..."
           pnpm run deploy

@@ -6,8 +6,8 @@ A modern, full-stack monorepo built with Next.js App Router, Sanity CMS, Shadcn 
 
 ### Monorepo Structure
 
-- Apps: web (Next.js frontend) and studio (Sanity Studio)
-- Shared packages: UI components, TypeScript config, ESLint config
+- Apps: `web-dgf`, `web-lfd` (Next.js frontends) and `studio-dgf`, `studio-lfd` (Sanity Studios)
+- Shared packages: `ui`, `sanity-config`, `sanity-schema`, TypeScript config, ESLint config
 - Turborepo for build orchestration and caching
 
 ### Frontend (Web)
@@ -16,112 +16,145 @@ A modern, full-stack monorepo built with Next.js App Router, Sanity CMS, Shadcn 
 - Shadcn UI components with Tailwind CSS
 - Server Components and Server Actions
 - SEO optimization with metadata
-- Blog system with rich text editor
-- Table of contents generation
 - Responsive layouts
 
 ### Content Management (Studio)
 
-- Sanity Studio v3
-- Custom document types (Blog, FAQ, Pages)
+- Sanity Studio v5
+- Custom document types (pages, FAQs, products, sauces, recipes, and more)
 - Visual editing integration
 - Structured content with schemas
 - Live preview capabilities
 - Asset management
+- Tags input docs: see `docs/tags-input.md`
 
 #### 1. Download project files
 
 Clone the project. Make sure you have the following installed on your system:
 
-- Node JS (version >=20)
-- pnpm (version >= 9.12.3)
+- Node.js (version >=22.12.0)
+- pnpm (version 10.x; this repo uses `pnpm@10.12.2`)
 
-#### 2. Create the Sanity `apps/sanity/.env` file with the following vriables
+#### 2. Create Studio env files
 
-> **Note**: Take the values for these from the `DelGrossoFoods.com-25` Sanity project's API seciton.
+Use the `.env.example` files as templates:
+
+- `apps/studio-dgf/.env`
+- `apps/studio-lfd/.env`
+
+> **Note**: Values come from the `DelGrossoFoods.com-25` Sanity project API settings.
 >
-> - `SANITY_DEPLOY_TOKEN`
 > - `SANITY_STUDIO_PROJECT_ID`
 > - `SANITY_STUDIO_DATASET`
 > - `SANITY_STUDIO_TITLE`
+> - `SANITY_STUDIO_SITE_CODE` (`DGF` or `LFD`)
 > - `SANITY_STUDIO_PRESENTATION_URL`
+> - `SANITY_STUDIO_PRODUCTION_HOSTNAME`
+> - `SANITY_STUDIO_PREVIEW_ORIGIN` (LFD only, per `.env.example`)
 
-#### 3. Create the Next.JS `apps/next/.env` file with the following vriables
+#### 3. Create Web env files
 
-> **Note**: Take the values for these from the `DelGrossoFoods.com-25` Sanity project's API seciton.
+Use the `.env.example` files as templates:
+
+- `apps/web-dgf/.env.local`
+- `apps/web-lfd/.env.local`
+
+> **Note**: Values come from the `DelGrossoFoods.com-25` Sanity project API settings.
 >
-> - NEXT_PUBLIC_SANITY_PROJECT_ID=
-> - NEXT_PUBLIC_SANITY_DATASET=
-> - NEXT_PUBLIC_SANITY_API_VERSION=2024-10-28
-> - NEXT_PUBLIC_SANITY_STUDIO_URL=http://localhost:3333
-> - SANITY_API_READ_TOKEN=
-> - SANITY_API_WRITE_TOKEN=
+> - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+> - `NEXT_PUBLIC_SANITY_DATASET`
+> - `NEXT_PUBLIC_SANITY_API_VERSION` (default: `2024-10-28`)
+> - `NEXT_PUBLIC_SANITY_STUDIO_URL` (`http://localhost:3333` for DGF, `http://localhost:3334` for LFD)
+> - `SANITY_API_READ_TOKEN`
+> - `SANITY_API_WRITE_TOKEN`
+> - `SITE_ID` and `SITE_SLUG` (LFD, per `.env.example`)
 
-#### 3. Run Studio and Next.js app locally
+#### 4. Run DGF or LFD locally
 
-Navigate to the project directory using `cd delgrossofoods.com-25`, and start the development servers by running the following command
+From the repo root:
 
 ```shell
-pnpm run dev
+pnpm dev
 ```
 
-#### 3. Open the app and sign in to the Studio
+The `pnpm dev` command runs the DGF apps (`web-dgf` + `studio-dgf`). To run the LFD apps instead:
 
-Open the Next.js app running locally in your browser on [http://localhost:3000](http://localhost:3000).
+```shell
+pnpm dev:lfd
+```
 
-Open the Studio running locally in your browser on [http://localhost:3333](http://localhost:3333). You should now see a screen prompting you to log in to the Studio.
+#### 5. Open the app and sign in to the Studio
+
+DGF:
+
+- Web: [http://localhost:3000](http://localhost:3000)
+- Studio: [http://localhost:3333](http://localhost:3333)
+
+LFD:
+
+- Web: [http://localhost:3001](http://localhost:3001)
+- Studio: [http://localhost:3334](http://localhost:3334)
 
 **User account**:
 
-- you should have an admin account created for you.
-- Conctact Todd Walters at DelGrosso if you need one created for you.
+- You should have an admin account created for you.
+- Contact Todd Walters at DelGrosso if you need one created for you.
 
-### Wokring on the project
+### Working on the project
 
 1.  Extending the Sanity schema
 
-The Sanity 3 schemas for all document types are defined in the `studio/schemaTypes/documents` directory. You can [add more document types](https://www.sanity.io/docs/schema-types) to the schema as needed.
+Schemas are defined in `packages/sanity-schema/src/schemaTypes`. Both studios import the shared schema package.
 
 2.  Updating the front-end
 
-The Next.JS 15 front-end is in the `web/` folder, familiarize yourself with its structure to get started.
+The Next.js 15 front-ends live in `apps/web-dgf` and `apps/web-lfd`. Familiarize yourself with both structures to get started.
 
 ### Deployment
 
-#### 1. Deploying Sanity Studio
+#### 1. Deploying Sanity Studio (DGF + LFD)
 
-The project includes a GitHub Actions workflow [`deploy-sanity.yml`](https://raw.githubusercontent.com/robotostudio/turbo-start-sanity/main/.github/workflows/deploy-sanity.yml) that automatically deploys your Sanity Studio whenever changes are pushed to the `studio` directory.
+The GitHub Actions workflow `deploy-sanity.yml` now runs a matrix job for both studios whenever changes touch `apps/studio-dgf` or `apps/studio-lfd`. Each matrix job builds and deploys from its own directory and injects the correct site code plus presentation/production URLs.
 
-> **Note**: To use the GitHub Actions workflow, make sure to configure the following secrets in your repository settings:
+> **Note**: Secrets vs vars:
 >
-> - `SANITY_DEPLOY_TOKEN`
-> - `SANITY_STUDIO_PROJECT_ID`
-> - `SANITY_STUDIO_DATASET`
-> - `SANITY_STUDIO_TITLE`
-> - `SANITY_STUDIO_PRESENTATION_URL`
-> - `SANITY_STUDIO_PRODUCTION_HOSTNAME`
+> - Secret: `SANITY_DEPLOY_TOKEN`
+> - Repo variables: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, `SANITY_STUDIO_TITLE`, `SANITY_STUDIO_PRESENTATION_URL`, `SANITY_STUDIO_PRODUCTION_HOSTNAME`
+> - Optional site-specific overrides (vars): `SANITY_STUDIO_PRESENTATION_URL_DGF`, `SANITY_STUDIO_PRESENTATION_URL_LFD`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_DGF`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_LFD`
 
-Set `SANITY_STUDIO_PRODUCTION_HOSTNAME` to whatever you want your deployed Sanity Studio hostname to be. Eg. for `SANITY_STUDIO_PRODUCTION_HOSTNAME=my-cool-project` you'll get a studio URL of `https://my-cool-project.sanity.studio` (and `<my-branch-name>-my-cool-project.sanity.studio` for PR previews builds done automatically via the `deploy-sanity.yml` github CI workflow when you open a PR.)
+The workflow always passes `SANITY_STUDIO_SITE_CODE` as `DGF` or `LFD` per matrix job. If no site-specific vars are defined, it falls back to the shared values.
 
-Set `SANITY_STUDIO_PRESENTATION_URL` to your web app front-end URL (from the Vercel deployment). This URL is required for production deployments and should be:
+Set `SANITY_STUDIO_PRESENTATION_URL` (or the site-specific override) to the matching Vercel URL: `https://dgf-25.vercel.app` for DGF and `https://lfd-25.vercel.app` for LFD. Set `SANITY_STUDIO_PRODUCTION_HOSTNAME` (or override) to the hostname you want for each Studio (e.g., `my-cool-project` → `https://my-cool-project.sanity.studio`).
 
-- Set in your GitHub repository secrets for CI/CD deployments
-- Set in your local environment if deploying manually with `npx sanity deploy`
-- Not needed for local development, where preview will automatically use http://localhost:3000
-
-You can then manually deploy from your Studio directory (`/studio`) using:
+Manual deploys can still be triggered from either studio directory:
 
 ```shell
 npx sanity deploy
 ```
 
-**Note**: To use the live preview feature, your browser needs to enable third party cookies.
+**Note**: Live preview requires third-party cookies to be enabled in your browser.
 
-#### 2. Next.js app Deployment to Vercel
+#### 2. Deploying Next.js apps to Vercel (DGF + LFD)
 
-You have the freedom to deploy your Next.js app to your hosting provider of choice. Initially the front-end is meant to be deployed With Vercel and GitHub, from the `/apps/web` folder.
+The old single Vercel deployment has been replaced with two Vercel projects: one builds `/apps/web-dgf` (the DGF site) and the other builds `/apps/web-lfd` (the LFD site). Wire both projects under the DelGrosso Foods Inc. org so production and preview builds run against the correct folder. The automated build check that was blocking your merge now targets these two projects, so reconfigure them instead of the removed legacy deployment.
 
-If you need to access branch previews for pull-requests, ask for access to the Vercel DelGrosso Foods Inc. org from Todd Walters at DelGrosso.
+For each project, copy the shared Sanity environment variables from `/apps/web-dgf/.env.example` (or `/apps/web-lfd/.env.example`) into Vercel:
+
+> - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+> - `NEXT_PUBLIC_SANITY_DATASET`
+> - `NEXT_PUBLIC_SANITY_API_VERSION`
+> - `NEXT_PUBLIC_SANITY_STUDIO_URL`
+> - `SANITY_API_READ_TOKEN`
+> - `SANITY_API_WRITE_TOKEN`
+
+Add site-level values such as `SITE_ID`, `SITE_CODE`, or `SITE_SLUG` so each build knows which subset of Sanity content to render.
+
+Production traffic should go to:
+
+> - `https://dgf-25.vercel.app` for `web-dgf`
+> - `https://lfd-25.vercel.app` for `web-lfd`
+
+Branch previews expose their own URLs via Vercel. If you host either app elsewhere, keep the envs synced and ensure both `/apps/web-dgf` and `/apps/web-lfd` are still built in your alternative pipeline.
 
 #### 3. Invite more collaborators
 
@@ -131,17 +164,17 @@ They will be able to access the deployed Studio, where you can collaborate toget
 
 ### Next.js TypeScript and typed routes
 
-- The file `apps/web/next-env.d.ts` is auto-generated by Next.js. Do not edit it.
-- You may see this line inside it: `/// <reference path="./.next/types/routes.d.ts" />`. This enables Next.js “typed routes” so `Link`/router calls are checked at compile time.
+- The files `apps/web-dgf/next-env.d.ts` and `apps/web-lfd/next-env.d.ts` are auto-generated by Next.js. Do not edit them.
+- You may see this line inside them: `/// <reference path="./.next/types/routes.d.ts" />`. This enables Next.js “typed routes” so `Link`/router calls are checked at compile time.
 - The referenced file is generated when you run the dev server or build.
-  Advantages :
-- Warning if the invalid values for segment config options are passed.
+  Advantages:
+- Warning when invalid values for segment config options are passed.
 - Showing available options and in-context documentation.
-- Ensuring the 'use client' directive is used correctly.
+- Ensuring the `use client` directive is used correctly.
 - Ensuring client hooks (like useState) are only used in Client Components.
-- This also enables typed routes, among other things, so that when you use a path in a Link component, it checks that the path is actually real and it exists and prevents you from putting in broken links.
+- This also enables typed routes, among other things, so that when you use a path in a Link component, it checks that the path is actually real and exists, preventing broken links.
   Gotchas:
 - ⚠️ Ensure your IDE uses the workspace TypeScript version for best IntelliSense.
-- ⚠️ If your editor complains that it’s missing, start the app (`pnpm dev` at repo root or in `apps/web`) so `.next/types/routes.d.ts` is created.
+- ⚠️ If your editor complains that it’s missing, start the app (`pnpm dev` for DGF or `pnpm dev:lfd` for LFD) so `.next/types/routes.d.ts` is created.
 - ⚠️ Dynamic routes need either inference from literals or a cast (as Route) if you build strings.
 - More info: Next.js TypeScript config docs (see “Custom type declarations” and typed routes) [link](https://nextjs.org/docs/app/api-reference/config/typescript).

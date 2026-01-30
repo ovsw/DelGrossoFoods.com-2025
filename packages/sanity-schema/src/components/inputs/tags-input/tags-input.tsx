@@ -1,0 +1,276 @@
+import { usePrefersDark } from "@sanity/ui";
+import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
+import type { SelectInstance } from "react-select";
+import { set, unset, useFormValue } from "sanity";
+import { useTagsClient } from "./client";
+import { isSchemaMulti, isSchemaReference, setAtPath } from "./helpers";
+import { useLoading, useOptions } from "./hooks";
+import { prepareTags, revertTags } from "./mutators";
+import {
+  getPredefinedTags,
+  getSelectedTags,
+  getTagsFromReference,
+  getTagsFromRelated,
+} from "./observables";
+import {
+  ReferenceCreateWarning,
+  ReferencePredefinedWarning,
+} from "./reference-warnings";
+import type {
+  GeneralSubscription,
+  GeneralTag,
+  RefinedTags,
+  SelectProps,
+  Tag,
+  TagsInputProps,
+} from "./types";
+import styles from "./tags-input.module.css";
+
+export const TagsInput = forwardRef<SelectInstance<Tag>, TagsInputProps>(
+  function TagsInput(props, ref) {
+    const client = useTagsClient();
+    const documentType = useFormValue(["_type"]) as string;
+    const [selected, setSelected] = useState<RefinedTags>(undefined);
+    const [isLoading, , setLoadOption] = useLoading({});
+    const [options, , setTagOption] = useOptions({});
+    const prefersDark = usePrefersDark();
+
+    const { schemaType, value, readOnly, onChange } = props;
+    const isMulti = isSchemaMulti(schemaType);
+    const isReference = isSchemaReference(schemaType);
+
+    const {
+      predefinedTags = [],
+      includeFromReference = false,
+      includeFromRelated = false,
+      customLabel = "label",
+      customValue = "value",
+      allowCreate = true,
+      onCreate = async (val: string): Promise<GeneralTag> => {
+        const tag: GeneralTag = {};
+        setAtPath(tag, customLabel, val);
+        setAtPath(tag, customValue, val);
+        return tag;
+      },
+      checkValid = (inputValue: string, currentValues: string[]) =>
+        !currentValues.includes(inputValue) &&
+        !!inputValue &&
+        inputValue.trim() === inputValue,
+      reactSelectOptions = {} as SelectProps<typeof isMulti>,
+    } = schemaType.options ? schemaType.options : {};
+
+    const isReferenceCreateWarning =
+      schemaType.options && allowCreate && isReference;
+    const isReferencePredefinedWarning =
+      schemaType.options && !!schemaType.options.predefinedTags && isReference;
+
+    useEffect(() => {
+      const defaultSubscription: GeneralSubscription = {
+        unsubscribe: () => undefined,
+      };
+      let selectedSubscription: GeneralSubscription = defaultSubscription;
+      let predefinedSubscription: GeneralSubscription = defaultSubscription;
+      let relatedSubscription: GeneralSubscription = defaultSubscription;
+      let referenceSubscription: GeneralSubscription = defaultSubscription;
+
+      setLoadOption({
+        selectedTags: true,
+        predefinedTags: true,
+        referenceTags: true,
+        relatedTags: true,
+      });
+
+      selectedSubscription = getSelectedTags({
+        client,
+        tags: value,
+        customLabel,
+        customValue,
+        isMulti,
+      }).subscribe((tags) => {
+        setSelected(tags);
+        setLoadOption({ selectedTags: false });
+      });
+
+      predefinedSubscription = getPredefinedTags({
+        client,
+        predefinedTags,
+        customLabel,
+        customValue,
+      }).subscribe((tags) => {
+        setTagOption({ predefinedTags: tags });
+        setLoadOption({ predefinedTags: false });
+      });
+
+      if (typeof includeFromReference === "string") {
+        referenceSubscription = getTagsFromReference({
+          client,
+          document: includeFromReference,
+          customLabel,
+          customValue,
+        }).subscribe((tags) => {
+          setTagOption({ referenceTags: tags });
+          setLoadOption({ referenceTags: false });
+        });
+      } else {
+        setLoadOption({ referenceTags: false });
+      }
+
+      if (typeof includeFromRelated === "string") {
+        relatedSubscription = getTagsFromRelated({
+          client,
+          documentType,
+          field: includeFromRelated,
+          isMulti,
+          customLabel,
+          customValue,
+        }).subscribe((tags) => {
+          setTagOption({ relatedTags: tags });
+          setLoadOption({ relatedTags: false });
+        });
+      } else {
+        setLoadOption({ relatedTags: false });
+      }
+
+      return () => {
+        selectedSubscription.unsubscribe();
+        predefinedSubscription.unsubscribe();
+        relatedSubscription.unsubscribe();
+        referenceSubscription.unsubscribe();
+      };
+    }, [
+      client,
+      customLabel,
+      customValue,
+      includeFromReference,
+      includeFromRelated,
+      isMulti,
+      predefinedTags,
+      setLoadOption,
+      setTagOption,
+      value,
+      documentType,
+    ]);
+
+    const handleChange = useCallback(
+      (inputValue: RefinedTags) => {
+        setSelected(inputValue);
+
+        const tagsForEvent = revertTags({
+          tags: inputValue,
+          customLabel,
+          customValue,
+          isMulti,
+          isReference,
+        });
+
+        onChange(tagsForEvent ? set(tagsForEvent) : unset(tagsForEvent));
+      },
+      [customLabel, customValue, isMulti, isReference, onChange],
+    );
+
+    const handleCreate = useCallback(
+      async (inputValue: string) => {
+        setLoadOption({ handleCreate: true });
+
+        const newCreateValue = await prepareTags({
+          client,
+          customLabel,
+          customValue,
+          tags: await onCreate(inputValue),
+        });
+
+        if (Array.isArray(selected)) {
+          handleChange([...selected, newCreateValue] as RefinedTags);
+        } else {
+          handleChange(newCreateValue);
+        }
+
+        setLoadOption({ handleCreate: false });
+      },
+      [
+        client,
+        customLabel,
+        customValue,
+        handleChange,
+        onCreate,
+        selected,
+        setLoadOption,
+      ],
+    );
+
+    const selectOptions = useMemo(
+      () =>
+        ({
+          isLoading,
+          ref,
+          isMulti,
+          options,
+          value: selected,
+          isValidNewOption: (
+            inputValue: string,
+            selectedValues: Tag[],
+            selectedOptions: Tag[],
+          ) => {
+            return checkValid(inputValue, [
+              ...selectedOptions.map((opt) => opt.value),
+              ...selectedValues.map((val) => val.value),
+            ]);
+          },
+          onCreateOption: handleCreate,
+          onChange: handleChange,
+          isDisabled: readOnly || isLoading,
+          styles: {
+            menu: (base) => ({
+              ...base,
+              zIndex: 15,
+            }),
+          },
+          classNames: prefersDark
+            ? undefined
+            : {
+                container: () => styles.container,
+                control: () => styles.control,
+                input: () => styles.input,
+                menu: () => styles.menu,
+                option: () => styles.option,
+                indicatorSeparator: () => styles.indicatorSeparator,
+                placeholder: () => styles.placeholder,
+                singleValue: () => styles.singleValue,
+                multiValue: () => styles.multiValue,
+                multiValueLabel: () => styles.multiValueLabel,
+                multiValueRemove: () => styles.multiValueRemove,
+              },
+          ...reactSelectOptions,
+        }) as SelectProps,
+      [
+        checkValid,
+        handleChange,
+        handleCreate,
+        isLoading,
+        isMulti,
+        options,
+        prefersDark,
+        readOnly,
+        ref,
+        reactSelectOptions,
+        selected,
+      ],
+    );
+
+    return (
+      <>
+        {isReferenceCreateWarning && <ReferenceCreateWarning />}
+        {isReferencePredefinedWarning && <ReferencePredefinedWarning />}
+        {allowCreate && !isReference ? (
+          <CreatableSelect {...selectOptions} />
+        ) : (
+          <Select {...selectOptions} />
+        )}
+      </>
+    );
+  },
+);
+
+TagsInput.displayName = "TagsInput";

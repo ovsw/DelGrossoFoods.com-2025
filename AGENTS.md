@@ -11,10 +11,10 @@
 ### Quick facts
 
 - NEVER use tailwind classes like `text-[var(--color-th-dark-700)]` or `border-[var(--color-brand-green)]` for CSS variables that start with `--color-`. instead ALWAYS use the auto-generated utility classes - in this case `text-th-dark-700` or `border-brand-green`.
-- **Workspace layout**: `apps/web` (Next.js 15), `apps/studio` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
+- **Workspace layout**: `apps/web-dgf`, `apps/web-lfd` (Next.js 15), `apps/studio-dgf`, `apps/studio-lfd` (Sanity v5), `packages/ui` (shared UI), plus shared configs.
 - **Tooling**: pnpm (10.x), Node (>=22.12), Turbo (2.x), Prettier (3.x), ESLint (flat config).
 - **UI**: Use `shadcn` patterns via `packages/ui`. Do not add `shadcn-ui` dependency. Tailwind v4 only.
-- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web/src/lib/sanity`.
+- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web-*/src/lib/sanity`.
 
 ### Core commands
 
@@ -25,14 +25,16 @@
   - `pnpm check-types` → turbo check-types
   - `pnpm format` / `pnpm format:check`
 - Per package (run from repo root):
-  - Web: `pnpm -C apps/web dev|build|start|lint|lint:fix|typecheck|check`
-  - Studio: `pnpm --filter studio dev|build|deploy|lint|lint:fix|type|check`
+  - Web (DGF): `pnpm --filter web-dgf dev|build|start|lint|lint:fix|typecheck|check`
+  - Web (LFD): `pnpm --filter web-lfd dev|build|start|lint|lint:fix|typecheck|check`
+  - Studio (DGF): `pnpm --filter studio-dgf dev|build|deploy|lint|lint:fix|type|check`
+  - Studio (LFD): `pnpm --filter studio-lfd dev|build|deploy|lint|lint:fix|type|check`
 
 ### Environment and secrets
 
 - Global env surfaced in build graph: `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `VERCEL_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, `VERCEL_ENV`, `NODE_ENV`.
-- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web/next.config.ts`.
-- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web/.env.local`, `apps/studio/.env`).
+- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web-dgf/next.config.ts`.
+- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web-dgf/.env.local`, `apps/web-lfd/.env.local`, `apps/studio-dgf/.env`, `apps/studio-lfd/.env`).
 
 ### Operating procedures (AI agent)
 
@@ -44,7 +46,7 @@
 - When running pnpm for a specific workspace, prefer `pnpm --filter <workspace> ...` over `-C`/`--dir` so the commands work across pnpm versions.
 - When the user asks to “store” something in memory for this project, write it in this `AGENTS.md` file so it persists across sessions.
 - Do not roll in refactors or improvements that haven’t been explicitly requested; surface suggestions instead and wait for approval.
-- After every Sanity schema or GROQ query change, immediately run `pnpm --filter studio type` so the generated types stay in sync.
+- After every Sanity schema or GROQ query change, immediately run `pnpm --filter studio-dgf type` and `pnpm --filter studio-lfd type` so the generated types stay in sync.
 
 ### Coding standards
 
@@ -55,16 +57,16 @@
   - Live announcements (standard):
     - Do not use Next's App Router Announcer for non-navigation events.
     - Use the global A11y Live Announcer pattern for "active" messages (e.g., add-to-cart, errors).
-    - Preferred API: `announce(message, politeness?)` from `apps/web/src/lib/a11y/announce.ts`.
+    - Preferred API: `announce(message, politeness?)` from `apps/web-dgf/src/lib/a11y/announce.ts`.
     - Under the hood this dispatches: `document.dispatchEvent(new CustomEvent("a11y:announce", { detail: { message, politeness } }))`.
     - Keep messages short and human-readable; prefer `politeness: "polite"`; reserve `"assertive"` for errors.
     - **Important**: Any message sourced from Sanity content must be wrapped with `stegaClean(message)` before calling `announce(...)` to strip out stega metadata and prevent it from reaching screen readers.
     - "Passive" status (e.g., cart item count) may use sr-only aria-live regions owned by the component or Foxy's `data-fc-id` markers; don't elevate those to the global announcer.
     - Implementation references:
-      - Mount: `apps/web/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
-      - Announcer: `apps/web/src/components/elements/a11y/live-announcer.tsx` (listens for `a11y:announce`).
-      - Helper: `apps/web/src/lib/a11y/announce.ts`.
-      - Example usage (add-to-cart): `apps/web/src/components/features/cart/foxycart-provider.tsx`.
+      - Mount: `apps/web-dgf/src/app/layout.tsx` includes `<A11yLiveAnnouncer />` (after `<SanityLive />`).
+      - Announcer: `apps/web-dgf/src/components/elements/a11y/live-announcer.tsx` (listens for `a11y:announce`).
+      - Helper: `apps/web-dgf/src/lib/a11y/announce.ts`.
+      - Example usage (add-to-cart): `apps/web-dgf/src/components/features/cart/foxycart-provider.tsx`.
     - Stability: a guard keeps Next’s route announcer anchored (`AnnouncerGuard`) and a dev-only DOM tolerance prevents NotFoundError from third-party reparenting.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
 
@@ -169,12 +171,12 @@
 ### Theming (important)
 
 - **LIGHT-ONLY THEME**: The web app is light-only with no dark mode support anywhere in the application.
-- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web` is a no-op wrapper.
+- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web-dgf` is a no-op wrapper.
 - **NO DARK CLASSES**: Never add `dark:` Tailwind variants or dark-theme specific classes. All `dark:` classes have been purged from the codebase.
 - **HTML Color Scheme**: The root `layout.tsx` is hardcoded with `<html className="light" style={{ colorScheme: "light" }}>`.
 - **Future Theming**: If dark theme support is needed in the future, see `plans/adr-001-disable-theme-switching.md` for re-enable steps.
 
-### Next.js app (apps/web)
+### Next.js app (apps/web-\*)
 
 - App Router under `src/app`. Pages: `page.tsx`; dynamic routes in bracketed folders.
 - SEO utilities in `src/lib/seo.ts`; sitemap and robots in `src/app/sitemap.ts` and `src/app/robots.ts`.
@@ -186,12 +188,12 @@
   - `<AnnouncerGuard />` ensures Next’s internal route announcer remains under `<body>`.
   - Development-only DOM tolerance (`DevDomRemoveTolerance`) is mounted to suppress NotFoundError caused by third-party DOM reparenting in dev.
 
-### Sanity studio (apps/studio)
+### Sanity studio (apps/studio-\*)
 
-- Schemas under `studio/schemaTypes/**`. Always use `defineType` and `defineField`.
-- After schema changes or updating/adding queries in `apps/web/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
-  - Studio: `pnpm --filter studio run type` (extract + generate)
-  - Then re-run web typecheck/build.
+- Schemas under `packages/sanity-schema/src/schemaTypes/**`. Always use `defineType` and `defineField`.
+- After schema changes or updating/adding queries in `apps/web-*/src/lib/sanity/query.ts`: always run typegen to keep types in sync.
+  - Studio: `pnpm --filter studio-dgf run type` and `pnpm --filter studio-lfd run type` (extract + generate)
+  - Then re-run the affected web app typecheck/build.
   - Keep web tightly coupled to generated types; derive UI types from generated query results where feasible.
 
 ### Live Preview & Presentation
@@ -199,19 +201,19 @@
 // IMPORTANT: We use next-sanity v10 Live Content API — do NOT use the older preview APIs.
 
 - Do NOT import or use legacy preview components from `next-sanity/preview` or `@sanity/preview-kit` (e.g. `LiveQuery`, `useLiveQuery`, `LiveQueryProvider`). They are deprecated for our setup.
-- DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web/src/lib/sanity/live.ts`).
+- DO use `defineLive` from `next-sanity` to export `sanityFetch` and `SanityLive` (already configured in `apps/web-*/src/lib/sanity/live.ts`).
 
 ## Memory: ThreeProductPanels hover reveal (restore notes)
 
 This documents how the hover-based content reveal works in `ThreeProductPanelsBlock` so we can re-add it later.
 
-- Component file: `apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx`
+- Component file: `apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx`
 - Technique overview:
-  - Card wrapper defines a CSS var `--card-scale` and uses `group` to coordinate hover/focus state. See `className` on the root card container for scale on hover/focus. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
-  - Shared transform/shadow animation string `SHARED_HOVER_ANIMATION_STYLES` applied to background and shine overlay for unified lift. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:60, 116, 120
-  - Content reveal uses a CSS-only grid row transition: wrapper starts with `[grid-template-rows:0fr]` and on `group-hover`/`group-focus-within` animates to `1fr`, with an inner `overflow-hidden` clip. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:169-170
-  - Text and CTA fade-in are driven by `opacity-0 → opacity-100` under the same group hover/focus selectors. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:171-176, 177-188
-  - The card uses a fixed height so the reveal pushes upward inside the card without affecting outside layout. apps/web/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
+  - Card wrapper defines a CSS var `--card-scale` and uses `group` to coordinate hover/focus state. See `className` on the root card container for scale on hover/focus. apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
+  - Shared transform/shadow animation string `SHARED_HOVER_ANIMATION_STYLES` applied to background and shine overlay for unified lift. apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:60, 116, 120
+  - Content reveal uses a CSS-only grid row transition: wrapper starts with `[grid-template-rows:0fr]` and on `group-hover`/`group-focus-within` animates to `1fr`, with an inner `overflow-hidden` clip. apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:169-170
+  - Text and CTA fade-in are driven by `opacity-0 → opacity-100` under the same group hover/focus selectors. apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:171-176, 177-188
+  - The card uses a fixed height so the reveal pushes upward inside the card without affecting outside layout. apps/web-dgf/src/components/systems/pagebuilder/blocks/three-product-panels-block.tsx:111
 
 Restore steps (high level):
 
@@ -233,13 +235,20 @@ Restore steps (high level):
 - At the same time, you should call `stegaClean` for aria labels, logic, or alt text, or when using them in logic (e.g., spacing tokens, IDs, comparisons) - everywhere that's NOT going to be clickable by an editor - which means in elements that aren't directly visible on the page and that can't be clicked on by an editor viewing the page in preview mode or in Sanity Presentation.
 - When wiring click-to-edit surfaces, prefer wrapping the raw Sanity string or `data-sanity` spans instead of reformatting the value; if formatting is required, wrap substrings to keep individual field paths intact.
 - For custom Studio inputs, always forward `elementProps` (ref and event handlers) and pass through `readOnly` so Presentation can focus fields reliably.
+- **Shared components + Presentation**: when moving Sanity-driven UI into `packages/ui`, keep metadata wiring in the app layer:
+  - Add a helper (`apps/*/src/lib/sanity/presentation.ts`) that wraps `createDataAttribute` so each app can mint `data-sanity` strings with its own `projectId`, `dataset`, and `studioUrl`.
+  - Give the shared component an escape hatch such as `rootProps?: HTMLAttributes<HTMLDivElement> & { [key: \`data-${string}\`]?: string }` and spread those props onto the DOM node you need editable access to.
+  - Create a thin app-level wrapper that knows the Sanity document id/type/path, calls the helper, and passes the attribute via `rootProps`.
+  - When rendering the wrapper, forward the document metadata (e.g., `_id`, `_type`, `pageBuilder` field path) from the page/section so Presentation clicks still open the correct document.
+  - Full walkthrough lives in `guides/shared-component-presentation.md`. Follow it for every shared UI extraction so editors never lose click-to-edit coverage.
 
 ### Sanity Types (tight coupling)
 
-- After schema or query edits (in `apps/web/src/lib/sanity/query.ts`), always run Studio typegen:
-  - `pnpm -C apps/studio type`
-  - Then re-run web typecheck/build
-- Derive web UI types from generated query results in `apps/web/src/lib/sanity/sanity.types.ts` (e.g., `GetXQueryResult`) rather than hand-rolling shapes.
+- After schema or query edits (in `apps/web-*/src/lib/sanity/query.ts`), always run Studio typegen:
+  - `pnpm --filter studio-dgf run type`
+  - `pnpm --filter studio-lfd run type`
+  - Then re-run the affected web app typecheck/build
+- Derive web UI types from generated query results in `apps/web-*/src/lib/sanity/sanity.types.ts` (e.g., `GetXQueryResult`) rather than hand-rolling shapes.
 - Keep icons consistent (prefer `@sanity/icons`, fallback to `lucide-react`).
 - Follow GROQ rules: prefer explicit filtering and fragments; don’t expand images unless asked.
 
@@ -259,16 +268,16 @@ Restore steps (high level):
 
 ### Quality gates
 
-- Iteration (agents): `pnpm -C apps/web format && pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck` (skip build unless asked).
-- Pre-PR validation: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
-- For studio changes: `pnpm --filter studio lint:fix && pnpm --filter studio check`.
+- Iteration (agents): `pnpm -C apps/web-dgf format && pnpm -C apps/web-dgf lint:fix && pnpm -C apps/web-dgf typecheck` (skip build unless asked).
+- Pre-PR validation: `pnpm -C apps/web-dgf lint:fix && pnpm -C apps/web-dgf typecheck && pnpm -C apps/web-dgf build`.
+- For studio changes: `pnpm --filter studio-dgf lint:fix && pnpm --filter studio-dgf check`.
 - Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
 - Audible completion: `say -v Daniel -r 175 "Task finished"` (or use MCP server `say` → tool `speak`).
 
 ### Common task recipes
 
 - Add/modify a web component
-  - Place in `apps/web/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
+  - Place in `apps/web-*/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
   - Update imports where used; ensure a11y (labels, roles). Run web quality gates.
 
 - Add shared UI component
@@ -276,19 +285,19 @@ Restore steps (high level):
   - Bump consumer imports to `@workspace/ui/components` if new. Run root build to validate.
 
 - Add a Sanity schema
-  - Create under `apps/studio/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
-  - Run `pnpm --filter studio type`, then adjust web query/types as needed.
+  - Create under `packages/sanity-schema/src/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
+  - Run `pnpm --filter studio-dgf type` and `pnpm --filter studio-lfd type`, then adjust web query/types as needed.
 
 - Add a Next.js route/page
-  - Create folder under `apps/web/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
+  - Create folder under `apps/web-*/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
   - If dynamic, ensure params typing and loading states. Run web quality gates.
 
 - Update a GROQ query + types
-  - Edit or add query in `apps/web/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
+  - Edit or add query in `apps/web-*/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
   - Update response types where consumed. Typecheck and verify builds.
 
 - Add an API route
-  - Create under `apps/web/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
+  - Create under `apps/web-*/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
   - Guard secrets via runtime envs; add edge/runtime config if relevant.
 
 ### Risk checklist before PR
@@ -301,7 +310,7 @@ Restore steps (high level):
 
 ---
 
-# Web App Rules (apps/web/\*\*)
+# Web App Rules (apps/web-\*\*)
 
 ## Component Structure
 
@@ -342,7 +351,7 @@ For buttons with directional arrows, use an RTL prop to correctly handle horizon
 
 ---
 
-# Studio App (apps/studio/\*\*)
+# Studio App (apps/studio-\*\*)
 
 ## Sanity Schema Rules
 
@@ -847,3 +856,13 @@ import { dataset, projectId, studioUrl } from "@/config";
 - The path must be relative to the document root (e.g., starting with `pageBuilder[...]` for page builder blocks).
 - Always pass `baseUrl`, `projectId`, and `dataset` from config.
 - Call `.toString()` on the result before passing to `data-sanity`.
+
+## Memory: Presentation metadata helper
+
+- Shared metadata typing now lives in `packages/ui/src/lib/data-attributes.ts`. It exports `RootProps<T>` (extends `HTMLAttributes` plus `[data-*]` support) and `DataAttributes` for components that need extra slots.
+- Every shared component that exposes `rootProps`/`imageProps` should import these helpers instead of redefining `[data-*]` record types so Presentation wiring stays consistent across apps.
+
+## Memory: Shared UI atoms
+
+- SanityImage, SurfaceShineOverlay, BackLink, SocialIcons, SanityButtons, and Prose now live in `packages/ui/src/components`. Apps should import them from `@workspace/ui/components/*`.
+- Each site keeps a thin `SanityImage` wrapper created via `createSanityImage({ projectId, dataset })` so dataset-specific config stays at the app layer.

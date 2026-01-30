@@ -6,10 +6,10 @@ alwaysApply: true
 
 ### Quick facts
 
-- **Workspace layout**: `apps/web` (Next.js 15), `apps/studio` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
+- **Workspace layout**: `apps/web-dgf` (Next.js 15), `apps/studio-dgf` (Sanity v4), `packages/ui` (shared UI), plus shared configs.
 - **Tooling**: pnpm (10.x), Node (>=22.12), Turbo (2.x), Prettier (3.x), ESLint (flat config).
 - **UI**: Use `shadcn` patterns via `packages/ui`. Do not add `shadcn-ui` dependency. Tailwind v4 only.
-- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web/src/lib/sanity`.
+- **Sanity**: Typescript-first schemas. GROQ queries live in `apps/web-dgf/src/lib/sanity`.
 
 ### Core commands
 
@@ -19,16 +19,16 @@ alwaysApply: true
   - `pnpm lint` → turbo lint
   - `pnpm check-types` → turbo check-types
   - `pnpm format` / `pnpm format:check`
-- Per package (run from repo root):
-  - Web: `pnpm -C apps/web dev|build|start|lint|lint:fix|typecheck|check`
-  - Studio: `pnpm -C apps/studio dev|build|deploy|lint|lint:fix|type|check`
-  - UIL `pnpm -C packages/ui lint:fix`
+- Per workspace (run from repo root with `--filter`):
+  - Web: `pnpm --filter web-dgf dev|build|start|lint|lint:fix|typecheck|check`
+  - Studio: `pnpm --filter studio-dgf dev|build|deploy|lint|lint:fix|type|check`
+  - UI library: `pnpm --filter @workspace/ui lint:fix`
 
 ### Environment and secrets
 
 - Global env surfaced in build graph: `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `VERCEL_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, `VERCEL_ENV`, `NODE_ENV`.
-- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web/next.config.ts`.
-- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web/.env.local`, `apps/studio/.env`).
+- Next images allowlist relies on `NEXT_PUBLIC_SANITY_PROJECT_ID` in `apps/web-dgf/next.config.ts`.
+- Keep secrets out of code; place env files at each package root when needed (e.g., `apps/web-dgf/.env.local`, `apps/studio-dgf/.env`).
 
 ### Operating procedures (AI agent)
 
@@ -36,7 +36,7 @@ alwaysApply: true
 - Prefer semantic code search; use exact grep when you know the symbol. Parallelize independent searches.
 - Fetch external docs when needed (don’t rely on assumptions). Prefer most up-to-date sources.
 - Do not commit or push unless explicitly asked. Use GitHub CLI only when requested.
-- After any code changes, run `pnpm -C <affected> lint:fix` and typecheck before handing off.
+- After any code changes, run `pnpm --filter <workspace> format`, then `pnpm --filter <workspace> lint:fix`, then `pnpm --filter <workspace> typecheck`. Skip builds unless they’re explicitly requested.
 
 ### Coding standards
 
@@ -45,45 +45,45 @@ alwaysApply: true
 - Naming: descriptive, full words; kebab-case filenames; `.tsx` for components, `.ts` for utils.
 - Accessibility: semantic HTML, alt text, keyboard/contrast sanity checks, no div-as-button.
 - Formatting: Prettier 3.x; match existing style; do not reformat unrelated code.
-- After completing each task, you MUST: 1. ✅ ALWAYS: linting (pnpm --filter web lint:fix) and formatting (pnpm --filter web format) 2. ❌ NEVER: full builds (pnpm --filter web build) unless specifically requested
+- After completing each task, you MUST run `pnpm --filter web-dgf format`, `pnpm --filter web-dgf lint:fix`, and `pnpm --filter web-dgf typecheck`. ❌ NEVER run `pnpm --filter web-dgf build` unless explicitly asked.
 
 ### UI system and Tailwind
 
-- Tailwind v4 only. Global CSS sourced from `packages/ui/src/styles/globals.css` in web’s `components.json`.
+- Tailwind v4 only. Global CSS sourced from `packages/ui/src/styles/globals.css` in `apps/web-dgf/components.json`.
 - Use components from `@workspace/ui`. If a component doesn’t exist, add it in `packages/ui`.
 - Never introduce `shadcn-ui`. Follow existing `shadcn` patterns and tokens from `packages/ui`.
 
 ### Theming (important)
 
 - The web app is light-only. There is no runtime theme switching.
-- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web` is a no-op wrapper.
+- Do not use `next-themes` or add theme toggles. The `Providers` component in `apps/web-dgf` is a no-op wrapper.
 - Do not add `dark:` Tailwind variants or dark-theme specific classes.
 - If you need theming in the future, see `plans/adr-001-disable-theme-switching.md` for re-enable steps.
 
-### Next.js app (apps/web)
+### Next.js app (apps/web-dgf)
 
-- App Router under `src/app`. Pages: `page.tsx`; dynamic routes in bracketed folders.
-- SEO utilities in `src/lib/seo.ts`; sitemap and robots in `src/app/sitemap.ts` and `src/app/robots.ts`.
-- Sanity client and queries live under `src/lib/sanity/`.
+- App Router under `apps/web-dgf/src/app`. Pages: `page.tsx`; dynamic routes in bracketed folders.
+- SEO utilities in `apps/web-dgf/src/lib/seo.ts`; sitemap and robots in `apps/web-dgf/src/app/sitemap.ts` and `apps/web-dgf/src/app/robots.ts`.
+- Sanity client and queries live under `apps/web-dgf/src/lib/sanity/`.
 - Images: Next image remote patterns are configured for Sanity CDN; prefer Sanity-aware image helpers.
 - The root `layout.tsx` renders `<html className="light" style={{ colorScheme: "light" }}>` and wraps children with a no-op `Providers`. Don’t introduce color-scheme negotiation or cookies for theme.
 
-### Sanity studio (apps/studio)
+### Sanity studio (apps/studio-dgf)
 
-- Schemas under `studio/schemaTypes/**`. Always use `defineType` and `defineField`.
-- After schema changes: `pnpm -C apps/studio run type` to extract and generate types.
+- Schemas under `apps/studio-dgf/schemaTypes/**`. Always use `defineType` and `defineField`.
+- After schema changes: `pnpm --filter studio-dgf type` to extract and generate types.
 - Keep icons consistent (prefer `@sanity/icons`, fallback to `lucide-react`).
 - Follow GROQ rules: prefer explicit filtering and fragments; don’t expand images unless asked.
 
 ### Data, GROQ, and content fetching
 
-- Use `next-sanity` with `defineQuery` and fragment reuse. Keep queries collocated by content type.
+- Use `next-sanity` with `defineQuery` and fragment reuse. Keep queries collocated by content type under `apps/web-dgf/src/lib/sanity/`.
 - Handle optional fields with `defined()`, use `select()` for conditional projections, and paginate lists explicitly.
 
 ### Versioning and releases (Changesets)
 
 - Use Changesets; do not hand-edit versions or CHANGELOGs.
-- Fixed group versions: `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config` version together.
+- Fixed group versions: `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config` version together. Select only the workspaces you actually changed; the rest follow automatically.
 - Standard contributor flow:
   1. `pnpm changeset:add` → pick workspaces, choose bump, write summary.
   2. Merge feature PR to `main`.
@@ -91,35 +91,35 @@ alwaysApply: true
 
 ### Quality gates
 
-- For web changes: `pnpm -C apps/web lint:fix && pnpm -C apps/web typecheck && pnpm -C apps/web build`.
-- For studio changes: `pnpm -C apps/studio lint:fix && pnpm -C apps/studio check`.
-- Root checks (multi-package updates): `pnpm lint && pnpm check-types && pnpm build`.
+- Default iteration (web): `pnpm --filter web-dgf format && pnpm --filter web-dgf lint:fix && pnpm --filter web-dgf typecheck`. Run `pnpm --filter web-dgf build` only when specifically requested or prepping a release.
+- Default iteration (studio): `pnpm --filter studio-dgf lint:fix && pnpm --filter studio-dgf check`.
+- Root checks for multi-package updates: `pnpm format && pnpm lint && pnpm check-types`. Add `pnpm build` only when needed for release validation.
 
 ### Common task recipes
 
 - Add/modify a web component
-  - Place in `apps/web/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
-  - Update imports where used; ensure a11y (labels, roles). Run web quality gates.
+  - Place in `apps/web-dgf/src/components/*`. Kebab-case file. Use Tailwind v4 utilities. Export named.
+  - Update imports where used; ensure a11y (labels, roles). Run the `web-dgf` quality gates (format → lint:fix → typecheck).
 
 - Add shared UI component
   - Implement in `packages/ui/src/components/*` and export via index. Use existing design tokens and utilities.
-  - Bump consumer imports to `@workspace/ui/components` if new. Run root build to validate.
+  - Bump consumer imports to `@workspace/ui/components` if new. Validate with `pnpm --filter @workspace/ui lint:fix` and any affected app checks.
 
 - Add a Sanity schema
-  - Create under `apps/studio/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
-  - Run `pnpm -C apps/studio type`, then adjust web query/types as needed.
+  - Create under `apps/studio-dgf/schemaTypes/...` using `defineType/defineField`. Add to the appropriate `index.ts` aggregator.
+  - Run `pnpm --filter studio-dgf type`, then adjust web queries/types as needed.
 
 - Add a Next.js route/page
-  - Create folder under `apps/web/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
-  - If dynamic, ensure params typing and loading states. Run web quality gates.
+  - Create a folder under `apps/web-dgf/src/app/.../` with `page.tsx`. Add metadata/SEO if needed.
+  - If dynamic, ensure params typing and loading states. Run the `web-dgf` quality gates.
 
 - Update a GROQ query + types
-  - Edit or add query in `apps/web/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
-  - Update response types where consumed. Typecheck and verify builds.
+  - Edit or add the query in `apps/web-dgf/src/lib/sanity/*`. Use fragments; avoid unnecessary expansion.
+  - Update response types where consumed. Run `pnpm --filter web-dgf format && pnpm --filter web-dgf lint:fix && pnpm --filter web-dgf typecheck`.
 
 - Add an API route
-  - Create under `apps/web/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
-  - Guard secrets via runtime envs; add edge/runtime config if relevant.
+  - Create under `apps/web-dgf/src/app/api/.../route.ts`. Use proper HTTP methods and input validation.
+  - Guard secrets via runtime envs; add edge/runtime config if relevant. Finish with the `web-dgf` quality gates.
 
 ### Risk checklist before PR
 
