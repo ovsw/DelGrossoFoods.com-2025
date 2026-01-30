@@ -1,12 +1,10 @@
 import "@workspace/ui/styles/globals.css";
 import "@workspace/ui/styles/lfd-theme.css";
+import "./typography.css";
 import "./background.css";
 
 import { SanityLive } from "@workspace/sanity-config/live";
-import {
-  // Geist, Geist_Mono,
-  Libre_Baskerville,
-} from "next/font/google";
+import { Libre_Baskerville, Poppins } from "next/font/google";
 import { draftMode } from "next/headers";
 import Script from "next/script";
 import { VisualEditing } from "next-sanity/visual-editing";
@@ -31,10 +29,12 @@ const fontSerif = Libre_Baskerville({
   variable: "--font-serif",
 });
 
-// const fontSans = Geist({
-//   subsets: ["latin"],
-//   variable: "--font-sans",
-// });
+const fontSans = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 // const fontMono = Geist_Mono({
 //   subsets: ["latin"],
@@ -56,9 +56,7 @@ export default async function RootLayout({
       style={{ colorScheme: "light" } as React.CSSProperties}
     >
       <body
-        className={`${fontSerif.variable}
-        font-serif antialiased`}
-        // add ${fontSans.variable} ${fontMono.variable} if needed
+        className={`${fontSans.variable} ${fontSerif.variable} font-sans antialiased`}
       >
         <a
           href="#main"

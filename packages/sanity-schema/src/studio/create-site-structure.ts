@@ -111,12 +111,12 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
 
 const SITE_SCOPED_COLLECTIONS: CollectionConfig[] = [
   { type: "page", title: "Pages", siteScoped: true },
-  {
-    type: "recipeCategory",
-    title: "Recipe Categories",
-    icon: TagIcon,
-    siteScoped: true,
-  },
+  // {
+  //   type: "recipeCategory",
+  //   title: "Recipe Categories",
+  //   icon: TagIcon,
+  //   siteScoped: true,
+  // },
 ];
 
 const SHARED_COLLECTIONS: CollectionConfig[] = [

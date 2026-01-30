@@ -1,4 +1,5 @@
 import "@workspace/ui/styles/globals.css";
+import "./radius.css";
 import "./background.css";
 
 import { SanityLive } from "@workspace/sanity-config/live";
