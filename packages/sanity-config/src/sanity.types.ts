@@ -901,7 +901,7 @@ export type Recipe = {
       _type: "image";
     };
   };
-  dgfIngredients: Array<{
+  dgfIngredients?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -919,7 +919,7 @@ export type Recipe = {
     _type: "block";
     _key: string;
   }>;
-  dgfDirections: Array<{
+  dgfDirections?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -956,7 +956,7 @@ export type Recipe = {
     _key: string;
   }>;
   organicSauce?: SauceReference;
-  lfdIngredients: Array<{
+  lfdIngredients?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -974,7 +974,7 @@ export type Recipe = {
     _type: "block";
     _key: string;
   }>;
-  lfdDirections: Array<{
+  lfdDirections?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -2208,7 +2208,7 @@ export type GetRecipeByIdQueryResult = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  }> | null;
   lfdDirections: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -2226,7 +2226,7 @@ export type GetRecipeByIdQueryResult = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  }> | null;
   lfdNotes: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -2438,7 +2438,7 @@ export type GetRecipeBySlugQueryResult = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  }> | null;
   lfdDirections: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -2456,7 +2456,7 @@ export type GetRecipeBySlugQueryResult = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  }> | null;
   lfdNotes: Array<{
     children?: Array<{
       marks?: Array<string>;
