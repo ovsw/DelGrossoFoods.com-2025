@@ -13,6 +13,7 @@ import {
   YoutubeIcon,
 } from "@workspace/ui/components/social-icons";
 import type { RootProps } from "@workspace/ui/lib/data-attributes";
+import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 
 import LogoSvg from "@/components/elements/logo";
@@ -33,6 +34,14 @@ type SettingsDataWithContact = NonNullable<DgfGlobalSeoSettingsQueryResult> & {
   tollFreePhone?: string | null;
   officePhone?: string | null;
 };
+
+const FOOTER_GRADIENT_CLASSES = cn(
+  "[--footer-bg-color:var(--color-brand-green)]",
+  "[--footer-bg-shade:color-mix(in_oklab,var(--footer-bg-color)_85%,black_15%)]",
+  "[--footer-bg-tint:color-mix(in_oklab,var(--footer-bg-color)_85%,white_15%)]",
+  "bg-[image:linear-gradient(to_top_right,var(--footer-bg-shade),var(--footer-bg-tint))]",
+  "bg-(--footer-bg-color)",
+);
 
 interface FooterProps {
   data: NonNullable<DgfFooterQueryResult>;
@@ -337,7 +346,7 @@ export function Footer({ data, settingsData }: FooterProps) {
 
   return (
     <FooterShell
-      className="mt-20"
+      className={cn("mt-20", FOOTER_GRADIENT_CLASSES)}
       brandBlock={brandBlock}
       contactBlock={contactBlock}
       socialBlock={socialBlock}

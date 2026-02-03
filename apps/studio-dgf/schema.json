@@ -5810,7 +5810,7 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       },
       "dgfDirections": {
         "type": "objectAttribute",
@@ -5989,7 +5989,7 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       },
       "dgfNotes": {
         "type": "objectAttribute",
@@ -6355,7 +6355,7 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       },
       "lfdDirections": {
         "type": "objectAttribute",
@@ -6534,7 +6534,7 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       },
       "lfdNotes": {
         "type": "objectAttribute",

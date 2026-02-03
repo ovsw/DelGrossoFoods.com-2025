@@ -246,7 +246,14 @@ export const recipeType = defineType({
       group: "dgf-content",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
       validation: (Rule) =>
-        Rule.required().error("Missing Ingredients for DGF version of recipe."),
+        Rule.custom((value, context) => {
+          if (!isVersionSelected(context.document, "DGF")) {
+            return true;
+          }
+          return Array.isArray(value) && value.length > 0
+            ? true
+            : "Missing Ingredients for DGF version of recipe.";
+        }),
     }),
     defineField({
       name: "dgfDirections",
@@ -256,7 +263,14 @@ export const recipeType = defineType({
       group: "dgf-content",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
       validation: (Rule) =>
-        Rule.required().error("Missing Directions for DGF version of recipe."),
+        Rule.custom((value, context) => {
+          if (!isVersionSelected(context.document, "DGF")) {
+            return true;
+          }
+          return Array.isArray(value) && value.length > 0
+            ? true
+            : "Missing Directions for DGF version of recipe.";
+        }),
     }),
     defineField({
       name: "dgfNotes",
@@ -288,7 +302,14 @@ export const recipeType = defineType({
       group: "lfd-content",
       hidden: ({ document }) => !isVersionSelected(document, "LFD"),
       validation: (Rule) =>
-        Rule.required().error("Missing Ingredients for LFD version of recipe."),
+        Rule.custom((value, context) => {
+          if (!isVersionSelected(context.document, "LFD")) {
+            return true;
+          }
+          return Array.isArray(value) && value.length > 0
+            ? true
+            : "Missing Ingredients for LFD version of recipe.";
+        }),
     }),
     defineField({
       name: "lfdDirections",
@@ -298,7 +319,14 @@ export const recipeType = defineType({
       group: "lfd-content",
       hidden: ({ document }) => !isVersionSelected(document, "LFD"),
       validation: (Rule) =>
-        Rule.required().error("Missing Directions for LFD version of recipe."),
+        Rule.custom((value, context) => {
+          if (!isVersionSelected(context.document, "LFD")) {
+            return true;
+          }
+          return Array.isArray(value) && value.length > 0
+            ? true
+            : "Missing Directions for LFD version of recipe.";
+        }),
     }),
     defineField({
       name: "lfdNotes",
