@@ -16,6 +16,14 @@ export type FeatureBlockProps = PageBuilderBlockProps<"feature"> & {
   sanityDocumentType?: string;
 };
 
+const FEATURE_GRADIENT_CLASSES = cn(
+  "[--feature-bg-color:var(--color-brand-green)]",
+  "[--feature-bg-shade:color-mix(in_oklab,var(--feature-bg-color)_85%,black_15%)]",
+  "[--feature-bg-tint:color-mix(in_oklab,var(--feature-bg-color)_85%,white_15%)]",
+  "bg-[image:linear-gradient(to_top_right,var(--feature-bg-shade),var(--feature-bg-tint))]",
+  "bg-(--feature-bg-color)",
+);
+
 /**
  * Sanity page builder block. Render via PageBuilder; do not import directly into route components.
  */
@@ -89,7 +97,12 @@ export function FeatureBlock({
         </svg>
       </div> */}
 
-      <div className="relative isolate rounded-none bg-brand-green px-6 py-20 min-[1440px]:-mx-8 min-[1440px]:rounded-2xl min-[1536px]:-mx-12 min-[1536px]:rounded-3xl sm:px-10 sm:py-24 lg:py-24 lg:max-[1439px]:mx-[calc(50%-50vw)] xl:px-24">
+      <div
+        className={cn(
+          "relative isolate rounded-none bg-brand-green px-6 py-20 min-[1440px]:-mx-8 min-[1440px]:rounded-2xl min-[1536px]:-mx-12 min-[1536px]:rounded-3xl sm:px-10 sm:py-24 lg:py-24 lg:max-[1439px]:mx-[calc(50%-50vw)] xl:px-24",
+          FEATURE_GRADIENT_CLASSES,
+        )}
+      >
         {/* <SurfaceShineOverlay className="rounded-none min-[1440px]:rounded-2xl min-[1536px]:rounded-3xl" /> */}
 
         <div className="2xl:max-w-8xl container mx-auto px-4 md:px-8 lg:max-w-7xl">

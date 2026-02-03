@@ -2,7 +2,6 @@ import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { SanityButtons } from "@workspace/ui/components/sanity-buttons";
 import { cn } from "@workspace/ui/lib/utils";
 import { createDataAttribute, stegaClean } from "next-sanity";
-import type { CSSProperties } from "react";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import { FeatureCardGridLayout } from "@/components/layouts/pagebuilder/feature-card-grid-layout";
@@ -17,29 +16,22 @@ export type ThreeProductPanelsProps =
     sanityDocumentType?: string;
   };
 
-// Simplified color mapping - only background colors differ
-const ACCENT_COLOR_MAP = {
-  green: "bg-th-green-600",
-  black: "bg-th-dark-900",
-  brown: "bg-th-dark-900",
-  red: "bg-th-red-600",
-} as const;
+type AccentColor = "green" | "black" | "brown" | "red";
 
-type AccentColor = keyof typeof ACCENT_COLOR_MAP;
-
-const getCardBackground = (color: string): string =>
-  ACCENT_COLOR_MAP[color as AccentColor] || ACCENT_COLOR_MAP.red;
-
-// Map accent keys to their CSS variable values for dynamic gradients
-const ACCENT_VAR_MAP: Record<AccentColor, string> = {
-  green: "var(--color-th-green-600)",
-  black: "var(--color-th-dark-900)",
-  brown: "var(--color-th-dark-900)",
-  red: "var(--color-th-red-600)",
+// Map accent keys to CSS variable classes for gradient base colors
+const ACCENT_VAR_CLASS_MAP: Record<AccentColor, string> = {
+  green:
+    "[--card-bg-color:var(--color-th-green-600)] [--overlay-accent:var(--color-th-green-600)]",
+  black:
+    "[--card-bg-color:var(--color-th-dark-900)] [--overlay-accent:var(--color-th-dark-900)]",
+  brown:
+    "[--card-bg-color:var(--color-th-dark-900)] [--overlay-accent:var(--color-th-dark-900)]",
+  red: "[--card-bg-color:var(--color-th-red-600)] [--overlay-accent:var(--color-th-red-600)]",
 };
 
-const getAccentVar = (color: string): string =>
-  ACCENT_VAR_MAP[(color as AccentColor) || "red"] || ACCENT_VAR_MAP.red;
+const getAccentVarClass = (color: string): string =>
+  ACCENT_VAR_CLASS_MAP[(color as AccentColor) || "red"] ||
+  ACCENT_VAR_CLASS_MAP.red;
 
 type CTAButton = SanityButtonProps & {
   _key?: string | null;
@@ -65,6 +57,15 @@ const normalizeHref = (href?: string | null): string | undefined => {
 const SHARED_HOVER_ANIMATION_STYLES =
   "transition-[transform,box-shadow] duration-300 ease-out origin-top [transform:scale(var(--card-scale))] group-hover:shadow-2xl group-focus-within:shadow-2xl motion-reduce:duration-0 will-change-transform";
 
+const PRODUCT_PANEL_BG_CLASSES = cn(
+  "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",
+  "bg-[image:linear-gradient(to_top_right,var(--card-bg-shade),var(--card-bg-tint))]",
+  "[--card-bg-shade:color-mix(in_oklab,var(--card-bg-color)_85%,black_15%)]",
+  "[--card-bg-tint:color-mix(in_oklab,var(--card-bg-color)_85%,white_15%)]",
+  "bg-(--card-bg-color)",
+  SHARED_HOVER_ANIMATION_STYLES,
+);
+
 /**
  * Individual product panel card component
  */
@@ -83,13 +84,7 @@ const ProductPanelCard = ({
   sanityDocumentId,
   sanityDocumentType,
 }: ProductPanelCardProps) => {
-  const cardBg = getCardBackground(accentColor);
-  const accentValue = getAccentVar(accentColor);
-  const accentCssVars = {
-    "--card-bg-color": accentValue,
-    "--overlay-accent": accentValue,
-    "--card-scale": 1,
-  } as CSSProperties;
+  const accentVarClass = getAccentVarClass(accentColor);
   const rawCtaButton = panel.ctaButton as CTAButton | null;
   const ctaButton = rawCtaButton
     ? {
@@ -114,20 +109,16 @@ const ProductPanelCard = ({
 
   return (
     <div
-      className="group relative rounded-2xl p-6 md:grid md:grid-cols-[1fr_auto] md:items-center md:gap-4 md:p-5 md:pl-8 md:pr-0 md:min-h-[22rem] lg:block lg:p-6 lg:min-h-0 group-hover:[--card-scale:1.02] group-focus-within:[--card-scale:1.02]"
+      className={cn(
+        "group relative rounded-2xl p-6 md:grid md:grid-cols-[1fr_auto] md:items-center md:gap-4 md:p-5 md:pl-8 md:pr-0 md:min-h-[22rem] lg:block lg:p-6 lg:min-h-0 group-hover:[--card-scale:1.02] group-focus-within:[--card-scale:1.02]",
+        "[--card-scale:1]",
+        accentVarClass,
+      )}
       role="article"
       aria-label={`${stegaClean(panel.title)} product panel`}
-      style={accentCssVars}
     >
       {/* <SurfaceShineOverlay className={SHARED_HOVER_ANIMATION_STYLES} /> */}
-      <div
-        className={cn(
-          "absolute inset-0 rounded-2xl rounded-b-2xl text-white shadow-none",
-          SHARED_HOVER_ANIMATION_STYLES,
-          cardBg,
-        )}
-        aria-hidden="true"
-      />
+      <div className={PRODUCT_PANEL_BG_CLASSES} aria-hidden="true" />
 
       {panel.image && (
         <div className="relative mb-6 md:order-2 md:mb-0 md:justify-self-end lg:order-none lg:mb-6 lg:justify-self-auto">

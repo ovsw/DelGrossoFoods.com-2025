@@ -24,6 +24,14 @@ import { resolveSectionSpacing } from "../utils/section-spacing";
 
 type SubscribeNewsletterProps = PageBuilderBlockProps<"subscribeNewsletter">;
 
+const SUBSCRIBE_GRADIENT_CLASSES = cn(
+  "[--subscribe-bg-color:var(--color-brand-green)]",
+  "[--subscribe-bg-shade:color-mix(in_oklab,var(--subscribe-bg-color)_85%,black_15%)]",
+  "[--subscribe-bg-tint:color-mix(in_oklab,var(--subscribe-bg-color)_85%,white_15%)]",
+  "bg-[image:linear-gradient(to_top_right,var(--subscribe-bg-shade),var(--subscribe-bg-tint))]",
+  "bg-(--subscribe-bg-color)",
+);
+
 function SubscribeNewsletterButton({ className }: { className?: string }) {
   const { pending } = useFormStatus();
   return (
@@ -88,7 +96,12 @@ export function SubscribeNewsletterBlock({
       isPageTop={isPageTop}
     >
       <div className="container mx-auto px-4 md:px-8">
-        <div className="relative isolate overflow-hidden rounded-3xl bg-brand-green px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
+        <div
+          className={cn(
+            "relative isolate overflow-hidden rounded-3xl bg-brand-green px-6 py-16 sm:px-10 sm:py-20 lg:px-16",
+            SUBSCRIBE_GRADIENT_CLASSES,
+          )}
+        >
           {/* <SurfaceShineOverlay className="rounded-3xl" /> */}
           <div className="relative z-10 mx-auto max-w-3xl space-y-8 text-center">
             <h2 className="text-3xl font-semibold text-brand-green-text text-balance sm:text-4xl md:text-5xl">

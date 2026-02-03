@@ -21,6 +21,41 @@ const CTA_SURFACE_CONFIG = {
 
 type CTASurfaceColor = keyof typeof CTA_SURFACE_CONFIG;
 
+const CTA_SURFACE_GRADIENT_CLASSES: Record<
+  CTASurfaceColor,
+  string | undefined
+> = {
+  default: cn(
+    "[--cta-bg-color:var(--color-brand-green)]",
+    "[--cta-bg-shade:color-mix(in_oklab,var(--cta-bg-color)_85%,black_15%)]",
+    "[--cta-bg-tint:color-mix(in_oklab,var(--cta-bg-color)_85%,white_15%)]",
+    "bg-[image:linear-gradient(to_top_right,var(--cta-bg-shade),var(--cta-bg-tint))]",
+    "bg-(--cta-bg-color)",
+  ),
+  red: cn(
+    "[--cta-bg-color:var(--color-th-red-600)]",
+    "[--cta-bg-shade:color-mix(in_oklab,var(--cta-bg-color)_85%,black_15%)]",
+    "[--cta-bg-tint:color-mix(in_oklab,var(--cta-bg-color)_85%,white_15%)]",
+    "bg-[image:linear-gradient(to_top_right,var(--cta-bg-shade),var(--cta-bg-tint))]",
+    "bg-(--cta-bg-color)",
+  ),
+  green: cn(
+    "[--cta-bg-color:var(--color-th-green-600)]",
+    "[--cta-bg-shade:color-mix(in_oklab,var(--cta-bg-color)_85%,black_15%)]",
+    "[--cta-bg-tint:color-mix(in_oklab,var(--cta-bg-color)_85%,white_15%)]",
+    "bg-[image:linear-gradient(to_top_right,var(--cta-bg-shade),var(--cta-bg-tint))]",
+    "bg-(--cta-bg-color)",
+  ),
+  black: cn(
+    "[--cta-bg-color:var(--color-th-dark-900)]",
+    "[--cta-bg-shade:color-mix(in_oklab,var(--cta-bg-color)_85%,black_15%)]",
+    "[--cta-bg-tint:color-mix(in_oklab,var(--cta-bg-color)_85%,white_15%)]",
+    "bg-[image:linear-gradient(to_top_right,var(--cta-bg-shade),var(--cta-bg-tint))]",
+    "bg-(--cta-bg-color)",
+  ),
+  none: undefined,
+};
+
 const isCTASurfaceColor = (value: string): value is CTASurfaceColor =>
   Object.prototype.hasOwnProperty.call(CTA_SURFACE_CONFIG, value);
 
@@ -65,6 +100,9 @@ export function CTABlock({
           className={cn(
             "relative",
             surfaceStyle.background,
+            hasSurfaceFrame
+              ? CTA_SURFACE_GRADIENT_CLASSES[colorKey]
+              : undefined,
             hasSurfaceFrame ? "rounded-3xl px-4 py-16" : undefined,
           )}
         >
