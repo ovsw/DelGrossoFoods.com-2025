@@ -6,6 +6,7 @@ import { SectionShell } from "@workspace/ui/components/section-shell";
 
 import { RichText } from "@/components/elements/rich-text";
 import { ProductPurchasePanel } from "@/components/features/cart/product-purchase-panel";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { ProductDetailData } from "@/types";
 
 interface ProductSummarySectionProps {
@@ -23,6 +24,12 @@ export function ProductSummarySection({
   weightText,
   shippingText,
 }: ProductSummarySectionProps) {
+  const weightAttribute = createPresentationDataAttribute({
+    documentId: product._id,
+    documentType: product._type,
+    path: "weight",
+  });
+
   return (
     <SectionShell
       spacingTop="large"
@@ -74,7 +81,12 @@ export function ProductSummarySection({
                   <InfoLabel asChild>
                     <dt>Weight</dt>
                   </InfoLabel>
-                  <dd className="mt-1 text-lg leading-6">{weightText}</dd>
+                  <dd
+                    className="mt-1 text-lg leading-6"
+                    data-sanity={weightAttribute ?? undefined}
+                  >
+                    {weightText}
+                  </dd>
                 </div>
               ) : null}
 

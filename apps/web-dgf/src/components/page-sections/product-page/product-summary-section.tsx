@@ -62,6 +62,11 @@ export function ProductSummarySection({
 
   const productNameClassName =
     "text-4xl font-semibold text-brand-green text-balance lg:text-5xl";
+  const weightAttribute = createPresentationDataAttribute({
+    documentId: product._id,
+    documentType: product._type,
+    path: "weight",
+  });
 
   return (
     <SectionShell
@@ -138,7 +143,12 @@ export function ProductSummarySection({
                   <InfoLabel asChild>
                     <dt>Weight</dt>
                   </InfoLabel>
-                  <dd className="mt-1 text-lg leading-6">{weightText}</dd>
+                  <dd
+                    className="mt-1 text-lg leading-6"
+                    data-sanity={weightAttribute ?? undefined}
+                  >
+                    {weightText}
+                  </dd>
                 </div>
               ) : null}
 
