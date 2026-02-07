@@ -62,6 +62,16 @@ export function ProductSummarySection({
 
   const productNameClassName =
     "text-4xl font-semibold text-brand-green text-balance lg:text-5xl";
+  const packSizeAttribute = createPresentationDataAttribute({
+    documentId: product._id,
+    documentType: product._type,
+    path: "category",
+  });
+  const shippingCategoryAttribute = createPresentationDataAttribute({
+    documentId: product._id,
+    documentType: product._type,
+    path: "shippingCategory",
+  });
   const weightAttribute = createPresentationDataAttribute({
     documentId: product._id,
     documentType: product._type,
@@ -134,7 +144,12 @@ export function ProductSummarySection({
                   <InfoLabel asChild>
                     <dt>Pack size</dt>
                   </InfoLabel>
-                  <dd className="mt-1 text-lg leading-6">{packagingLabel}</dd>
+                  <dd
+                    className="mt-1 text-lg leading-6"
+                    data-sanity={packSizeAttribute ?? undefined}
+                  >
+                    {packagingLabel}
+                  </dd>
                 </div>
               ) : null}
 
@@ -157,7 +172,12 @@ export function ProductSummarySection({
                   <InfoLabel asChild>
                     <dt>Shipping category</dt>
                   </InfoLabel>
-                  <dd className="mt-1 text-lg leading-6">{shippingText}</dd>
+                  <dd
+                    className="mt-1 text-lg leading-6"
+                    data-sanity={shippingCategoryAttribute ?? undefined}
+                  >
+                    {shippingText}
+                  </dd>
                 </div>
               ) : null}
             </dl>
