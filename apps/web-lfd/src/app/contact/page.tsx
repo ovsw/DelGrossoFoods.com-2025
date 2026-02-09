@@ -82,7 +82,7 @@ export default async function ContactPage() {
   const documentType = data?._type ?? null;
 
   return (
-    <main>
+    <>
       <ContactFormSection
         title={heading}
         description={intro}
@@ -97,6 +97,6 @@ export default async function ContactPage() {
           type={documentType}
         />
       ) : null}
-    </main>
+    </>
   );
 }

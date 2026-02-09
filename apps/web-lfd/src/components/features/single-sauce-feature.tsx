@@ -8,6 +8,7 @@ import { stegaClean } from "next-sanity";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { SauceListItem } from "@/types";
 
 type Props = {
@@ -26,7 +27,18 @@ export function SingleSauceFeature({ item }: Props) {
 
   const name = stegaClean(item.name);
   const alt = stegaClean(item.mainImage?.alt || `${name} sauce`);
-  const description = stegaClean(item.descriptionPlain || "");
+  const rawDescription = item.descriptionPlain ?? "";
+  const cleanedDescription = stegaClean(rawDescription);
+  const hasDescription =
+    typeof cleanedDescription === "string" &&
+    cleanedDescription.trim().length > 0;
+  const descriptionAttribute = hasDescription
+    ? createPresentationDataAttribute({
+        documentId: item._id,
+        documentType: item._type,
+        path: "descriptionPlain",
+      })
+    : null;
 
   return (
     <div className="grid items-center gap-8 md:gap-10 lg:grid-cols-12 lg:gap-12">
@@ -65,9 +77,9 @@ export function SingleSauceFeature({ item }: Props) {
               className="text-xs"
             />
           </div>
-          <p className="mt-4">
-            {description && description.trim().length > 0
-              ? description
+          <p className="mt-4" data-sanity={descriptionAttribute ?? undefined}>
+            {hasDescription
+              ? rawDescription
               : "Build your next meal with this family favorite from La Famiglia DelGrosso."}
           </p>
           <div className="mt-6">

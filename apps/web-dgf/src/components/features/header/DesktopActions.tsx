@@ -11,27 +11,32 @@ type DesktopActionsProps = {
 };
 
 export function DesktopActions({ ctaButton }: DesktopActionsProps) {
-  const ctaLabel = ctaButton?.text ?? "Recipes";
-  const ctaHref = ctaButton?.href ?? "/recipes";
-  const ctaLinkProps = {
-    ...(ctaButton?.openInNewTab
-      ? { target: "_blank", rel: "noopener noreferrer" }
-      : {}),
-    ...(ctaButton?.dataAttribute
-      ? { "data-sanity": ctaButton.dataAttribute }
-      : {}),
-  };
+  const hasCtaButton = Boolean(ctaButton?.text && ctaButton?.href);
+  const ctaLabel = ctaButton?.text ?? "";
+  const ctaHref = ctaButton?.href ?? "";
+  const ctaLinkProps = hasCtaButton
+    ? {
+        ...(ctaButton?.openInNewTab
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {}),
+        ...(ctaButton?.dataAttribute
+          ? { "data-sanity": ctaButton.dataAttribute }
+          : {}),
+      }
+    : {};
 
   return (
     <div className="hidden items-center space-x-4 lg:flex">
-      <RecipesButton
-        variant="accent"
-        size="sm"
-        href={ctaHref}
-        {...ctaLinkProps}
-      >
-        {ctaLabel}
-      </RecipesButton>
+      {hasCtaButton ? (
+        <RecipesButton
+          variant="accent"
+          size="sm"
+          href={ctaHref}
+          {...ctaLinkProps}
+        >
+          {ctaLabel}
+        </RecipesButton>
+      ) : null}
       <CartButton variant="outline" />
     </div>
   );

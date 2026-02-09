@@ -72,10 +72,9 @@ export default async function SaucesIndexPage({
   const resolvedSearchParams = (await searchParams) ?? {};
   const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
 
-  // Fallback copy so the page always shows intro even if CMS data is missing
   const eyebrow = null;
-  const heading = indexDoc?.title ?? "<< click to edit this heading>>";
-  const intro = indexDoc?.description ?? "<< click to edit this description >>";
+  const heading = indexDoc?.title ?? null;
+  const intro = indexDoc?.description ?? null;
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (

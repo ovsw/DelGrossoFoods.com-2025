@@ -6,6 +6,17 @@
   --color-brand-green-500: var(--color-brand-green);
   /* Keep on-brand text high contrast (light) on the now-black brand background. */
   --color-brand-green-text: var(--color-th-light-100);
+  --filter-scrollbar-thumb: var(--color-th-dark-900);
+  --filter-scrollbar-thumb-hover: color-mix(
+    in oklch,
+    var(--color-brand-green) 85%,
+    var(--color-th-dark-900)
+  );
+  --filter-scrollbar-track: color-mix(
+    in oklch,
+    var(--color-brand-green) 16%,
+    transparent
+  );
 
   /* Semantic heading colors - LFD overrides */
   --color-heading-on-light: var(--color-th-dark-900);

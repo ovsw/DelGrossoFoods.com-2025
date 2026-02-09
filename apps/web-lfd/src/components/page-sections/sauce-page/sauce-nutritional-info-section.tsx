@@ -67,11 +67,6 @@ export function SauceNutritionalInfoSection({
     typeof nutrition.calories === "string" && nutrition.calories.trim()
       ? nutrition.calories
       : null;
-  const rawIngredients =
-    typeof sauce.ingredients === "string" ? sauce.ingredients : "";
-  const rawAllergens =
-    typeof sauce.allergens === "string" ? sauce.allergens : "";
-
   const ingredients = splitLines(clean(sauce.ingredients ?? ""));
   const allergens = splitLines(clean(sauce.allergens ?? ""));
 
@@ -437,7 +432,7 @@ export function SauceNutritionalInfoSection({
                     Ingredients
                   </h3>
                   <ul className="text-sm text-muted-foreground">
-                    {ingredients.map((item, index) => (
+                    {ingredients.map((item) => (
                       <li key={item}>
                         {ingredientsDataAttribute ? (
                           <span data-sanity={ingredientsDataAttribute}>

@@ -78,12 +78,12 @@ export default async function ProductsIndexPage({
     parseSearchParams(resolvedSearchParams);
 
   const eyebrow = null;
-  const heading = indexDoc?.title ?? "<< click to edit this heading >>";
-  const intro = indexDoc?.description ?? "<< click to edit this description >>";
+  const heading = indexDoc?.title ?? null;
+  const intro = indexDoc?.description ?? null;
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
-    <main>
+    <>
       <PageHeadingSection
         eyebrow={eyebrow}
         title={heading}
@@ -93,6 +93,6 @@ export default async function ProductsIndexPage({
         sanityDocumentType={indexDoc?._type}
       />
       <ProductsCatalogSection items={items} initialState={initialState} />
-    </main>
+    </>
   );
 }

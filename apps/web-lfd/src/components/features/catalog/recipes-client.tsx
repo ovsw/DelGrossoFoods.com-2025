@@ -18,7 +18,6 @@ import {
   type RecipeTagSlug,
   tagMap,
 } from "@/config/recipe-taxonomy";
-import { allLineSlugs, lineMap, type LineSlug } from "@/config/sauce-taxonomy";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { applyFiltersAndSort } from "@/lib/recipes/filters";
 import {
@@ -33,8 +32,6 @@ type FiltersFormProps = {
   idPrefix?: string;
   search: string;
   setSearch: (v: string) => void;
-  productLine: LineSlug[];
-  toggleLine: (line: LineSlug, checked: boolean) => void;
   tags: RecipeTagSlug[];
   toggleTag: (t: RecipeTagSlug, checked: boolean) => void;
   meats: MeatSlug[];
@@ -43,7 +40,6 @@ type FiltersFormProps = {
   setCategory: (category: string | "all") => void;
   hasVideo: boolean;
   setHasVideo: (v: boolean) => void;
-  clearProductLine: () => void;
   clearTags: () => void;
   clearMeats: () => void;
   clearCategory: () => void;
@@ -54,8 +50,6 @@ function FiltersForm({
   idPrefix = "filters",
   search,
   setSearch,
-  productLine,
-  toggleLine,
   tags,
   toggleTag,
   meats,
@@ -64,7 +58,6 @@ function FiltersForm({
   setCategory,
   hasVideo,
   setHasVideo,
-  clearProductLine,
   clearTags,
   clearMeats,
   clearCategory,
@@ -85,50 +78,19 @@ function FiltersForm({
 
       <div className="my-4 border-b border-input" />
 
-      <FilterGroupSection
-        title="Video"
-        showClear={hasVideo}
-        onClear={() => setHasVideo(false)}
-        contentClassName=""
-      >
-        <CheckboxList
-          items={[
-            {
-              id: `${idPrefix}-has-video`,
-              label: "Has video",
-              checked: hasVideo,
-              ariaLabel: "Has video",
-            },
-          ]}
-          onToggle={(id, checked) => {
-            if (id === `${idPrefix}-has-video`) setHasVideo(checked);
-          }}
-        />
-      </FilterGroupSection>
-
-      <div className="my-4 border-b border-input" />
-
-      <FilterGroupSection
-        title="Product Line"
-        showClear={productLine.length > 0}
-        onClear={clearProductLine}
-        contentClassName=""
-      >
-        <CheckboxList
-          items={allLineSlugs
-            .filter((slug) => slug !== "organic")
-            .map((slug) => ({
-              id: `${idPrefix}-line-${slug}`,
-              label: lineMap[slug].display,
-              checked: productLine.includes(slug),
-              ariaLabel: lineMap[slug].display,
-            }))}
-          onToggle={(id, checked) => {
-            const slug = id.replace(`${idPrefix}-line-`, "") as LineSlug;
-            toggleLine(slug, checked);
-          }}
-        />
-      </FilterGroupSection>
+      <CheckboxList
+        items={[
+          {
+            id: `${idPrefix}-has-video`,
+            label: "Has video",
+            checked: hasVideo,
+            ariaLabel: "Has video",
+          },
+        ]}
+        onToggle={(id, checked) => {
+          if (id === `${idPrefix}-has-video`) setHasVideo(checked);
+        }}
+      />
 
       <div className="my-4 border-b border-input" />
 
@@ -230,11 +192,21 @@ type Props = {
   categories: RecipeCategoryOption[];
 };
 
+function normalizeQueryState(state: RecipeQueryState): RecipeQueryState {
+  return { ...state, productLine: [] };
+}
+
 export function RecipesClient({ items, initialState, categories }: Props) {
-  const [filters, setFilters] = useState<RecipeQueryState>(initialState);
+  const normalizedInitialState = useMemo(
+    () => normalizeQueryState(initialState),
+    [initialState],
+  );
+  const [filters, setFilters] = useState<RecipeQueryState>(
+    normalizedInitialState,
+  );
   useEffect(() => {
-    setFilters(initialState);
-  }, [initialState]);
+    setFilters(normalizedInitialState);
+  }, [normalizedInitialState]);
 
   const debouncedSearch = useDebouncedValue(filters.search, 200);
   const queryState = useMemo(
@@ -249,9 +221,10 @@ export function RecipesClient({ items, initialState, categories }: Props) {
     useCatalogController({
       setState: setFilters,
       queryState,
-      initialState,
+      initialState: normalizedInitialState,
       items,
-      parseSearchParams,
+      parseSearchParams: (params) =>
+        normalizeQueryState(parseSearchParams(params)),
       serializeState: serializeStateToParams,
       applyFiltersAndSort,
       scrollStateSelector: (state) => ({
@@ -286,21 +259,10 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       sort: "az",
     });
   }
-  const clearProductLine = () =>
-    setFilters((prev) => ({ ...prev, productLine: [] }));
   const clearTags = () => setFilters((prev) => ({ ...prev, tags: [] }));
   const clearMeats = () => setFilters((prev) => ({ ...prev, meats: [] }));
   const clearCategory = () =>
     setFilters((prev) => ({ ...prev, category: "all" }));
-  const toggleLine = (l: LineSlug, checked: boolean) =>
-    setFilters((prev) => ({
-      ...prev,
-      productLine: checked
-        ? prev.productLine.includes(l)
-          ? prev.productLine
-          : [...prev.productLine, l]
-        : prev.productLine.filter((x) => x !== l),
-    }));
   const toggleTag = (t: RecipeTagSlug, checked: boolean) =>
     setFilters((prev) => ({
       ...prev,
@@ -330,8 +292,6 @@ export function RecipesClient({ items, initialState, categories }: Props) {
               search: value,
             }))
           }
-          productLine={filters.productLine}
-          toggleLine={toggleLine}
           tags={filters.tags}
           toggleTag={toggleTag}
           meats={filters.meats}
@@ -350,7 +310,6 @@ export function RecipesClient({ items, initialState, categories }: Props) {
               hasVideo: value,
             }))
           }
-          clearProductLine={clearProductLine}
           clearTags={clearTags}
           clearMeats={clearMeats}
           clearCategory={clearCategory}
@@ -362,12 +321,6 @@ export function RecipesClient({ items, initialState, categories }: Props) {
       isAnyActive={filtersActive}
       onClearAll={clearAll}
       activeChips={[
-        ...filters.productLine.map((slug) => ({
-          key: `line-${slug}`,
-          text: lineMap[slug].display,
-          variant: slug,
-          onRemove: () => toggleLine(slug, false),
-        })),
         ...filters.tags.map((slug) => ({
           key: `tag-${slug}`,
           text: tagMap[slug].display,

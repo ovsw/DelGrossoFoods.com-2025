@@ -51,16 +51,20 @@
       "pnpm -w dlx prettier --write --ignore-unknown"
     ],
     "apps/web-dgf/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js --fix",
-      "pnpm -w dlx eslint -c apps/web-dgf/eslint.config.js"
+      "pnpm -w dlx eslint@9.32.0 -c apps/web-dgf/eslint.config.js --fix",
+      "pnpm -w dlx eslint@9.32.0 -c apps/web-dgf/eslint.config.js"
     ],
     "apps/studio-dgf/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs --fix",
-      "pnpm -w dlx eslint -c apps/studio-dgf/eslint.config.mjs"
+      "pnpm -w dlx eslint@9.32.0 -c apps/studio-dgf/eslint.config.mjs --fix",
+      "pnpm -w dlx eslint@9.32.0 -c apps/studio-dgf/eslint.config.mjs"
+    ],
+    "apps/web-lfd/**/*.{js,jsx,ts,tsx}": [
+      "pnpm -w dlx eslint@9.32.0 -c apps/web-lfd/eslint.config.js --fix",
+      "pnpm -w dlx eslint@9.32.0 -c apps/web-lfd/eslint.config.js"
     ],
     "packages/ui/**/*.{js,jsx,ts,tsx}": [
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js --fix",
-      "pnpm -w dlx eslint -c packages/ui/eslint.config.js"
+      "pnpm -w dlx eslint@9.32.0 -c packages/ui/eslint.config.js --fix",
+      "pnpm -w dlx eslint@9.32.0 -c packages/ui/eslint.config.js"
     ]
   }
 }

@@ -33,16 +33,19 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isVisible, suppressTransitions } = useScrollVisibility();
   const pathname = usePathname();
-  const ctaLabel = ctaButton?.text ?? "Recipes";
-  const ctaHref = ctaButton?.href ?? "/recipes";
-  const ctaLinkProps = {
-    ...(ctaButton?.openInNewTab
-      ? { target: "_blank", rel: "noopener noreferrer" }
-      : {}),
-    ...(ctaButton?.dataAttribute
-      ? { "data-sanity": ctaButton.dataAttribute }
-      : {}),
-  };
+  const hasCtaButton = Boolean(ctaButton?.text && ctaButton?.href);
+  const ctaLabel = ctaButton?.text ?? "";
+  const ctaHref = ctaButton?.href ?? "";
+  const ctaLinkProps = hasCtaButton
+    ? {
+        ...(ctaButton?.openInNewTab
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {}),
+        ...(ctaButton?.dataAttribute
+          ? { "data-sanity": ctaButton.dataAttribute }
+          : {}),
+      }
+    : {};
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -89,31 +92,26 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
             />
 
             {/* Desktop Search and Cart */}
-            <DesktopActions
-              ctaButton={{
-                text: ctaLabel,
-                href: ctaHref,
-                openInNewTab: ctaButton?.openInNewTab,
-                dataAttribute: ctaButton?.dataAttribute,
-              }}
-            />
+            <DesktopActions ctaButton={hasCtaButton ? ctaButton : undefined} />
 
             {/* Mobile actions group */}
             <div className="flex items-center space-x-4 lg:hidden">
               {/* Mobile Recipes Button */}
-              <div>
-                <RecipesButton
-                  variant="accent"
-                  size="sm"
-                  className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
-                  aria-label="Browse recipes"
-                  href={ctaHref}
-                  {...ctaLinkProps}
-                >
-                  <span className="max-[450px]:hidden">{ctaLabel}</span>
-                  <CookbookIcon className="hidden size-5 max-[450px]:block" />
-                </RecipesButton>
-              </div>
+              {hasCtaButton ? (
+                <div>
+                  <RecipesButton
+                    variant="accent"
+                    size="sm"
+                    className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
+                    aria-label="Browse recipes"
+                    href={ctaHref}
+                    {...ctaLinkProps}
+                  >
+                    <span className="max-[450px]:hidden">{ctaLabel}</span>
+                    <CookbookIcon className="hidden size-5 max-[450px]:block" />
+                  </RecipesButton>
+                </div>
+              ) : null}
               {/* Mobile Cart Button */}
               <div>
                 <CartButton variant="outline" />

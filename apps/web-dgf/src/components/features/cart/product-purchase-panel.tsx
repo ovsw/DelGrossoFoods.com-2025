@@ -7,6 +7,7 @@ import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import { resolveFoxyConfig } from "@/lib/foxy/config";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import type { ProductDetailData } from "@/types";
 
 interface ProductPurchasePanelProps {
@@ -132,6 +133,11 @@ export function ProductPurchasePanel({
 
   const isAddToCartDisabled =
     unitPrice == null || sku.length === 0 || !foxyConfig;
+  const priceAttribute = createPresentationDataAttribute({
+    documentId: product._id,
+    documentType: product._type,
+    path: "price",
+  });
 
   function decrement() {
     setQuantity((q) => (q > 1 ? q - 1 : 1));
@@ -190,7 +196,10 @@ export function ProductPurchasePanel({
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
                 Price
               </p>
-              <p className="mt-1 text-2xl font-semibold text-brand-green">
+              <p
+                className="mt-1 text-2xl font-semibold text-brand-green"
+                data-sanity={priceAttribute ?? undefined}
+              >
                 {priceText ?? "—"}
               </p>
             </div>

@@ -73,11 +73,11 @@ export const typeMap: Record<TypeSlug, TypeConfigItem> = {
   },
   salsa: {
     label: "Salsa Sauce",
-    display: "Salsa Sauce",
+    display: "Salsa",
   },
   sandwich: {
     label: "Sandwich Sauce",
-    display: "Sandwich Sauce",
+    display: "Sloppy Joe Sauce",
   },
 } as const;
 
@@ -246,4 +246,4 @@ export const allLineSlugs: LineSlug[] = ["original", "organic", "premium"];
  * Enumerates all valid sauce type slugs.
  * Useful for type filters, tabs, and validation.
  */
-export const allTypeSlugs: TypeSlug[] = ["pasta", "pizza", "salsa", "sandwich"];
+export const allTypeSlugs: TypeSlug[] = ["pasta", "pizza", "sandwich"];

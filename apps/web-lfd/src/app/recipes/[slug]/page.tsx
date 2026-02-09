@@ -99,7 +99,7 @@ export default async function RecipeDetailPage({
   // Related recipes are fetched within the page section
 
   return (
-    <main>
+    <>
       <RecipeHeroSection recipe={recipe} />
 
       <RecipeDetailsSection recipe={recipe} />
@@ -107,6 +107,6 @@ export default async function RecipeDetailPage({
       <RecipeRelatedSaucesSection recipeId={recipe._id} />
 
       <RecipeRelatedRecipesSection recipeId={recipe._id} />
-    </main>
+    </>
   );
 }

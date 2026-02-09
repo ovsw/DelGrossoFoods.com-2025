@@ -4384,7 +4384,7 @@ export type DgfRecipeIndexPageQueryResult = {
 
 // Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfRecipeCategoriesQuery
-// Query: *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){    _id,    title,    slug  }
+// Query: *[    _type == "recipeCategory" &&    (site._ref == $siteId || !defined(site._ref))  ] | order(title asc){    _id,    title,    slug  }
 export type DgfRecipeCategoriesQueryResult = Array<{
   _id: string;
   title: string;
@@ -8102,7 +8102,7 @@ export type LfdRecipeIndexPageQueryResult = {
 
 // Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdRecipeCategoriesQuery
-// Query: *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){    _id,    title,    slug  }
+// Query: *[    _type == "recipeCategory" &&    (site._ref == $siteId || !defined(site._ref))  ] | order(title asc){    _id,    title,    slug  }
 export type LfdRecipeCategoriesQueryResult = Array<{
   _id: string;
   title: string;
@@ -10198,7 +10198,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "recipeIndex" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n':
       | DgfRecipeIndexPageQueryResult
       | LfdRecipeIndexPageQueryResult;
-    '\n  *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){\n    _id,\n    title,\n    slug\n  }\n':
+    '\n  *[\n    _type == "recipeCategory" &&\n    (site._ref == $siteId || !defined(site._ref))\n  ] | order(title asc){\n    _id,\n    title,\n    slug\n  }\n':
       | DgfRecipeCategoriesQueryResult
       | LfdRecipeCategoriesQueryResult;
     '\n  *[_type == "productIndex" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n':

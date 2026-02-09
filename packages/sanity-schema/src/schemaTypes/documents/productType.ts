@@ -96,7 +96,6 @@ export const productType = defineType({
           { title: "Gift Pack", value: "gift_pack" },
           { title: "Merchandise", value: "merchandise" },
         ],
-        layout: "radio", // if fewer than 5 options
       },
       validation: (Rule) => Rule.required(),
     }),

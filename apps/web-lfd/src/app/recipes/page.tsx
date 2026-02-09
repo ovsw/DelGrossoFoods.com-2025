@@ -96,7 +96,7 @@ export default async function RecipesIndexPage({
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
-    <main>
+    <>
       <PageHeadingSection
         title={heading}
         description={intro}
@@ -109,6 +109,6 @@ export default async function RecipesIndexPage({
         initialState={initialState}
         categories={categories}
       />
-    </main>
+    </>
   );
 }

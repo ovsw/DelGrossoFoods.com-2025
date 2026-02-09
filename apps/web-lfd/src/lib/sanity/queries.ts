@@ -186,7 +186,10 @@ export const lfdRecipeIndexPageQuery = defineQuery(`
 `);
 
 export const lfdRecipeCategoriesQuery = defineQuery(`
-  *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){
+  *[
+    _type == "recipeCategory" &&
+    (site._ref == $siteId || !defined(site._ref))
+  ] | order(title asc){
     _id,
     title,
     slug

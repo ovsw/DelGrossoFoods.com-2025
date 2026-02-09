@@ -73,11 +73,11 @@ export const typeMap: Record<TypeSlug, TypeConfigItem> = {
   },
   salsa: {
     label: "Salsa Sauce",
-    display: "Salsa Sauce",
+    display: "Salsa",
   },
   sandwich: {
     label: "Sandwich Sauce",
-    display: "Sandwich Sauce",
+    display: "Sloppy Joe Sauce",
   },
 } as const;
 
