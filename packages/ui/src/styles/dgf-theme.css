@@ -23,6 +23,21 @@
   --color-brand-red-text: var(--color-light-900);
 
   --color-brand-green-500: var(--color-brand-green);
+  --filter-scrollbar-thumb: color-mix(
+    in oklch,
+    var(--color-brand-green) 70%,
+    var(--color-dark-900)
+  );
+  --filter-scrollbar-thumb-hover: color-mix(
+    in oklch,
+    var(--color-brand-green) 85%,
+    var(--color-dark-900)
+  );
+  --filter-scrollbar-track: color-mix(
+    in oklch,
+    var(--color-brand-green) 18%,
+    transparent
+  );
 
   /* browns */
   --color-brown-400: oklch(0.66 0.08 70);
