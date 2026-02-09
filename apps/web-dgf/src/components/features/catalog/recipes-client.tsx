@@ -85,26 +85,19 @@ function FiltersForm({
 
       <div className="my-4 border-b border-input" />
 
-      <FilterGroupSection
-        title="Video"
-        showClear={hasVideo}
-        onClear={() => setHasVideo(false)}
-        contentClassName=""
-      >
-        <CheckboxList
-          items={[
-            {
-              id: `${idPrefix}-has-video`,
-              label: "Has video",
-              checked: hasVideo,
-              ariaLabel: "Has video",
-            },
-          ]}
-          onToggle={(id, checked) => {
-            if (id === `${idPrefix}-has-video`) setHasVideo(checked);
-          }}
-        />
-      </FilterGroupSection>
+      <CheckboxList
+        items={[
+          {
+            id: `${idPrefix}-has-video`,
+            label: "Has video",
+            checked: hasVideo,
+            ariaLabel: "Has video",
+          },
+        ]}
+        onToggle={(id, checked) => {
+          if (id === `${idPrefix}-has-video`) setHasVideo(checked);
+        }}
+      />
 
       <div className="my-4 border-b border-input" />
 

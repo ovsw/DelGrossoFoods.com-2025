@@ -78,7 +78,7 @@ export function CatalogFilterableListLayout({
       {...rootProps}
     >
       <aside className="hidden lg:block">
-        <div className="sticky" style={{ top: "var(--header-offset, 196px)" }}>
+        <div className="sticky top-8">
           <div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-visible pe-2">
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">

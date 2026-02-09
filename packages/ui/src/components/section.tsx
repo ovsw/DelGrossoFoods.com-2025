@@ -19,8 +19,10 @@ const SECTION_BOTTOM_SPACING_CLASS = {
   large: "pb-section-large",
 } as const satisfies Record<SectionSpacingToken, string>;
 
-export interface SectionProps
-  extends Omit<React.ComponentPropsWithoutRef<"section">, "children"> {
+export interface SectionProps extends Omit<
+  React.ComponentPropsWithoutRef<"section">,
+  "children"
+> {
   readonly children: React.ReactNode;
   readonly spacingTop?: SectionSpacingTopToken;
   readonly spacingBottom?: SectionSpacingToken;

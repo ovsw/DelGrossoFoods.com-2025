@@ -4,8 +4,9 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@workspace/ui/lib/utils";
 import * as React from "react";
 
-interface TabsProps
-  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
+interface TabsProps extends React.ComponentPropsWithoutRef<
+  typeof TabsPrimitive.Root
+> {
   orientation?: "horizontal" | "vertical";
 }
 
@@ -39,8 +40,9 @@ const TabsList = React.forwardRef<
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
-interface TabsTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
+interface TabsTriggerProps extends React.ComponentPropsWithoutRef<
+  typeof TabsPrimitive.Trigger
+> {
   type?: "button" | "submit" | "reset";
 }
 
@@ -62,8 +64,9 @@ const TabsTrigger = React.forwardRef<
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-interface TabsContentProps
-  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> {
+interface TabsContentProps extends React.ComponentPropsWithoutRef<
+  typeof TabsPrimitive.Content
+> {
   /**
    * Keep the tab content mounted even when inactive. Useful when consumers rely
    * on persistent DOM nodes (e.g., Sanity Presentation data attributes).
