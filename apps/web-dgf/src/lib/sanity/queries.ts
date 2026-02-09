@@ -186,7 +186,10 @@ export const dgfRecipeIndexPageQuery = defineQuery(`
 `);
 
 export const dgfRecipeCategoriesQuery = defineQuery(`
-  *[_type == "recipeCategory" && site._ref == $siteId] | order(title asc){
+  *[
+    _type == "recipeCategory" &&
+    (site._ref == $siteId || !defined(site._ref))
+  ] | order(title asc){
     _id,
     title,
     slug
