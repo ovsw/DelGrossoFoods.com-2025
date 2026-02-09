@@ -83,7 +83,7 @@ export default async function ProductsIndexPage({
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
 
   return (
-    <main>
+    <>
       <PageHeadingSection
         eyebrow={eyebrow}
         title={heading}
@@ -93,6 +93,6 @@ export default async function ProductsIndexPage({
         sanityDocumentType={indexDoc?._type}
       />
       <ProductsCatalogSection items={items} initialState={initialState} />
-    </main>
+    </>
   );
 }

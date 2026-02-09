@@ -80,7 +80,7 @@ export default async function WhereToBuyPage() {
   });
 
   return (
-    <main>
+    <>
       <WhereToBuyHeroSection />
       <Section spacingTop="default" spacingBottom="default">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -109,6 +109,6 @@ export default async function WhereToBuyPage() {
           />
         </div>
       </Section>
-    </main>
+    </>
   );
 }

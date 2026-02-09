@@ -182,7 +182,7 @@ export default async function ProductDetailPage({
   // Related recipes are fetched within the page section
 
   return (
-    <main>
+    <>
       <ProductHeroSection product={product} />
 
       <ProductSummarySection
@@ -221,6 +221,6 @@ export default async function ProductDetailPage({
       ) : null}
 
       <ProductRelatedRecipesSection sauceIds={sauceIds} />
-    </main>
+    </>
   );
 }

@@ -83,11 +83,11 @@ export default async function SauceDetailPage({
   // Related recipes are fetched within the page section
 
   return (
-    <main>
+    <>
       <SauceHeroSection sauce={sauce} />
       <SauceNutritionalInfoSection sauce={sauce} />
       <SauceRelatedProductsSection sauceId={sauce._id} />
       <SauceRelatedRecipesSection sauceId={sauce._id} sauceName={sauce.name} />
-    </main>
+    </>
   );
 }
