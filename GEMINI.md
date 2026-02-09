@@ -8,10 +8,10 @@ The project is organized into applications and shared packages:
 
 ### Applications
 
-- **`apps/web-dgf`**: The Next.js 15 frontend for Del Grosso Foods.
-- **`apps/studio-dgf`**: The Sanity v5 Studio for Del Grosso Foods.
-- **`apps/web-lfd`**: The Next.js 15 frontend for La Famiglia Del Grosso.
-- **`apps/studio-lfd`**: The Sanity v5 Studio for La Famiglia Del Grosso.
+- **`apps/web-dgf`**: The Next.js 15 frontend for DelGrosso Foods.
+- **`apps/studio-dgf`**: The Sanity v5 Studio for DelGrosso Foods.
+- **`apps/web-lfd`**: The Next.js 15 frontend for La Famiglia DelGrosso.
+- **`apps/studio-lfd`**: The Sanity v5 Studio for La Famiglia DelGrosso.
 
 ### Packages
 
@@ -110,8 +110,8 @@ pnpm run build
 
 To start development for a specific site (Web + Studio):
 
-- **Del Grosso Foods**: `pnpm run dev:dgf`
-- **La Famiglia Del Grosso**: `pnpm run dev:lfd`
+- **DelGrosso Foods**: `pnpm run dev:dgf`
+- **La Famiglia DelGrosso**: `pnpm run dev:lfd`
 
 This starts Next.js on `http://localhost:3000` (or `3001` for LFD) and Sanity Studio on `http://localhost:3333` (or `3334` for LFD).
 

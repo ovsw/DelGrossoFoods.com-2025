@@ -42,11 +42,11 @@ export function SauceHeroSection({
   const lineSlug = toLineSlug(rawLine);
   const lineSourceLabel =
     lineSlug === "original"
-      ? "Del Grosso's Original"
+      ? "DelGrosso's Original"
       : lineSlug === "organic"
-        ? "Del Grosso's Organic"
+        ? "DelGrosso's Organic"
         : lineSlug === "premium"
-          ? "La Famiglia Del Grosso's"
+          ? "La Famiglia DelGrosso's"
           : getLineDisplayName(rawLine);
 
   const buttons: (SanityButtonProps & { icon?: ReactNode })[] = [
