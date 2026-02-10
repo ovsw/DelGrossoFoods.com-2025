@@ -8,7 +8,7 @@ import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
-  createUniqueSlugRule,
+  createSiteScopedSlugUniqueness,
 } from "../../utils/slug-validation";
 import { pageBuilderField, siteReferenceField } from "../common";
 
@@ -65,12 +65,17 @@ export const page = defineType({
       options: {
         source: "title",
         slugify: createSlug,
+        isUnique: createSiteScopedSlugUniqueness("page"),
       },
-      validation: (Rule) =>
-        Rule.required()
-          .error("A URL slug is required for the page")
-          .custom(createUniqueSlugRule())
-          .custom(createSlugValidator({ sanityDocumentType: "page" })),
+      validation: (Rule) => [
+        Rule.custom((slug) => {
+          const current =
+            typeof slug === "string" ? slug : (slug?.current ?? "");
+          if (!current.trim()) return "A URL slug is required for the page";
+          return true;
+        }),
+        Rule.custom(createSlugValidator({ sanityDocumentType: "page" })),
+      ],
     }),
     defineField({
       name: "image",

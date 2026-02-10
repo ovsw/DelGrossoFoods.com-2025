@@ -235,10 +235,12 @@ export function validateSlug(
  * For use in Sanity schema validation
  */
 export function validateSanitySlug(
-  slug: { current?: string } | undefined,
+  slug: { current?: string } | string | undefined,
   options: SlugValidationOptions = {},
 ): string | true {
-  const errors = validateSlug(slug?.current, options);
+  const slugValue =
+    typeof slug === "string" ? slug : (slug as { current?: string })?.current;
+  const errors = validateSlug(slugValue, options);
   return errors.length > 0
     ? errors.map((error) => error.message).join("; ")
     : true;
@@ -285,6 +287,63 @@ export function createUniqueSlugRule() {
     }
 
     return true;
+  };
+}
+
+/**
+ * Site-scoped async uniqueness validator for slug fields that returns a descriptive message.
+ * Only checks for duplicate slugs within the same site (via site._ref).
+ * For use with .custom() validation in Sanity schemas.
+ */
+export function createSiteScopedUniqueSlugRule(sanityDocumentType: string) {
+  return async (
+    slug: { current?: string } | string | undefined,
+    context: {
+      document?: { _id?: string; site?: { _ref?: string } };
+      getClient: Function;
+    },
+  ): Promise<string | true> => {
+    const current = typeof slug === "string" ? slug : slug?.current;
+    if (!current) return true; // Let required/format validators handle empties
+
+    const { document, getClient } = context;
+    const siteRef = document?.site?._ref;
+    if (!siteRef) {
+      // If no site reference, allow it (site field validation will catch this)
+      return true;
+    }
+
+    try {
+      const client = getClient({ apiVersion: "2025-02-19" });
+      const id = (document?._id ?? "").replace(/^drafts\./, "");
+      const excludedIds = [id, id ? `drafts.${id}` : undefined].filter(
+        (value): value is string => Boolean(value),
+      );
+
+      const query = `*[
+        _type == $type &&
+        site._ref == $siteRef &&
+        slug.current == $slug &&
+        !(_id in $excludedIds)
+      ][0]{ _id, _type, title, name, "slug": slug.current }`;
+      const params = {
+        type: sanityDocumentType,
+        siteRef,
+        slug: current,
+        excludedIds,
+      };
+
+      const dup = await client.fetch(query, params);
+      if (dup) {
+        const otherTitle = dup.title || dup.name || dup.slug || dup._id;
+        return `This URL is already used by "${otherTitle}"`;
+      }
+
+      return true;
+    } catch {
+      // If fetch fails (network, API error), allow validation to pass to avoid blocking editors
+      return true;
+    }
   };
 }
 
