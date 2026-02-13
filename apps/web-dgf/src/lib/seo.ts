@@ -31,10 +31,11 @@ interface OgImageParams {
 
 // Default site configuration
 const siteConfig: SiteConfig = {
-  title: "Roboto Studio Demo",
-  description: "Roboto Studio Demo",
-  twitterHandle: "@studioroboto",
-  keywords: ["roboto", "studio", "demo", "sanity", "next", "react", "template"],
+  title: "DelGrosso Foods",
+  description:
+    "Delicious, authentic sauces made since 1914 using quality ingredients by the DelGrosso Family – America's Oldest Family Sauce-maker.",
+  twitterHandle: "@DelGrossosPark",
+  keywords: ["sauce", "italian", "food", "traditional", "family", "saucemaker"],
 };
 
 function generateOgImageUrl(params: OgImageParams = {}): string {
