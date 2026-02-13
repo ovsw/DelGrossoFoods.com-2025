@@ -79,6 +79,7 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
             <div className="flex-shrink-1 flex align-bottom">
               <Link
                 href="/"
+                aria-label="DelGrosso Foods home"
                 className="align-bottom inline-flex rounded-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 <LogoSvg className="h-7" />
