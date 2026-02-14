@@ -37,9 +37,12 @@ export default async function Page() {
   }
 
   const { _id, _type, pageBuilder } = homePageData ?? {};
+  const pageHeading =
+    homePageData.title ?? homePageData.seoTitle ?? "DelGrosso Home";
 
   return (
     <>
+      <h1 className="sr-only">{pageHeading}</h1>
       <PageBuilder pageBuilder={pageBuilder ?? []} id={_id} type={_type} />
     </>
   );
