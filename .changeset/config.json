@@ -7,8 +7,10 @@
   "commit": false,
   "fixed": [
     [
-      "web",
-      "studio",
+      "web-dgf",
+      "web-lfd",
+      "studio-dgf",
+      "studio-lfd",
       "@workspace/eslint-config",
       "@workspace/typescript-config",
       "@workspace/ui"
