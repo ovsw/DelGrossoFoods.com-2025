@@ -134,7 +134,6 @@ export function ProductCard({
       titleTag={titleTag}
       titleSecondary={secondaryText}
       titleSecondaryContent={secondaryContent}
-      ariaLabel={accessibleName}
       imageAspect="product"
       subtitle={subtitle}
       subtitleContent={subtitleContent}

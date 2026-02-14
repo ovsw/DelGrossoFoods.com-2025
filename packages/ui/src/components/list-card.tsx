@@ -54,9 +54,6 @@ export function ListCard({
   imageContainerProps,
   badgesRootProps,
 }: ListCardProps) {
-  const accessibleLabel =
-    ariaLabel ??
-    ([title, titleSecondary].filter(Boolean).join(" ") || undefined);
   const aspectClass = ASPECT_CLASS[imageAspect];
   const wrapperClassName =
     imageFit === "cover"
@@ -81,7 +78,7 @@ export function ListCard({
   return (
     <Link
       href={href}
-      aria-label={accessibleLabel}
+      aria-label={ariaLabel ?? undefined}
       className={cn(
         "group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl",
         linkClassName,
