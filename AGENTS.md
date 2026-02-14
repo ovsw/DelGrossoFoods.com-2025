@@ -8,6 +8,7 @@
 
 - Perform only the explicitly requested changes; never add opportunistic optimizations or extra tasks unless the user asks for them.
 - Spelling: always use "DelGrosso" (no space), never "Del Grosso".
+- Do not run `coderabbit review --plain` unless the user explicitly asks for it.
 
 ### Quick facts
 
