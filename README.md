@@ -110,6 +110,43 @@ Schemas are defined in `packages/sanity-schema/src/schemaTypes`. Both studios im
 
 The Next.js 15 front-ends live in `apps/web-dgf` and `apps/web-lfd`. Familiarize yourself with both structures to get started.
 
+### Accessibility testing
+
+Run accessibility checks from the repo root while local apps are running.
+
+#### Start apps
+
+- DGF: `pnpm dev` (web on `http://localhost:3000`)
+- LFD: `pnpm dev:lfd` (web on `http://localhost:3001`)
+
+#### Axe Core CLI (recommended quick check)
+
+Use the wrapper script that installs a matched Chrome + Chromedriver pair automatically:
+
+```shell
+pnpm a11y:axe -- http://localhost:3000/store --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+pnpm a11y:axe -- http://localhost:3001/store --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+```
+
+Notes:
+
+- `--exit` returns a non-zero exit code when violations are found.
+- You can pass any additional Axe CLI options after the URL.
+
+#### Lighthouse accessibility audit (full report JSON)
+
+```shell
+pnpm dlx lighthouse http://localhost:3000/store --only-categories=accessibility --chrome-flags='--headless=new --no-sandbox' --output=json --output-path=./.tmp-lh-dgf-store.json
+pnpm dlx lighthouse http://localhost:3001/store --only-categories=accessibility --chrome-flags='--headless=new --no-sandbox' --output=json --output-path=./.tmp-lh-lfd-store.json
+```
+
+Optional desktop emulation:
+
+```shell
+pnpm dlx lighthouse http://localhost:3000/store --only-categories=accessibility --preset=desktop --chrome-flags='--headless=new --no-sandbox' --output=json --output-path=./.tmp-lh-dgf-store-desktop.json
+pnpm dlx lighthouse http://localhost:3001/store --only-categories=accessibility --preset=desktop --chrome-flags='--headless=new --no-sandbox' --output=json --output-path=./.tmp-lh-lfd-store-desktop.json
+```
+
 ### Deployment
 
 #### 1. Deploying Sanity Studio (DGF + LFD)
