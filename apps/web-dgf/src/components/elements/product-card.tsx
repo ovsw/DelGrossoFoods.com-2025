@@ -3,6 +3,7 @@
 import { ListCard } from "@workspace/ui/components/list-card";
 import { createDataAttribute } from "next-sanity";
 
+import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
 import {
   getPackagingText,
@@ -127,7 +128,7 @@ export function ProductCard({ item, showBadges = true }: ProductCardProps) {
       title={name}
       titleSecondary={secondaryText}
       titleSecondaryContent={secondaryContent}
-      ariaLabel={`View ${accessibleName}`}
+      ariaLabel={accessibleName}
       imageAspect="product"
       subtitle={subtitle}
       subtitleContent={subtitleContent}
@@ -149,4 +150,3 @@ export function ProductCard({ item, showBadges = true }: ProductCardProps) {
     />
   );
 }
-import { SanityImage } from "@/components/elements/sanity-image";
