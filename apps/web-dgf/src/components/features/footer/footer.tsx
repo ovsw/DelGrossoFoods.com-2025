@@ -307,12 +307,12 @@ export function Footer({ data, settingsData }: FooterProps) {
   ].filter(Boolean) as { label: string; href: string; path: string }[];
 
   const contactBlock = contactEntries.length ? (
-    <div className="text-sm">
+    <div className="space-y-2 text-sm">
       {contactEntries.map((entry) => (
         <div key={entry.path}>
           <a
             href={entry.href}
-            className="hover:text-brand-yellow"
+            className="inline-flex min-h-6 items-center hover:text-brand-yellow"
             {...toDataProps<HTMLAnchorElement>(
               settingsAttributeGetter(entry.path),
             )}
