@@ -20,6 +20,7 @@ export type ListCardBadge = {
 export type ListCardProps = {
   href: string;
   title: string;
+  titleTag?: "h2" | "h3" | "h4" | "p" | "span";
   titleSecondary?: string | null;
   titleSecondaryContent?: ReactNode;
   subtitle?: string | null;
@@ -38,6 +39,7 @@ export type ListCardProps = {
 export function ListCard({
   href,
   title,
+  titleTag = "h3",
   titleSecondary,
   titleSecondaryContent,
   subtitle,
@@ -74,6 +76,7 @@ export function ListCard({
     imageContainerProps ?? {};
   const { className: badgesClassName, ...restBadgesProps } =
     badgesRootProps ?? {};
+  const TitleTag = titleTag;
 
   return (
     <Link
@@ -97,7 +100,7 @@ export function ListCard({
       </div>
 
       <div className="py-4">
-        <h3
+        <TitleTag
           className={cn(
             "text-base font-semibold leading-tight group-hover:underline",
             titleAlignClass,
@@ -109,7 +112,7 @@ export function ListCard({
               {titleSecondaryContent ?? titleSecondary}
             </span>
           ) : null}
-        </h3>
+        </TitleTag>
 
         {subtitle || subtitleContent ? (
           <p
