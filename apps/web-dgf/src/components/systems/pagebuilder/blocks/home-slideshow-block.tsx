@@ -337,19 +337,28 @@ export function HomeSlideshowBlock({
         </button>
 
         <div className="flex space-x-2">
-          {normalizedSlides.map((slide, index) => (
-            <button
-              key={slide.id}
-              onClick={() => handleSlideChange(index)}
-              disabled={isTransitioning}
-              className={`h-3 w-3 rounded-full transition-colors ${
-                index === currentSlide
-                  ? "bg-white"
-                  : "bg-white/50 hover:bg-white/70"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+          {normalizedSlides.map((slide, index) => {
+            const isCurrentSlide = index === currentSlide;
+
+            return (
+              <button
+                key={slide.id}
+                onClick={() => handleSlideChange(index)}
+                disabled={isTransitioning}
+                className={`h-3 rounded-full border-2 border-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+                  isCurrentSlide
+                    ? "w-7 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.25)]"
+                    : "w-3 bg-white/30 hover:bg-white/60"
+                }`}
+                aria-current={isCurrentSlide ? "true" : undefined}
+                aria-label={
+                  isCurrentSlide
+                    ? `Slide ${index + 1} of ${totalSlides}, current`
+                    : `Go to slide ${index + 1} of ${totalSlides}`
+                }
+              />
+            );
+          })}
         </div>
 
         <button
