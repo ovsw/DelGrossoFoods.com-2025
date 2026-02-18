@@ -2,7 +2,7 @@
 
 import Fuse, { type FuseResult } from "fuse.js";
 import { Info } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { type RootProps } from "../lib/data-attributes";
 import { cn } from "../lib/utils";
@@ -48,6 +48,13 @@ export function WhereToBuyClient({
   showProductLineBadges = true,
   rootProps,
 }: WhereToBuyClientProps) {
+  const idBase = useId().replace(/:/g, "");
+  const filtersHeadingId = `${idBase}-filters-heading`;
+  const filtersHintId = `${idBase}-filters-hint`;
+  const resultsHeadingId = `${idBase}-results-heading`;
+  const resultsStatusId = `${idBase}-results-status`;
+  const stateComboboxHintId = `${idBase}-state-combobox-hint`;
+  const productSelectHintId = `${idBase}-product-select-hint`;
   const [selectedState, setSelectedState] = useState<string>("");
   const [productFilter, setProductFilter] = useState<ProductFilter>("all");
 
@@ -114,12 +121,49 @@ export function WhereToBuyClient({
   const resultsCount = filteredStores.length;
   const hasResults = resultsCount > 0;
   const showEmptyState = selectedState && !hasResults;
+  const selectedProductFilterLabel = useMemo(() => {
+    if (productFilter === "all") {
+      return null;
+    }
+    const match = effectiveProductFilterOptions.find(
+      (option) => option.value === productFilter,
+    );
+    return match?.label ?? productLineLabels[productFilter];
+  }, [effectiveProductFilterOptions, productFilter, productLineLabels]);
+  const resultsStatusMessage = useMemo(() => {
+    if (!selectedState) {
+      return "No state selected. Select a state to find stores near you.";
+    }
+
+    if (hasResults) {
+      if (selectedProductFilterLabel) {
+        return `Found ${resultsCount} store${resultsCount === 1 ? "" : "s"} in ${selectedState} for ${selectedProductFilterLabel}.`;
+      }
+      return `Found ${resultsCount} store${resultsCount === 1 ? "" : "s"} in ${selectedState}.`;
+    }
+
+    if (selectedProductFilterLabel) {
+      return `No stores found in ${selectedState} for ${selectedProductFilterLabel}. Try selecting a different state or product filter.`;
+    }
+
+    return `No stores found in ${selectedState}. Try selecting a different state.`;
+  }, [hasResults, resultsCount, selectedProductFilterLabel, selectedState]);
 
   const { className: rootClassName, ...restRootProps } = rootProps ?? {};
 
   return (
     <div className={cn("mt-12", rootClassName)} {...restRootProps}>
-      <div className="bg-white/50 rounded-lg border border-input p-6 mb-8">
+      <div
+        className="bg-white/50 rounded-lg border border-input p-6 mb-8"
+        role="region"
+        aria-labelledby={filtersHeadingId}
+      >
+        <h2 id={filtersHeadingId} className="sr-only">
+          Store filters
+        </h2>
+        <p id={filtersHintId} className="sr-only">
+          Choose a state and optionally narrow by product type.
+        </p>
         <div
           className={cn(
             "grid grid-cols-1 gap-6",
@@ -143,7 +187,11 @@ export function WhereToBuyClient({
               emptyMessage="No states found."
               filterOptions={filterStateOptions}
               aria-label="Select your state"
+              aria-describedby={`${filtersHintId} ${stateComboboxHintId}`}
             />
+            <p id={stateComboboxHintId} className="sr-only">
+              Type to filter states, then select one from the list.
+            </p>
           </div>
 
           {showProductFilter && (
@@ -163,6 +211,7 @@ export function WhereToBuyClient({
                     setProductFilter(e.currentTarget.value as ProductFilter)
                   }
                   aria-label="Select product type"
+                  aria-describedby={`${filtersHintId} ${productSelectHintId}`}
                 >
                   {effectiveProductFilterOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -170,17 +219,35 @@ export function WhereToBuyClient({
                     </option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-brand-green/80">
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 end-3 flex items-center text-brand-green/80"
+                >
                   ▾
                 </span>
               </div>
+              <p id={productSelectHintId} className="sr-only">
+                Filter store results by product type.
+              </p>
             </div>
           )}
         </div>
       </div>
 
+      <p
+        id={resultsStatusId}
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic
+      >
+        {resultsStatusMessage}
+      </p>
+
       {selectedState && (
-        <div>
+        <section aria-labelledby={resultsHeadingId}>
+          <h2 id={resultsHeadingId} className="sr-only">
+            Store results
+          </h2>
           <div className="mb-4">
             <p className="text-lg font-medium text-muted-foreground">
               {hasResults
@@ -213,7 +280,7 @@ export function WhereToBuyClient({
               ))}
             </ul>
           )}
-        </div>
+        </section>
       )}
 
       {!selectedState && (
@@ -260,14 +327,14 @@ function StoreRow({
           />
         )}
         {showAvailability && (
-          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-            <Info className="w-3 h-3 flex-shrink-0" />
+          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700">
+            <Info aria-hidden="true" className="w-3 h-3 flex-shrink-0" />
             <span>Select stores (call ahead)</span>
           </span>
         )}
         {showNote && (
-          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700/80">
-            <Info className="w-3 h-3 flex-shrink-0" />
+          <span className="inline-flex items-center gap-0.5 tracking-tight text-xs text-th-dark-700">
+            <Info aria-hidden="true" className="w-3 h-3 flex-shrink-0" />
             <span>{pl.note}</span>
           </span>
         )}
