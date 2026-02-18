@@ -62,6 +62,7 @@ export function WhereToBuyClient({
       getStoresByState={getStoresByState}
       productLineLabels={productLineLabels}
       productFilterOptions={productFilterOptions}
+      resultsBackgroundImageSrc="/images/lfd-where-to-buy-map.avif"
       rootProps={
         dataAttribute
           ? {

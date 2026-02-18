@@ -36,6 +36,7 @@ export type WhereToBuyClientProps = {
   productFilterOptions?: WhereToBuyProductFilterOption[];
   forcedProductFilter?: WhereToBuyProductLine;
   showProductLineBadges?: boolean;
+  resultsBackgroundImageSrc?: string;
   rootProps?: RootProps<HTMLDivElement>;
 };
 
@@ -46,6 +47,7 @@ export function WhereToBuyClient({
   productFilterOptions,
   forcedProductFilter,
   showProductLineBadges = true,
+  resultsBackgroundImageSrc,
   rootProps,
 }: WhereToBuyClientProps) {
   const idBase = useId().replace(/:/g, "");
@@ -120,7 +122,6 @@ export function WhereToBuyClient({
 
   const resultsCount = filteredStores.length;
   const hasResults = resultsCount > 0;
-  const showEmptyState = selectedState && !hasResults;
   const selectedProductFilterLabel = useMemo(() => {
     if (productFilter === "all") {
       return null;
@@ -150,6 +151,12 @@ export function WhereToBuyClient({
   }, [hasResults, resultsCount, selectedProductFilterLabel, selectedState]);
 
   const { className: rootClassName, ...restRootProps } = rootProps ?? {};
+  const resultsBackgroundStyles = resultsBackgroundImageSrc
+    ? {
+        backgroundImage: `url(${resultsBackgroundImageSrc})`,
+        backgroundSize: "contain",
+      }
+    : undefined;
 
   return (
     <div className={cn("mt-12", rootClassName)} {...restRootProps}>
@@ -243,32 +250,26 @@ export function WhereToBuyClient({
         {resultsStatusMessage}
       </p>
 
-      {selectedState && (
+      {!hasResults ? (
+        <div
+          className={cn(
+            "rounded-lg bg-center bg-no-repeat",
+            "min-h-[20rem] sm:min-h-[24rem] lg:min-h-[28rem]",
+          )}
+          style={resultsBackgroundStyles}
+          aria-hidden="true"
+        />
+      ) : (
         <section aria-labelledby={resultsHeadingId}>
           <h2 id={resultsHeadingId} className="sr-only">
             Store results
           </h2>
-          <div className="mb-4">
-            <p className="text-lg font-medium text-muted-foreground">
-              {hasResults
-                ? `Found ${resultsCount} store${resultsCount === 1 ? "" : "s"} in ${selectedState}`
-                : null}
-            </p>
-          </div>
-
-          {showEmptyState ? (
-            <div className="text-center py-12 bg-white/50 rounded-lg border border-input">
-              <p className="text-lg text-muted-foreground mb-2">
-                No stores found in {selectedState}
-                {showProductFilter && productFilter !== "all"
-                  ? ` for ${productLineLabels[productFilter]}`
-                  : null}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Try selecting a different state or product filter
+          <div className="rounded-lg border border-input bg-white/90 p-6 shadow-sm backdrop-blur-[1px]">
+            <div className="mb-4">
+              <p className="text-lg font-medium text-muted-foreground">
+                {`Found ${resultsCount} store${resultsCount === 1 ? "" : "s"} in ${selectedState}`}
               </p>
             </div>
-          ) : (
             <ul className="grid gap-3 sm:grid-cols-2">
               {filteredStores.map((store) => (
                 <StoreRow
@@ -279,16 +280,8 @@ export function WhereToBuyClient({
                 />
               ))}
             </ul>
-          )}
+          </div>
         </section>
-      )}
-
-      {!selectedState && (
-        <div className="text-center py-12 bg-white/50 rounded-lg border border-input">
-          <p className="text-lg text-muted-foreground">
-            Select a state to find stores near you
-          </p>
-        </div>
       )}
     </div>
   );
@@ -344,7 +337,7 @@ function StoreRow({
   const hasProductLineDetails = productLineDetails.some(Boolean);
 
   return (
-    <li className="rounded-lg border border-input bg-white/50 px-4 py-3">
+    <li className="rounded-lg border border-input bg-white/85 px-4 py-3">
       <h3 className="text-base font-semibold sm:text-lg">{store.name}</h3>
 
       {hasProductLineDetails && (
