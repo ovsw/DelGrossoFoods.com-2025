@@ -157,15 +157,20 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
         </div>
 
         {/* Right: Info panel */}
-        <aside
+        <section
           className="order-1 md:order-2 md:col-span-5 lg:col-span-4 md:self-start md:sticky md:top-36"
+          aria-labelledby="recipe-info-heading"
           data-html="c-recipe-info-panel"
         >
           <div
             className="md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:pr-2"
             data-html="c-recipe-info-scroll"
           >
-            <h3 className="sr-only" data-html="c-recipe-info-heading">
+            <h3
+              id="recipe-info-heading"
+              className="sr-only"
+              data-html="c-recipe-info-heading"
+            >
               Recipe Info
             </h3>
             <dl
@@ -213,7 +218,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
               )}
             </dl>
           </div>
-        </aside>
+        </section>
       </div>
     </SectionShell>
   );
