@@ -42,7 +42,6 @@ export function RecipeCard({ item }: { item: RecipeListItem }) {
   });
 
   const badges = [...meatBadges, ...tagBadges];
-  const accessibleName = `View ${stegaClean(displayName)}`;
   const imageDataAttribute =
     mainImage?.id && _id
       ? createDataAttribute({
@@ -70,7 +69,7 @@ export function RecipeCard({ item }: { item: RecipeListItem }) {
     <RecipeHighlightCard
       href={href}
       title={displayName}
-      ariaLabel={accessibleName}
+      titleTag="h2"
       image={imageNode}
       badges={badges}
       hideCtaVisually
