@@ -47,7 +47,7 @@ export function ProductHeroSection({ product }: ProductHeroSectionProps) {
             image={image}
             alt={altText}
             respectSanityCrop={false}
-            className=" w-full object-contain"
+            className="w-full max-h-[29.5rem] object-contain"
             data-sanity={imageAttribute ?? undefined}
           />
         </div>
