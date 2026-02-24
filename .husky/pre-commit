@@ -1,8 +1,13 @@
 #!/usr/bin/env sh
 set -e
 
+# Skip hook work when nothing is staged.
+if git diff --cached --quiet; then
+  exit 0
+fi
+
 # Run lint-staged (use default stashing to preserve partial commits)
-pnpm -w lint-staged --quiet
+pnpm -w lint-staged --quiet --allow-empty
 
 # Block commit if type errors exist in the workspace
 pnpm -w turbo run check-types
