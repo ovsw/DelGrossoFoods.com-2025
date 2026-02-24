@@ -63,7 +63,7 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
     index: { type: "sauceIndex", title: "Sauce Index Page", icon: DropIcon },
     collection: {
       type: "sauce",
-      title: "Sauces",
+      title: "Sauces list",
       icon: DropIcon,
       siteFilters: {
         LFD: {
@@ -80,7 +80,7 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
     },
     collection: {
       type: "product",
-      title: "Products",
+      title: "Product list",
       icon: PackageIcon,
       siteFilters: {
         LFD: {
@@ -98,7 +98,7 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
     },
     collection: {
       type: "recipe",
-      title: "Recipes",
+      title: "Recipes list",
       icon: DocumentTextIcon,
       siteFilters: {
         LFD: {
