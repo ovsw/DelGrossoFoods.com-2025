@@ -34,6 +34,7 @@ export type RecipeCardProps = {
   readonly title: string;
   readonly href?: string;
   readonly ariaLabel?: string;
+  readonly titleTag?: "h2" | "h3" | "p";
   readonly image?: RecipeCardMedia;
   readonly badges?: RecipeCardBadge[];
   readonly sauces?: RecipeCardSauce[];
@@ -81,6 +82,7 @@ export function RecipeCard({
   title,
   href,
   ariaLabel,
+  titleTag = "h3",
   image,
   badges = [],
   sauces = [],
@@ -104,6 +106,7 @@ export function RecipeCard({
   const renderBadges = badges.length > 0;
   const renderSauces = sauces.length > 0;
   const imageNode = enhanceMedia(image);
+  const TitleTag = titleTag;
 
   const inner = (
     <>
@@ -118,9 +121,9 @@ export function RecipeCard({
       />
 
       <div className={contentClasses}>
-        <h3 className="text-2xl font-semibold leading-tight text-th-light-100 drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+        <TitleTag className="text-2xl font-semibold leading-tight text-th-light-100 drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
           {title}
-        </h3>
+        </TitleTag>
 
         {renderBadges ? (
           <div className="flex flex-wrap items-center gap-2">
@@ -168,11 +171,12 @@ export function RecipeCard({
   );
 
   if (href) {
+    const resolvedLinkA11yProps = ariaLabel ? { "aria-label": ariaLabel } : {};
     return (
       <Link
         href={href}
-        aria-label={ariaLabel ?? title}
         className={mergedClassName}
+        {...resolvedLinkA11yProps}
         {...linkProps}
       >
         {inner}
@@ -180,10 +184,11 @@ export function RecipeCard({
     );
   }
 
+  const resolvedArticleA11yProps = ariaLabel ? { "aria-label": ariaLabel } : {};
   return (
     <article
-      aria-label={ariaLabel ?? title}
       className={mergedClassName}
+      {...resolvedArticleA11yProps}
       {...articleProps}
     >
       {inner}

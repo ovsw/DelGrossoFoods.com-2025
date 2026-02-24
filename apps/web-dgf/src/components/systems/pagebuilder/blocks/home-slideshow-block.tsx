@@ -83,9 +83,9 @@ export function HomeSlideshowBlock({
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [lastChangeWasManual, setLastChangeWasManual] = useState(false);
+  const [isAutoplayEnabled, setIsAutoplayEnabled] = useState(true);
 
   useEffect(() => {
     setCurrentSlide(0);
@@ -114,12 +114,14 @@ export function HomeSlideshowBlock({
 
   const handleNextSlide = useCallback(() => {
     if (totalSlides <= 1) return;
+    setIsAutoplayEnabled(false);
     setLastChangeWasManual(true);
     queueSlideChange((current, total) => (current + 1) % total);
   }, [queueSlideChange, totalSlides]);
 
   const handlePrevSlide = useCallback(() => {
     if (totalSlides <= 1) return;
+    setIsAutoplayEnabled(false);
     setLastChangeWasManual(true);
     queueSlideChange((current, total) => (current - 1 + total) % total);
   }, [queueSlideChange, totalSlides]);
@@ -128,22 +130,12 @@ export function HomeSlideshowBlock({
     (index: number) => {
       if (totalSlides <= 1 || index === currentSlide) return;
       if (index < 0 || index >= totalSlides) return;
+      setIsAutoplayEnabled(false);
       setLastChangeWasManual(true);
       queueSlideChange(() => index);
     },
     [currentSlide, queueSlideChange, totalSlides],
   );
-
-  useEffect(() => {
-    if (totalSlides <= 1 || prefersReducedMotion) return;
-
-    const intervalId = window.setInterval(() => {
-      setLastChangeWasManual(false);
-      queueSlideChange((current, total) => (current + 1) % total);
-    }, SLIDE_DURATION);
-
-    return () => window.clearInterval(intervalId);
-  }, [queueSlideChange, totalSlides, prefersReducedMotion]);
 
   useEffect(() => {
     const mediaQuery =
@@ -155,9 +147,15 @@ export function HomeSlideshowBlock({
 
     const handleChange = (event: MediaQueryListEvent) => {
       setPrefersReducedMotion(event.matches);
+      if (event.matches) {
+        setIsAutoplayEnabled(false);
+      }
     };
 
     setPrefersReducedMotion(mediaQuery.matches);
+    if (mediaQuery.matches) {
+      setIsAutoplayEnabled(false);
+    }
 
     if ("addEventListener" in mediaQuery) {
       mediaQuery.addEventListener("change", handleChange);
@@ -173,9 +171,18 @@ export function HomeSlideshowBlock({
     return () => legacyMediaQuery.removeListener(handleChange);
   }, []);
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const canAutoplay = totalSlides > 1 && !prefersReducedMotion;
+  const showAnimatedProgress = canAutoplay && isAutoplayEnabled;
+  const autoplayToggleText = isAutoplayEnabled
+    ? "Pause slideshow"
+    : "Play slideshow";
+
+  const handleProgressAnimationEnd = useCallback(() => {
+    if (!showAnimatedProgress || totalSlides <= 1) return;
+
+    setLastChangeWasManual(false);
+    queueSlideChange((current, total) => (current + 1) % total);
+  }, [queueSlideChange, showAnimatedProgress, totalSlides]);
 
   if (!totalSlides) {
     return null;
@@ -216,6 +223,12 @@ export function HomeSlideshowBlock({
   const currentSlideTitleDataAttribute = createFieldDataAttribute("title");
   const currentSlideSubtitleDataAttribute =
     createFieldDataAttribute("subtitle");
+
+  const handleAutoplayToggle = () => {
+    if (!canAutoplay) return;
+    setLastChangeWasManual(false);
+    setIsAutoplayEnabled((previous) => !previous);
+  };
 
   return (
     <div
@@ -324,19 +337,28 @@ export function HomeSlideshowBlock({
         </button>
 
         <div className="flex space-x-2">
-          {normalizedSlides.map((slide, index) => (
-            <button
-              key={slide.id}
-              onClick={() => handleSlideChange(index)}
-              disabled={isTransitioning}
-              className={`h-3 w-3 rounded-full transition-colors ${
-                index === currentSlide
-                  ? "bg-white"
-                  : "bg-white/50 hover:bg-white/70"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+          {normalizedSlides.map((slide, index) => {
+            const isCurrentSlide = index === currentSlide;
+
+            return (
+              <button
+                key={slide.id}
+                onClick={() => handleSlideChange(index)}
+                disabled={isTransitioning}
+                className={`h-3 rounded-full border-2 border-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+                  isCurrentSlide
+                    ? "w-7 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.25)]"
+                    : "w-3 bg-white/30 hover:bg-white/60"
+                }`}
+                aria-current={isCurrentSlide ? "true" : undefined}
+                aria-label={
+                  isCurrentSlide
+                    ? `Slide ${index + 1} of ${totalSlides}, current`
+                    : `Go to slide ${index + 1} of ${totalSlides}`
+                }
+              />
+            );
+          })}
         </div>
 
         <button
@@ -347,15 +369,34 @@ export function HomeSlideshowBlock({
         >
           <ChevronRight className="h-6 w-6" />
         </button>
+
+        <button
+          onClick={handleAutoplayToggle}
+          disabled={!canAutoplay}
+          className="rounded-full bg-white/80 px-3 py-2 text-sm font-medium text-th-dark-700 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+          aria-pressed={!isAutoplayEnabled}
+        >
+          {autoplayToggleText}
+        </button>
       </div>
 
       <div className="absolute bottom-0 left-0 h-2 w-full bg-white/30">
         <div
-          key={`${current.id}-${currentSlide}-${hasMounted}`}
+          key={`${current.id}-${currentSlide}`}
+          onAnimationEnd={handleProgressAnimationEnd}
           className={
-            totalSlides > 1
-              ? `bg-brand-green h-full animate-[progress-animation_${SLIDE_DURATION}ms_linear]`
-              : "bg-brand-green h-full"
+            canAutoplay ? "bg-brand-green h-full" : "bg-brand-green h-full w-0"
+          }
+          style={
+            canAutoplay
+              ? {
+                  animationName: "progress-animation",
+                  animationDuration: `${SLIDE_DURATION}ms`,
+                  animationTimingFunction: "linear",
+                  animationFillMode: "forwards",
+                  animationPlayState: isAutoplayEnabled ? "running" : "paused",
+                }
+              : undefined
           }
         />
       </div>

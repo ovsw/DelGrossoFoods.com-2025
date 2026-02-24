@@ -36,6 +36,7 @@ export interface ComboboxProps {
     searchValue: string,
   ) => ComboboxOption[];
   "aria-label"?: string;
+  "aria-describedby"?: string;
 }
 
 export function Combobox({
@@ -50,7 +51,11 @@ export function Combobox({
   id,
   filterOptions,
   "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedBy,
 }: ComboboxProps) {
+  const idBase = React.useId().replace(/:/g, "");
+  const triggerId = id ?? `${idBase}-combobox-trigger`;
+  const listboxId = `${triggerId}-listbox`;
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
@@ -95,11 +100,14 @@ export function Combobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          id={id}
+          id={triggerId}
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-controls={listboxId}
           aria-label={ariaLabel}
+          aria-describedby={ariaDescribedBy}
           className={cn(
             "w-full justify-between text-start font-normal bg-white/70 hover:bg-white/70",
             !selectedOption && "text-muted-foreground",
@@ -118,7 +126,11 @@ export function Combobox({
             value={searchValue}
             onValueChange={setSearchValue}
           />
-          <CommandList>
+          <CommandList
+            id={listboxId}
+            role="listbox"
+            aria-labelledby={triggerId}
+          >
             {filteredOptions.length === 0 ? (
               <CommandEmpty>{emptyMessage}</CommandEmpty>
             ) : (

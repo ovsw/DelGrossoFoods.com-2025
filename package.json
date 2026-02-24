@@ -23,6 +23,7 @@
     "changeset:add": "changeset add",
     "changeset:status": "changeset status --since=origin/main",
     "changeset:version": "changeset version",
+    "a11y:axe": "bash ./scripts/run-axe-cli.sh",
     "prepare": "husky"
   },
   "devDependencies": {

@@ -16,12 +16,13 @@ export function MobileNavPanel({
 }: MobileNavPanelProps) {
   return (
     <div
+      aria-hidden={!isMobileMenuOpen}
       className={cn(
         "nav_mobile_wrap will-change-transform overflow-hidden bg-black text-th-light-100 lg:hidden",
         "transition-all",
         isMobileMenuOpen
           ? "max-h-[100svh] translate-y-0 opacity-100 duration-300 ease-out"
-          : "max-h-0 -translate-y-2 opacity-0 duration-200 ease-in",
+          : "pointer-events-none max-h-0 -translate-y-2 opacity-0 duration-200 ease-in",
       )}
     >
       <div className="nav_mobile_contain px-4 py-2">
@@ -43,6 +44,7 @@ export function MobileNavPanel({
                       "bg-brand-yellow/10 text-brand-yellow underline decoration-brand-yellow/70 underline-offset-4",
                   )}
                   aria-current={isActive ? "page" : undefined}
+                  tabIndex={isMobileMenuOpen ? 0 : -1}
                   style={{
                     animationDelay: isMobileMenuOpen
                       ? `${index * 50}ms`

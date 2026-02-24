@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import { stegaClean } from "next-sanity";
 
 import { WhereToBuyClient } from "@/components/features/where-to-buy/where-to-buy-client";
-import { WhereToBuyHeroSection } from "@/components/page-sections/where-to-buy/where-to-buy-hero-section";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import {
   lfdRetailersQuery,
@@ -80,35 +79,32 @@ export default async function WhereToBuyPage() {
   });
 
   return (
-    <>
-      <WhereToBuyHeroSection />
-      <Section spacingTop="default" spacingBottom="default">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="max-w-3xl text-start">
-            <h1
-              className="text-3xl font-bold sm:text-5xl text-brand-green"
-              data-sanity={titleAttribute ?? undefined}
-            >
-              {heading}
-            </h1>
-            <p
-              className="mt-4 text-xl leading-8 text-muted-foreground"
-              data-sanity={descriptionAttribute ?? undefined}
-            >
-              {intro}
-            </p>
-          </div>
-
-          <WhereToBuyClient
-            sanityDocumentId={documentId}
-            sanityDocumentType={documentType}
-            allStates={allStates}
-            storeLocations={storeLocations}
-            productLineLabels={productLineLabels}
-            productFilterOptions={productFilterOptions}
-          />
+    <Section spacingTop="page-top" spacingBottom="default">
+      <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="max-w-3xl text-start">
+          <h1
+            className="text-3xl font-bold sm:text-5xl text-brand-green"
+            data-sanity={titleAttribute ?? undefined}
+          >
+            {heading}
+          </h1>
+          <p
+            className="mt-4 text-xl leading-8 text-muted-foreground"
+            data-sanity={descriptionAttribute ?? undefined}
+          >
+            {intro}
+          </p>
         </div>
-      </Section>
-    </>
+
+        <WhereToBuyClient
+          sanityDocumentId={documentId}
+          sanityDocumentType={documentType}
+          allStates={allStates}
+          storeLocations={storeLocations}
+          productLineLabels={productLineLabels}
+          productFilterOptions={productFilterOptions}
+        />
+      </div>
+    </Section>
   );
 }

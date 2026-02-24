@@ -3,6 +3,7 @@
 import { ListCard } from "@workspace/ui/components/list-card";
 import { createDataAttribute } from "next-sanity";
 
+import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
 import {
   getPackagingText,
@@ -31,9 +32,14 @@ const DEFAULT_CARD_SIZES =
 export type ProductCardProps = {
   item: ProductListItem;
   showBadges?: boolean;
+  titleTag?: "h2" | "h3" | "h4" | "p" | "span";
 };
 
-export function ProductCard({ item, showBadges = true }: ProductCardProps) {
+export function ProductCard({
+  item,
+  showBadges = true,
+  titleTag = "h3",
+}: ProductCardProps) {
   const {
     _id,
     name,
@@ -125,9 +131,9 @@ export function ProductCard({ item, showBadges = true }: ProductCardProps) {
     <ListCard
       href={href}
       title={name}
+      titleTag={titleTag}
       titleSecondary={secondaryText}
       titleSecondaryContent={secondaryContent}
-      ariaLabel={`View ${accessibleName}`}
       imageAspect="product"
       subtitle={subtitle}
       subtitleContent={subtitleContent}
@@ -149,4 +155,3 @@ export function ProductCard({ item, showBadges = true }: ProductCardProps) {
     />
   );
 }
-import { SanityImage } from "@/components/elements/sanity-image";
