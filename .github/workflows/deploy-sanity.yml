@@ -6,6 +6,9 @@ on:
     paths:
       - "apps/studio-dgf/**"
       - "apps/studio-lfd/**"
+      - "packages/sanity-schema/**"
+      - "packages/sanity-config/**"
+      - "pnpm-lock.yaml"
       - ".github/workflows/deploy-sanity.yml"
   workflow_dispatch:
 
