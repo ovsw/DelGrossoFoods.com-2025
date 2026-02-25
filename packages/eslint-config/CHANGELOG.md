@@ -1,5 +1,11 @@
 # @workspace/eslint-config
 
+## 1.21.0
+
+### Patch Changes
+
+- [#113](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/113) [`96b47fc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/96b47fcf0ef2960427f59294a349334442182307) Thanks [@ovsw](https://github.com/ovsw)! - Shared UI now owns the hero shells, catalog layouts, Where To Buy client and the presentation data-attribute helpers so both sites reuse the same polish, and ESLint keeps pace with Next 15.5.9 via the matching plugin bump.
+
 ## 1.20.0
 
 ## 1.19.0
