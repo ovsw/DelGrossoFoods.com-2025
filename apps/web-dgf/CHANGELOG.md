@@ -1,5 +1,15 @@
 # web
 
+## 1.21.1
+
+### Patch Changes
+
+- [#120](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/120) [`47895d2`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/47895d2ef6d0cad6eeebcedfe7a223bec2aacc75) Thanks [@ovsw](https://github.com/ovsw)! - Fix the formatting pipeline by separating ESLint from Prettier formatting responsibilities, apply the resulting Prettier updates in both web apps and shared UI, and update Studio deploy workflow path triggers to run only when Studio-related files change.
+
+- Updated dependencies [[`47895d2`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/47895d2ef6d0cad6eeebcedfe7a223bec2aacc75)]:
+  - @workspace/ui@1.21.1
+  - @workspace/sanity-config@1.21.0
+
 ## 1.21.0
 
 ### Minor Changes
