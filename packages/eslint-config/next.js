@@ -3,7 +3,6 @@ import pluginNext from "@next/eslint-plugin-next";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginImport from "eslint-plugin-import";
-import eslintPluginPrettier from "eslint-plugin-prettier";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
@@ -36,7 +35,6 @@ export const nextJsConfig = [
     plugins: {
       "@next/next": pluginNext,
       "jsx-a11y": jsxA11y,
-      prettier: eslintPluginPrettier,
       import: eslintPluginImport,
       "simple-import-sort": eslintPluginSimpleImportSort,
       "@typescript-eslint": tseslint.plugin,
@@ -82,7 +80,6 @@ export const nextJsConfig = [
       "jsx-a11y/scope": "error",
       "jsx-a11y/tabindex-no-positive": "error",
       // Downgrade common non-a11y rules to warnings project-wide
-      "prettier/prettier": "warn",
       "simple-import-sort/imports": "warn",
       "simple-import-sort/exports": "warn",
       "@typescript-eslint/consistent-type-imports": "warn",
@@ -93,14 +90,12 @@ export const nextJsConfig = [
   {
     plugins: {
       "react-hooks": pluginReactHooks,
-      prettier: eslintPluginPrettier,
       "simple-import-sort": eslintPluginSimpleImportSort,
       "@typescript-eslint": tseslint.plugin,
     },
     settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      "prettier/prettier": "warn",
       "simple-import-sort/imports": "warn",
       "simple-import-sort/exports": "warn",
       "react/react-in-jsx-scope": "off",
