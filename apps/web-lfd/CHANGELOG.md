@@ -1,5 +1,28 @@
 # web
 
+## 1.21.0
+
+### Minor Changes
+
+- [#118](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/118) [`ff7c115`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/ff7c115d9024756510e6663ae55b7ba557992d7e) Thanks [@ovsw](https://github.com/ovsw)! - Ship a broad accessibility and UX refresh across both web apps, including improved navigation and card semantics, Where To Buy experience updates, slideshow and footer/header improvements, and SEO page-heading adjustments.
+
+  Update shared UI building blocks to support the accessibility work and refine Sanity site-structure/schema support plus project documentation for the new workflows.
+
+- [#113](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/113) [`96b47fc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/96b47fcf0ef2960427f59294a349334442182307) Thanks [@ovsw](https://github.com/ovsw)! - Both the DGF and LFD front ends now share the refreshed navigation, hero, catalog, recipe, and sauce sections, add organic sauce support plus richer hero author details, ship the Sanity-backed Where To Buy experience, and include the updated slideshow, contact form branding, and accessibility tweaks that keep both experiences aligned.
+
+### Patch Changes
+
+- [#113](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/113) [`876216f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/876216f69f54f5a619e31fbc78971a1296d27e35) Thanks [@ovsw](https://github.com/ovsw)! - Scope GROQ queries by site by moving shared fragments into `@workspace/sanity-config`, adding a reusable site-param helper, and relocating app-specific queries into each web app so DGF/LFD pages fetch only their own documents.
+
+- [#117](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/117) [`2772211`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/27722112911bbff4bcbd33d8440b9833a8662de4) Thanks [@ovsw](https://github.com/ovsw)! - Standardize naming conventions for DelGrosso Foods
+  - Updated references from "Del Grosso" to "DelGrosso" across multiple files for consistency in branding
+  - Adjusted color token comments in CSS to reflect the new naming convention, enhancing clarity in theme styles
+  - Updated documentation files (AGENTS.md, GEMINI.md) to use consistent branding
+
+- Updated dependencies [[`ff7c115`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/ff7c115d9024756510e6663ae55b7ba557992d7e), [`876216f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/876216f69f54f5a619e31fbc78971a1296d27e35), [`2772211`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/27722112911bbff4bcbd33d8440b9833a8662de4), [`96b47fc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/96b47fcf0ef2960427f59294a349334442182307), [`96b47fc`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/96b47fcf0ef2960427f59294a349334442182307)]:
+  - @workspace/ui@1.21.0
+  - @workspace/sanity-config@1.21.0
+
 ## 1.20.0
 
 ### Minor Changes
