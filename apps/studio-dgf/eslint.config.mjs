@@ -1,7 +1,6 @@
 import sanityStudio from "@sanity/eslint-config-studio";
 import eslintPluginImport from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
-import eslintPluginPrettier from "eslint-plugin-prettier";
 import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
@@ -11,7 +10,6 @@ export default [
   ...sanityStudio,
   {
     plugins: {
-      prettier: eslintPluginPrettier,
       "simple-import-sort": eslintPluginSimpleImportSort,
       import: eslintPluginImport,
       "jsx-a11y": jsxA11y,
@@ -63,7 +61,6 @@ export default [
       "jsx-a11y/tabindex-no-positive": "error",
 
       // Downgrade non-a11y rules to warnings in Studio
-      "prettier/prettier": "warn",
       "simple-import-sort/imports": "warn",
       "simple-import-sort/exports": "warn",
       "@typescript-eslint/consistent-type-imports": "warn",
