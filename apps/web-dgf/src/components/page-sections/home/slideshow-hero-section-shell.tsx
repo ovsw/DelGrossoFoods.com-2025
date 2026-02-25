@@ -5,10 +5,11 @@ import {
 import { cn } from "@workspace/ui/lib/utils";
 import type { ReactNode } from "react";
 
-export interface SlideshowHeroSectionShellProps extends Omit<
-  SectionShellProps,
-  "spacingTop" | "spacingBottom" | "background" | "allowOverflow"
-> {
+export interface SlideshowHeroSectionShellProps
+  extends Omit<
+    SectionShellProps,
+    "spacingTop" | "spacingBottom" | "background" | "allowOverflow"
+  > {
   readonly children: ReactNode;
 }
 
