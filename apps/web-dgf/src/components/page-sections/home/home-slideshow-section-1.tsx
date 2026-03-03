@@ -67,7 +67,6 @@ const SLIDE_DURATION = 6000; // milliseconds
 export function HomeSlideshowSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
 
   const handleNextSlide = useCallback(() => {
     if (isTransitioning) return;
@@ -97,11 +96,6 @@ export function HomeSlideshowSection() {
 
     return () => clearInterval(timer);
   }, [currentSlide, handleNextSlide]); // Depend on currentSlide to reset timer
-
-  // Effect to trigger initial progress bar animation on mount
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   const handleSlideChange = (index: number) => {
     if (isTransitioning || index === currentSlide) return;
@@ -312,7 +306,7 @@ export function HomeSlideshowSection() {
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 h-2 w-full bg-white/30">
         <div
-          key={`${currentSlide}-${hasMounted}`}
+          key={currentSlide}
           className="bg-brand-green h-full animate-[progress-animation_6000ms_linear]"
         />
       </div>

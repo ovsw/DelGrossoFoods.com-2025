@@ -31,15 +31,7 @@ export function useScrollVisibility(
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Initialize suppressTransitions state based on current conditions
-  const initialSuppressTransitions =
-    sidecartActiveRef.current ||
-    (typeof performance !== "undefined" &&
-      performance.now() < sidecartCooldownUntilRef.current);
-
-  const [suppressTransitions, setSuppressTransitions] = useState(
-    initialSuppressTransitions,
-  );
+  const [suppressTransitions, setSuppressTransitions] = useState(false);
 
   useEffect(() => {
     const getNow = () => {

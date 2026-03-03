@@ -80,16 +80,24 @@ export function HomeSlideshowBlock({
   const normalizedSlides = useMemo(() => normalizeSlides(slides), [slides]);
 
   const totalSlides = normalizedSlides.length;
+  const getPrefersReducedMotion = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    getPrefersReducedMotion,
+  );
   const [lastChangeWasManual, setLastChangeWasManual] = useState(false);
-  const [isAutoplayEnabled, setIsAutoplayEnabled] = useState(true);
-
-  useEffect(() => {
-    setCurrentSlide(0);
-  }, [totalSlides]);
+  const [isAutoplayEnabled, setIsAutoplayEnabled] = useState(
+    () => !getPrefersReducedMotion(),
+  );
+  const activeSlideIndex =
+    totalSlides > 0
+      ? ((currentSlide % totalSlides) + totalSlides) % totalSlides
+      : 0;
 
   const queueSlideChange = useCallback(
     (computeNext: (current: number, total: number) => number) => {
@@ -128,13 +136,13 @@ export function HomeSlideshowBlock({
 
   const handleSlideChange = useCallback(
     (index: number) => {
-      if (totalSlides <= 1 || index === currentSlide) return;
+      if (totalSlides <= 1 || index === activeSlideIndex) return;
       if (index < 0 || index >= totalSlides) return;
       setIsAutoplayEnabled(false);
       setLastChangeWasManual(true);
       queueSlideChange(() => index);
     },
-    [currentSlide, queueSlideChange, totalSlides],
+    [activeSlideIndex, queueSlideChange, totalSlides],
   );
 
   useEffect(() => {
@@ -151,11 +159,6 @@ export function HomeSlideshowBlock({
         setIsAutoplayEnabled(false);
       }
     };
-
-    setPrefersReducedMotion(mediaQuery.matches);
-    if (mediaQuery.matches) {
-      setIsAutoplayEnabled(false);
-    }
 
     if ("addEventListener" in mediaQuery) {
       mediaQuery.addEventListener("change", handleChange);
@@ -188,7 +191,7 @@ export function HomeSlideshowBlock({
     return null;
   }
 
-  const current = normalizedSlides[currentSlide] ?? normalizedSlides[0]!;
+  const current = normalizedSlides[activeSlideIndex] ?? normalizedSlides[0]!;
   const slidesPathBase =
     _key !== undefined && _key !== null
       ? `pageBuilder[_key==${JSON.stringify(_key)}].slides`
@@ -196,7 +199,7 @@ export function HomeSlideshowBlock({
   const slideSelector =
     current.sanityKey !== null
       ? `[_key==${JSON.stringify(current.sanityKey)}]`
-      : `[${currentSlide}]`;
+      : `[${activeSlideIndex}]`;
 
   const createFieldDataAttribute = (field: string) => {
     if (
