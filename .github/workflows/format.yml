@@ -25,5 +25,8 @@ jobs:
       - name: Install deps
         run: pnpm install --frozen-lockfile=false
 
+      - name: Validate React version parity
+        run: node scripts/check-react-version-parity.mjs
+
       - name: Prettier check (workspace)
         run: pnpm -w run format:check

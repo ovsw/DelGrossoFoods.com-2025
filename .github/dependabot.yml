@@ -5,6 +5,11 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
+    groups:
+      react-runtime:
+        patterns:
+          - "react"
+          - "react-dom"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
