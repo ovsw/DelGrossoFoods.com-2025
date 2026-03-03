@@ -1,5 +1,15 @@
 # web
 
+## 1.21.2
+
+### Patch Changes
+
+- [#129](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/129) [`90bfd72`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/90bfd72bdc8a690f2a5cc4ada3ec05b0f5701bc5) Thanks [@ovsw](https://github.com/ovsw)! - Fix React hooks lint violations in header, navbar, slideshow, and scroll utilities so lint-web passes without suppressions.
+
+- Updated dependencies []:
+  - @workspace/ui@1.21.2
+  - @workspace/sanity-config@1.21.0
+
 ## 1.21.1
 
 ### Patch Changes
