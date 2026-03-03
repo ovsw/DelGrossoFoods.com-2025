@@ -318,7 +318,7 @@ export function HomeSlideshowBlock({
                       )}
                       width={500}
                       height={300}
-                      className="block h-full max-h-[28rem] w-auto object-contain lg:h-full lg:max-h-none"
+                      className="block h-full max-h-[28rem] w-auto object-contain md:max-h-[40rem] lg:h-full lg:max-h-none"
                       data-sanity={currentSlideImageDataAttribute}
                     />
                   </motion.div>
