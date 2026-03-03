@@ -63,6 +63,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts --prefer-offline
 
+      - name: Validate React version parity
+        run: node scripts/check-react-version-parity.mjs
+
       - name: Check if Dependabot
         id: check-dependabot
         run: |
