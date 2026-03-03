@@ -35,7 +35,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { stegaClean } from "next-sanity";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
 import LogoSvg from "@/components/elements/logo";
 import { SanityIcon } from "@/components/elements/sanity-icon";
@@ -238,13 +238,8 @@ function MobileNavbar({
 
   const rawPath = usePathname();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: We only close the sheet when the pathname changes.
-  useEffect(() => {
-    setIsOpen(false);
-  }, [rawPath]);
-
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet key={rawPath ?? "/"} open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex justify-end">
         <SheetTrigger asChild>
           <Button variant="outline" size="icon">

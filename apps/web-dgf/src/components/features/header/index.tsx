@@ -3,7 +3,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import LogoSvg from "@/components/elements/logo";
 import { useScrollVisibility } from "@/hooks/use-scroll-visibility";
@@ -51,11 +51,7 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  useEffect(() => {
-    if (isMobileMenuOpen && !isVisible) {
-      setIsMobileMenuOpen(false);
-    }
-  }, [isVisible, isMobileMenuOpen]);
+  const isMobileMenuVisible = isMobileMenuOpen && isVisible;
 
   return (
     <>
@@ -120,7 +116,7 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
 
               {/* Mobile menu button */}
               <MobileMenuToggle
-                isMobileMenuOpen={isMobileMenuOpen}
+                isMobileMenuOpen={isMobileMenuVisible}
                 toggleMobileMenu={toggleMobileMenu}
               />
             </div>
@@ -128,7 +124,7 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
 
           {/* Mobile Navigation Menu */}
           <MobileNavPanel
-            isMobileMenuOpen={isMobileMenuOpen}
+            isMobileMenuOpen={isMobileMenuVisible}
             navigationLinks={navigationLinks}
             currentPath={pathname ?? undefined}
             setIsMobileMenuOpen={setIsMobileMenuOpen}
