@@ -157,9 +157,9 @@ The GitHub Actions workflow `deploy-sanity.yml` now runs a matrix job for both s
 >
 > - Secret: `SANITY_DEPLOY_TOKEN`
 > - Repo variables: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, `SANITY_STUDIO_TITLE`, `SANITY_STUDIO_PRESENTATION_URL`, `SANITY_STUDIO_PRODUCTION_HOSTNAME`
-> - Optional site-specific overrides (vars): `SANITY_STUDIO_PRESENTATION_URL_DGF`, `SANITY_STUDIO_PRESENTATION_URL_LFD`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_DGF`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_LFD`
+> - Optional site-specific overrides (vars): `SANITY_STUDIO_TITLE_DGF`, `SANITY_STUDIO_TITLE_LFD`, `SANITY_STUDIO_PRESENTATION_URL_DGF`, `SANITY_STUDIO_PRESENTATION_URL_LFD`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_DGF`, `SANITY_STUDIO_PRODUCTION_HOSTNAME_LFD`
 
-The workflow always passes `SANITY_STUDIO_SITE_CODE` as `DGF` or `LFD` per matrix job. If no site-specific vars are defined, it falls back to the shared values.
+The workflow always passes `SANITY_STUDIO_SITE_CODE` as `DGF` or `LFD` per matrix job. For title, presentation URL, and production hostname, it first checks site-specific vars (`..._DGF` / `..._LFD`) and falls back to shared values when overrides are not defined.
 
 Set `SANITY_STUDIO_PRESENTATION_URL` (or the site-specific override) to the matching Vercel URL: `https://dgf-25.vercel.app` for DGF and `https://lfd-25.vercel.app` for LFD. Set `SANITY_STUDIO_PRODUCTION_HOSTNAME` (or override) to the hostname you want for each Studio (e.g., `my-cool-project` → `https://my-cool-project.sanity.studio`).
 
