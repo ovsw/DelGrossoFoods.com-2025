@@ -144,6 +144,10 @@ export const dgfSitemapQuery = defineQuery(`{
   "recipePages": *[_type == "recipe" && defined(slug.current)]{
     "slug": slug.current,
     "lastModified": _updatedAt
+  },
+  "leadershipPages": *[_type == "leadershipIndex" && _id == "leadershipIndex" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
   }
 }`);
 
@@ -212,6 +216,18 @@ export const dgfProductIndexPageQuery = defineQuery(`
       }
     ),
     "slug": slug.current
+  }
+`);
+
+export const dgfLeadershipIndexPageQuery = defineQuery(`
+  *[_type == "leadershipIndex" && _id == "leadershipIndex"][0]{
+    _id,
+    _type,
+    eyebrow,
+    title,
+    description,
+    "slug": slug.current,
+    ${buttonsFragment}
   }
 `);
 

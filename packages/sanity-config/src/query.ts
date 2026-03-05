@@ -391,6 +391,27 @@ export const getAllProductsForIndexQuery = defineQuery(`
   }
 `);
 
+export const getAllLeadersForIndexQuery = defineQuery(`
+  *[
+    _type == "leader"
+    && site._ref == $siteId
+  ] | order(name asc){
+    _id,
+    _type,
+    name,
+    position,
+    "image": select(
+      defined(image.asset._ref) => {
+        "id": image.asset._ref,
+        "preview": image.asset->metadata.lqip,
+        "hotspot": image.hotspot{ x, y },
+        "crop": image.crop{ top, bottom, left, right },
+        "alt": image.alt
+      }
+    )
+  }
+`);
+
 export const getProductsBySauceIdQuery = defineQuery(`
   *[
     _type == "product"

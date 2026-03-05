@@ -131,6 +131,11 @@ function getDocumentTypeConfig(
         documentType: "Recipe index",
         requiredPrefix: "/recipes",
       };
+    case "leadershipIndex":
+      return {
+        documentType: "Leadership index",
+        requiredPrefix: "/leadership",
+      };
     case "homePage":
       return {
         documentType: "Home page",
@@ -495,6 +500,12 @@ function applyDocumentTypeRules(
       // Recipe index should be exactly /recipes
       if (slug !== "/recipes") {
         return "/recipes";
+      }
+      return slug;
+    case "leadershipIndex":
+      // Leadership index should be exactly /leadership
+      if (slug !== "/leadership") {
+        return "/leadership";
       }
       return slug;
 

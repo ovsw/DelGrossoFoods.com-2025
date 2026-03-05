@@ -40,7 +40,7 @@ export async function generateMetadata({
       ? {
           title: pageData?.title ?? pageData?.seoTitle ?? "",
           description: pageData?.description ?? pageData?.seoDescription ?? "",
-          slug: pageData?.slug,
+          slug: pageData?.slug ?? undefined,
           contentId: pageData?._id,
           contentType: pageData?._type,
         }
