@@ -1,15 +1,12 @@
 import { UsersIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-import { siteReferenceField } from "../common";
-
 export const leader = defineType({
   name: "leader",
   title: "Leader",
   type: "document",
   icon: UsersIcon,
   fields: [
-    siteReferenceField,
     defineField({
       name: "name",
       title: "Name",

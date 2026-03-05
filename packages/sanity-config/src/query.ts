@@ -394,7 +394,6 @@ export const getAllProductsForIndexQuery = defineQuery(`
 export const getAllLeadersForIndexQuery = defineQuery(`
   *[
     _type == "leader"
-    && site._ref == $siteId
   ] | order(name asc){
     _id,
     _type,

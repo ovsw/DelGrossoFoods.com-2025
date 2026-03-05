@@ -1,5 +1,5 @@
 import { UsersIcon } from "@sanity/icons";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
@@ -67,6 +67,23 @@ export const leadershipIndex = defineType({
       title: "Button",
       description: "Optional button shown in the leadership intro area.",
       validation: (Rule) => Rule.max(1),
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
+      name: "leaders",
+      title: "Leaders",
+      description:
+        "Choose which leaders appear on the leadership page and drag to control their display order.",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "leader" }],
+          options: {
+            disableNew: true,
+          },
+        }),
+      ],
       group: GROUP.MAIN_CONTENT,
     }),
     ...seoFields.filter(

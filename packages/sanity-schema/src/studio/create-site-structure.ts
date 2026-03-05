@@ -117,7 +117,6 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
       type: "leader",
       title: "Leadership list",
       icon: UsersIcon,
-      siteScoped: true,
     },
   },
 ];

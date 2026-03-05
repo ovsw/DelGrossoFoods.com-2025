@@ -227,6 +227,24 @@ export const lfdLeadershipIndexPageQuery = defineQuery(`
     title,
     description,
     "slug": slug.current,
+    "leaders": leaders[]{
+      _key,
+      "leader": @->{
+        _id,
+        _type,
+        name,
+        position,
+        "image": select(
+          defined(image.asset._ref) => {
+            "id": image.asset._ref,
+            "preview": image.asset->metadata.lqip,
+            "hotspot": image.hotspot{ x, y },
+            "crop": image.crop{ top, bottom, left, right },
+            "alt": image.alt
+          }
+        )
+      }
+    },
     ${buttonsFragment}
   }
 `);
