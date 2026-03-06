@@ -67,9 +67,7 @@ export function FeaturedRecipesBlock({
           ) : null}
 
           {title ? (
-            <HeadingTag className="mt-3 text-pretty text-3xl font-semibold tracking-tight text-th-dark-900 sm:text-4xl">
-              {title}
-            </HeadingTag>
+            <HeadingTag className="heading-section">{title}</HeadingTag>
           ) : null}
 
           {intro ? (
