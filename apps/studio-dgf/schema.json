@@ -3546,6 +3546,36 @@
     }
   },
   {
+    "type": "type",
+    "name": "leadershipIndex.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "leadershipIndex"
+    }
+  },
+  {
     "name": "customUrl",
     "type": "type",
     "value": {
@@ -3632,6 +3662,10 @@
               {
                 "type": "inline",
                 "name": "productIndex.reference"
+              },
+              {
+                "type": "inline",
+                "name": "leadershipIndex.reference"
               }
             ]
           },

@@ -556,6 +556,13 @@ export type ProductIndexReference = {
   [internalGroqTypeReferenceTo]?: "productIndex";
 };
 
+export type LeadershipIndexReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "leadershipIndex";
+};
+
 export type CustomUrl = {
   _type: "customUrl";
   type: "internal" | "external";
@@ -570,7 +577,8 @@ export type CustomUrl = {
     | StoreLocatorReference
     | SauceIndexReference
     | RecipeIndexReference
-    | ProductIndexReference;
+    | ProductIndexReference
+    | LeadershipIndexReference;
 };
 
 export type SiteReference = {
@@ -1626,6 +1634,7 @@ export type AllSanitySchemaTypes =
   | SauceIndexReference
   | RecipeIndexReference
   | ProductIndexReference
+  | LeadershipIndexReference
   | CustomUrl
   | SiteReference
   | ContactPage
