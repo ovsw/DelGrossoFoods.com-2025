@@ -1,5 +1,13 @@
 # web
 
+## 1.22.1
+
+### Patch Changes
+
+- Updated dependencies [[`1d439bf`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/1d439bf42b2e390bd45b8f851f56da7fcf2d8f40)]:
+  - @workspace/ui@1.22.1
+  - @workspace/sanity-config@1.22.0
+
 ## 1.22.0
 
 ### Minor Changes

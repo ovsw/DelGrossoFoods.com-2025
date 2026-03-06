@@ -1,5 +1,13 @@
 # @workspace/ui
 
+## 1.22.1
+
+### Patch Changes
+
+- [#137](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/137) [`1d439bf`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/1d439bf42b2e390bd45b8f851f56da7fcf2d8f40) Thanks [@ovsw](https://github.com/ovsw)! - Simplify the featured recipes block heading structure.
+
+  Update the homepage FAQ accordion styles and improve accordion accessibility.
+
 ## 1.22.0
 
 ## 1.21.3

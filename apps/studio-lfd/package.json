@@ -1,7 +1,7 @@
 {
   "name": "studio-lfd",
   "private": true,
-  "version": "1.22.0",
+  "version": "1.22.1",
   "main": "package.json",
   "license": "UNLICENSED",
   "scripts": {
