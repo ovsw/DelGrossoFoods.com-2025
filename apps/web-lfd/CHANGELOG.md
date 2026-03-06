@@ -1,5 +1,17 @@
 # web
 
+## 1.22.0
+
+### Minor Changes
+
+- [#135](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/135) [`9c025e5`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/9c025e582b6ed6b3e466a49a3b04f7a86e69c004) Thanks [@ovsw](https://github.com/ovsw)! - Introduce a dedicated leadership content model with reusable `leader` references, wire it into both Sanity studios, and add /leadership pages for DGF and LFD that pull the richer data via the updated queries so the new section can be managed and rendered consistently.
+
+### Patch Changes
+
+- Updated dependencies [[`9c025e5`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/9c025e582b6ed6b3e466a49a3b04f7a86e69c004)]:
+  - @workspace/sanity-config@1.22.0
+  - @workspace/ui@1.22.0
+
 ## 1.21.3
 
 ### Patch Changes
