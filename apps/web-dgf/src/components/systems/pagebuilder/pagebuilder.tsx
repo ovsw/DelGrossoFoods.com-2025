@@ -8,6 +8,7 @@ import { type ComponentType, useCallback, useMemo } from "react";
 import { dataset, projectId, studioUrl } from "@/config";
 import type { PageBuilderBlockTypes } from "@/types";
 
+import { CampaignHeroBlock } from "./blocks/campaign-hero-block";
 import { CTABlock } from "./blocks/cta-block";
 import { FaqAccordionBlock } from "./blocks/faq-accordion-block";
 import { FeatureBlock } from "./blocks/feature-block";
@@ -44,6 +45,7 @@ type BlockComponentMap = {
 
 // Strongly typed component mapping with proper component signatures
 const BLOCK_COMPONENTS = {
+  campaignHero: CampaignHeroBlock,
   cta: CTABlock,
   faqAccordion: FaqAccordionBlock,
   feature: FeatureBlock,
@@ -162,6 +164,19 @@ function useBlockRenderer(id: string, type: string) {
       const dataAttribute = createBlockDataAttribute(_key);
 
       switch (_type) {
+        case "campaignHero": {
+          const Component = BLOCK_COMPONENTS.campaignHero;
+          return (
+            <div key={`campaignHero-${_key}`} data-sanity={dataAttribute}>
+              <Component
+                {...block}
+                isPageTop={isFirstBlock}
+                sanityDocumentId={id}
+                sanityDocumentType={type}
+              />
+            </div>
+          );
+        }
         case "cta": {
           const Component = BLOCK_COMPONENTS.cta;
           return (

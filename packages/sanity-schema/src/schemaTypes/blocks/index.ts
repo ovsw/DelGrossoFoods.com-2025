@@ -1,3 +1,4 @@
+import { campaignHero } from "./campaign-hero";
 import { cta } from "./cta";
 import { faqAccordion } from "./faq-accordion";
 import { feature } from "./feature";
@@ -11,6 +12,7 @@ import { subscribeNewsletter } from "./subscribe-newsletter";
 import { threeProductPanels } from "./three-product-panels";
 
 const sharedBlocks = [
+  campaignHero,
   cta,
   feature,
   featuredRecipes,

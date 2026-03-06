@@ -192,6 +192,16 @@ export const ctaBlock = /* groq */ `
   }
 `;
 
+export const campaignHeroBlock = /* groq */ `
+  _type == "campaignHero" => {
+    eyebrow,
+    title,
+    ${imageFragment},
+    ${richTextFragment},
+    ${buttonsFragment}
+  }
+`;
+
 export const imageLinkCardsBlock = /* groq */ `
   _type == "imageLinkCards" => {
     eyebrow,
@@ -433,6 +443,7 @@ export const pageBuilderFragment = /* groq */ `
     _key,
     _type,
     ${sectionSpacingFragment},
+    ${campaignHeroBlock},
     ${ctaBlock},
     ${featureBlock},
     ${featuredRecipesBlock},
