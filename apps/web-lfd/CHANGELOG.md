@@ -1,5 +1,13 @@
 # web
 
+## 1.21.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/ui@1.21.3
+  - @workspace/sanity-config@1.21.0
+
 ## 1.21.2
 
 ### Patch Changes

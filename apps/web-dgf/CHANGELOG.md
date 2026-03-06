@@ -1,5 +1,15 @@
 # web
 
+## 1.21.3
+
+### Patch Changes
+
+- [#132](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/132) [`aa3bdcb`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/aa3bdcb7476221e45d19243ff795e862e7c23bda) Thanks [@ovsw](https://github.com/ovsw)! - Reduce the perceived vertical gap in the stacked home slideshow hero by increasing the medium-breakpoint sauce image max height.
+
+- Updated dependencies []:
+  - @workspace/ui@1.21.3
+  - @workspace/sanity-config@1.21.0
+
 ## 1.21.2
 
 ### Patch Changes
