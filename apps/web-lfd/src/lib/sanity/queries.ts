@@ -144,6 +144,10 @@ export const lfdSitemapQuery = defineQuery(`{
   "recipePages": *[_type == "recipe" && defined(slug.current)]{
     "slug": slug.current,
     "lastModified": _updatedAt
+  },
+  "leadershipPages": *[_type == "leadershipIndex" && _id == "leadershipIndex" && defined(slug.current)]{
+    "slug": slug.current,
+    "lastModified": _updatedAt
   }
 }`);
 
@@ -212,6 +216,36 @@ export const lfdProductIndexPageQuery = defineQuery(`
       }
     ),
     "slug": slug.current
+  }
+`);
+
+export const lfdLeadershipIndexPageQuery = defineQuery(`
+  *[_type == "leadershipIndex" && _id == "leadershipIndex"][0]{
+    _id,
+    _type,
+    eyebrow,
+    title,
+    description,
+    "slug": slug.current,
+    "leaders": leaders[]{
+      _key,
+      "leader": @->{
+        _id,
+        _type,
+        name,
+        position,
+        "image": select(
+          defined(image.asset._ref) => {
+            "id": image.asset._ref,
+            "preview": image.asset->metadata.lqip,
+            "hotspot": image.hotspot{ x, y },
+            "crop": image.crop{ top, bottom, left, right },
+            "alt": image.alt
+          }
+        )
+      }
+    },
+    ${buttonsFragment}
   }
 `);
 

@@ -5,7 +5,7 @@ import {
   DropIcon,
   MarkerIcon,
   PackageIcon,
-  TagIcon,
+  UsersIcon,
 } from "@sanity/icons";
 import {
   CogIcon,
@@ -107,6 +107,18 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
       },
     },
   },
+  {
+    index: {
+      type: "leadershipIndex",
+      title: "Leadership Index Page",
+      icon: UsersIcon,
+    },
+    collection: {
+      type: "leader",
+      title: "Leadership list",
+      icon: UsersIcon,
+    },
+  },
 ];
 
 const SITE_SCOPED_COLLECTIONS: CollectionConfig[] = [
@@ -137,7 +149,7 @@ type SiteStructureOptions = {
 const getSiteSingletonDocumentId = (
   type: SingletonConfig["type"],
   siteCode: SiteCode,
-) => `${type}-${siteCode}`;
+) => (type === "leadershipIndex" ? type : `${type}-${siteCode}`);
 
 const createSingletonListItem = (
   S: StructureBuilder,

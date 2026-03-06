@@ -3,9 +3,7 @@ import { defineField, defineType } from "sanity";
 
 import { createRadioListLayout, isValidUrl } from "../../utils/helper";
 
-// These document types back every routable page on DGF + LFD sites.
-// Keep in sync with the routes implemented under apps/web-*/src/app.
-const internalLinkTargetTypes = [
+const siteScopedLinkableTypes = [
   "homePage",
   "page",
   "historyPage",
@@ -16,7 +14,16 @@ const internalLinkTargetTypes = [
   "productIndex",
 ] as const;
 
-const allLinkableTypes = internalLinkTargetTypes.map((type) => ({ type }));
+const sharedLinkableTypes = ["leadershipIndex"] as const;
+
+type SiteScopedLinkableType = (typeof siteScopedLinkableTypes)[number];
+type SharedLinkableType = (typeof sharedLinkableTypes)[number];
+type LinkableType = SiteScopedLinkableType | SharedLinkableType;
+
+const allLinkableTypes = [
+  ...siteScopedLinkableTypes,
+  ...sharedLinkableTypes,
+].map((type) => ({ type }));
 
 type SiteLinkDocument = {
   site?: {
@@ -24,11 +31,19 @@ type SiteLinkDocument = {
   };
 };
 
-const typeList = `[${internalLinkTargetTypes
+const siteScopedTypeList = `[${siteScopedLinkableTypes
   .map((type) => `"${type}"`)
   .join(", ")}]`;
-const baseTypeFilter = `_type in ${typeList}`;
-const siteScopedFilter = `${baseTypeFilter} && (site._ref == $siteId || (_type == "page" && !defined(site._ref)))`;
+const sharedTypeList = `[${sharedLinkableTypes
+  .map((type) => `"${type}"`)
+  .join(", ")}]`;
+const allTypeList = `[${[...siteScopedLinkableTypes, ...sharedLinkableTypes]
+  .map((type) => `"${type}"`)
+  .join(", ")}]`;
+
+const siteScopedFilter = `_type in ${siteScopedTypeList} && site._ref == $siteId`;
+const sharedFilter = `_type in ${sharedTypeList}`;
+const combinedFilter = `(${siteScopedFilter}) || (${sharedFilter})`;
 
 const internalReferenceOptions: ReferenceOptions = {
   disableNew: true,
@@ -36,11 +51,11 @@ const internalReferenceOptions: ReferenceOptions = {
     const siteId = (document as SiteLinkDocument | undefined)?.site?._ref;
     if (!siteId) {
       return {
-        filter: baseTypeFilter,
+        filter: `_type in ${allTypeList}`,
       };
     }
     return {
-      filter: siteScopedFilter,
+      filter: combinedFilter,
       params: { siteId },
     };
   }) satisfies ReferenceFilterResolver,
@@ -121,21 +136,28 @@ export const customUrl = defineType({
 
           const client = context.getClient({ apiVersion: "2025-02-19" });
           const referenced = await client.fetch<{
-            _type?: string;
+            _type?: LinkableType;
             site?: { _ref?: string };
           }>(`*[_id == $id][0]{ _type, site }`, { id: value._ref });
 
           if (!referenced) return true;
 
           const referencedSiteId = referenced.site?._ref;
+          const referencedType = referenced._type;
+          const isShared = sharedLinkableTypes.includes(
+            referencedType as SharedLinkableType,
+          );
+          const isSiteScoped = siteScopedLinkableTypes.includes(
+            referencedType as SiteScopedLinkableType,
+          );
+
           if (!siteId) {
-            return referencedSiteId
-              ? "Internal link must point to a site-specific page or a global page."
-              : true;
+            // Without a site context, allow any shared type and any site-scoped type.
+            return true;
           }
 
-          const isGlobalPage = !referencedSiteId && referenced._type === "page";
-          if (referencedSiteId === siteId || isGlobalPage) return true;
+          if (isShared) return true;
+          if (isSiteScoped && referencedSiteId === siteId) return true;
 
           return "Internal link must match the current site's content.";
         }),

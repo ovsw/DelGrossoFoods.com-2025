@@ -10,12 +10,13 @@ const baseUrl = getBaseUrl();
 type SitemapEntry = { slug: string; lastModified?: string };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { slugPages, saucePages, productPages, recipePages } =
+  const { slugPages, saucePages, productPages, recipePages, leadershipPages } =
     (await client.fetch(lfdSitemapQuery, getSiteParams())) as {
       slugPages: SitemapEntry[];
       saucePages: SitemapEntry[];
       productPages: SitemapEntry[];
       recipePages: SitemapEntry[];
+      leadershipPages: SitemapEntry[];
     };
   return [
     {
@@ -43,6 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     })),
     ...recipePages.map((page: SitemapEntry) => ({
+      url: `${baseUrl}${page.slug}`,
+      lastModified: new Date(page.lastModified ?? new Date()),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })),
+    ...leadershipPages.map((page: SitemapEntry) => ({
       url: `${baseUrl}${page.slug}`,
       lastModified: new Date(page.lastModified ?? new Date()),
       changeFrequency: "weekly" as const,

@@ -2,6 +2,8 @@ import { contactPage } from "./contact-page";
 import { faq } from "./faq";
 import { footer } from "./footer";
 import { historyPage } from "./history-page";
+import { leader } from "./leader";
+import { leadershipIndex } from "./leadership-index";
 import { homePage } from "./home-page";
 import { navbar } from "./navbar";
 import { page } from "./page";
@@ -22,6 +24,7 @@ export const singletons = [
   sauceIndex,
   recipeIndex,
   productIndex,
+  leadershipIndex,
   settings,
   footer,
   navbar,
@@ -33,6 +36,7 @@ export const singletons = [
 export const documents = [
   site,
   page,
+  leader,
   faq,
   retailer,
   sauce,

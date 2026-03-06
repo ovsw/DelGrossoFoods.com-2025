@@ -556,6 +556,13 @@ export type ProductIndexReference = {
   [internalGroqTypeReferenceTo]?: "productIndex";
 };
 
+export type LeadershipIndexReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "leadershipIndex";
+};
+
 export type CustomUrl = {
   _type: "customUrl";
   type: "internal" | "external";
@@ -570,7 +577,8 @@ export type CustomUrl = {
     | StoreLocatorReference
     | SauceIndexReference
     | RecipeIndexReference
-    | ProductIndexReference;
+    | ProductIndexReference
+    | LeadershipIndexReference;
 };
 
 export type SiteReference = {
@@ -735,6 +743,40 @@ export type Settings = {
     instagram?: string;
     youtube?: string;
   };
+};
+
+export type LeaderReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "leader";
+};
+
+export type LeadershipIndex = {
+  _id: string;
+  _type: "leadershipIndex";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  slug: Slug;
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+  leaders?: Array<
+    {
+      _key: string;
+    } & LeaderReference
+  >;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: SeoImage;
+  ogTitle?: string;
+  ogDescription?: string;
 };
 
 export type ProductIndex = {
@@ -1164,6 +1206,24 @@ export type Faq = {
   richText?: RichText;
 };
 
+export type Leader = {
+  _id: string;
+  _type: "leader";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  position: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+};
+
 export type Page = {
   _id: string;
   _type: "page";
@@ -1173,7 +1233,7 @@ export type Page = {
   site: SiteReference;
   title: string;
   description?: string;
-  slug: Slug;
+  slug?: Slug;
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -1574,6 +1634,7 @@ export type AllSanitySchemaTypes =
   | SauceIndexReference
   | RecipeIndexReference
   | ProductIndexReference
+  | LeadershipIndexReference
   | CustomUrl
   | SiteReference
   | ContactPage
@@ -1585,6 +1646,8 @@ export type AllSanitySchemaTypes =
   | Navbar
   | Footer
   | Settings
+  | LeaderReference
+  | LeadershipIndex
   | ProductIndex
   | RecipeIndex
   | SauceIndex
@@ -1599,6 +1662,7 @@ export type AllSanitySchemaTypes =
   | Sauce
   | Retailer
   | Faq
+  | Leader
   | Page
   | IconPicker
   | Site
@@ -1714,6 +1778,16 @@ export type QueryGenericPageOGDataResult =
       _id: string;
       _type: "homePage";
       title: string | "";
+      description: string | "";
+      image: null;
+      dominantColor: null;
+      seoImage: string | null;
+      date: string;
+    }
+  | {
+      _id: string;
+      _type: "leadershipIndex";
+      title: string;
       description: string | "";
       image: null;
       dominantColor: null;
@@ -2574,6 +2648,31 @@ export type GetAllProductsForIndexQueryResult = Array<{
   sauceTypes: Array<
     "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce"
   > | null;
+}>;
+
+// Source: ../../packages/sanity-config/src/query.ts
+// Variable: getAllLeadersForIndexQuery
+// Query: *[    _type == "leader"  ] | order(name asc){    _id,    _type,    name,    position,    "image": select(      defined(image.asset._ref) => {        "id": image.asset._ref,        "preview": image.asset->metadata.lqip,        "hotspot": image.hotspot{ x, y },        "crop": image.crop{ top, bottom, left, right },        "alt": image.alt      }    )  }
+export type GetAllLeadersForIndexQueryResult = Array<{
+  _id: string;
+  _type: "leader";
+  name: string;
+  position: string;
+  image: {
+    id: string;
+    preview: string | null;
+    hotspot: {
+      x: number;
+      y: number;
+    } | null;
+    crop: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    } | null;
+    alt: string;
+  };
 }>;
 
 // Source: ../../packages/sanity-config/src/query.ts
@@ -3593,7 +3692,7 @@ export type DgfSlugPageQueryResult = {
   description: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
-  slug: string;
+  slug: string | null;
   pageBuilder: Array<
     | {
         _key: string;
@@ -4224,7 +4323,7 @@ export type DgfSlugPageQueryResult = {
 // Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
-export type DgfSlugPagePathsQueryResult = Array<string>;
+export type DgfSlugPagePathsQueryResult = Array<string | null>;
 
 // Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfFooterQuery
@@ -4310,10 +4409,10 @@ export type DgfSettingsQueryResult = {
 
 // Source: ../web-dgf/src/lib/sanity/queries.ts
 // Variable: dgfSitemapQuery
-// Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
+// Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "leadershipPages": *[_type == "leadershipIndex" && _id == "leadershipIndex" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type DgfSitemapQueryResult = {
   slugPages: Array<{
-    slug: string;
+    slug: string | null;
     lastModified: string;
   }>;
   saucePages: Array<{
@@ -4325,6 +4424,10 @@ export type DgfSitemapQueryResult = {
     lastModified: string;
   }>;
   recipePages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  leadershipPages: Array<{
     slug: string;
     lastModified: string;
   }>;
@@ -4415,6 +4518,50 @@ export type DgfProductIndexPageQueryResult = {
     alt: null;
   };
   slug: string;
+} | null;
+
+// Source: ../web-dgf/src/lib/sanity/queries.ts
+// Variable: dgfLeadershipIndexPageQuery
+// Query: *[_type == "leadershipIndex" && _id == "leadershipIndex"][0]{    _id,    _type,    eyebrow,    title,    description,    "slug": slug.current,    "leaders": leaders[]{      _key,      "leader": @->{        _id,        _type,        name,        position,        "image": select(          defined(image.asset._ref) => {            "id": image.asset._ref,            "preview": image.asset->metadata.lqip,            "hotspot": image.hotspot{ x, y },            "crop": image.crop{ top, bottom, left, right },            "alt": image.alt          }        )      }    },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  }
+export type DgfLeadershipIndexPageQueryResult = {
+  _id: "leadershipIndex";
+  _type: "leadershipIndex";
+  eyebrow: string | null;
+  title: string;
+  description: string | null;
+  slug: string;
+  leaders: Array<{
+    _key: string;
+    leader: {
+      _id: string;
+      _type: "leader";
+      name: string;
+      position: string;
+      image: {
+        id: string;
+        preview: string | null;
+        hotspot: {
+          x: number;
+          y: number;
+        } | null;
+        crop: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+        } | null;
+        alt: string;
+      };
+    };
+  }> | null;
+  buttons: Array<{
+    text: string | null;
+    variant: null;
+    _key: string;
+    _type: "button";
+    openInNewTab: boolean | null;
+    href: string | null;
+  }> | null;
 } | null;
 
 // Source: ../web-dgf/src/lib/sanity/queries.ts
@@ -7311,7 +7458,7 @@ export type LfdSlugPageQueryResult = {
   description: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
-  slug: string;
+  slug: string | null;
   pageBuilder: Array<
     | {
         _key: string;
@@ -7942,7 +8089,7 @@ export type LfdSlugPageQueryResult = {
 // Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSlugPagePathsQuery
 // Query: *[_type == "page" && defined(slug.current) && site._ref == $siteId].slug.current
-export type LfdSlugPagePathsQueryResult = Array<string>;
+export type LfdSlugPagePathsQueryResult = Array<string | null>;
 
 // Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdFooterQuery
@@ -8028,10 +8175,10 @@ export type LfdSettingsQueryResult = {
 
 // Source: ../web-lfd/src/lib/sanity/queries.ts
 // Variable: lfdSitemapQuery
-// Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
+// Query: {  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{    "slug": slug.current,    "lastModified": _updatedAt  },  "saucePages": *[_type == "sauce" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "productPages": *[_type == "product" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "recipePages": *[_type == "recipe" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  },  "leadershipPages": *[_type == "leadershipIndex" && _id == "leadershipIndex" && defined(slug.current)]{    "slug": slug.current,    "lastModified": _updatedAt  }}
 export type LfdSitemapQueryResult = {
   slugPages: Array<{
-    slug: string;
+    slug: string | null;
     lastModified: string;
   }>;
   saucePages: Array<{
@@ -8043,6 +8190,10 @@ export type LfdSitemapQueryResult = {
     lastModified: string;
   }>;
   recipePages: Array<{
+    slug: string;
+    lastModified: string;
+  }>;
+  leadershipPages: Array<{
     slug: string;
     lastModified: string;
   }>;
@@ -8133,6 +8284,50 @@ export type LfdProductIndexPageQueryResult = {
     alt: null;
   };
   slug: string;
+} | null;
+
+// Source: ../web-lfd/src/lib/sanity/queries.ts
+// Variable: lfdLeadershipIndexPageQuery
+// Query: *[_type == "leadershipIndex" && _id == "leadershipIndex"][0]{    _id,    _type,    eyebrow,    title,    description,    "slug": slug.current,    "leaders": leaders[]{      _key,      "leader": @->{        _id,        _type,        name,        position,        "image": select(          defined(image.asset._ref) => {            "id": image.asset._ref,            "preview": image.asset->metadata.lqip,            "hotspot": image.hotspot{ x, y },            "crop": image.crop{ top, bottom, left, right },            "alt": image.alt          }        )      }    },      buttons[]{    text,    variant,    _key,    _type,    "openInNewTab": url.openInNewTab,    "href": select(      url.type == "internal" => url.internal->slug.current,      url.type == "external" => url.external,      url.href    ),  }  }
+export type LfdLeadershipIndexPageQueryResult = {
+  _id: "leadershipIndex";
+  _type: "leadershipIndex";
+  eyebrow: string | null;
+  title: string;
+  description: string | null;
+  slug: string;
+  leaders: Array<{
+    _key: string;
+    leader: {
+      _id: string;
+      _type: "leader";
+      name: string;
+      position: string;
+      image: {
+        id: string;
+        preview: string | null;
+        hotspot: {
+          x: number;
+          y: number;
+        } | null;
+        crop: {
+          top: number;
+          bottom: number;
+          left: number;
+          right: number;
+        } | null;
+        alt: string;
+      };
+    };
+  }> | null;
+  buttons: Array<{
+    text: string | null;
+    variant: null;
+    _key: string;
+    _type: "button";
+    openInNewTab: boolean | null;
+    href: string | null;
+  }> | null;
 } | null;
 
 // Source: ../web-lfd/src/lib/sanity/queries.ts
@@ -10166,6 +10361,7 @@ declare module "@sanity/client" {
     '\n  *[\n    _type == "recipe"\n    && _id == $id\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "video": \n  select(\n    defined(video.asset.asset._ref) => {\n      "playbackId": video.asset.asset->playbackId,\n      "assetId": video.asset.asset->assetId,\n      "status": video.asset.asset->status,\n      "thumbTime": video.asset.asset->thumbTime,\n      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),\n      "posterImage": video.posterImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n      }\n    }\n  )\n,\n    "dgfIngredients": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfIngredients\n    ),\n    "dgfDirections": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfDirections\n    ),\n    "dgfNotes": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfNotes\n    ),\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    "dgfSauces": select(\n      defined($siteCode) && $siteCode == "LFD" => [],\n      dgfSauces[]->{\n        _id,\n        name,\n        "slug": slug.current,\n        line,\n        "mainImage": mainImage{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "alt": coalesce(alt, "")\n        }\n      }\n    ),\n    "organicSauce": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      organicSauce->{\n        _id,\n        name,\n        "slug": slug.current,\n        line,\n        "mainImage": mainImage{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "alt": coalesce(alt, "")\n        }\n      }\n    ),\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeByIdQueryResult;
     '\n  *[\n    _type == "recipe"\n    && slug.current in [$slug, $prefixedSlug]\n  ][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    serves,\n    tags,\n    meat,\n    versions,\n    "categories": array::compact(categories[]->{ _id, title, slug }),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "video": \n  select(\n    defined(video.asset.asset._ref) => {\n      "playbackId": video.asset.asset->playbackId,\n      "assetId": video.asset.asset->assetId,\n      "status": video.asset.asset->status,\n      "thumbTime": video.asset.asset->thumbTime,\n      "policy": coalesce(video.asset.asset->data.playback_ids[0].policy, "public"),\n      "posterImage": video.posterImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n      }\n    }\n  )\n,\n    "dgfIngredients": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfIngredients\n    ),\n    "dgfDirections": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfDirections\n    ),\n    "dgfNotes": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      dgfNotes\n    ),\n    lfdIngredients,\n    lfdDirections,\n    lfdNotes,\n    "dgfSauces": select(\n      defined($siteCode) && $siteCode == "LFD" => [],\n      dgfSauces[]->{\n        _id,\n        name,\n        "slug": slug.current,\n        line,\n        "mainImage": mainImage{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "alt": coalesce(alt, "")\n        }\n      }\n    ),\n    "organicSauce": select(\n      defined($siteCode) && $siteCode == "LFD" => null,\n      organicSauce->{\n        _id,\n        name,\n        "slug": slug.current,\n        line,\n        "mainImage": mainImage{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "alt": coalesce(alt, "")\n        }\n      }\n    ),\n    lfdSauces[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      line,\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    }\n  }\n': GetRecipeBySlugQueryResult;
     '\n  *[\n    _type == "product"\n    && (\n      !defined($excludeLines)\n      || $excludeLines == null\n      || !defined(sauces)\n      || count(\n        (array::unique((sauces[]->line)[defined(@)]))[@ in $excludeLines]\n      ) == 0\n    )\n  ] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetAllProductsForIndexQueryResult;
+    '\n  *[\n    _type == "leader"\n  ] | order(name asc){\n    _id,\n    _type,\n    name,\n    position,\n    "image": select(\n      defined(image.asset._ref) => {\n        "id": image.asset._ref,\n        "preview": image.asset->metadata.lqip,\n        "hotspot": image.hotspot{ x, y },\n        "crop": image.crop{ top, bottom, left, right },\n        "alt": image.alt\n      }\n    )\n  }\n': GetAllLeadersForIndexQueryResult;
     '\n  *[\n    _type == "product"\n    && defined(slug.current)\n    && references($sauceId)\n  ] | order(name asc){\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    price,\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": {\n      "id": coalesce(mainImage.asset._ref, ""),\n      "preview": mainImage.asset->metadata.lqip,\n      "hotspot": mainImage.hotspot{ x, y },\n      "crop": mainImage.crop{ top, bottom, left, right },\n      "alt": mainImage.alt\n    },\n    "sauceLines": array::unique((sauces[]->line)[defined(@)]),\n    "sauceTypes": array::unique((sauces[]->category)[defined(@)])\n  }\n': GetProductsBySauceIdQueryResult;
     '\n  *[_type == "product" && slug.current in [$slug, $prefixedSlug]][0]{\n    _id,\n    _type,\n    name,\n    "slug": slug.current,\n    sku,\n    category,\n    shippingCategory,\n    price,\n    weight,\n    "description": description[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    "descriptionPlain": coalesce(pt::text(description), ""),\n    "mainImage": mainImage{\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "alt": coalesce(alt, "")\n    },\n    "sauces": array::compact(sauces[]->{\n      _id,\n      _type,\n      name,\n      line,\n      category,\n      "slug": slug.current,\n      "descriptionPlain": coalesce(pt::text(description), ""),\n      "mainImage": mainImage{\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "alt": coalesce(alt, "")\n      }\n    })\n  }\n': GetProductBySlugQueryResult;
     '\n  *[_type == "homePage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    seoTitle,\n    seoDescription,\n    "slug": slug.current,\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n,\n    \n  _type == "homeSlideshowVertical" => {\n    title,\n    headingRichText[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "leftColumnImages": array::compact(leftColumnImages[]{\n      _key,\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n    }),\n    "rightColumnImages": array::compact(rightColumnImages[]{\n      _key,\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n    })\n  }\n\n  }\n\n  }\n':
@@ -10189,7 +10385,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "settings" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    siteTitle,\n    siteDescription,\n    "socialLinks": socialLinks,\n    "contactEmail": contactEmail,\n  }\n':
       | DgfSettingsQueryResult
       | LfdSettingsQueryResult;
-    '{\n  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "saucePages": *[_type == "sauce" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "productPages": *[_type == "product" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "recipePages": *[_type == "recipe" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}':
+    '{\n  "slugPages": *[_type == "page" && defined(slug.current) && site._ref == $siteId]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "saucePages": *[_type == "sauce" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "productPages": *[_type == "product" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "recipePages": *[_type == "recipe" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  },\n  "leadershipPages": *[_type == "leadershipIndex" && _id == "leadershipIndex" && defined(slug.current)]{\n    "slug": slug.current,\n    "lastModified": _updatedAt\n  }\n}':
       | DgfSitemapQueryResult
       | LfdSitemapQueryResult;
     '\n  *[_type == "sauceIndex" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n':
@@ -10204,6 +10400,9 @@ declare module "@sanity/client" {
     '\n  *[_type == "productIndex" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current\n  }\n':
       | DgfProductIndexPageQueryResult
       | LfdProductIndexPageQueryResult;
+    '\n  *[_type == "leadershipIndex" && _id == "leadershipIndex"][0]{\n    _id,\n    _type,\n    eyebrow,\n    title,\n    description,\n    "slug": slug.current,\n    "leaders": leaders[]{\n      _key,\n      "leader": @->{\n        _id,\n        _type,\n        name,\n        position,\n        "image": select(\n          defined(image.asset._ref) => {\n            "id": image.asset._ref,\n            "preview": image.asset->metadata.lqip,\n            "hotspot": image.hotspot{ x, y },\n            "crop": image.crop{ top, bottom, left, right },\n            "alt": image.alt\n          }\n        )\n      }\n    },\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n':
+      | DgfLeadershipIndexPageQueryResult
+      | LfdLeadershipIndexPageQueryResult;
     '\n  *[_type == "historyPage" && site._ref == $siteId][0]{\n    _id,\n    _type,\n    title,\n    description,\n    "pageHeaderImage": select(\n      defined(pageHeaderImage.asset._ref) => {\n        "id": pageHeaderImage.asset._ref,\n        "preview": pageHeaderImage.asset->metadata.lqip,\n        "hotspot": pageHeaderImage.hotspot{ x, y },\n        "crop": pageHeaderImage.crop{ bottom, left, right, top },\n        "alt": pageHeaderImage.alt\n      }\n    ),\n    "slug": slug.current,\n    timeline{\n      markers[]{\n        _key,\n        heading,\n        subtitle,\n        content[]{\n          ...,\n          _type == "block" => {\n            ...,\n            \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n          },\n          _type == "image" => {\n            \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n\n          }\n        },\n        image{\n          \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n          "assetRef": asset._ref\n        }\n      }\n    },\n    \n  pageBuilder[]{\n    _key,\n    _type,\n    \n  "spacing": {\n    "spacingTop": coalesce(spacing.spacingTop, "default"),\n    "spacingBottom": coalesce(spacing.spacingBottom, "default")\n  }\n,\n    \n  _type == "cta" => {\n    eyebrow,\n    title,\n    surfaceColor,\n    applySurfaceShine,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n  }\n,\n    \n  _type == "feature" => {\n    badge,\n    title,\n    imageFit,\n    \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "featuredRecipes" => {\n    eyebrow,\n    title,\n    intro,\n    "recipes": array::compact(recipes[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      versions,\n      meat,\n      tags,\n      "dgfSauces": array::compact(dgfSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "lfdSauces": array::compact(lfdSauces[]->{\n        _id,\n        name,\n        "mainImage": select(\n          defined(mainImage.asset._ref) => {\n            "id": mainImage.asset._ref,\n            "preview": mainImage.asset->metadata.lqip,\n            "hotspot": mainImage.hotspot{\n              x,\n              y\n            },\n            "crop": mainImage.crop{\n              bottom,\n              left,\n              right,\n              top\n            },\n            "alt": mainImage.alt\n          }\n        )\n      }),\n      "mainImage": select(\n        defined(mainImage.asset._ref) => {\n          "id": mainImage.asset._ref,\n          "preview": mainImage.asset->metadata.lqip,\n          "hotspot": mainImage.hotspot{\n            x,\n            y\n          },\n          "crop": mainImage.crop{\n            bottom,\n            left,\n            right,\n            top\n          },\n          "alt": mainImage.alt\n        }\n      )\n    })\n  }\n,\n    \n  _type == "faqAccordion" => {\n    eyebrow,\n    title,\n    subtitle,\n    \n  "faqs": array::compact(faqs[]->{\n    _id,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  })\n,\n    "link": link{\n      title,\n      description,\n      "url": {\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    }\n  }\n,\n    \n  _type == "featureCardsIcon" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    "cards": cards[]{\n      _key,\n      icon,\n      title,\n      \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n    }\n  }\n,\n    \n  _type == "subscribeNewsletter" => {\n    title,\n    \n  subTitle[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  helperText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "imageLinkCards" => {\n    eyebrow,\n    title,\n    \n  richText[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "cards": array::compact(cards[]{\n      _key,\n      _type,\n      title,\n      description,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "href": select(\n        url.type == "internal" => url.internal->slug.current,\n        url.type == "external" => url.external,\n        url.href\n      ),\n      "openInNewTab": url.openInNewTab\n    })\n  }\n,\n    \n  _type == "threeProductPanels" => {\n    eyebrow,\n    title,\n    subtitle,\n    "panels": array::compact(panels[]{\n      _key,\n      title,\n      shortDescription,\n      expandedDescription,\n      accentColor,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      "ctaButton": ctaButton{\n        text,\n        variant,\n        _key,\n        _type,\n        "openInNewTab": url.openInNewTab,\n        "href": select(\n          url.type == "internal" => url.internal->slug.current,\n          url.type == "external" => url.external,\n          url.href\n        )\n      }\n    })\n  }\n,\n    \n  _type == "longForm" => {\n    eyebrow,\n    title,\n    \n  intro[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  body[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n\n  }\n,\n    \n  _type == "homeSlideshow" => {\n    "slides": array::compact(slides[]{\n      _key,\n      title,\n      subtitle,\n      \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n      \n  image {\n    \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n  }\n,\n      \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n\n    })\n  }\n,\n    \n  _type == "homeSlideshowVertical" => {\n    title,\n    headingRichText[]{\n      ...,\n      _type == "block" => {\n        ...,\n        \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n      },\n      _type == "image" => {\n        \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n        "caption": caption\n      }\n    },\n    \n  description[]{\n    ...,\n    _type == "block" => {\n      ...,\n      \n  markDefs[]{\n    ...,\n    \n  ...customLink{\n    openInNewTab,\n    "href": select(\n      type == "internal" => internal->slug.current,\n      type == "external" => external,\n      "#"\n    ),\n  }\n\n  }\n\n    },\n    _type == "image" => {\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n,\n      "caption": caption\n    }\n  }\n,\n    \n  buttons[]{\n    text,\n    variant,\n    _key,\n    _type,\n    "openInNewTab": url.openInNewTab,\n    "href": select(\n      url.type == "internal" => url.internal->slug.current,\n      url.type == "external" => url.external,\n      url.href\n    ),\n  }\n,\n    "leftColumnImages": array::compact(leftColumnImages[]{\n      _key,\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n    }),\n    "rightColumnImages": array::compact(rightColumnImages[]{\n      _key,\n      \n  "id": asset._ref,\n  "preview": asset->metadata.lqip,\n  hotspot {\n    x,\n    y\n  },\n  crop {\n    bottom,\n    left,\n    right,\n    top\n  },\n  "alt": alt\n\n    })\n  }\n\n  }\n\n  }\n':
       | DgfHistoryPageQueryResult
       | LfdHistoryPageQueryResult;
