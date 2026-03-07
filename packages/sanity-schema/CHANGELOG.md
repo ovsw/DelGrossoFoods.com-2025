@@ -1,5 +1,11 @@
 # @workspace/sanity-schema
 
+## 1.22.1
+
+### Patch Changes
+
+- [#139](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/139) [`c3fe9d5`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/c3fe9d5f82c0deaa0ce89c62074dc65f13c0082e) Thanks [@ovsw](https://github.com/ovsw)! - Add a reusable campaign landing page block to the Sanity page builder and restore page creation from the Studio Pages desk view.
+
 ## 1.22.0
 
 ### Minor Changes
