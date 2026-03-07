@@ -305,16 +305,28 @@ export function createPageTemplate() {
       schemaType: page.type,
       id: getTemplateName(page.type),
       title: `${page.title} with slug`,
-      value: (props: { slug?: string }) => {
+      value: (props: { slug?: string; siteId?: string }) => {
         return {
           ...(props.slug
             ? { slug: { current: props.slug, _type: "slug" } }
+            : {}),
+          ...(props.siteId
+            ? {
+                site: {
+                  _type: "reference",
+                  _ref: props.siteId,
+                },
+              }
             : {}),
         };
       },
       parameters: [
         {
           name: "slug",
+          type: "string",
+        },
+        {
+          name: "siteId",
           type: "string",
         },
       ],

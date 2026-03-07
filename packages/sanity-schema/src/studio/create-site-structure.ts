@@ -24,7 +24,7 @@ import type {
 
 import { resolveSiteDocumentId, type SiteCode } from "../site";
 import type { SchemaType, SingletonType } from "../schemaTypes";
-import { getTitleCase } from "../utils/helper";
+import { getTemplateName, getTitleCase } from "../utils/helper";
 
 type Icon = ComponentType | undefined;
 
@@ -181,8 +181,18 @@ const createCollectionListItem = (
       .child(
         S.documentList()
           .title(title)
+          .schemaType(config.type)
           .filter("_type == $type && site._ref == $siteId")
-          .params({ type: config.type, siteId: siteDocumentId }),
+          .params({ type: config.type, siteId: siteDocumentId })
+          .initialValueTemplates(
+            config.type === "page"
+              ? [
+                  S.initialValueTemplateItem(getTemplateName(config.type), {
+                    siteId: siteDocumentId,
+                  }),
+                ]
+              : [],
+          ),
       );
   }
 
