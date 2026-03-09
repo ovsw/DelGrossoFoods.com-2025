@@ -1,5 +1,17 @@
 # web
 
+## 1.22.4
+
+### Patch Changes
+
+- [#145](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/145) [`96ae589`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/96ae5894987b98ea23b6d77bcbd0b798a7f7f598) Thanks [@ovsw](https://github.com/ovsw)! - Improve feature block cover-image desktop sizing so cover images can stretch with taller text content while preserving the existing mobile and fit-image behavior.
+
+  Fix feature block Sanity image interactions after the layout update so low-quality previews upgrade to the full image correctly and image click-to-edit continues to work in Presentation mode.
+
+- Updated dependencies []:
+  - @workspace/ui@1.22.4
+  - @workspace/sanity-config@1.22.2
+
 ## 1.22.3
 
 ### Patch Changes
