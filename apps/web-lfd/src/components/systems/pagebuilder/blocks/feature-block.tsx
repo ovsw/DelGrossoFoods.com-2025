@@ -36,7 +36,8 @@ export function FeatureBlock({
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
   const cleanedImageFit = stegaClean(imageFit ?? "cover") as "cover" | "fit";
   const isImageFit = cleanedImageFit === "fit";
-  const imageObjectFitClass = isImageFit ? "object-contain" : "object-cover";
+  const shouldStretchCoverDesktop = Boolean(image) && !isImageFit;
+  const coverImageRadiusClass = "rounded-2xl";
 
   // Create data attribute for click-to-edit functionality
   // The path needs to include the block key since this is within a page builder
@@ -53,10 +54,15 @@ export function FeatureBlock({
       : undefined;
 
   const imageFrameClass = cn(
-    "relative aspect-[4/3] ",
+    "relative aspect-[4/3]",
+    shouldStretchCoverDesktop &&
+      "lg:h-full lg:min-h-[22rem] lg:aspect-auto xl:min-h-[24rem] 2xl:min-h-[26rem]",
     isImageFit
       ? null
-      : "rounded-2xl shadow-2xl ring-1 ring-brand-green-text/20",
+      : cn(
+          "overflow-hidden shadow-2xl ring-1 ring-brand-green-text/20",
+          coverImageRadiusClass,
+        ),
   );
 
   return (
@@ -94,7 +100,14 @@ export function FeatureBlock({
         <SurfaceShineOverlay className="rounded-none min-[1440px]:rounded-2xl min-[1536px]:rounded-3xl" />
 
         <div className="2xl:max-w-8xl container mx-auto px-4 md:px-8 lg:max-w-7xl">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center lg:gap-y-0">
+          <div
+            className={cn(
+              "grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:gap-y-0",
+              shouldStretchCoverDesktop
+                ? "lg:items-stretch"
+                : "lg:items-center",
+            )}
+          >
             {/* Left side content */}
             <div className="space-y-8 lg:pr-8">
               {badge && (
@@ -115,8 +128,15 @@ export function FeatureBlock({
               )}
             </div>
             {/* Right side image */}
-            <div className="lg:pl-8 max-h-120 lg:aspect-[4/3]">
-              <div className={imageFrameClass}>
+            <div
+              className={cn(
+                "max-h-120 lg:pl-8",
+                shouldStretchCoverDesktop
+                  ? "lg:self-stretch lg:h-full lg:max-h-none lg:aspect-auto"
+                  : "lg:aspect-[4/3]",
+              )}
+            >
+              <div className={imageFrameClass} data-sanity={imageDataAttribute}>
                 {image && (
                   <>
                     <SanityImage
@@ -125,14 +145,19 @@ export function FeatureBlock({
                       height={400}
                       alt={stegaClean(typeof title === "string" ? title : "")}
                       className={cn(
-                        "w-full rounded-3xl h-full max-h-120 lg:max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] ",
-                        // "size-[180%] max-w-none rounded-3xl z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] lg:left-[50%] lg:transform lg:-translate-x-[50%]",
-                        imageObjectFitClass,
+                        isImageFit
+                          ? "w-full h-full max-h-120 lg:max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] object-contain"
+                          : "w-full h-full max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] lg:max-h-none object-cover",
+                        !isImageFit && coverImageRadiusClass,
                       )}
-                      data-sanity={imageDataAttribute}
                     />
                     {!isImageFit ? (
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-brand-green-text/10 to-transparent z-[-1]"></div>
+                      <div
+                        className={cn(
+                          "absolute inset-0 bg-gradient-to-tr from-brand-green-text/10 to-transparent z-[-1]",
+                          coverImageRadiusClass,
+                        )}
+                      />
                     ) : null}
                   </>
                 )}
