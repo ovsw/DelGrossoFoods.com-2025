@@ -70,13 +70,13 @@ export function CampaignHeroBlock({
         </div>
 
         {image ? (
-          <div className="overflow-hidden rounded-3xl border border-brand-green/10 bg-muted shadow-sm">
+          <div className="overflow-hidden rounded-3xl border border-brand-green/10 bg-muted shadow-sm md:aspect-video">
             <SanityImage
               image={image}
               width={1600}
               height={900}
               alt={stegaClean(image.alt ?? title ?? "")}
-              className="h-auto w-full object-cover"
+              className="h-auto w-full object-cover md:h-full"
               data-sanity={imageDataAttribute}
             />
           </div>
