@@ -1,5 +1,15 @@
 # web
 
+## 1.22.3
+
+### Patch Changes
+
+- [#143](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/143) [`1e2cb2f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/1e2cb2fc59e61727eaad3cf87f0334420d5b1754) Thanks [@ovsw](https://github.com/ovsw)! - Improve block styling consistency and icon rendering across both web apps, and simplify the long-form schema preview metadata in Studio.
+
+- Updated dependencies []:
+  - @workspace/sanity-config@1.22.2
+  - @workspace/ui@1.22.3
+
 ## 1.22.2
 
 ### Patch Changes
