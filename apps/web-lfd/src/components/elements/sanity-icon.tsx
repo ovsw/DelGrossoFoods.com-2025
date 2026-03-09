@@ -21,8 +21,15 @@ export const SanityIcon = memo(function SanityIconUnmemorized({
 }: IconProps) {
   const alt = typeof icon === "object" && icon?.name ? icon?.name : altText;
   const svg = typeof icon === "object" ? icon?.svg : icon;
+  const normalizedSvg = svg?.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
+    const normalizedAttrs = attrs
+      .replace(/\s(width|height)=(["']).*?\2/gi, "")
+      .trim();
 
-  if (!svg) {
+    return `<svg ${normalizedAttrs} width="100%" height="100%">`;
+  });
+
+  if (!normalizedSvg) {
     return null;
   }
 
@@ -30,10 +37,10 @@ export const SanityIcon = memo(function SanityIconUnmemorized({
     <span
       {...props}
       className={cn(
-        "flex size-12 items-center justify-center sanity-icon",
+        "flex size-12 items-center justify-center sanity-icon [&_svg]:size-full [&_svg]:max-h-none [&_svg]:max-w-none",
         className,
       )}
-      dangerouslySetInnerHTML={{ __html: svg }}
+      dangerouslySetInnerHTML={{ __html: normalizedSvg }}
       aria-label={alt}
       title={alt}
     />

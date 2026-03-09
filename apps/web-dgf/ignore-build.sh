@@ -2,6 +2,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+env_name="${VERCEL_ENV:-}"
+
 # Gather context from Vercel (with local fallbacks for testing)
 msg="${VERCEL_GIT_COMMIT_MESSAGE:-$(git log -1 --pretty=%B 2>/dev/null || echo '')}"
 ref="${VERCEL_GIT_COMMIT_REF:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')}"
@@ -9,8 +11,16 @@ author_login="${VERCEL_GIT_COMMIT_AUTHOR_LOGIN:-}"
 author_name="${VERCEL_GIT_COMMIT_AUTHOR_NAME:-}"
 author="${author_login:-$author_name}"
 
+echo "VERCEL_ENV=$env_name"
+echo "VERCEL_GIT_COMMIT_REF=$ref"
+
+if [[ "$env_name" != "preview" ]]; then
+  echo "Build can proceed: non-preview deployment."
+  exit 1
+fi
+
 if [[ "$ref" == "feat/multisite-dgf-lfd" ]]; then
-  echo "🛑 Skipping build: branch feat/multisite-dgf-lfd deploys via dedicated project."
+  echo "Skipping build: branch feat/multisite-dgf-lfd deploys via dedicated project."
   exit 0
 fi
 
@@ -41,10 +51,10 @@ is_changesets_bump() {
 }
 
 if is_changesets_bump; then
-  echo "🛑 Skipping build: Changesets version bump (env=$VERCEL_ENV, ref=$ref)."
+  echo "Skipping build: Changesets version bump (env=$env_name, ref=$ref)."
   # Per Vercel docs: exit 0 cancels the build; exit 1 continues
   exit 0
 fi
 
-echo "✅ Build can proceed."
+echo "Build can proceed."
 exit 1

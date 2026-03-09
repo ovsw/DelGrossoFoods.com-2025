@@ -16,8 +16,8 @@ function FeatureCard({ card }: FeatureCardProps) {
   const { icon, title, richText } = card ?? {};
   return (
     <div className="rounded-3xl bg-accent p-8 md:min-h-[300px] md:p-8">
-      <span className="mb-9 flex w-fit p-3 items-center justify-center rounded-full bg-background drop-shadow-xl">
-        <SanityIcon icon={icon} />
+      <span className="mb-9 flex w-fit items-center justify-center rounded-full bg-brand-green p-4 text-brand-green-text">
+        <SanityIcon icon={icon} className="size-14 text-[2rem] text-inherit" />
       </span>
 
       <div>
@@ -49,7 +49,7 @@ export function FeatureCardsWithIconBlock({
       spacing={spacing}
       isPageTop={isPageTop}
       eyebrow={<Eyebrow text={eyebrow ?? ""} />}
-      title={<h2 className="text-3xl font-semibold md:text-5xl">{title}</h2>}
+      title={<h2 className="heading-section">{title}</h2>}
       description={
         <RichText
           richText={richText}

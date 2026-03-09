@@ -79,11 +79,7 @@ export function CTABlock({
   const surfaceStyle = CTA_SURFACE_CONFIG[colorKey];
   const hasSurfaceFrame = colorKey !== "none";
   const eyebrowVariant = surfaceStyle.isDark ? "onDark" : "onLight";
-  const headingColor = surfaceStyle.isDark
-    ? "text-th-light-100"
-    : colorKey === "none"
-      ? "text-brand-green"
-      : undefined;
+  const headingColor = "text-[#ffe17c]";
   // Rich text renders via Typography plugin. On dark surfaces, use inverted colors
   // directly via the RichText component; on light surfaces default colors apply.
   const buttonSurface = surfaceStyle.isDark ? "onDark" : undefined;

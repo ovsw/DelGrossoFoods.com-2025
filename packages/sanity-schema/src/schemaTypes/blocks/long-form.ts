@@ -46,11 +46,10 @@ export const longForm = defineType({
   preview: {
     select: {
       title: "title",
-      eyebrow: "eyebrow",
     },
-    prepare: ({ title, eyebrow }) => ({
+    prepare: ({ title }) => ({
       title: title ?? "Untitled long form",
-      subtitle: eyebrow ? `Eyebrow: ${eyebrow}` : "Long Form Content",
+      subtitle: "Long Form",
     }),
   },
 });

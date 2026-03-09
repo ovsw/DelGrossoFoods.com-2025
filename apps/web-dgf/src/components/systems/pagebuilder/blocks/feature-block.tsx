@@ -113,7 +113,7 @@ export function FeatureBlock({
                 <Eyebrow text={badge} className="text-brand-green-text" />
               )}
               {title && (
-                <h2 className="text-3xl font-bold tracking-tight text-brand-green-text md:text-4xl lg:text-5xl">
+                <h2 className="text-3xl font-bold tracking-tight text-[#ffe17c] md:text-4xl lg:text-5xl">
                   {title}
                 </h2>
               )}

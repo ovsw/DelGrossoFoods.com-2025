@@ -59,10 +59,8 @@ export function CampaignHeroBlock({
           ) : null}
           <HeadingTag
             className={cn(
-              "mx-auto max-w-4xl text-pretty font-semibold tracking-tight text-foreground",
-              isPageTop
-                ? "text-4xl sm:text-5xl lg:text-6xl"
-                : "text-3xl sm:text-4xl lg:text-5xl",
+              "heading-section mx-auto max-w-4xl",
+              isPageTop ? "lg:text-6xl" : null,
             )}
           >
             {title}
@@ -70,13 +68,13 @@ export function CampaignHeroBlock({
         </div>
 
         {image ? (
-          <div className="overflow-hidden rounded-3xl border border-brand-green/10 bg-muted shadow-sm">
+          <div className="overflow-hidden rounded-3xl border border-brand-green/10 bg-muted shadow-sm md:aspect-video">
             <SanityImage
               image={image}
               width={1600}
               height={900}
               alt={stegaClean(image.alt ?? title ?? "")}
-              className="h-auto w-full object-cover"
+              className="h-auto w-full object-cover md:h-full"
               data-sanity={imageDataAttribute}
             />
           </div>
