@@ -1,6 +1,5 @@
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
-import { cn } from "@workspace/ui/lib/utils";
 
 import { RichText } from "@/components/elements/rich-text";
 
@@ -35,14 +34,7 @@ export function LongFormBlock({
           <Eyebrow text={eyebrow} className="text-brand-green" />
         ) : null}
         {title ? (
-          <HeadingTag
-            className={cn(
-              "mt-3 font-semibold tracking-tight text-pretty text-foreground",
-              isPageTop ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl",
-            )}
-          >
-            {title}
-          </HeadingTag>
+          <HeadingTag className="heading-section">{title}</HeadingTag>
         ) : null}
         {intro?.length ? (
           <RichText richText={intro} className="mt-6 prose-lg" />

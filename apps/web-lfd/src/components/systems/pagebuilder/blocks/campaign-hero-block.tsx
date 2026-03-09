@@ -59,10 +59,8 @@ export function CampaignHeroBlock({
           ) : null}
           <HeadingTag
             className={cn(
-              "mx-auto max-w-4xl text-pretty font-semibold tracking-tight text-foreground",
-              isPageTop
-                ? "text-4xl sm:text-5xl lg:text-6xl"
-                : "text-3xl sm:text-4xl lg:text-5xl",
+              "heading-section mx-auto max-w-4xl",
+              isPageTop ? "lg:text-6xl" : null,
             )}
           >
             {title}
