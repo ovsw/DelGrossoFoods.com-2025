@@ -28,20 +28,38 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/news",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/news/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/history/:path+",
+        destination: "/history",
+        permanent: true,
+      },
+    ];
+  },
+  // This is needed to support the color scheme client hint
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Accept-CH", value: "Sec-CH-Prefers-Color-Scheme" },
+          { key: "Critical-CH", value: "Sec-CH-Prefers-Color-Scheme" },
+          { key: "Vary", value: "Sec-CH-Prefers-Color-Scheme" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
-
-// This is needed to support the color scheme client hint
-export async function headers() {
-  return [
-    {
-      source: "/:path*",
-      headers: [
-        { key: "Accept-CH", value: "Sec-CH-Prefers-Color-Scheme" },
-        { key: "Critical-CH", value: "Sec-CH-Prefers-Color-Scheme" },
-        { key: "Vary", value: "Sec-CH-Prefers-Color-Scheme" },
-      ],
-    },
-  ];
-}
