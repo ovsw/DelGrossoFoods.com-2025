@@ -164,7 +164,7 @@ function FiltersForm({
           <div className="relative">
             <select
               id={`${idPrefix}-category-select`}
-              className="w-full appearance-none rounded-md border border-input bg-white/70 px-3 py-2 text-sm ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="filter-control-surface w-full appearance-none rounded-md border px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               value={category}
               onChange={(e) => setCategory(e.currentTarget.value || "all")}
               aria-label="Category"
