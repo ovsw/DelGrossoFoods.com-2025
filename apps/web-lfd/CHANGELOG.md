@@ -1,5 +1,17 @@
 # web
 
+## 1.22.5
+
+### Patch Changes
+
+- [#147](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/147) [`e0d5065`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/e0d50658e32e5b9ca89c0df2df68627fe2101039) Thanks [@ovsw](https://github.com/ovsw)! - Add hard 301 redirects for legacy product, recipe, and shop pages so historical DelGrosso Foods URLs continue resolving after the Next.js migration.
+
+  Move the redirect lists into dedicated modules with shared helpers, and wire them into each app's `next.config.ts` alongside the existing redirects and headers configuration.
+
+- Updated dependencies []:
+  - @workspace/ui@1.22.5
+  - @workspace/sanity-config@1.22.2
+
 ## 1.22.4
 
 ### Patch Changes
