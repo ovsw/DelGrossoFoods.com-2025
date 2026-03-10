@@ -1,5 +1,7 @@
-// Dummy change to force Vercel to see a new commit and trigger a fresh build.
 import type { NextConfig } from "next";
+
+import { getLegacyRecipeRedirects } from "./src/lib/redirects/legacy-recipe-redirects";
+import { getLegacyShopOnlineRedirects } from "./src/lib/redirects/legacy-shop-online-redirects";
 
 const nextConfig: NextConfig = {
   transpilePackages: [
@@ -29,20 +31,40 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      ...getLegacyRecipeRedirects(),
+      ...getLegacyShopOnlineRedirects(),
+      {
+        source: "/news",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/news/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/history/:path+",
+        destination: "/history",
+        permanent: true,
+      },
+    ];
+  },
+  // This is needed to support the color scheme client hint
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Accept-CH", value: "Sec-CH-Prefers-Color-Scheme" },
+          { key: "Critical-CH", value: "Sec-CH-Prefers-Color-Scheme" },
+          { key: "Vary", value: "Sec-CH-Prefers-Color-Scheme" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
-
-// This is needed to support the color scheme client hint
-export async function headers() {
-  return [
-    {
-      source: "/:path*",
-      headers: [
-        { key: "Accept-CH", value: "Sec-CH-Prefers-Color-Scheme" },
-        { key: "Critical-CH", value: "Sec-CH-Prefers-Color-Scheme" },
-        { key: "Vary", value: "Sec-CH-Prefers-Color-Scheme" },
-      ],
-    },
-  ];
-}
