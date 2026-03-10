@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 import { getLegacyProductRedirects } from "./src/lib/redirects/legacy-product-redirects";
+import { getLegacyRecipeRedirects } from "./src/lib/redirects/legacy-recipe-redirects";
 import { getLegacyShopOnlineRedirects } from "./src/lib/redirects/legacy-shop-online-redirects";
 
 const nextConfig: NextConfig = {
@@ -34,6 +35,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       ...getLegacyProductRedirects(),
+      ...getLegacyRecipeRedirects(),
       ...getLegacyShopOnlineRedirects(),
       {
         source: "/news",

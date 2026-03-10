@@ -1,13 +1,8 @@
-interface RedirectSpec {
-  readonly source: string;
-  readonly destination: string;
-}
-
-interface NextRedirect {
-  readonly source: string;
-  readonly destination: string;
-  readonly permanent: true;
-}
+import {
+  expandRedirectSpecs,
+  type NextRedirect,
+  type RedirectSpec,
+} from "./shared";
 
 export const legacyShopOnlineRedirectSpec: readonly RedirectSpec[] = [
   { source: "/shop-online", destination: "/store" },
@@ -228,26 +223,6 @@ export const legacyShopOnlineRedirectSpec: readonly RedirectSpec[] = [
   },
 ] as const;
 
-function toPathVariants(source: string): readonly string[] {
-  if (source === "/") return [source] as const;
-
-  const withTrailingSlash = source.endsWith("/") ? source : `${source}/`;
-  const withoutTrailingSlash =
-    withTrailingSlash === "/"
-      ? withTrailingSlash
-      : withTrailingSlash.slice(0, -1);
-
-  return withTrailingSlash === withoutTrailingSlash
-    ? [withTrailingSlash]
-    : [withTrailingSlash, withoutTrailingSlash];
-}
-
 export function getLegacyShopOnlineRedirects(): NextRedirect[] {
-  return legacyShopOnlineRedirectSpec.flatMap(({ source, destination }) =>
-    toPathVariants(source).map((variant) => ({
-      source: variant,
-      destination,
-      permanent: true as const,
-    })),
-  );
+  return expandRedirectSpecs(legacyShopOnlineRedirectSpec);
 }
