@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { getLegacyProductRedirects } from "./src/lib/redirects/legacy-product-redirects";
+
 const nextConfig: NextConfig = {
   transpilePackages: [
     "@workspace/ui",
@@ -30,6 +32,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      ...getLegacyProductRedirects(),
       {
         source: "/news",
         destination: "/",
