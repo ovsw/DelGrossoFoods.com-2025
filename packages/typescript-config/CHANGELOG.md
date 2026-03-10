@@ -1,5 +1,7 @@
 # @workspace/typescript-config
 
+## 1.22.6
+
 ## 1.22.5
 
 ## 1.22.4
