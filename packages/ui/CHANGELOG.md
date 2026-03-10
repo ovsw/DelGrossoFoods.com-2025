@@ -1,5 +1,11 @@
 # @workspace/ui
 
+## 1.22.6
+
+### Patch Changes
+
+- [#149](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/149) [`b828839`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/b828839f59d0df9ae5341665dc2ae38c2a5dd362) Thanks [@ovsw](https://github.com/ovsw)! - Improve contrast for shared listing filter controls and recipe category selects.
+
 ## 1.22.5
 
 ## 1.22.4
