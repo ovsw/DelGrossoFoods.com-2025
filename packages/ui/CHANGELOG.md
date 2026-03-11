@@ -1,5 +1,7 @@
 # @workspace/ui
 
+## 1.22.7
+
 ## 1.22.6
 
 ### Patch Changes

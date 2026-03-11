@@ -1,5 +1,11 @@
 # @workspace/sanity-schema
 
+## 1.22.3
+
+### Patch Changes
+
+- [#151](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/151) [`82f4df0`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/82f4df0a6c6769cf7643679dbd97ad99cced0c0c) Thanks [@ovsw](https://github.com/ovsw)! - Tighten site-scoped page slug validation so Studio surfaces duplicate URL conflicts correctly.
+
 ## 1.22.2
 
 ### Patch Changes
