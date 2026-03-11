@@ -28,14 +28,14 @@ export function ProductPurchasePanel({
   const quantityFieldId = React.useId();
 
   const foxyConfig = React.useMemo(
-    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN),
+    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL),
     [],
   );
 
   React.useEffect(() => {
     if (!foxyConfig) {
       console.error(
-        "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is not set; add-to-cart form disabled.",
+        "Foxycart: NEXT_PUBLIC_FOXY_STORE_URL is not set; add-to-cart form disabled.",
       );
     }
   }, [foxyConfig]);

@@ -99,7 +99,7 @@ function addHiddenInput(form: HTMLFormElement, name: string, value: unknown) {
 
 export function FoxycartProvider() {
   const foxyConfig = React.useMemo(
-    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN),
+    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL),
     [],
   );
   // Using global announce helper from lib/a11y/announce
@@ -260,7 +260,7 @@ export function FoxycartProvider() {
       // Env checks
       if (!foxyConfig) {
         const errorMessage =
-          "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is not set; skipping add-to-cart.";
+          "Foxycart: NEXT_PUBLIC_FOXY_STORE_URL is not set; skipping add-to-cart.";
         console.error(errorMessage);
         announce(errorMessage, "assertive");
         return;
