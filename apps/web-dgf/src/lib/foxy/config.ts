@@ -40,9 +40,9 @@ export interface FoxyConfig {
 }
 
 export function resolveFoxyConfig(
-  rawDomain: string | undefined,
+  rawStoreUrl: string | undefined,
 ): FoxyConfig | null {
-  const hostname = extractHostname(rawDomain);
+  const hostname = extractHostname(rawStoreUrl);
   if (!hostname) return null;
 
   const loaderSlug = hostname.endsWith(FOXY_DOMAIN_SUFFIX)

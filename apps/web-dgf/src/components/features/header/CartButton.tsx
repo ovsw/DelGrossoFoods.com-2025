@@ -21,7 +21,7 @@ export function CartButton({
   ...props
 }: CartButtonProps & { ariaLabel?: string }): JSX.Element {
   const foxyConfig = React.useMemo(
-    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN),
+    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL),
     [],
   );
 
@@ -88,7 +88,7 @@ export function CartButton({
       aria-label={ariaLabel ?? "Open cart"}
       onClick={() =>
         console.error(
-          "Foxycart: NEXT_PUBLIC_FOXY_DOMAIN is missing or invalid; cannot open cart.",
+          "Foxycart: NEXT_PUBLIC_FOXY_STORE_URL is missing or invalid; cannot open cart.",
         )
       }
       {...props}

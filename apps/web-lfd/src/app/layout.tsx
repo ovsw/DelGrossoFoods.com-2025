@@ -46,7 +46,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const foxyConfig = resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_DOMAIN);
+  const foxyConfig = resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL);
 
   return (
     <html
