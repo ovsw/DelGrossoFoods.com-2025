@@ -1,5 +1,12 @@
 # studio
 
+## 1.22.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @workspace/sanity-schema@1.22.3
+
 ## 1.22.7
 
 ### Patch Changes

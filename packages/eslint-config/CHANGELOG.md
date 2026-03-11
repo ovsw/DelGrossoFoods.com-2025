@@ -1,5 +1,7 @@
 # @workspace/eslint-config
 
+## 1.22.8
+
 ## 1.22.7
 
 ## 1.22.6
