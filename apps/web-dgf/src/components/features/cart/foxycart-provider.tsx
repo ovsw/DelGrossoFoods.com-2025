@@ -4,19 +4,6 @@ import { stegaClean } from "next-sanity";
 import * as React from "react";
 
 import { announce } from "@/lib/a11y/announce";
-import { resolveFoxyConfig } from "@/lib/foxy/config";
-
-type AddToCartDetail = {
-  id?: string | null;
-  sku?: string | null;
-  name?: string | null;
-  quantity?: number | null;
-  unitPrice?: number | null;
-  packagingLabel?: string | null;
-  weightText?: string | null;
-  shippingType?: string | null;
-  weight?: number | null;
-};
 
 type SidecartSuccessDetail = {
   error?: boolean | null;
@@ -30,12 +17,6 @@ type SidecartSuccessDetail = {
   quantity?: number | string | null;
   total_item_count?: number | string | null;
 };
-
-function clampQuantity(q: unknown): number {
-  const n = typeof q === "number" ? q : Number(q);
-  if (!Number.isFinite(n)) return 1;
-  return Math.min(99, Math.max(1, Math.floor(n)));
-}
 
 function tryParseQuantity(value: unknown): number | null {
   if (value == null) return null;
@@ -57,39 +38,12 @@ function sanitizeText(value: unknown): string {
   return value.trim();
 }
 
-function formatPriceUSD(value: unknown): string | null {
-  const n = typeof value === "number" ? value : Number(value);
-  if (!Number.isFinite(n)) return null;
-  // Normalize to 2 decimals to satisfy Foxy expectations
-  return (Math.round(n * 100) / 100).toFixed(2);
-}
-
-function addHiddenInput(form: HTMLFormElement, name: string, value: unknown) {
-  if (value == null) return;
-  const str = String(value);
-  if (str.length === 0) return;
-  const input = document.createElement("input");
-  input.type = "hidden";
-  input.name = name;
-  input.value = str;
-  form.appendChild(input);
-}
-
 export function FoxycartProvider() {
-  const foxyConfig = React.useMemo(
-    () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL),
-    [],
-  );
-  // Using global announce helper from lib/a11y/announce
-
   // Temporal dedupe state to prevent duplicate announcements
   const lastAnnouncementRef = React.useRef<{
     message: string;
     timestamp: number;
   } | null>(null);
-
-  // FoxyCart loader readiness state
-  const [isLoaderReady, setIsLoaderReady] = React.useState(false);
 
   // Helper to check and update announcement dedupe
   const shouldAnnounce = React.useCallback(
@@ -110,46 +64,6 @@ export function FoxycartProvider() {
     },
     [],
   );
-
-  // Listen for FoxyCart loader readiness
-  React.useEffect(() => {
-    const checkReady = () => {
-      try {
-        // Type definition for FoxyCart global
-        interface FoxyCartGlobal {
-          client: {
-            on(event: string, callback: () => void): void;
-            ready: boolean;
-          };
-        }
-
-        interface WindowWithFoxyCart extends Window {
-          FC?: FoxyCartGlobal;
-        }
-
-        const windowWithFC = window as WindowWithFoxyCart;
-        if (windowWithFC.FC?.client) {
-          windowWithFC.FC.client.on("ready.done", () => {
-            setIsLoaderReady(true);
-          });
-          // Also check if already ready
-          if (windowWithFC.FC.client.ready) {
-            setIsLoaderReady(true);
-          }
-        }
-      } catch {
-        // FoxyCart not available yet, will retry
-      }
-    };
-
-    // Check immediately
-    checkReady();
-
-    // Also check after a short delay to catch late loading
-    const timer = setTimeout(checkReady, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   React.useEffect(() => {
     const successEvents = [
@@ -227,147 +141,7 @@ export function FoxycartProvider() {
         );
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  React.useEffect(() => {
-    function onAddToCart(evt: Event) {
-      const e = evt as CustomEvent<AddToCartDetail>;
-      const detail = e.detail || {};
-
-      // Env checks
-      if (!foxyConfig) {
-        const errorMessage =
-          "Foxycart: NEXT_PUBLIC_FOXY_STORE_URL is not set; skipping add-to-cart.";
-        console.error(errorMessage);
-        announce(errorMessage, "assertive");
-        return;
-      }
-
-      const { cartDomain } = foxyConfig;
-
-      // Required fields
-      const sku = detail.sku ?? null;
-      const price = formatPriceUSD(detail.unitPrice);
-      const quantity = clampQuantity(detail.quantity ?? 1);
-
-      if (!sku || typeof sku !== "string" || sku.trim().length === 0) {
-        const errorMessage =
-          "Foxycart: Missing SKU for product; cannot add to cart.";
-        console.error(errorMessage);
-        announce(errorMessage, "assertive");
-        return;
-      }
-
-      if (price == null) {
-        const errorMessage =
-          "Foxycart: Invalid price for product; cannot add to cart.";
-        console.error(errorMessage);
-        announce(errorMessage, "assertive");
-        return;
-      }
-
-      // Optional fields
-      const rawName = detail.name ?? "";
-      const cleanedName = stegaClean(rawName);
-      const name =
-        typeof cleanedName === "string" && cleanedName.trim().length > 0
-          ? cleanedName.trim()
-          : String(rawName).trim();
-
-      // Build form
-      const form = document.createElement("form");
-      form.action = `https://${cartDomain}/cart`;
-      form.method = "post";
-      form.className = "foxycart"; // Foxy loader intercepts this
-      form.style.display = "none";
-
-      addHiddenInput(form, "name", name || sku);
-      addHiddenInput(form, "price", price);
-      addHiddenInput(form, "quantity", quantity);
-      addHiddenInput(form, "code", sku);
-
-      if (typeof detail.weight === "number" && !Number.isNaN(detail.weight)) {
-        addHiddenInput(form, "weight", detail.weight);
-      }
-
-      if (detail.shippingType) {
-        const rawShipping = detail.shippingType;
-        const cleanedShipping = stegaClean(rawShipping);
-        const shippingType =
-          typeof cleanedShipping === "string" &&
-          cleanedShipping.trim().length > 0
-            ? cleanedShipping.trim()
-            : rawShipping.trim();
-        if (shippingType) {
-          addHiddenInput(form, "shipping_type", shippingType);
-        }
-      }
-
-      // Submit via DOM so loader can intercept and open Sidecart
-      try {
-        // Announce intention immediately for SR users
-        const readableName = name || sku;
-        const addingMessage = `Adding ${quantity} ${readableName}${quantity > 1 ? "s" : ""} to cart`;
-
-        if (shouldAnnounce(addingMessage)) {
-          announce(addingMessage, "polite");
-        }
-        document.body.appendChild(form);
-
-        // Wait for FoxyCart loader to be ready before submitting
-        const submitForm = () => {
-          if ("requestSubmit" in form) {
-            (
-              form as HTMLFormElement & { requestSubmit: () => void }
-            ).requestSubmit();
-          } else {
-            const ev = new Event("submit", { bubbles: true, cancelable: true });
-            if (!(form as HTMLFormElement).dispatchEvent(ev)) return;
-            (form as HTMLFormElement).submit();
-          }
-        };
-
-        if (isLoaderReady) {
-          // Loader is ready, submit immediately
-          submitForm();
-        } else {
-          // Wait for loader to be ready
-          const readyCheck = () => {
-            if (isLoaderReady) {
-              submitForm();
-            } else {
-              setTimeout(readyCheck, 50);
-            }
-          };
-          setTimeout(readyCheck, 50);
-        }
-      } catch (err) {
-        console.error("Foxycart: Form submission failed", err);
-        const errorMessage = "Sorry, could not add to cart";
-        if (shouldAnnounce(errorMessage)) {
-          announce(errorMessage, "assertive");
-        }
-      } finally {
-        // Cleanup asap
-        if (form.parentNode) {
-          form.remove();
-        }
-      }
-    }
-
-    document.addEventListener(
-      "product:add-to-cart",
-      onAddToCart as EventListener,
-    );
-    return () => {
-      document.removeEventListener(
-        "product:add-to-cart",
-        onAddToCart as EventListener,
-      );
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [foxyConfig]);
+  }, [shouldAnnounce]);
 
   return null;
 }

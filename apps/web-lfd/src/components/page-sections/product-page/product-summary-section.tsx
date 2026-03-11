@@ -15,6 +15,14 @@ interface ProductSummarySectionProps {
   readonly priceText: string | null;
   readonly weightText: string | null;
   readonly shippingText: string | null;
+  readonly signedCart: {
+    readonly action: string;
+    readonly quantityInputName: string;
+    readonly staticInputs: readonly {
+      readonly name: string;
+      readonly value: string;
+    }[];
+  } | null;
 }
 
 export function ProductSummarySection({
@@ -23,6 +31,7 @@ export function ProductSummarySection({
   priceText,
   weightText,
   shippingText,
+  signedCart,
 }: ProductSummarySectionProps) {
   const packSizeAttribute = createPresentationDataAttribute({
     documentId: product._id,
@@ -122,7 +131,11 @@ export function ProductSummarySection({
           </div>
         </div>
 
-        <ProductPurchasePanel product={product} priceText={priceText} />
+        <ProductPurchasePanel
+          product={product}
+          priceText={priceText}
+          signedCart={signedCart}
+        />
       </div>
     </SectionShell>
   );

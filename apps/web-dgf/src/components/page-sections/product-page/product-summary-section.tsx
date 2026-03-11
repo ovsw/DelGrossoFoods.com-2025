@@ -23,6 +23,14 @@ interface ProductSummarySectionProps {
   readonly priceText: string | null;
   readonly weightText: string | null;
   readonly shippingText: string | null;
+  readonly signedCart: {
+    readonly action: string;
+    readonly quantityInputName: string;
+    readonly staticInputs: readonly {
+      readonly name: string;
+      readonly value: string;
+    }[];
+  } | null;
   readonly premiumSauceAuthor?: PremiumSauceAuthor | null;
 }
 
@@ -32,6 +40,7 @@ export function ProductSummarySection({
   priceText,
   weightText,
   shippingText,
+  signedCart,
   premiumSauceAuthor,
 }: ProductSummarySectionProps) {
   const authorName = premiumSauceAuthor?.authorName ?? "";
@@ -184,7 +193,11 @@ export function ProductSummarySection({
           </div>
         </div>
 
-        <ProductPurchasePanel product={product} priceText={priceText} />
+        <ProductPurchasePanel
+          product={product}
+          priceText={priceText}
+          signedCart={signedCart}
+        />
       </div>
     </SectionShell>
   );

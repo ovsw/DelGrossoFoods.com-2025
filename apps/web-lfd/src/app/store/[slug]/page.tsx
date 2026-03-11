@@ -13,6 +13,7 @@ import { ProductHeroSection } from "@/components/page-sections/product-page/prod
 import { ProductRelatedRecipesSection } from "@/components/page-sections/product-page/product-related-recipes-section";
 import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
+import { createSignedCartConfig } from "@/lib/foxy/cart-signing";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductDetailData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
@@ -158,6 +159,11 @@ export default async function ProductDetailPage({
   const weightText = formatWeight(
     typeof product.weight === "number" ? product.weight : null,
   );
+  const signedCart = createSignedCartConfig(
+    product,
+    process.env.NEXT_PUBLIC_FOXY_STORE_URL,
+    process.env.FOXY_CART_SIGNING_KEY,
+  );
   const shippingKey = cleanForLogic(
     product.shippingType,
   ) as keyof typeof shippingCategoryCopy;
@@ -191,6 +197,7 @@ export default async function ProductDetailPage({
         priceText={priceText}
         weightText={weightText}
         shippingText={shippingText}
+        signedCart={signedCart}
       />
 
       {associatedSauces.length > 0 ? (

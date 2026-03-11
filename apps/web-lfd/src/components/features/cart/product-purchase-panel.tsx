@@ -12,11 +12,20 @@ import type { ProductDetailData } from "@/types";
 interface ProductPurchasePanelProps {
   readonly product: ProductDetailData;
   readonly priceText: string | null;
+  readonly signedCart: {
+    readonly action: string;
+    readonly quantityInputName: string;
+    readonly staticInputs: readonly {
+      readonly name: string;
+      readonly value: string;
+    }[];
+  } | null;
 }
 
 export function ProductPurchasePanel({
   product,
   priceText,
+  signedCart,
 }: ProductPurchasePanelProps) {
   const [quantity, setQuantity] = React.useState<number>(1);
   const unitPrice =
@@ -48,50 +57,8 @@ export function ProductPurchasePanel({
     return raw.trim();
   }, [product.sku]);
 
-  const productNameForCart = React.useMemo(() => {
-    const raw = product.name ?? "";
-    const cleaned = stegaClean(raw);
-    if (typeof cleaned === "string" && cleaned.trim().length > 0) {
-      return cleaned.trim();
-    }
-    if (typeof raw === "string" && raw.trim().length > 0) {
-      return raw.trim();
-    }
-    return "";
-  }, [product.name]);
-
-  const priceValue = React.useMemo(() => {
-    if (unitPrice == null) {
-      return null;
-    }
-    return (Math.round(unitPrice * 100) / 100).toFixed(2);
-  }, [unitPrice]);
-
-  const weightValue = React.useMemo(() => {
-    if (typeof product.weight !== "number" || Number.isNaN(product.weight)) {
-      return null;
-    }
-    return String(product.weight);
-  }, [product.weight]);
-
-  const shippingType = React.useMemo(() => {
-    const raw = product.shippingType ?? null;
-    if (!raw) return null;
-    const cleaned = stegaClean(raw);
-    return typeof cleaned === "string" && cleaned.trim().length > 0
-      ? cleaned.trim()
-      : raw.trim();
-  }, [product.shippingType]);
-
-  const cartAction = React.useMemo(() => {
-    if (!foxyConfig) {
-      return undefined;
-    }
-    return `https://${foxyConfig.cartDomain}/cart`;
-  }, [foxyConfig]);
-
   const isAddToCartDisabled =
-    unitPrice == null || sku.length === 0 || !foxyConfig;
+    unitPrice == null || sku.length === 0 || !foxyConfig || !signedCart;
   const priceAttribute = createPresentationDataAttribute({
     documentId: product._id,
     documentType: product._type,
@@ -122,31 +89,23 @@ export function ProductPurchasePanel({
         </h2>
 
         <form
-          action={cartAction}
+          action={signedCart?.action}
           method="post"
           className="mt-4 grid gap-4 foxycart"
           onSubmit={(e) => {
-            if (!foxyConfig) {
+            if (!signedCart) {
               e.preventDefault();
             }
           }}
         >
-          <input
-            type="hidden"
-            name="name"
-            value={(productNameForCart || sku) ?? ""}
-          />
-          {priceValue != null ? (
-            <input type="hidden" name="price" value={priceValue} />
-          ) : null}
-          <input type="hidden" name="code" value={sku} />
-          {weightValue != null ? (
-            <input type="hidden" name="weight" value={weightValue} />
-          ) : null}
-          {shippingType ? (
-            <input type="hidden" name="shipping_type" value={shippingType} />
-          ) : null}
-
+          {signedCart?.staticInputs.map((input) => (
+            <input
+              key={input.name}
+              type="hidden"
+              name={input.name}
+              value={input.value}
+            />
+          ))}
           <div className="flex items-baseline justify-between">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -199,7 +158,7 @@ export function ProductPurchasePanel({
               </Button>
               <input
                 id={quantityFieldId}
-                name="quantity"
+                name={signedCart?.quantityInputName}
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
