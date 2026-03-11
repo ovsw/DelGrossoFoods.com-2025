@@ -17,14 +17,12 @@ import {
 import type { ChangeEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 import {
-  getPublishedId,
   type ObjectFieldProps,
   type SanityDocument,
   set,
   type SlugValue,
   unset,
   useFormValue,
-  useValidationStatus,
 } from "sanity";
 import slugify from "slugify";
 import { styled } from "styled-components";
@@ -69,23 +67,13 @@ const UrlPreview = styled.div`
 
 export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
   const document = useFormValue([]) as SanityDocument;
-  const publishedId = getPublishedId(document?._id);
-  const validation = useValidationStatus(publishedId, document?._type, false);
-  const slugValidationError = useMemo(
-    () =>
-      validation.validation.find(
-        (v) =>
-          (v?.path.includes("current") || v?.path.includes("slug")) &&
-          v.message,
-      ),
-    [validation.validation],
-  );
 
   const {
     inputProps: { onChange, value, readOnly },
     title,
     description,
     schemaType,
+    validation,
   } = props;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -102,6 +90,24 @@ export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
 
     return validateSlugForDocumentType(currentSlug, document._type);
   }, [currentSlug, document?._type]);
+
+  const slugValidationErrors = useMemo(
+    () =>
+      validation
+        .filter(
+          (item) =>
+            (item?.path.includes("current") || item?.path.includes("slug")) &&
+            Boolean(item.message),
+        )
+        .map((item) => item.message)
+        .filter(
+          (message, index, messages): message is string =>
+            Boolean(message) &&
+            !slugFormatErrors.includes(message) &&
+            messages.indexOf(message) === index,
+        ),
+    [slugFormatErrors, validation],
+  );
 
   const handleChange = useCallback(
     (newValue?: string) => {
@@ -344,14 +350,18 @@ export function PathnameFieldComponent(props: ObjectFieldProps<SlugValue>) {
         </Stack>
       )}
 
-      {/* Sanity Validation Error */}
-      {slugValidationError && (
-        <Badge tone="critical" padding={3} radius={2}>
-          <Flex gap={2} align="center">
-            <WarningOutlineIcon />
-            <Text size={1}>{slugValidationError.message}</Text>
-          </Flex>
-        </Badge>
+      {/* Sanity Validation Errors */}
+      {slugValidationErrors.length > 0 && (
+        <Stack space={2}>
+          {slugValidationErrors.map((error) => (
+            <Badge key={error} tone="critical" padding={3} radius={2}>
+              <Flex gap={2} align="center">
+                <WarningOutlineIcon />
+                <Text size={1}>{error}</Text>
+              </Flex>
+            </Badge>
+          ))}
+        </Stack>
       )}
     </Stack>
   );

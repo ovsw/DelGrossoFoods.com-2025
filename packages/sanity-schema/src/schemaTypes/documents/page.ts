@@ -8,6 +8,7 @@ import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
+  createSiteScopedUniqueSlugRule,
   createSiteScopedSlugUniqueness,
 } from "../../utils/slug-validation";
 import { pageBuilderField, siteReferenceField } from "../common";
@@ -74,6 +75,7 @@ export const page = defineType({
           if (!current.trim()) return "A URL slug is required for the page";
           return true;
         }),
+        Rule.custom(createSiteScopedUniqueSlugRule("page")),
         Rule.custom(createSlugValidator({ sanityDocumentType: "page" })),
       ],
     }),
