@@ -445,7 +445,7 @@ export const getProductBySlugQuery = defineQuery(`
     "slug": slug.current,
     sku,
     category,
-    shippingCategory,
+    "shippingType": shippingCategory,
     price,
     weight,
     "description": description[]{

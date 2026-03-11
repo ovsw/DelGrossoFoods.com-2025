@@ -159,7 +159,7 @@ export default async function ProductDetailPage({
     typeof product.weight === "number" ? product.weight : null,
   );
   const shippingKey = cleanForLogic(
-    product.shippingCategory,
+    product.shippingType,
   ) as keyof typeof shippingCategoryCopy;
   const shippingText = shippingCategoryCopy[shippingKey] ?? null;
   const rawSauces = product.sauces ?? [];

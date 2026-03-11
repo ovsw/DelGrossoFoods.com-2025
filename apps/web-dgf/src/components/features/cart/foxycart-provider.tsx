@@ -1,6 +1,5 @@
 "use client";
 
-import { urlFor } from "@workspace/sanity-config/client";
 import { stegaClean } from "next-sanity";
 import * as React from "react";
 
@@ -15,10 +14,8 @@ type AddToCartDetail = {
   unitPrice?: number | null;
   packagingLabel?: string | null;
   weightText?: string | null;
-  slug?: string | null;
-  shippingCategory?: string | null;
+  shippingType?: string | null;
   weight?: number | null;
-  imageAssetId?: string | null;
 };
 
 type SidecartSuccessDetail = {
@@ -65,25 +62,6 @@ function formatPriceUSD(value: unknown): string | null {
   if (!Number.isFinite(n)) return null;
   // Normalize to 2 decimals to satisfy Foxy expectations
   return (Math.round(n * 100) / 100).toFixed(2);
-}
-
-function buildImageUrl(imageAssetId?: string | null): string | null {
-  if (!imageAssetId) return null;
-  try {
-    const id = stegaClean(imageAssetId) as string | null;
-    const ref = (typeof id === "string" ? id.trim() : "").length
-      ? id
-      : imageAssetId;
-    // urlFor accepts a ref via {_ref}
-    const u = urlFor({ _ref: ref as string })
-      .width(600)
-      .height(600)
-      .dpr(2)
-      .url();
-    return typeof u === "string" ? u : null;
-  } catch {
-    return null;
-  }
 }
 
 function addHiddenInput(form: HTMLFormElement, name: string, value: unknown) {
@@ -297,19 +275,6 @@ export function FoxycartProvider() {
           ? cleanedName.trim()
           : String(rawName).trim();
 
-      // Build return URL
-      let returnUrl: string | null = null;
-      try {
-        const origin = window.location.origin;
-        const raw = (detail.slug ?? "").replace(/^\/+|\/+$/g, "");
-        const segs = raw.split("/").filter(Boolean).map(encodeURIComponent);
-        const slug = segs.join("/");
-        const path = slug.startsWith("store/") ? `/${slug}` : `/store/${slug}`;
-        returnUrl = `${origin}${path}`;
-      } catch {
-        returnUrl = null;
-      }
-
       // Build form
       const form = document.createElement("form");
       form.action = `https://${cartDomain}/cart`;
@@ -317,24 +282,26 @@ export function FoxycartProvider() {
       form.className = "foxycart"; // Foxy loader intercepts this
       form.style.display = "none";
 
-      // Required / recommended params
       addHiddenInput(form, "name", name || sku);
       addHiddenInput(form, "price", price);
       addHiddenInput(form, "quantity", quantity);
       addHiddenInput(form, "code", sku);
 
-      // Temporarily omit category to bypass invalid category errors during testing
       if (typeof detail.weight === "number" && !Number.isNaN(detail.weight)) {
         addHiddenInput(form, "weight", detail.weight);
       }
 
-      if (returnUrl) {
-        addHiddenInput(form, "url", returnUrl);
-      }
-
-      const imageUrl = buildImageUrl(detail.imageAssetId ?? null);
-      if (imageUrl) {
-        addHiddenInput(form, "image", imageUrl);
+      if (detail.shippingType) {
+        const rawShipping = detail.shippingType;
+        const cleanedShipping = stegaClean(rawShipping);
+        const shippingType =
+          typeof cleanedShipping === "string" &&
+          cleanedShipping.trim().length > 0
+            ? cleanedShipping.trim()
+            : rawShipping.trim();
+        if (shippingType) {
+          addHiddenInput(form, "shipping_type", shippingType);
+        }
       }
 
       // Submit via DOM so loader can intercept and open Sidecart

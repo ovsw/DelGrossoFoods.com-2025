@@ -1,6 +1,5 @@
 "use client";
 
-import { urlFor } from "@workspace/sanity-config/client";
 import { Button } from "@workspace/ui/components/button";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { stegaClean } from "next-sanity";
@@ -61,39 +60,6 @@ export function ProductPurchasePanel({
     return "";
   }, [product.name]);
 
-  const normalizedSlug = React.useMemo(() => {
-    const rawSlug = product.slug ?? "";
-    const cleaned = stegaClean(rawSlug);
-    const slug =
-      typeof cleaned === "string" && cleaned.trim().length > 0
-        ? cleaned.trim()
-        : rawSlug.trim();
-    if (!slug) {
-      return null;
-    }
-    const trimmed = slug.replace(/^\/+|\/+$/g, "");
-    if (!trimmed) {
-      return null;
-    }
-    return trimmed.startsWith("store/") ? trimmed : `store/${trimmed}`;
-  }, [product.slug]);
-
-  const [productUrl, setProductUrl] = React.useState<string | null>(() =>
-    normalizedSlug ? `/${normalizedSlug}` : null,
-  );
-
-  React.useEffect(() => {
-    if (!normalizedSlug) {
-      setProductUrl(null);
-      return;
-    }
-    try {
-      setProductUrl(`${window.location.origin}/${normalizedSlug}`);
-    } catch {
-      setProductUrl(`/${normalizedSlug}`);
-    }
-  }, [normalizedSlug]);
-
   const priceValue = React.useMemo(() => {
     if (unitPrice == null) {
       return null;
@@ -108,21 +74,14 @@ export function ProductPurchasePanel({
     return String(product.weight);
   }, [product.weight]);
 
-  const imageUrl = React.useMemo(() => {
-    const assetId = product.mainImage?.id;
-    if (!assetId) {
-      return null;
-    }
-    try {
-      const imageSource = product.mainImage
-        ? { ...product.mainImage, _id: assetId, asset: { _ref: assetId } }
-        : { _ref: assetId };
-      const built = urlFor(imageSource).width(600).height(600).dpr(2).url();
-      return typeof built === "string" ? built : null;
-    } catch {
-      return null;
-    }
-  }, [product.mainImage]);
+  const shippingType = React.useMemo(() => {
+    const raw = product.shippingType ?? null;
+    if (!raw) return null;
+    const cleaned = stegaClean(raw);
+    return typeof cleaned === "string" && cleaned.trim().length > 0
+      ? cleaned.trim()
+      : raw.trim();
+  }, [product.shippingType]);
 
   const cartAction = React.useMemo(() => {
     if (!foxyConfig) {
@@ -181,14 +140,11 @@ export function ProductPurchasePanel({
             <input type="hidden" name="price" value={priceValue} />
           ) : null}
           <input type="hidden" name="code" value={sku} />
-          {productUrl ? (
-            <input type="hidden" name="url" value={productUrl} />
-          ) : null}
-          {imageUrl ? (
-            <input type="hidden" name="image" value={imageUrl} />
-          ) : null}
           {weightValue != null ? (
             <input type="hidden" name="weight" value={weightValue} />
+          ) : null}
+          {shippingType ? (
+            <input type="hidden" name="shipping_type" value={shippingType} />
           ) : null}
 
           <div className="flex items-baseline justify-between">
