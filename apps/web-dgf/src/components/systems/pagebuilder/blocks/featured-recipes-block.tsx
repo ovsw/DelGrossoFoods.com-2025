@@ -155,9 +155,7 @@ export function FeaturedRecipesBlock({
               image: sauce.mainImage ? (
                 <SanityImage
                   image={sauce.mainImage}
-                  alt={stegaClean(
-                    sauce.mainImage.alt ?? sauce.name ?? "Sauce jar",
-                  )}
+                  alt=""
                   width={64}
                   height={64}
                   loading="lazy"
@@ -179,9 +177,7 @@ export function FeaturedRecipesBlock({
                   recipe.mainImage ? (
                     <SanityImage
                       image={recipe.mainImage}
-                      alt={stegaClean(
-                        recipe.mainImage.alt ?? recipe.name ?? "Recipe image",
-                      )}
+                      alt=""
                       width={640}
                       height={640}
                       loading="lazy"

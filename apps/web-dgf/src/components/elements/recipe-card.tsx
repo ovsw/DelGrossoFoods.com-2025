@@ -3,7 +3,7 @@ import {
   RecipeCard as RecipeHighlightCard,
   type RecipeCardBadge,
 } from "@workspace/ui/components/recipe-card";
-import { createDataAttribute, stegaClean } from "next-sanity";
+import { createDataAttribute } from "next-sanity";
 
 import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
@@ -59,7 +59,7 @@ export function RecipeCard({ item }: { item: RecipeListItem }) {
       image={mainImage}
       width={640}
       height={640}
-      alt={stegaClean(displayName)}
+      alt=""
       loading="lazy"
       data-sanity={imageDataAttribute}
     />
