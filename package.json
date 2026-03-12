@@ -19,16 +19,10 @@
     "check-types": "turbo check-types",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,mdx,json,yml,yaml,css,scss}\"",
-    "changeset": "changeset",
-    "changeset:add": "changeset add",
-    "changeset:status": "changeset status --since=origin/main",
-    "changeset:version": "changeset version",
     "a11y:axe": "bash ./scripts/run-axe-cli.sh",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.9",
     "@tailwindcss/typography": "^0.5.19",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",

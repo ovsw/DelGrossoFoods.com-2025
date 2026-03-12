@@ -80,14 +80,10 @@ alwaysApply: true
 - Use `next-sanity` with `defineQuery` and fragment reuse. Keep queries collocated by content type under `apps/web-dgf/src/lib/sanity/`.
 - Handle optional fields with `defined()`, use `select()` for conditional projections, and paginate lists explicitly.
 
-### Versioning and releases (Changesets)
+### Versioning and releases
 
-- Use Changesets; do not hand-edit versions or CHANGELOGs.
-- Fixed group versions: `web`, `studio`, `@workspace/ui`, `@workspace/eslint-config`, `@workspace/typescript-config` version together. Select only the workspaces you actually changed; the rest follow automatically.
-- Standard contributor flow:
-  1. `pnpm changeset:add` → pick workspaces, choose bump, write summary.
-  2. Merge feature PR to `main`.
-  3. CI opens Release PR; review and merge.
+- This repo does not use Changesets or automated release PRs.
+- Do not add `.changeset/*` files, release workflows, or package changelog maintenance unless explicitly requested.
 
 ### Quality gates
 
