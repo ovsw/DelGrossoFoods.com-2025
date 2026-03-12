@@ -1,5 +1,16 @@
 # @workspace/sanity-schema
 
+## 1.22.4
+
+### Patch Changes
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`01cd10e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/01cd10efad311ae51631d53ee21e6c3ffb6ab997) Thanks [@ovsw](https://github.com/ovsw)! - Add Portable Text validation for recipe fields so editors use proper bullet and numbered list controls instead of typing list markers manually.
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`de2c1d9`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2c1d978a1a730445365b7142ab34d45047c348) Thanks [@ovsw](https://github.com/ovsw)! - Improve homepage image accessibility and clarify Sanity block previews.
+  - Use CMS-managed alt text for feature and three-product-panel images in `web-dgf`
+  - Add the missing feature image alt field in the Sanity schema and regenerate derived types
+  - Update Studio block previews for recipes, image-link cards, and three-product panels
+
 ## 1.22.3
 
 ### Patch Changes

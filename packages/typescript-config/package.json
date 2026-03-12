@@ -1,6 +1,6 @@
 {
   "name": "@workspace/typescript-config",
-  "version": "1.22.8",
+  "version": "1.22.9",
   "private": true,
   "license": "PROPRIETARY",
   "publishConfig": {

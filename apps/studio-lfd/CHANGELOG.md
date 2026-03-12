@@ -1,5 +1,12 @@
 # studio
 
+## 1.22.9
+
+### Patch Changes
+
+- Updated dependencies [[`01cd10e`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/01cd10efad311ae51631d53ee21e6c3ffb6ab997), [`de2c1d9`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2c1d978a1a730445365b7142ab34d45047c348)]:
+  - @workspace/sanity-schema@1.22.4
+
 ## 1.22.8
 
 ### Patch Changes

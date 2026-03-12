@@ -1,5 +1,24 @@
 # web
 
+## 1.22.9
+
+### Patch Changes
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`872501f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/872501f21aef19ef5bc00cf5d171003ec0d769f3) Thanks [@ovsw](https://github.com/ovsw)! - Update the storefront cart button to use a labeled layout and improve live quantity accessibility.
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`5e86349`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/5e8634942cb81bcd1eb758b097c5c6d7654b0437) Thanks [@ovsw](https://github.com/ovsw)! - Mark decorative recipe imagery as presentation-only to avoid redundant alt text.
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`d64bd4b`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/d64bd4bde231ca4fe2fb97f557b8e049eb93f441) Thanks [@ovsw](https://github.com/ovsw)! - Mark product and sauce card images as decorative so screen readers do not announce redundant alt text on DGF store cards.
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`de2c1d9`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2c1d978a1a730445365b7142ab34d45047c348) Thanks [@ovsw](https://github.com/ovsw)! - Improve homepage image accessibility and clarify Sanity block previews.
+  - Use CMS-managed alt text for feature and three-product-panel images in `web-dgf`
+  - Add the missing feature image alt field in the Sanity schema and regenerate derived types
+  - Update Studio block previews for recipes, image-link cards, and three-product panels
+
+- Updated dependencies [[`de2c1d9`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2c1d978a1a730445365b7142ab34d45047c348)]:
+  - @workspace/sanity-config@1.22.4
+  - @workspace/ui@1.22.9
+
 ## 1.22.8
 
 ### Patch Changes

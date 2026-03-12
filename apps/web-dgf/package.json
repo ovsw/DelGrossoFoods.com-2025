@@ -1,6 +1,6 @@
 {
   "name": "web-dgf",
-  "version": "1.22.8",
+  "version": "1.22.9",
   "type": "module",
   "private": true,
   "scripts": {

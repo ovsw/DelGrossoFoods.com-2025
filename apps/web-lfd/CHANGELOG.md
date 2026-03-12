@@ -1,5 +1,15 @@
 # web
 
+## 1.22.9
+
+### Patch Changes
+
+- [#155](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/155) [`872501f`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/872501f21aef19ef5bc00cf5d171003ec0d769f3) Thanks [@ovsw](https://github.com/ovsw)! - Update the storefront cart button to use a labeled layout and improve live quantity accessibility.
+
+- Updated dependencies [[`de2c1d9`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/de2c1d978a1a730445365b7142ab34d45047c348)]:
+  - @workspace/sanity-config@1.22.4
+  - @workspace/ui@1.22.9
+
 ## 1.22.8
 
 ### Patch Changes
