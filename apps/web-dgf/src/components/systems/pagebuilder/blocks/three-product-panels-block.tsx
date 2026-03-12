@@ -126,7 +126,7 @@ const ProductPanelCard = ({
             image={panel.image}
             width={800}
             height={600}
-            alt={stegaClean(panel.title || "Product image")}
+            alt={stegaClean(panel.image.alt ?? "")}
             className="mx-auto block w-full max-w-[28rem] pl-6 object-contain md:mx-0 md:max-w-[22rem] md:pl-0 lg:mx-auto lg:max-w-[28rem] lg:pl-6"
             data-sanity={imageDataAttribute}
           />
