@@ -59,9 +59,6 @@ export function ProductCard({
     ? [packagingLabel, priceText].filter(Boolean).join(" – ")
     : null;
   const subtitle = packagingLabel ? null : priceText;
-  const accessibleName = [name, secondaryText ?? priceText]
-    .filter(Boolean)
-    .join(" ");
 
   const createFieldAttribute = (path: string) =>
     createDataAttribute({
@@ -145,7 +142,7 @@ export function ProductCard({
             respectSanityCrop
             width={800}
             height={533}
-            alt={accessibleName}
+            alt=""
             mode="contain"
             sizes={DEFAULT_CARD_SIZES}
             data-sanity={imageAttribute}

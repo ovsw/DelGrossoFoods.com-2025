@@ -111,11 +111,15 @@ export const threeProductPanels = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "eyebrow",
+      panels: "panels",
     },
-    prepare: ({ title, subtitle }) => ({
-      title: title || "Three Product Panels",
-      subtitle: subtitle || "Product line showcase",
-    }),
+    prepare: ({ title, panels = [] }) => {
+      const panelCount = panels.length;
+
+      return {
+        title: title || "Three Image Cards",
+        subtitle: `Image Cards${panelCount ? ` • ${panelCount} panel${panelCount === 1 ? "" : "s"}` : ""}`,
+      };
+    },
   },
 });

@@ -16,7 +16,7 @@ type CartButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export function CartButton({
   className,
   variant = "accent",
-  size = "icon",
+  size = "sm",
   ariaLabel,
   ...props
 }: CartButtonProps & { ariaLabel?: string }): JSX.Element {
@@ -24,10 +24,44 @@ export function CartButton({
     () => resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL),
     [],
   );
+  const quantityLabelId = React.useId();
 
   const href = foxyConfig
     ? `https://${foxyConfig.cartDomain}/cart?cart=view`
     : undefined;
+
+  const cartButtonContent = (
+    <>
+      <span
+        className={cn(
+          "relative flex h-5 w-5 shrink-0 items-center justify-center",
+        )}
+        aria-hidden="true"
+      >
+        <ShoppingCart className="size-5" aria-hidden="true" />
+      </span>
+      <span>Cart</span>
+      {/* Visual badge for quantity (updated externally via data attribute) */}
+      <span
+        className={cn(
+          "absolute -top-1.5 -right-1.5 inline-flex min-h-5 min-w-5 items-center justify-center",
+          "rounded-full bg-amber-700 px-1 text-xs font-semibold leading-none text-white",
+        )}
+        aria-hidden="true"
+      >
+        <span data-fc-id="minicart-quantity">0</span>
+      </span>
+      {/* Accessible name with live-updating quantity */}
+      <span
+        id={quantityLabelId}
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        Cart, <span data-fc-id="minicart-quantity">0</span> items
+      </span>
+    </>
+  );
 
   if (href) {
     return (
@@ -35,44 +69,17 @@ export function CartButton({
         asChild
         variant={variant}
         size={size}
-        className={cn("relative group cursor-pointer", className)}
+        className={cn(
+          "relative cursor-pointer transition-transform duration-200 ease-out motion-reduce:transition-none lg:hover:scale-[1.03]",
+          className,
+        )}
       >
         <a
           href={href}
-          aria-labelledby="header-cart-quantity-label"
+          aria-labelledby={ariaLabel ? undefined : quantityLabelId}
           aria-label={ariaLabel}
         >
-          <span
-            className={cn(
-              "relative flex h-5 w-5 items-center justify-center",
-              "transition-transform duration-200 ease-out motion-reduce:transition-none",
-              "lg:group-hover:-translate-y-0.5 lg:group-hover:scale-110",
-            )}
-            aria-hidden="true"
-          >
-            <ShoppingCart className="size-5" aria-hidden="true" />
-          </span>
-          {/* Visual badge for quantity (updated externally via data attribute) */}
-          <span
-            className={cn(
-              "absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center",
-              "rounded-full bg-amber-700 px-1 text-[10px] font-semibold leading-none text-white",
-              "transition-transform duration-200 ease-out motion-reduce:transition-none",
-              "lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:scale-105",
-            )}
-            aria-hidden="true"
-          >
-            <span data-fc-id="minicart-quantity">0</span>
-          </span>
-          {/* Accessible name with live-updating quantity */}
-          <span
-            id="header-cart-quantity-label"
-            className="sr-only"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            Cart, <span data-fc-id="minicart-quantity">0</span> items
-          </span>
+          {cartButtonContent}
         </a>
       </Button>
     );
@@ -84,8 +91,12 @@ export function CartButton({
       type="button"
       variant={variant}
       size={size}
-      className={cn("relative group cursor-pointer", className)}
-      aria-label={ariaLabel ?? "Open cart"}
+      className={cn(
+        "relative cursor-pointer transition-transform duration-200 ease-out motion-reduce:transition-none lg:hover:scale-[1.03]",
+        className,
+      )}
+      aria-labelledby={ariaLabel ? undefined : quantityLabelId}
+      aria-label={ariaLabel}
       onClick={() =>
         console.error(
           "Foxycart: NEXT_PUBLIC_FOXY_STORE_URL is missing or invalid; cannot open cart.",
@@ -93,37 +104,7 @@ export function CartButton({
       }
       {...props}
     >
-      <span
-        className={cn(
-          "relative flex h-5 w-5 items-center justify-center",
-          "transition-transform duration-200 ease-out motion-reduce:transition-none",
-          "lg:group-hover:-translate-y-0.5 lg:group-hover:scale-110",
-        )}
-        aria-hidden="true"
-      >
-        <ShoppingCart className="size-5" aria-hidden="true" />
-      </span>
-      {/* Visual badge for quantity (updated externally via data attribute) */}
-      <span
-        className={cn(
-          "absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center",
-          "rounded-full bg-amber-700 px-1 text-[10px] font-semibold leading-none text-white",
-          "transition-transform duration-200 ease-out motion-reduce:transition-none",
-          "lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:scale-105",
-        )}
-        aria-hidden="true"
-      >
-        <span data-fc-id="minicart-quantity">0</span>
-      </span>
-      {/* Accessible name with live-updating quantity */}
-      <span
-        id="header-cart-quantity-label"
-        className="sr-only"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        Cart, <span data-fc-id="minicart-quantity">0</span> items
-      </span>
+      {cartButtonContent}
     </Button>
   );
 }

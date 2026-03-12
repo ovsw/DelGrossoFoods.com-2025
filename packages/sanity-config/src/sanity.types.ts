@@ -330,6 +330,7 @@ export type Feature = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt: string;
     _type: "image";
   };
   imageFit?: "cover" | "fit";
@@ -3098,7 +3099,7 @@ export type DgfHomePageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -4050,7 +4051,7 @@ export type DgfSlugPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -5089,7 +5090,7 @@ export type DgfHistoryPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -5807,7 +5808,7 @@ export type DgfStoreLocatorPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -6554,7 +6555,7 @@ export type DgfContactPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -7274,7 +7275,7 @@ export type LfdHomePageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -8226,7 +8227,7 @@ export type LfdSlugPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -9265,7 +9266,7 @@ export type LfdHistoryPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -9983,7 +9984,7 @@ export type LfdStoreLocatorPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;
@@ -10730,7 +10731,7 @@ export type LfdContactPageQueryResult = {
             right: number;
             top: number;
           } | null;
-          alt: null;
+          alt: string;
         } | null;
         buttons: Array<{
           text: string | null;

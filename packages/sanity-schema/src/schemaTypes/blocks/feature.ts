@@ -33,6 +33,19 @@ export const feature = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt Text",
+          description:
+            "Describe the image for screen readers and search engines.",
+          validation: (Rule) =>
+            Rule.required().error(
+              "Alt text is required for the feature image.",
+            ),
+        }),
+      ],
     }),
     defineField({
       name: "imageFit",

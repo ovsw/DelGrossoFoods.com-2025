@@ -56,11 +56,15 @@ export const featuredRecipes = defineType({
   preview: {
     select: {
       title: "title",
-      eyebrow: "eyebrow",
+      recipes: "recipes",
     },
-    prepare: ({ title, eyebrow }) => ({
-      title: title || "Featured Recipes",
-      subtitle: eyebrow || "Highlighting three recipes",
-    }),
+    prepare: ({ title, recipes = [] }) => {
+      const recipeCount = recipes.length;
+
+      return {
+        title: title || "Recipes List",
+        subtitle: `Recipes List${recipeCount ? ` • ${recipeCount} recipe${recipeCount === 1 ? "" : "s"}` : ""}`,
+      };
+    },
   },
 });

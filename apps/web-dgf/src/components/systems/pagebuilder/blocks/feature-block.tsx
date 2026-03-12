@@ -155,7 +155,7 @@ export function FeatureBlock({
                       image={image}
                       width={400}
                       height={400}
-                      alt={stegaClean(typeof title === "string" ? title : "")}
+                      alt={stegaClean(image.alt ?? "")}
                       className={cn(
                         isImageFit
                           ? "w-full h-full max-h-120 lg:max-h-120 z-10 lg:-translate-y-[50%] lg:relative lg:top-[50%] object-contain"
