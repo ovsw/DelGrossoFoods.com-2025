@@ -1,0 +1,4 @@
+interface:
+  display_name: "Changeset Writer"
+  short_description: "Draft and validate repo changesets"
+  default_prompt: "Use $changeset to draft a changeset for the current repo modifications."
