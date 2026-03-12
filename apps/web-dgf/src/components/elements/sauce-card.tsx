@@ -49,7 +49,7 @@ export function SauceCard({
             respectSanityCrop
             width={400}
             height={480}
-            alt={`${name} sauce`}
+            alt=""
             mode="contain"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             data-sanity={imageAttribute}
