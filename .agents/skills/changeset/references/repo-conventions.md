@@ -54,6 +54,13 @@ Packages currently outside that fixed group:
 
 Use the smallest set of packages that accurately describes the shipped change.
 
+Scope resolution order:
+
+- Use staged diff first: `git diff --name-only --cached`
+- If nothing relevant is staged, use working tree diff: `git diff --name-only`
+- If the work was already committed, use branch diff: `git diff --name-only origin/main...HEAD`
+- If the user names a commit or range, treat that as authoritative
+
 Practical rules:
 
 - If code changes only under one app or one package, start with that workspace only.

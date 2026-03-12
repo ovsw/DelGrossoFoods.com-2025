@@ -11,8 +11,13 @@ Draft a valid Changesets file for this repository and keep the package selection
 
 ## Workflow
 
-1. Inspect the change scope.
-   Use `git diff --name-only --cached` first when the user is preparing a commit. If nothing is staged, inspect the working tree or the files the user named.
+1. Resolve the scope in a fixed order.
+   Unless the user explicitly names files or a commit range, inspect changes in this order:
+   - `git diff --name-only --cached`
+   - `git diff --name-only`
+   - `git diff --name-only origin/main...HEAD`
+   - an explicit commit or commit range from the user, such as `git diff --name-only <base>..<head>`
+     Use the first source that cleanly matches the user's intended scope. If multiple unrelated tasks are mixed together, ask the user to narrow the scope instead of guessing.
 
 2. Map changed files to workspace packages.
    Use `python3 .agents/skills/changeset/scripts/create_changeset.py --list-packages` to see valid package names. Use `--from-path` to infer owning workspaces from file paths. Read `references/repo-conventions.md` when you need the fixed-group rules or package map.
@@ -58,6 +63,19 @@ pnpm changeset status --since=origin/main
 ```
 
 If `origin/main` is unavailable in the local clone, at minimum inspect the generated file and confirm the package names match the workspace list.
+
+## Prompt Handling
+
+Treat short prompts like `create the changeset for this task` as sufficient. Do not require the user to restate the scope-discovery logic from this skill.
+
+Use these interpretations by default:
+
+- `for this task`: use the scope resolution order above
+- `for this branch`: compare `origin/main...HEAD`
+- `for these commits`: use the provided commit or range
+- `for these files`: use the named files directly
+
+If the user's wording is ambiguous and the diffs contain more than one plausible task, ask for the intended scope before drafting the changeset.
 
 ## Resources
 
