@@ -1,6 +1,6 @@
 {
   "name": "web-lfd",
-  "version": "1.22.7",
+  "version": "1.22.8",
   "type": "module",
   "private": true,
   "scripts": {

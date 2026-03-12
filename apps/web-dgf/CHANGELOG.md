@@ -1,5 +1,15 @@
 # web
 
+## 1.22.8
+
+### Patch Changes
+
+- [#153](https://github.com/ovsw/DelGrossoFoods.com-2025/pull/153) [`47f1758`](https://github.com/ovsw/DelGrossoFoods.com-2025/commit/47f175842a5115eae3bc3704efc8022e1f71bd94) Thanks [@ovsw](https://github.com/ovsw)! - Update FoxyCart data to use the live stores.
+
+- Updated dependencies []:
+  - @workspace/ui@1.22.8
+  - @workspace/sanity-config@1.22.3
+
 ## 1.22.7
 
 ### Patch Changes
