@@ -1,8 +1,8 @@
+---
 "web-dgf": patch
 "studio-dgf": patch
 "@workspace/sanity-schema": patch
 "@workspace/sanity-config": patch
-
 ---
 
 Improve homepage image accessibility and clarify Sanity block previews.
