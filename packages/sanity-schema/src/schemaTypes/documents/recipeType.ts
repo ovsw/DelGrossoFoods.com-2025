@@ -172,7 +172,6 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
-          weak: true,
         }),
       ],
       group: "dgf-content",
@@ -187,7 +186,6 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
-          weak: true,
         }),
       ],
       group: "lfd-content",
