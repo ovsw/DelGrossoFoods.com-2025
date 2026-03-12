@@ -102,12 +102,10 @@ export const imageLinkCards = defineType({
   preview: {
     select: {
       title: "title",
-      eyebrow: "eyebrow",
-      cards: "cards",
     },
-    prepare: ({ title, eyebrow, cards = [] }) => ({
-      title: title || "Image Link Cards",
-      subtitle: `${eyebrow ? `${eyebrow} • ` : ""}${cards.length} card${cards.length === 1 ? "" : "s"}`,
+    prepare: ({ title }) => ({
+      title: title || "Three Image Cards",
+      subtitle: "Three Image Cards",
     }),
   },
 });
