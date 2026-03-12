@@ -15,12 +15,60 @@ import {
   createUniqueSlugRule,
 } from "../../utils/slug-validation";
 
+type PortableTextValidationBlock = {
+  _type?: string;
+  listItem?: string;
+  children?: Array<{
+    _type?: string;
+    text?: string;
+  }>;
+};
+
 const isVersionSelected = (
   document: (SanityDocument & { versions?: string[] }) | undefined,
   version: string,
 ) => {
   const versions = document?.versions;
   return versions?.includes(version) || false;
+};
+
+const pseudoListPatterns = [/^\s*-\s+/u, /^\s*\d+\.\s+/u];
+
+const hasPseudoListText = (value: unknown): boolean => {
+  if (!Array.isArray(value)) return false;
+
+  return value.some((item) => {
+    const block = item as PortableTextValidationBlock;
+
+    if (block?._type !== "block" || typeof block.listItem === "string") {
+      return false;
+    }
+
+    if (!Array.isArray(block.children)) {
+      return false;
+    }
+
+    return block.children.some((child) => {
+      if (child?._type !== "span" || typeof child.text !== "string") {
+        return false;
+      }
+
+      return child.text
+        .replace(/\r/gu, "")
+        .split("\n")
+        .some((line) =>
+          pseudoListPatterns.some((pattern) => pattern.test(line)),
+        );
+    });
+  });
+};
+
+const validatePortableTextListUsage = (value: unknown) => {
+  if (!hasPseudoListText(value)) {
+    return true;
+  }
+
+  return "Use the Portable Text bullet or numbered list controls instead of typing '-' or '1.' manually.";
 };
 
 const studioSiteCode = process.env.SANITY_STUDIO_SITE_CODE;
@@ -245,7 +293,7 @@ export const recipeType = defineType({
       of: [defineArrayMember({ type: "block" })],
       group: "dgf-content",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.custom((value, context) => {
           if (!isVersionSelected(context.document, "DGF")) {
             return true;
@@ -254,6 +302,8 @@ export const recipeType = defineType({
             ? true
             : "Missing Ingredients for DGF version of recipe.";
         }),
+        Rule.custom((value) => validatePortableTextListUsage(value)),
+      ],
     }),
     defineField({
       name: "dgfDirections",
@@ -262,7 +312,7 @@ export const recipeType = defineType({
       of: [defineArrayMember({ type: "block" })],
       group: "dgf-content",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.custom((value, context) => {
           if (!isVersionSelected(context.document, "DGF")) {
             return true;
@@ -271,6 +321,8 @@ export const recipeType = defineType({
             ? true
             : "Missing Directions for DGF version of recipe.";
         }),
+        Rule.custom((value) => validatePortableTextListUsage(value)),
+      ],
     }),
     defineField({
       name: "dgfNotes",
@@ -280,6 +332,8 @@ export const recipeType = defineType({
       group: "dgf-content",
       description: "Optional notes, tips, or variations for the recipe.",
       hidden: ({ document }) => !isVersionSelected(document, "DGF"),
+      validation: (Rule) =>
+        Rule.custom((value) => validatePortableTextListUsage(value)),
     }),
     defineField({
       name: "organicSauce",
@@ -301,7 +355,7 @@ export const recipeType = defineType({
       of: [defineArrayMember({ type: "block" })],
       group: "lfd-content",
       hidden: ({ document }) => !isVersionSelected(document, "LFD"),
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.custom((value, context) => {
           if (!isVersionSelected(context.document, "LFD")) {
             return true;
@@ -310,6 +364,8 @@ export const recipeType = defineType({
             ? true
             : "Missing Ingredients for LFD version of recipe.";
         }),
+        Rule.custom((value) => validatePortableTextListUsage(value)),
+      ],
     }),
     defineField({
       name: "lfdDirections",
@@ -318,7 +374,7 @@ export const recipeType = defineType({
       of: [defineArrayMember({ type: "block" })],
       group: "lfd-content",
       hidden: ({ document }) => !isVersionSelected(document, "LFD"),
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.custom((value, context) => {
           if (!isVersionSelected(context.document, "LFD")) {
             return true;
@@ -327,6 +383,8 @@ export const recipeType = defineType({
             ? true
             : "Missing Directions for LFD version of recipe.";
         }),
+        Rule.custom((value) => validatePortableTextListUsage(value)),
+      ],
     }),
     defineField({
       name: "lfdNotes",
@@ -336,6 +394,8 @@ export const recipeType = defineType({
       group: "lfd-content",
       description: "Optional notes, tips, or variations for the recipe.",
       hidden: ({ document }) => !isVersionSelected(document, "LFD"),
+      validation: (Rule) =>
+        Rule.custom((value) => validatePortableTextListUsage(value)),
     }),
     defineField({
       name: "orderRank",
