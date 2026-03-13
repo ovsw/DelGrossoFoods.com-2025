@@ -6,15 +6,10 @@ import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { parseSearchParams } from "@/lib/products/url";
 import { dgfProductIndexPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
-
-type CatalogSearchParams = Promise<
-  Record<string, string | string[] | undefined>
->;
 
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
@@ -57,11 +52,7 @@ async function fetchIndexCopy() {
   );
 }
 
-export default async function ProductsIndexPage({
-  searchParams,
-}: {
-  searchParams?: CatalogSearchParams;
-}) {
+export default async function ProductsIndexPage() {
   const [productsRes, copyRes] = await Promise.all([
     fetchProducts(),
     fetchIndexCopy(),
@@ -77,7 +68,6 @@ export default async function ProductsIndexPage({
   const heading = indexDoc?.title ?? null;
   const intro = indexDoc?.description ?? null;
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
-  const initialState = parseSearchParams((await searchParams) ?? {});
 
   return (
     <>
@@ -89,7 +79,7 @@ export default async function ProductsIndexPage({
         sanityDocumentId={indexDoc?._id}
         sanityDocumentType={indexDoc?._type}
       />
-      <ProductsCatalogSection items={items} initialState={initialState} />
+      <ProductsCatalogSection items={items} />
     </>
   );
 }
