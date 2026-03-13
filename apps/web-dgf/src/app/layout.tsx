@@ -1,6 +1,7 @@
 import "@workspace/ui/styles/globals.css";
 import "./background.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { SanityLive } from "@workspace/sanity-config/live";
 import {
   // Geist, Geist_Mono,
@@ -46,6 +47,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const foxyConfig = resolveFoxyConfig(process.env.NEXT_PUBLIC_FOXY_STORE_URL);
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   return (
     <html
@@ -106,6 +108,7 @@ export default async function RootLayout({
           <SanityLive />
         </Suspense>
       </body>
+      {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
     </html>
   );
 }
