@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 
 import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
+import { parseSearchParams } from "@/lib/recipes/url";
 import {
   lfdRecipeCategoriesQuery,
   lfdRecipeIndexPageQuery,
@@ -18,6 +18,10 @@ import type {
   RecipeListItem,
 } from "@/types";
 import { handleErrors } from "@/utils";
+
+type CatalogSearchParams = Promise<
+  Record<string, string | string[] | undefined>
+>;
 
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
@@ -66,7 +70,7 @@ async function fetchCategories() {
 export default async function RecipesIndexPage({
   searchParams,
 }: {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  searchParams?: CatalogSearchParams;
 }) {
   const [recipesRes, copyRes, catsRes] = await Promise.all([
     fetchRecipes(),
@@ -85,15 +89,12 @@ export default async function RecipesIndexPage({
     title: string;
   }[] as RecipeCategoryOption[];
 
-  const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: RecipeQueryState =
-    parseSearchParams(resolvedSearchParams);
-
   const heading = indexDoc?.title ?? "Delicious Recipes";
   const intro =
     indexDoc?.description ??
     "Need an idea for your next meal or some inspiration for your next family feast? Try these DelGrosso family recipes, all based around our Premium Sauces.";
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
+  const initialState = parseSearchParams((await searchParams) ?? {});
 
   return (
     <>

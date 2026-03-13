@@ -6,11 +6,15 @@ import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
+import { parseSearchParams } from "@/lib/products/url";
 import { dgfProductIndexPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductIndexPageData, ProductListItem } from "@/types";
 import { handleErrors } from "@/utils";
+
+type CatalogSearchParams = Promise<
+  Record<string, string | string[] | undefined>
+>;
 
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
@@ -56,8 +60,7 @@ async function fetchIndexCopy() {
 export default async function ProductsIndexPage({
   searchParams,
 }: {
-  // Next.js 15: searchParams is async
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  searchParams?: CatalogSearchParams;
 }) {
   const [productsRes, copyRes] = await Promise.all([
     fetchProducts(),
@@ -70,14 +73,11 @@ export default async function ProductsIndexPage({
   const indexDoc = (copyData?.data ?? null) as ProductIndexPageData | null;
   const items = (productsData?.data ?? []) as ProductListItem[];
 
-  const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: ProductQueryState =
-    parseSearchParams(resolvedSearchParams);
-
   const eyebrow = null;
   const heading = indexDoc?.title ?? null;
   const intro = indexDoc?.description ?? null;
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
+  const initialState = parseSearchParams((await searchParams) ?? {});
 
   return (
     <>

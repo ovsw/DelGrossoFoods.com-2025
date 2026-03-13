@@ -64,7 +64,28 @@ export function useCatalogController<TState, TQueryState, TItem>({
   const [firstPaint, setFirstPaint] = useState(true);
   useEffect(() => setFirstPaint(false), []);
 
+  const initialQuerySnapshot = useMemo(() => {
+    if (initialQueryState) return initialQueryState;
+    return initialState as unknown as TQueryState;
+  }, [initialQueryState, initialState]);
+
   const applyingPopStateRef = useRef(false);
+  const pendingInitialUrlQueryRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const nextState = parseSearchParams(searchParamsToRecord(params));
+    const nextQuery = serializeState(
+      nextState as unknown as TQueryState,
+    ).toString();
+    const initialQuery = serializeState(initialQuerySnapshot).toString();
+
+    if (nextQuery === initialQuery) return;
+
+    pendingInitialUrlQueryRef.current = nextQuery;
+    setState(nextState);
+  }, [initialQuerySnapshot, parseSearchParams, serializeState, setState]);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -90,6 +111,12 @@ export function useCatalogController<TState, TQueryState, TItem>({
     if (typeof window === "undefined") return;
     if (applyingPopStateRef.current) return;
 
+    if (pendingInitialUrlQueryRef.current !== null) {
+      const query = serializeState(queryState).toString();
+      if (query !== pendingInitialUrlQueryRef.current) return;
+      pendingInitialUrlQueryRef.current = null;
+    }
+
     const basePath = pathname ?? window.location.pathname;
     const params = serializeState(queryState);
     const query = params.toString();
@@ -108,11 +135,6 @@ export function useCatalogController<TState, TQueryState, TItem>({
       window.history.pushState(window.history.state, "", targetUrl);
     }
   }, [pathname, queryState, serializeState]);
-
-  const initialQuerySnapshot = useMemo(() => {
-    if (initialQueryState) return initialQueryState;
-    return initialState as unknown as TQueryState;
-  }, [initialQueryState, initialState]);
 
   const results = useMemo(
     () => applyFiltersAndSort(items, queryState),
