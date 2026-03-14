@@ -6,6 +6,8 @@
     "build": "turbo build",
     "build:dgf": "turbo run build --filter=web-dgf",
     "build:lfd": "turbo run build --filter=web-lfd",
+    "start:dgf": "pnpm --filter web-dgf start",
+    "start:lfd": "pnpm --filter web-lfd start",
     "build:studio-dgf": "pnpm --filter studio-dgf run build",
     "build:studio-lfd": "pnpm --filter studio-lfd run build",
     "start:studio-dgf": "pnpm --filter studio-dgf run start",
