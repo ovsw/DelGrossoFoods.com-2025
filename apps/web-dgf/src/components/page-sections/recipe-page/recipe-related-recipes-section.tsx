@@ -1,8 +1,5 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import {
-  getRecipeByIdQuery,
-  getRecipesBySauceIdsQuery,
-} from "@workspace/sanity-config/query";
+import { getRecipesBySauceIdsQuery } from "@workspace/sanity-config/query";
 import { getSiteParams } from "@workspace/sanity-config/site";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
@@ -11,38 +8,16 @@ import { handleErrors } from "@/utils";
 
 interface RecipeRelatedRecipesSectionProps {
   readonly recipeId: string | undefined;
+  readonly sauceIds: readonly string[];
 }
 
 export async function RecipeRelatedRecipesSection({
   recipeId,
+  sauceIds,
 }: RecipeRelatedRecipesSectionProps) {
-  if (!recipeId) return null;
+  if (!recipeId || sauceIds.length === 0) return null;
 
   const siteParams = getSiteParams();
-
-  // Load the recipe to get related sauce IDs
-  const [recipeResult] = await handleErrors(
-    sanityFetch({
-      query: getRecipeByIdQuery,
-      params: { ...siteParams, id: recipeId },
-    }),
-  );
-  const recipe = recipeResult?.data as
-    | (Record<string, unknown> & {
-        dgfSauces?: { _id?: string }[];
-        lfdSauces?: { _id?: string }[];
-      })
-    | null;
-  if (!recipe) return null;
-
-  const sauceIds = [
-    ...((recipe.dgfSauces ?? []).map((s) => s?._id) as (string | undefined)[]),
-    ...((recipe.lfdSauces ?? []).map((s) => s?._id) as (string | undefined)[]),
-  ]
-    .filter((id): id is string => typeof id === "string" && id.length > 0)
-    .map((id) => id.replace(/^drafts\./, ""));
-
-  if (sauceIds.length === 0) return null;
 
   const [result] = await handleErrors(
     sanityFetch({

@@ -40,6 +40,20 @@ function normalizeRecipeStaticSlug(slug: string): string {
   return slug.replace(/^\/recipes\//, "");
 }
 
+function getRelatedSauceIds(recipe: RecipeDetailData): string[] {
+  return Array.from(
+    new Set(
+      [
+        ...(recipe.dgfSauces ?? []).map((sauce) => sauce?._id),
+        ...(recipe.lfdSauces ?? []).map((sauce) => sauce?._id),
+        recipe.organicSauce?._id,
+      ]
+        .filter((id): id is string => typeof id === "string" && id.length > 0)
+        .map((id) => id.replace(/^drafts\./, "")),
+    ),
+  );
+}
+
 async function fetchRecipeStaticParams(): Promise<Array<{ slug: string }>> {
   const [result] = await handleErrors<{ data: unknown }>(
     sanityFetch({
@@ -131,6 +145,8 @@ export default async function RecipeDetailPage({
     notFound();
   }
 
+  const sauceIds = getRelatedSauceIds(recipe);
+
   // Related recipes are fetched within the page section
 
   return (
@@ -139,9 +155,9 @@ export default async function RecipeDetailPage({
 
       <RecipeDetailsSection recipe={recipe} />
 
-      <RecipeRelatedSaucesSection recipeId={recipe._id} />
+      <RecipeRelatedSaucesSection sauceIds={sauceIds} />
 
-      <RecipeRelatedRecipesSection recipeId={recipe._id} />
+      <RecipeRelatedRecipesSection recipeId={recipe._id} sauceIds={sauceIds} />
     </>
   );
 }
