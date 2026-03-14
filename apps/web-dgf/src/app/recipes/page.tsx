@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 
 import { RecipesCatalogSection } from "@/components/page-sections/recipes-index-page/recipes-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { parseSearchParams, type RecipeQueryState } from "@/lib/recipes/url";
 import {
   dgfRecipeCategoriesQuery,
   dgfRecipeIndexPageQuery,
@@ -63,11 +62,7 @@ async function fetchCategories() {
   );
 }
 
-export default async function RecipesIndexPage({
-  searchParams,
-}: {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default async function RecipesIndexPage() {
   const [recipesRes, copyRes, catsRes] = await Promise.all([
     fetchRecipes(),
     fetchIndexCopy(),
@@ -85,10 +80,6 @@ export default async function RecipesIndexPage({
     title: string;
   }[] as RecipeCategoryOption[];
 
-  const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: RecipeQueryState =
-    parseSearchParams(resolvedSearchParams);
-
   const heading = indexDoc?.title ?? "Delicious Recipes";
   const intro =
     indexDoc?.description ??
@@ -104,11 +95,7 @@ export default async function RecipesIndexPage({
         sanityDocumentId={indexDoc?._id}
         sanityDocumentType={indexDoc?._type}
       />
-      <RecipesCatalogSection
-        items={items}
-        initialState={initialState}
-        categories={categories}
-      />
+      <RecipesCatalogSection items={items} categories={categories} />
     </>
   );
 }

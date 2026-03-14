@@ -58,6 +58,13 @@ export const getAllSaucesForIndexQuery = defineQuery(`
   }
 `);
 
+export const getAllSauceSlugsForStaticParamsQuery = defineQuery(`
+  *[
+    _type == "sauce"
+    && defined(slug.current)
+  ] | order(name asc).slug.current
+`);
+
 export const getSaucesByIdsQuery = defineQuery(`
   *[
     _type == "sauce"
@@ -144,6 +151,18 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     },
     "sauceLines": array::unique((array::compact(dgfSauces[]->line) + array::compact(lfdSauces[]->line)))
   }
+`);
+
+export const getAllRecipeSlugsForStaticParamsQuery = defineQuery(`
+  *[
+    _type == "recipe"
+    && defined(slug.current)
+    && (
+      !defined($siteCode)
+      || $siteCode != "LFD"
+      || "LFD" in coalesce(versions, [])
+    )
+  ] | order(name asc).slug.current
 `);
 
 export const getRecipesBySauceIdQuery = defineQuery(`
@@ -389,6 +408,13 @@ export const getAllProductsForIndexQuery = defineQuery(`
     "sauceLines": array::unique((sauces[]->line)[defined(@)]),
     "sauceTypes": array::unique((sauces[]->category)[defined(@)])
   }
+`);
+
+export const getAllProductSlugsForStaticParamsQuery = defineQuery(`
+  *[
+    _type == "product"
+    && defined(slug.current)
+  ] | order(name asc).slug.current
 `);
 
 export const getAllLeadersForIndexQuery = defineQuery(`

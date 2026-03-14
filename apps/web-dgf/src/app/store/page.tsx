@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 
 import { ProductsCatalogSection } from "@/components/page-sections/products-index-page/products-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
-import { parseSearchParams, type ProductQueryState } from "@/lib/products/url";
 import { dgfProductIndexPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductIndexPageData, ProductListItem } from "@/types";
@@ -53,12 +52,7 @@ async function fetchIndexCopy() {
   );
 }
 
-export default async function ProductsIndexPage({
-  searchParams,
-}: {
-  // Next.js 15: searchParams is async
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default async function ProductsIndexPage() {
   const [productsRes, copyRes] = await Promise.all([
     fetchProducts(),
     fetchIndexCopy(),
@@ -69,10 +63,6 @@ export default async function ProductsIndexPage({
 
   const indexDoc = (copyData?.data ?? null) as ProductIndexPageData | null;
   const items = (productsData?.data ?? []) as ProductListItem[];
-
-  const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: ProductQueryState =
-    parseSearchParams(resolvedSearchParams);
 
   const eyebrow = null;
   const heading = indexDoc?.title ?? null;
@@ -89,7 +79,7 @@ export default async function ProductsIndexPage({
         sanityDocumentId={indexDoc?._id}
         sanityDocumentType={indexDoc?._type}
       />
-      <ProductsCatalogSection items={items} initialState={initialState} />
+      <ProductsCatalogSection items={items} />
     </>
   );
 }

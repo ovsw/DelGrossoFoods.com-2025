@@ -7,9 +7,7 @@ import {
   // Geist, Geist_Mono,
   Libre_Baskerville,
 } from "next/font/google";
-import { draftMode } from "next/headers";
 import Script from "next/script";
-import { VisualEditing } from "next-sanity/visual-editing";
 import { Suspense } from "react";
 
 import { AnnouncerGuard } from "@/components/elements/a11y/announcer-guard";
@@ -19,7 +17,7 @@ import { FoxycartProvider } from "@/components/features/cart/foxycart-provider";
 import { FooterServer, FooterSkeleton } from "@/components/features/footer";
 import { HeaderServer } from "@/components/features/header/header-server";
 import { DevDomRemoveTolerance } from "@/components/systems/dev/dom-remove-tolerance";
-import { PreviewBar } from "@/components/systems/preview/preview-bar";
+import { PreviewShell } from "@/components/systems/preview/preview-shell";
 import { Providers } from "@/components/systems/providers";
 import { resolveFoxyConfig } from "@/lib/foxy/config";
 
@@ -85,12 +83,9 @@ export default async function RootLayout({
           <CombinedJsonLd includeWebsite includeOrganization />
           {/* FoxyCart Sidecart global listener */}
           <FoxycartProvider />
-          {(await draftMode()).isEnabled && (
-            <>
-              <PreviewBar />
-              <VisualEditing />
-            </>
-          )}
+          <Suspense fallback={null}>
+            <PreviewShell />
+          </Suspense>
         </Providers>
         {/* {process.env.NODE_ENV === "development" &&
           process.env.PINY_VISUAL_SELECT === "true" && (

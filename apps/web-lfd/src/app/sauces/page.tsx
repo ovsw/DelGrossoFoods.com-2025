@@ -7,11 +7,15 @@ import { notFound } from "next/navigation";
 import { SaucesCatalogSection } from "@/components/page-sections/sauces-index-page/sauces-catalog-section";
 import { PageHeadingSection } from "@/components/page-sections/shared/page-heading-section";
 import { lfdSauceIndexPageQuery } from "@/lib/sanity/queries";
-import { parseSearchParams, type SauceQueryState } from "@/lib/sauces/url";
+import { parseSearchParams } from "@/lib/sauces/url";
 import { getSEOMetadata } from "@/lib/seo";
 import type { SauceIndexPageData, SauceListItem } from "@/types";
 import { handleErrors } from "@/utils";
 // import { draftMode } from "next/headers";
+
+type CatalogSearchParams = Promise<
+  Record<string, string | string[] | undefined>
+>;
 
 export async function generateMetadata(): Promise<Metadata> {
   const [result] = await handleErrors(
@@ -60,8 +64,7 @@ async function fetchIndexCopy() {
 export default async function SaucesIndexPage({
   searchParams,
 }: {
-  // Next.js 15: searchParams is now async and must be awaited
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  searchParams?: CatalogSearchParams;
 }) {
   const [saucesRes, copyRes] = await Promise.all([
     fetchSauces(),
@@ -74,13 +77,11 @@ export default async function SaucesIndexPage({
   const indexDoc = (copyData?.data ?? null) as SauceIndexPageData | null;
   const items = (saucesData?.data ?? []) as SauceListItem[];
 
-  const resolvedSearchParams = (await searchParams) ?? {};
-  const initialState: SauceQueryState = parseSearchParams(resolvedSearchParams);
-
   const eyebrow = null;
   const heading = indexDoc?.title ?? null;
   const intro = indexDoc?.description ?? null;
   const backgroundImage = indexDoc?.pageHeaderImage ?? null;
+  const initialState = parseSearchParams((await searchParams) ?? {});
 
   return (
     <>

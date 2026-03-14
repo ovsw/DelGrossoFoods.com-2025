@@ -1,6 +1,9 @@
 // (kept imports tidy after refactor)
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getRecipeBySlugQuery } from "@workspace/sanity-config/query";
+import {
+  getAllRecipeSlugsForStaticParamsQuery,
+  getRecipeBySlugQuery,
+} from "@workspace/sanity-config/query";
 import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -33,7 +36,53 @@ async function fetchRecipe(slug: string): Promise<RecipeDetailData | null> {
   return (result?.data ?? null) as RecipeDetailData | null;
 }
 
+function normalizeRecipeStaticSlug(slug: string): string {
+  return slug.replace(/^\/recipes\//, "");
+}
+
+function getRelatedSauceIds(recipe: RecipeDetailData): string[] {
+  return Array.from(
+    new Set(
+      [
+        ...(recipe.dgfSauces ?? []).map((sauce) => sauce?._id),
+        ...(recipe.lfdSauces ?? []).map((sauce) => sauce?._id),
+        recipe.organicSauce?._id,
+      ]
+        .filter((id): id is string => typeof id === "string" && id.length > 0)
+        .map((id) => id.replace(/^drafts\./, "")),
+    ),
+  );
+}
+
+async function fetchRecipeStaticParams(): Promise<Array<{ slug: string }>> {
+  const [result] = await handleErrors<{ data: unknown }>(
+    sanityFetch({
+      query: getAllRecipeSlugsForStaticParamsQuery,
+      params: getSiteParams(),
+      perspective: "published",
+      stega: false,
+    }),
+  );
+  const data = result?.data;
+
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  return data
+    .filter(
+      (slug): slug is string => typeof slug === "string" && slug.length > 0,
+    )
+    .map(normalizeRecipeStaticSlug)
+    .filter((slug) => slug.length > 0)
+    .map((slug) => ({ slug }));
+}
+
 // Related recipes fetched within the page section
+
+export async function generateStaticParams() {
+  return await fetchRecipeStaticParams();
+}
 
 export async function generateMetadata({
   params,
@@ -96,6 +145,8 @@ export default async function RecipeDetailPage({
     notFound();
   }
 
+  const sauceIds = getRelatedSauceIds(recipe);
+
   // Related recipes are fetched within the page section
 
   return (
@@ -104,9 +155,9 @@ export default async function RecipeDetailPage({
 
       <RecipeDetailsSection recipe={recipe} />
 
-      <RecipeRelatedSaucesSection recipeId={recipe._id} />
+      <RecipeRelatedSaucesSection sauceIds={sauceIds} />
 
-      <RecipeRelatedRecipesSection recipeId={recipe._id} />
+      <RecipeRelatedRecipesSection recipeId={recipe._id} sauceIds={sauceIds} />
     </>
   );
 }

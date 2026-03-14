@@ -1,6 +1,9 @@
 // (kept imports tidy after refactor)
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getSauceBySlugQuery } from "@workspace/sanity-config/query";
+import {
+  getAllSauceSlugsForStaticParamsQuery,
+  getSauceBySlugQuery,
+} from "@workspace/sanity-config/query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
@@ -25,6 +28,28 @@ async function fetchSauce(slug: string) {
   );
 
   return result?.data ?? null;
+}
+
+async function fetchSauceStaticParams(): Promise<Array<{ slug: string }>> {
+  const { data } = await sanityFetch({
+    query: getAllSauceSlugsForStaticParamsQuery,
+    perspective: "published",
+    stega: false,
+  });
+
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  return data
+    .filter(
+      (slug): slug is string => typeof slug === "string" && slug.length > 0,
+    )
+    .map((slug) => ({ slug }));
+}
+
+export async function generateStaticParams() {
+  return await fetchSauceStaticParams();
 }
 
 export async function generateMetadata({

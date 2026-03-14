@@ -1,5 +1,8 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
-import { getProductBySlugQuery } from "@workspace/sanity-config/query";
+import {
+  getAllProductSlugsForStaticParamsQuery,
+  getProductBySlugQuery,
+} from "@workspace/sanity-config/query";
 import type { GetProductBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
@@ -94,6 +97,37 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
     return null;
   }
   return product;
+}
+
+function normalizeStoreStaticSlug(slug: string): string {
+  return slug.replace(/^\/store\//, "");
+}
+
+async function fetchProductStaticParams(): Promise<Array<{ slug: string }>> {
+  const [result] = await handleErrors<{ data: unknown }>(
+    sanityFetch({
+      query: getAllProductSlugsForStaticParamsQuery,
+      perspective: "published",
+      stega: false,
+    }),
+  );
+  const data = result?.data;
+
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  return data
+    .filter(
+      (slug): slug is string => typeof slug === "string" && slug.length > 0,
+    )
+    .map(normalizeStoreStaticSlug)
+    .filter((slug) => slug.length > 0)
+    .map((slug) => ({ slug }));
+}
+
+export async function generateStaticParams() {
+  return await fetchProductStaticParams();
 }
 
 export async function generateMetadata({
