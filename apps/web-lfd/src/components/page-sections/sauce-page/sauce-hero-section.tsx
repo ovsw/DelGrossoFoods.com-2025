@@ -101,32 +101,23 @@ export function SauceHeroSection({
   const altText = image?.alt || `${cleanedName} sauce jar`;
   const authorAltText = authorImage?.alt || cleanedAuthorName || "Sauce author";
 
-  const createDataAttribute = (path: string) =>
-    createPresentationDataAttribute({
-      documentId: sauce._id,
-      documentType: sauce._type,
-      path,
-    });
+  const showAuthor =
+    lineSlug === "premium" && (hasAuthorName || authorImage?.id);
 
-  const authorNameAttribute = hasAuthorName
-    ? createDataAttribute("authorName")
+  const authorNameAttribute = showAuthor
+    ? createPresentationDataAttribute({
+        documentId: sauce._id,
+        documentType: sauce._type,
+        path: "authorName",
+      })
     : null;
-  const authorImageAttribute = authorImage?.id
-    ? createDataAttribute("authorImage")
+  const authorImageAttribute = showAuthor
+    ? createPresentationDataAttribute({
+        documentId: sauce._id,
+        documentType: sauce._type,
+        path: "authorImage",
+      })
     : null;
-  const sauceNameAttribute = sauceName ? createDataAttribute("name") : null;
-
-  const titleShadowClassName = useSoftTextShadow
-    ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
-    : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]";
-
-  const authorNameClassName =
-    "block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl";
-
-  const sauceNameClassName = cn(
-    "block text-3xl leading-[1.1] font-bold text-balance sm:text-4xl lg:text-5xl lg:leading-[1] max-w-[10ch]",
-    titleShadowClassName,
-  );
 
   return (
     <SectionShell
@@ -137,57 +128,87 @@ export function SauceHeroSection({
       className={cn("relative", backgroundImage && "bg-cover bg-bottom")}
       innerClassName="relative mx-auto max-w-6xl px-4 lg:pl-18"
       style={{ backgroundImage: `url('${backgroundImage}')` }}
+      allowOverflow
     >
-      <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+      <div className="grid items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-end">
         {/* Text stack: pure document flow with margins for grouping */}
-        <div className="text-center lg:text-start max-w-prose mx-auto lg:mx-0">
+        <div
+          className={cn(
+            "text-center max-w-prose mx-auto lg:mx-0 lg:mt-auto",
+            "min-h-[22rem] lg:min-h-[24rem]",
+            "lg:text-start",
+          )}
+        >
           {/* Identity: eyebrow + title (tight proximity via margin) */}
           <Eyebrow
             text={lineSourceLabel}
-            className="mb-1.5 sm:mb-5 border-brand-green text-start text-th-dark-900/70"
+            className="mb-1.5 sm:mb-5 border-brand-green text-th-dark-900/70"
           />
-          <div className="flex min-w-0 flex-nowrap items-center justify-center gap-4 lg:justify-start">
-            {authorImage?.id ? (
-              <SanityImage
-                image={authorImage}
-                alt={authorAltText}
-                width={240}
-                height={240}
-                data-sanity={authorImageAttribute ?? undefined}
-                className="h-auto w-auto max-h-24 max-w-24 shrink-0 object-contain sm:max-h-28 sm:max-w-28 lg:max-h-32 lg:max-w-32"
-              />
-            ) : null}
-
-            <div className="min-w-0 flex-1 text-start">
-              <h1
-                className={cn(
-                  "mx-auto lg:mx-0",
-                  "flex flex-col items-start gap-1",
-                )}
-              >
-                <span className={authorNameClassName}>
-                  <span data-sanity={authorNameAttribute ?? undefined}>
-                    {authorName}
-                  </span>
-                  {authorNameSuffix}
-                </span>
-                <span
-                  className={sauceNameClassName}
-                  data-sanity={sauceNameAttribute ?? undefined}
-                  style={
-                    hasValidHeroColor ? { color: cleanedColorHex } : undefined
-                  }
+          {showAuthor ? (
+            <div className="flex min-w-0 flex-nowrap items-end justify-center gap-4 lg:justify-start">
+              {authorImage?.id ? (
+                <SanityImage
+                  image={authorImage}
+                  alt={authorAltText}
+                  width={240}
+                  height={240}
+                  data-sanity={authorImageAttribute ?? undefined}
+                  className="h-auto w-auto max-h-32 max-w-32 shrink-0 object-contain sm:max-h-32 sm:max-w-32"
+                />
+              ) : null}
+              <div className="min-w-0 text-left lg:text-start">
+                <h1
+                  className={cn(
+                    "mx-auto lg:mx-0",
+                    "flex flex-col items-start gap-1",
+                  )}
                 >
-                  {sauceName}
-                </span>
-              </h1>
+                  {hasAuthorName ? (
+                    <span className="block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl">
+                      <span data-sanity={authorNameAttribute ?? undefined}>
+                        {authorName}
+                      </span>
+                      {authorNameSuffix}
+                    </span>
+                  ) : null}
+                  <span
+                    className={cn(
+                      "block text-3xl leading-[1.1] font-bold text-balance lg:text-5xl lg:leading-[1] max-w-[10ch]",
+                      useSoftTextShadow
+                        ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+                        : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
+                    )}
+                    style={
+                      hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                    }
+                  >
+                    {sauceName}
+                  </span>
+                </h1>
+              </div>
             </div>
-          </div>
+          ) : (
+            <h1 className="mx-auto max-w-[46ch] lg:mx-0">
+              <span
+                className={cn(
+                  "block text-5xl leading-[1.1] font-bold text-balance lg:text-6xl lg:leading-[1]",
+                  useSoftTextShadow
+                    ? "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.25),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]"
+                    : "text-shadow-[1px_1px_1px_rgb(252_248_240_/_0.60),-1px_-1px_1px_rgb(252_248_240_/_0.60),-3px_-3px_20px_rgb(252_248_240_/_0.35),0px_1px_51px_rgb(252_248_240_/_0.75),0px_0px_101px_rgb(252_248_240_/_0.35),0px_0px_13px_rgb(252_248_240_/_0.15)]",
+                )}
+                style={
+                  hasValidHeroColor ? { color: cleanedColorHex } : undefined
+                }
+              >
+                {sauceName}
+              </span>
+            </h1>
+          )}
 
           {/* Support: description (moderate from title) */}
           <RichText
             richText={sauce.description}
-            className="mt-5 sm:mt-6 lg:mt-7 italic text-start text-foreground/80 md:text-lg max-w-[50ch]"
+            className="mt-5 sm:mt-6 lg:mt-7  italic text-foreground/80 md:text-lg max-w-[50ch]"
           />
 
           {/* Actions: CTAs (largest from copy) */}
