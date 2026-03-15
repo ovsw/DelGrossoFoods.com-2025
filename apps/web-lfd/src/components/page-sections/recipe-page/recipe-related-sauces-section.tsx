@@ -4,6 +4,7 @@ import {
   getSaucesByIdsQuery,
 } from "@workspace/sanity-config/query";
 import type { GetSaucesByIdsQueryResult } from "@workspace/sanity-config/types";
+import { Section } from "@workspace/ui/components/section";
 
 import { RelatedSaucesLayout } from "@/components/layouts/related-sauces-layout";
 import { SingleRelatedSauceLayout } from "@/components/layouts/single-related-sauce-layout";
@@ -55,6 +56,7 @@ export async function RecipeRelatedSaucesSection({
     _id: string;
     _type: "sauce";
     name: string;
+    authorName: string | null;
     slug: string;
     line: "Original" | "Organic" | "Ultra-Premium";
     category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
@@ -67,7 +69,13 @@ export async function RecipeRelatedSaucesSection({
 
   const count = saucesWithImages.length;
   if (count === 1) {
-    return <SingleRelatedSauceLayout item={saucesWithImages[0]!} />;
+    return (
+      <Section spacingTop="large" spacingBottom="large" id="related-sauces">
+        <div className="container mx-auto px-4 md:px-6">
+          <SingleRelatedSauceLayout item={saucesWithImages[0]!} />
+        </div>
+      </Section>
+    );
   }
   return (
     <RelatedSaucesLayout

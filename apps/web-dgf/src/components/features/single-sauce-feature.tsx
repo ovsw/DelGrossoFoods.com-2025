@@ -8,6 +8,7 @@ import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
 import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
+import { buildLfdSauceDisplayName } from "@/lib/sauces/display-name";
 import type { SauceListItem } from "@/types";
 
 type Props = {
@@ -24,13 +25,38 @@ export function SingleSauceFeature({ item }: Props) {
   const typeBadge = getTypeBadge(item.category);
   const href = buildHref("/sauces", item.slug);
 
-  const name = stegaClean(item.name);
+  const displayName = buildLfdSauceDisplayName(item.name, item.authorName);
+  const name = stegaClean(displayName);
+  const rawSauceName = item.name ?? "";
+  const cleanedSauceName = stegaClean(rawSauceName).trim();
+  const rawAuthorName = item.authorName ?? "";
+  const cleanedAuthorName = stegaClean(rawAuthorName).trim();
+  const hasAuthorName = cleanedAuthorName.length > 0;
+  const authorSuffix = hasAuthorName
+    ? cleanedAuthorName.endsWith("s")
+      ? "'"
+      : "'s"
+    : "";
   const alt = stegaClean(item.mainImage?.alt || `${name} sauce`);
   const rawDescription = item.descriptionPlain ?? "";
   const cleanedDescription = stegaClean(rawDescription);
   const hasDescription =
     typeof cleanedDescription === "string" &&
     cleanedDescription.trim().length > 0;
+  const sauceNameAttribute = cleanedSauceName
+    ? createPresentationDataAttribute({
+        documentId: item._id,
+        documentType: item._type,
+        path: "name",
+      })
+    : null;
+  const authorNameAttribute = hasAuthorName
+    ? createPresentationDataAttribute({
+        documentId: item._id,
+        documentType: item._type,
+        path: "authorName",
+      })
+    : null;
   const descriptionAttribute = hasDescription
     ? createPresentationDataAttribute({
         documentId: item._id,
@@ -63,7 +89,19 @@ export function SingleSauceFeature({ item }: Props) {
         <div className="text-start">
           <Eyebrow text="Sauce Info" />
 
-          <h2 className="heading-section">{item.name}</h2>
+          <h2 className="heading-section">
+            {hasAuthorName ? (
+              <>
+                <span data-sanity={authorNameAttribute ?? undefined}>
+                  {rawAuthorName}
+                </span>
+                {authorSuffix}{" "}
+              </>
+            ) : null}
+            <span data-sanity={sauceNameAttribute ?? undefined}>
+              {rawSauceName}
+            </span>
+          </h2>
           <div className="my-6 flex flex-wrap items-center gap-1.5">
             <Badge
               text={lineBadge.text}
