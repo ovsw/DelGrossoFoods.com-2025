@@ -2,12 +2,8 @@ import { sanityFetch } from "@workspace/sanity-config/live";
 import {
   getAllProductSlugsForStaticParamsQuery,
   getProductBySlugQuery,
-  getSauceBySlugQuery,
 } from "@workspace/sanity-config/query";
-import type {
-  GetProductBySlugQueryResult,
-  GetSauceBySlugQueryResult,
-} from "@workspace/sanity-config/types";
+import type { GetProductBySlugQueryResult } from "@workspace/sanity-config/types";
 import { Eyebrow } from "@workspace/ui/components/eyebrow";
 import { Section } from "@workspace/ui/components/section";
 import type { Metadata } from "next";
@@ -20,7 +16,6 @@ import { ProductHeroSection } from "@/components/page-sections/product-page/prod
 import { ProductRelatedRecipesSection } from "@/components/page-sections/product-page/product-related-recipes-section";
 import { ProductSummarySection } from "@/components/page-sections/product-page/product-summary-section";
 import { getPackagingText } from "@/config/product-taxonomy";
-import { toLineSlug } from "@/config/sauce-taxonomy";
 import { createSignedCartConfig } from "@/lib/foxy/cart-signing";
 import { getSEOMetadata } from "@/lib/seo";
 import type { ProductDetailData, SauceListItem } from "@/types";
@@ -102,23 +97,6 @@ async function fetchProduct(slug: string): Promise<ProductDetailData | null> {
     return null;
   }
   return product;
-}
-
-async function fetchSauceBySlug(
-  slug: string,
-): Promise<GetSauceBySlugQueryResult | null> {
-  const normalizedSlug = slug.startsWith("/sauces/")
-    ? slug.replace(/^\/sauces\//, "")
-    : slug;
-  const prefixedSlug = `/sauces/${normalizedSlug}`;
-  const [result] = await handleErrors<{ data: GetSauceBySlugQueryResult }>(
-    sanityFetch({
-      query: getSauceBySlugQuery,
-      params: { slug: normalizedSlug, prefixedSlug },
-    }),
-  );
-
-  return result?.data ?? null;
 }
 
 function normalizeStoreStaticSlug(slug: string): string {
@@ -229,22 +207,6 @@ export default async function ProductDetailPage({
     .map(toSauceListItem)
     .filter((sauce): sauce is SauceListItem => sauce !== null);
 
-  const premiumSauceSlug =
-    rawSauces.find((sauce) => toLineSlug(sauce?.line) === "premium")?.slug ??
-    null;
-  const premiumSauce = premiumSauceSlug
-    ? await fetchSauceBySlug(premiumSauceSlug)
-    : null;
-  const premiumSauceAuthor =
-    premiumSauce && (premiumSauce.authorName || premiumSauce.authorImage?.id)
-      ? {
-          _id: premiumSauce._id,
-          _type: premiumSauce._type,
-          authorName: premiumSauce.authorName,
-          authorImage: premiumSauce.authorImage,
-        }
-      : null;
-
   const hasOneSauce = associatedSauces.length === 1;
   const hasManySauces = associatedSauces.length > 1;
 
@@ -270,7 +232,6 @@ export default async function ProductDetailPage({
         weightText={weightText}
         shippingText={shippingText}
         signedCart={signedCart}
-        premiumSauceAuthor={premiumSauceAuthor}
       />
 
       {associatedSauces.length > 0 ? (
