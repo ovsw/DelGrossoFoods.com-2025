@@ -31,6 +31,11 @@ export function SauceHeroSection({
   const cleanedAuthorName = stegaClean(rawAuthorName).trim();
   const authorName = String(rawAuthorName).trim();
   const hasAuthorName = cleanedAuthorName.length > 0;
+  const authorNameSuffix = hasAuthorName
+    ? cleanedAuthorName.endsWith("s")
+      ? "'"
+      : "'s"
+    : "";
 
   const rawColorHex = sauce.colorHex ?? "";
   const cleanedColorHex = stegaClean(rawColorHex).trim();
@@ -160,11 +165,11 @@ export function SauceHeroSection({
                   "flex flex-col items-start gap-1",
                 )}
               >
-                <span
-                  className={authorNameClassName}
-                  data-sanity={authorNameAttribute ?? undefined}
-                >
-                  {authorName}
+                <span className={authorNameClassName}>
+                  <span data-sanity={authorNameAttribute ?? undefined}>
+                    {authorName}
+                  </span>
+                  {authorNameSuffix}
                 </span>
                 <span
                   className={sauceNameClassName}

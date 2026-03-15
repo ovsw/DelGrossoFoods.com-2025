@@ -31,6 +31,11 @@ export function SauceHeroSection({
   const cleanedAuthorName = stegaClean(rawAuthorName).trim();
   const authorName = String(rawAuthorName).trim();
   const hasAuthorName = cleanedAuthorName.length > 0;
+  const authorNameSuffix = hasAuthorName
+    ? cleanedAuthorName.endsWith("s")
+      ? "'"
+      : "'s"
+    : "";
 
   const rawColorHex = sauce.colorHex ?? "";
   const cleanedColorHex = stegaClean(rawColorHex).trim();
@@ -159,11 +164,11 @@ export function SauceHeroSection({
                   )}
                 >
                   {hasAuthorName ? (
-                    <span
-                      className="block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl"
-                      data-sanity={authorNameAttribute ?? undefined}
-                    >
-                      {authorName}
+                    <span className="block text-2xl font-semibold text-balance text-th-dark-900/80 sm:text-3xl">
+                      <span data-sanity={authorNameAttribute ?? undefined}>
+                        {authorName}
+                      </span>
+                      {authorNameSuffix}
                     </span>
                   ) : null}
                   <span
