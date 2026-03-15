@@ -55,6 +55,7 @@ export async function RecipeRelatedSaucesSection({
     _id: string;
     _type: "sauce";
     name: string;
+    authorName: string | null;
     slug: string;
     line: "Original" | "Organic" | "Ultra-Premium";
     category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";

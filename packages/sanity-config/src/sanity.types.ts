@@ -1917,11 +1917,12 @@ export type QueryGenericPageOGDataResult =
 
 // Source: ../../packages/sanity-config/src/query.ts
 // Variable: getAllSaucesForIndexQuery
-// Query: *[    _type == "sauce"    && (      !defined($line)      || $line == null      || line == $line    )  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": mainImage.asset._ref,      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
+// Query: *[    _type == "sauce"    && (      !defined($line)      || $line == null      || line == $line    )  ] | order(name asc){    _id,    _type,    name,    authorName,    "slug": slug.current,    line,    category,    "descriptionPlain": pt::text(description),    "mainImage": {      "id": mainImage.asset._ref,      "preview": mainImage.asset->metadata.lqip,      "hotspot": mainImage.hotspot{ x, y },      "crop": mainImage.crop{ top, bottom, left, right },      "alt": mainImage.alt    }  }
 export type GetAllSaucesForIndexQueryResult = Array<{
   _id: string;
   _type: "sauce";
   name: string;
+  authorName: string | null;
   slug: string;
   line: "Organic" | "Original" | "Ultra-Premium";
   category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";
@@ -1945,11 +1946,12 @@ export type GetAllSaucesForIndexQueryResult = Array<{
 
 // Source: ../../packages/sanity-config/src/query.ts
 // Variable: getSaucesByIdsQuery
-// Query: *[    _type == "sauce"    && _id in $sauceIds    && defined(slug.current)  ] | order(name asc){    _id,    _type,    name,    "slug": slug.current,    line,    category,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    }  }
+// Query: *[    _type == "sauce"    && _id in $sauceIds    && defined(slug.current)  ] | order(name asc){    _id,    _type,    name,    authorName,    "slug": slug.current,    line,    category,    "descriptionPlain": coalesce(pt::text(description), ""),    "mainImage": mainImage{        "id": asset._ref,  "preview": asset->metadata.lqip,  hotspot {    x,    y  },  crop {    bottom,    left,    right,    top  },  "alt": alt,      "alt": coalesce(alt, "")    }  }
 export type GetSaucesByIdsQueryResult = Array<{
   _id: string;
   _type: "sauce";
   name: string;
+  authorName: string | null;
   slug: string;
   line: "Organic" | "Original" | "Ultra-Premium";
   category: "Pasta Sauce" | "Pizza Sauce" | "Salsa Sauce" | "Sandwich Sauce";

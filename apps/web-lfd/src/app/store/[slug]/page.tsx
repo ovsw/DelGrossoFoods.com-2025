@@ -73,6 +73,7 @@ function toSauceListItem(
 
   return {
     ...sauce,
+    authorName: null,
     mainImage: {
       ...mainImage,
       alt: mainImage.alt ?? "",

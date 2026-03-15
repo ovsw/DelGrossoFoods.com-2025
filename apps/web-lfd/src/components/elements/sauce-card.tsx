@@ -14,12 +14,29 @@ export type SauceCardProps = {
   showBadges?: boolean;
 };
 
+function buildLfdSauceDisplayName(
+  name: string,
+  authorName: string | null | undefined,
+) {
+  const trimmedName = name.trim();
+  const trimmedAuthorName = authorName?.trim();
+
+  if (!trimmedAuthorName) {
+    return trimmedName;
+  }
+
+  const suffix = trimmedAuthorName.endsWith("s") ? "'" : "'s";
+  return `${trimmedAuthorName}${suffix} ${trimmedName}`;
+}
+
 export function SauceCard({
   item,
   showLineLabel = true,
   showBadges = true,
 }: SauceCardProps) {
-  const { name, slug, mainImage, line, category, _id, _type } = item;
+  const { name, authorName, slug, mainImage, line, category, _id, _type } =
+    item;
+  const displayName = buildLfdSauceDisplayName(name, authorName);
   const typeBadge = showBadges ? getTypeBadge(category) : null;
 
   // Get the display name from configuration (supports enhanced names like "La Famiglia DelGrosso")
@@ -39,9 +56,9 @@ export function SauceCard({
   return (
     <ListCard
       href={buildHref("/sauces", slug)}
-      title={name}
+      title={displayName}
       titleSecondary={lineDisplayName}
-      ariaLabel={`View ${name} sauce`}
+      ariaLabel={`View ${displayName} sauce`}
       image={
         mainImage?.id ? (
           <SanityImage
@@ -49,7 +66,7 @@ export function SauceCard({
             respectSanityCrop
             width={400}
             height={480}
-            alt={`${name} sauce`}
+            alt={`${displayName} sauce`}
             mode="contain"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             data-sanity={imageAttribute}
