@@ -496,6 +496,7 @@ export const getProductBySlugQuery = defineQuery(`
       _id,
       _type,
       name,
+      authorName,
       line,
       category,
       "slug": slug.current,

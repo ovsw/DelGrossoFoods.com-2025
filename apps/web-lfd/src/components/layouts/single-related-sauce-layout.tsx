@@ -8,6 +8,8 @@ import type { ReactElement } from "react";
 import { SanityImage } from "@/components/elements/sanity-image";
 import { getLineBadge, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
+import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
+import { buildLfdSauceDisplayName } from "@/lib/sauces/display-name";
 import type { SauceListItem } from "@/types";
 
 export interface SingleRelatedSauceLayoutProps {
@@ -21,10 +23,35 @@ export function SingleRelatedSauceLayout({
   const typeBadge = getTypeBadge(item.category);
   const href = buildHref("/sauces", item.slug);
 
-  const name = stegaClean(item.name);
+  const displayName = buildLfdSauceDisplayName(item.name, item.authorName);
+  const name = stegaClean(displayName);
+  const rawSauceName = item.name ?? "";
+  const cleanedSauceName = stegaClean(rawSauceName).trim();
+  const rawAuthorName = item.authorName ?? "";
+  const cleanedAuthorName = stegaClean(rawAuthorName).trim();
+  const hasAuthorName = cleanedAuthorName.length > 0;
+  const authorSuffix = hasAuthorName
+    ? cleanedAuthorName.endsWith("s")
+      ? "'"
+      : "'s"
+    : "";
   const alt = stegaClean(item.mainImage?.alt || `${name} sauce`);
   const descriptionVisible = item.descriptionPlain || "";
   const cleanedDescription = stegaClean(descriptionVisible);
+  const sauceNameAttribute = cleanedSauceName
+    ? createPresentationDataAttribute({
+        documentId: item._id,
+        documentType: item._type,
+        path: "name",
+      })
+    : null;
+  const authorNameAttribute = hasAuthorName
+    ? createPresentationDataAttribute({
+        documentId: item._id,
+        documentType: item._type,
+        path: "authorName",
+      })
+    : null;
 
   return (
     <div className="mt-16">
@@ -51,7 +78,19 @@ export function SingleRelatedSauceLayout({
           <div className="text-start">
             <Eyebrow text="Featured sauce" />
 
-            <h3 className="heading-section">{item.name}</h3>
+            <h3 className="heading-section">
+              {hasAuthorName ? (
+                <>
+                  <span data-sanity={authorNameAttribute ?? undefined}>
+                    {rawAuthorName}
+                  </span>
+                  {authorSuffix}{" "}
+                </>
+              ) : null}
+              <span data-sanity={sauceNameAttribute ?? undefined}>
+                {rawSauceName}
+              </span>
+            </h3>
 
             <div className="my-6 flex flex-wrap items-center gap-1.5">
               <Badge

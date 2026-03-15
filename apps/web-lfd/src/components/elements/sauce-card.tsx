@@ -6,6 +6,7 @@ import { SanityImage } from "@/components/elements/sanity-image";
 import { dataset, projectId, studioUrl } from "@/config";
 import { getLineDisplayName, getTypeBadge } from "@/config/sauce-taxonomy";
 import { buildHref } from "@/lib/list/href";
+import { buildLfdSauceDisplayName } from "@/lib/sauces/display-name";
 import type { SauceListItem } from "@/types";
 
 export type SauceCardProps = {
@@ -13,21 +14,6 @@ export type SauceCardProps = {
   showLineLabel?: boolean;
   showBadges?: boolean;
 };
-
-function buildLfdSauceDisplayName(
-  name: string,
-  authorName: string | null | undefined,
-) {
-  const trimmedName = name.trim();
-  const trimmedAuthorName = authorName?.trim();
-
-  if (!trimmedAuthorName) {
-    return trimmedName;
-  }
-
-  const suffix = trimmedAuthorName.endsWith("s") ? "'" : "'s";
-  return `${trimmedAuthorName}${suffix} ${trimmedName}`;
-}
 
 export function SauceCard({
   item,
