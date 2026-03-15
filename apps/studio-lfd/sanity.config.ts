@@ -24,6 +24,7 @@ import { structure } from "./structure";
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
 const dataset = process.env.SANITY_STUDIO_DATASET;
 const title = process.env.SANITY_STUDIO_TITLE;
+const isLocalDevelopment = process.env.NODE_ENV !== "production";
 const previewOrigin =
   process.env.NODE_ENV === "production"
     ? getPresentationUrl()
@@ -62,7 +63,7 @@ export default defineConfig({
       structure,
     }),
     presentationUrl(),
-    visionTool(),
+    ...(isLocalDevelopment ? [visionTool()] : []),
     unsplashImageAsset(),
     media(),
     muxInput({
