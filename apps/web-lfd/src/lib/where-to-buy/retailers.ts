@@ -36,7 +36,12 @@ type WhereToBuyData = {
 };
 
 const productLineLabels = lfdProductLines.reduce((acc, line) => {
-  acc[line] = line;
+  acc[line] =
+    line === "LFD - pizza and pasta sauce"
+      ? "La Famiglia DelGrosso - Pizza & Pasta Sauce"
+      : line === "LFD - Sloppy Joe Sauce"
+        ? "La Famiglia DelGrosso - Sloppy Joe Sauce"
+        : line;
   return acc;
 }, {} as WhereToBuyProductLineLabels);
 
@@ -44,7 +49,7 @@ const productFilterOptions: WhereToBuyProductFilterOption[] = [
   { value: "all", label: "All Products" },
   ...lfdProductLines.map((line) => ({
     value: line,
-    label: line,
+    label: productLineLabels[line],
   })),
 ];
 
