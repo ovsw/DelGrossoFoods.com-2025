@@ -5,91 +5,48 @@ import { stegaClean } from "next-sanity";
 
 import type { RecipeDetailData } from "@/types";
 
-// Video poster dimensions constants
-const VIDEO_POSTER_WIDTH = 1280;
-const VIDEO_POSTER_HEIGHT = 720;
-
 import {
   hasBlocks,
   InfoRow,
   mapSaucesToDisplay,
   RecipeBadges,
+  RecipeContent,
   SauceList,
-  VariantContent,
-  type VariantKey,
 } from "./recipe-details";
 import { RecipeVideoClient } from "./recipe-video/recipe-video-client";
+
+// Video poster dimensions constants
+const VIDEO_POSTER_WIDTH = 1280;
+const VIDEO_POSTER_HEIGHT = 720;
 
 export interface RecipeDetailsSectionProps {
   readonly recipe: RecipeDetailData;
 }
 
 export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
-  const hasOriginal =
-    hasBlocks(recipe.dgfIngredients) ||
-    hasBlocks(recipe.dgfDirections) ||
-    hasBlocks(recipe.dgfNotes) ||
-    (recipe.dgfSauces?.length ?? 0) > 0;
-  const hasPremium =
-    hasBlocks(recipe.lfdIngredients) ||
-    hasBlocks(recipe.lfdDirections) ||
-    hasBlocks(recipe.lfdNotes) ||
-    (recipe.lfdSauces?.length ?? 0) > 0;
+  const hasRecipeText =
+    hasBlocks(recipe.ingredients) ||
+    hasBlocks(recipe.directions) ||
+    hasBlocks(recipe.notes);
 
-  const available: VariantKey[] =
-    hasOriginal && hasPremium
-      ? ["original", "premium"]
-      : hasOriginal
-        ? ["original"]
-        : ["premium"];
+  const originalSauces = mapSaucesToDisplay(recipe.dgfSauces);
+  const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
+  const showOriginalSauces = originalSauces.length > 0;
+  const showPremiumSauces = premiumSauces.length > 0;
+  const hasSauceContent = showOriginalSauces || showPremiumSauces;
 
-  const hasOriginalText =
-    hasBlocks(recipe.dgfIngredients) ||
-    hasBlocks(recipe.dgfDirections) ||
-    hasBlocks(recipe.dgfNotes);
-  const hasPremiumText =
-    hasBlocks(recipe.lfdIngredients) ||
-    hasBlocks(recipe.lfdDirections) ||
-    hasBlocks(recipe.lfdNotes);
-  const primaryVariant: VariantKey = "premium";
-  const secondaryVariant: VariantKey = "original";
-  const defaultVariant: VariantKey = available[0] ?? primaryVariant;
-  const selectedVariant: VariantKey =
-    hasPremiumText && available.includes(primaryVariant)
-      ? primaryVariant
-      : hasOriginalText && available.includes(secondaryVariant)
-        ? secondaryVariant
-        : available.includes(primaryVariant)
-          ? primaryVariant
-          : defaultVariant;
-
-  // If neither variant has any content, don't render the section
-  if (!hasOriginal && !hasPremium) {
+  if (!hasRecipeText && !hasSauceContent) {
     return null;
   }
 
   const { meatBadges, tagBadges, categoryBadges } = RecipeBadges({ recipe });
 
-  const originalSauces = mapSaucesToDisplay(recipe.dgfSauces);
-  const premiumSauces = mapSaucesToDisplay(recipe.lfdSauces);
-  const showOriginalSauces =
-    available.includes("original") && originalSauces.length > 0;
-  const showPremiumSauces =
-    available.includes("premium") && premiumSauces.length > 0;
-
   const documentId = recipe._id ?? null;
   const documentType = recipe._type ?? null;
-  const variantFieldPaths = {
-    original: {
-      ingredients: "dgfIngredients",
-      directions: "dgfDirections",
-      notes: "dgfNotes",
-    },
-    premium: {
-      ingredients: "lfdIngredients",
-      directions: "lfdDirections",
-      notes: "lfdNotes",
-    },
+  const fieldPaths = {
+    ingredients: "ingredients",
+    directions: "directions",
+    notes: "notes",
   } as const;
 
   // We intentionally preserve stega metadata in visible rich text below.
@@ -121,7 +78,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
         className="grid grid-cols-1 gap-10 md:grid-cols-12"
         data-html="c-recipe-details-grid"
       >
-        {/* Left: Video (if present) + Variant content */}
+        {/* Left: Video (if present) + recipe content */}
         <div className="order-2 md:order-1 md:col-span-7 lg:col-span-8">
           {playbackId ? (
             <RecipeVideoClient
@@ -133,25 +90,13 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
             />
           ) : null}
           <div className="space-y-10" data-html="c-recipe-single-variant">
-            <VariantContent
-              ingredients={
-                selectedVariant === "premium"
-                  ? recipe.lfdIngredients
-                  : recipe.dgfIngredients
-              }
-              directions={
-                selectedVariant === "premium"
-                  ? recipe.lfdDirections
-                  : recipe.dgfDirections
-              }
-              notes={
-                selectedVariant === "premium"
-                  ? recipe.lfdNotes
-                  : recipe.dgfNotes
-              }
+            <RecipeContent
+              ingredients={recipe.ingredients}
+              directions={recipe.directions}
+              notes={recipe.notes}
               documentId={documentId}
               documentType={documentType}
-              fieldPaths={variantFieldPaths[selectedVariant]}
+              fieldPaths={fieldPaths}
             />
           </div>
         </div>
@@ -195,7 +140,7 @@ export function RecipeDetailsSection({ recipe }: RecipeDetailsSectionProps) {
                 <InfoRow title="Tags">{tagBadges}</InfoRow>
               ) : null}
 
-              {(showOriginalSauces || showPremiumSauces) && (
+              {hasSauceContent && (
                 <div className="md:col-span-2">
                   <InfoLabel asChild>
                     <dt>Sauces</dt>

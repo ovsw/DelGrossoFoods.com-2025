@@ -5,7 +5,6 @@ import {
   ImageIcon,
   TagIcon,
 } from "@sanity/icons";
-import type { SanityDocument } from "sanity";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { PathnameFieldComponent } from "../../components/slug-field-component";
@@ -22,14 +21,6 @@ type PortableTextValidationBlock = {
     _type?: string;
     text?: string;
   }>;
-};
-
-const isVersionSelected = (
-  document: (SanityDocument & { versions?: string[] }) | undefined,
-  version: string,
-) => {
-  const versions = document?.versions;
-  return versions?.includes(version) || false;
 };
 
 const pseudoListPatterns = [/^\s*-\s+/u, /^\s*\d+\.\s+/u];
@@ -71,18 +62,14 @@ const validatePortableTextListUsage = (value: unknown) => {
   return "Use the Portable Text bullet or numbered list controls instead of typing '-' or '1.' manually.";
 };
 
+const hasReferenceArray = (value: unknown): boolean =>
+  Array.isArray(value) && value.length > 0;
+
+const isDefinedReference = (value: unknown): boolean =>
+  Boolean(value && typeof value === "object");
+
 const studioSiteCode = process.env.SANITY_STUDIO_SITE_CODE;
 const isDgfStudio = studioSiteCode === "DGF";
-const versionOptions = isDgfStudio
-  ? [
-      { title: "DGF", value: "DGF" },
-      { title: "Organic", value: "Organic" },
-      { title: "LFD", value: "LFD" },
-    ]
-  : [
-      { title: "DGF", value: "DGF" },
-      { title: "LFD", value: "LFD" },
-    ];
 
 export const recipeType = defineType({
   name: "recipe",
@@ -98,13 +85,13 @@ export const recipeType = defineType({
     { name: "media", title: "Media", icon: ImageIcon },
     { name: "categories", title: "Category & Tags", icon: TagIcon },
     {
-      name: "dgf-content",
-      title: "DGF Content",
+      name: "main-content",
+      title: "Main Content",
       icon: BlockContentIcon,
     },
     {
-      name: "lfd-content",
-      title: "LFD Content",
+      name: "sauces",
+      title: "Sauces",
       icon: BlockContentIcon,
     },
     {
@@ -150,21 +137,6 @@ export const recipeType = defineType({
       ],
     }),
     defineField({
-      name: "versions",
-      description: "What versions does this recipe have?",
-      title: "Versions",
-      type: "array",
-      of: [{ type: "string" }],
-      options: {
-        list: versionOptions,
-        layout: "grid",
-      },
-      validation: (rule) =>
-        rule.required().error("At least one category must be selected"),
-      group: "basic",
-      initialValue: ["LFD"],
-    }),
-    defineField({
       name: "dgfSauces",
       title: "DGF Sauces used",
       type: "array",
@@ -172,11 +144,13 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          options: {
+            filter: 'line == "Original"',
+          },
         }),
       ],
-      group: "dgf-content",
+      group: "sauces",
       description: "Link to one or more DGF sauces used in this recipe.",
-      hidden: ({ document }) => !isVersionSelected(document, "DGF"),
     }),
     defineField({
       name: "lfdSauces",
@@ -186,11 +160,13 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          options: {
+            filter: 'line == "Ultra-Premium"',
+          },
         }),
       ],
-      group: "lfd-content",
-      description: "Link to one or more DGF sauces used in this recipe.",
-      hidden: ({ document }) => !isVersionSelected(document, "LFD"),
+      group: "sauces",
+      description: "Link to one or more LFD sauces used in this recipe.",
     }),
     defineField({
       name: "tags",
@@ -285,51 +261,36 @@ export const recipeType = defineType({
     }),
 
     defineField({
-      name: "dgfIngredients",
+      name: "ingredients",
       title: "Ingredients",
       type: "array",
       of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      hidden: ({ document }) => !isVersionSelected(document, "DGF"),
+      group: "main-content",
+      description: "Unified recipe ingredients used by both sites.",
       validation: (Rule) => [
-        Rule.custom((value, context) => {
-          if (!isVersionSelected(context.document, "DGF")) {
-            return true;
-          }
-          return Array.isArray(value) && value.length > 0
-            ? true
-            : "Missing Ingredients for DGF version of recipe.";
-        }),
+        Rule.required().error("Ingredients are required."),
         Rule.custom((value) => validatePortableTextListUsage(value)),
       ],
     }),
     defineField({
-      name: "dgfDirections",
+      name: "directions",
       title: "Directions",
       type: "array",
       of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      hidden: ({ document }) => !isVersionSelected(document, "DGF"),
+      group: "main-content",
+      description: "Unified recipe directions used by both sites.",
       validation: (Rule) => [
-        Rule.custom((value, context) => {
-          if (!isVersionSelected(context.document, "DGF")) {
-            return true;
-          }
-          return Array.isArray(value) && value.length > 0
-            ? true
-            : "Missing Directions for DGF version of recipe.";
-        }),
+        Rule.required().error("Directions are required."),
         Rule.custom((value) => validatePortableTextListUsage(value)),
       ],
     }),
     defineField({
-      name: "dgfNotes",
+      name: "notes",
       title: "Notes",
       type: "array",
       of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      description: "Optional notes, tips, or variations for the recipe.",
-      hidden: ({ document }) => !isVersionSelected(document, "DGF"),
+      group: "main-content",
+      description: "Unified optional recipe notes used by both sites.",
       validation: (Rule) =>
         Rule.custom((value) => validatePortableTextListUsage(value)),
     }),
@@ -343,57 +304,7 @@ export const recipeType = defineType({
       options: {
         filter: 'line == "Organic"',
       },
-      hidden: ({ document }) =>
-        !(isDgfStudio && isVersionSelected(document, "Organic")),
-    }),
-    defineField({
-      name: "lfdIngredients",
-      title: "Ingredients",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      hidden: ({ document }) => !isVersionSelected(document, "LFD"),
-      validation: (Rule) => [
-        Rule.custom((value, context) => {
-          if (!isVersionSelected(context.document, "LFD")) {
-            return true;
-          }
-          return Array.isArray(value) && value.length > 0
-            ? true
-            : "Missing Ingredients for LFD version of recipe.";
-        }),
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "lfdDirections",
-      title: "Directions",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      hidden: ({ document }) => !isVersionSelected(document, "LFD"),
-      validation: (Rule) => [
-        Rule.custom((value, context) => {
-          if (!isVersionSelected(context.document, "LFD")) {
-            return true;
-          }
-          return Array.isArray(value) && value.length > 0
-            ? true
-            : "Missing Directions for LFD version of recipe.";
-        }),
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "lfdNotes",
-      title: "Notes",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      description: "Optional notes, tips, or variations for the recipe.",
-      hidden: ({ document }) => !isVersionSelected(document, "LFD"),
-      validation: (Rule) =>
-        Rule.custom((value) => validatePortableTextListUsage(value)),
+      hidden: () => !isDgfStudio,
     }),
     defineField({
       name: "orderRank",
@@ -406,20 +317,27 @@ export const recipeType = defineType({
     select: {
       title: "name",
       media: "mainImage",
-      versions: "versions",
+      dgfSauces: "dgfSauces",
+      lfdSauces: "lfdSauces",
+      organicSauce: "organicSauce",
     },
     prepare(selection) {
-      const { title, media, versions } = selection;
-      let subtitle = "";
-      if (Array.isArray(versions) && versions.length > 0) {
-        subtitle = versions
-          .map((v) => (typeof v === "string" ? v.toUpperCase() : ""))
-          .filter(Boolean)
-          .join(", ");
+      const { title, media, dgfSauces, lfdSauces, organicSauce } = selection;
+      const availability: string[] = [];
+
+      if (hasReferenceArray(dgfSauces)) {
+        availability.push("DGF");
       }
+      if (hasReferenceArray(lfdSauces)) {
+        availability.push("LFD");
+      }
+      if (isDefinedReference(organicSauce)) {
+        availability.push("Organic");
+      }
+
       return {
         title: title || "Untitled Recipe",
-        subtitle,
+        subtitle: availability.join(", "),
         media,
       };
     },

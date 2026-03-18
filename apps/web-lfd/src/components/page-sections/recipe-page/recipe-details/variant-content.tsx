@@ -3,13 +3,13 @@ import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 
 import { hasBlocks } from "./utils";
 
-type VariantFieldPaths = {
+type RecipeContentFieldPaths = {
   ingredients?: string | null;
   directions?: string | null;
   notes?: string | null;
 };
 
-export function VariantContent({
+export function RecipeContent({
   ingredients,
   directions,
   notes,
@@ -22,7 +22,7 @@ export function VariantContent({
   notes?: unknown[] | null;
   documentId?: string | null;
   documentType?: string | null;
-  fieldPaths?: VariantFieldPaths;
+  fieldPaths?: RecipeContentFieldPaths;
 }) {
   const getDataAttribute = (path?: string | null) =>
     createPresentationDataAttribute({
@@ -32,7 +32,7 @@ export function VariantContent({
     }) ?? undefined;
 
   return (
-    <div data-html="c-variant-content" className="space-y-10">
+    <div data-html="c-recipe-content" className="space-y-10">
       {/* Ingredients */}
       {hasBlocks(ingredients) ? (
         <section

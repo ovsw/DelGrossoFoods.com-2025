@@ -8,6 +8,10 @@ import {
   recipeVideoFragment,
 } from "./fragments";
 
+const lfdRecipeAvailabilityFilter = /* groq */ `
+  count(coalesce(lfdSauces, [])) > 0
+`;
+
 export const queryImageType = defineQuery(`
   *[_type == "page" && defined(image)][0]{
     ${imageFragment}
@@ -133,7 +137,7 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     && (
       !defined($siteCode)
       || $siteCode != "LFD"
-      || "LFD" in coalesce(versions, [])
+      || ${lfdRecipeAvailabilityFilter}
     )
   ] | order(name asc){
     _id,
@@ -141,7 +145,6 @@ export const getAllRecipesForIndexQuery = defineQuery(`
     "slug": slug.current,
     tags,
     meat,
-    versions,
     "hasVideo": defined(video.asset.asset._ref),
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
@@ -162,7 +165,7 @@ export const getAllRecipeSlugsForStaticParamsQuery = defineQuery(`
     && (
       !defined($siteCode)
       || $siteCode != "LFD"
-      || "LFD" in coalesce(versions, [])
+      || ${lfdRecipeAvailabilityFilter}
     )
   ] | order(name asc).slug.current
 `);
@@ -176,7 +179,7 @@ export const getRecipesBySauceIdQuery = defineQuery(`
     && (
       !defined($siteCode)
       || $siteCode != "LFD"
-      || "LFD" in coalesce(versions, [])
+      || ${lfdRecipeAvailabilityFilter}
     )
   ] | order(name asc){
     _id,
@@ -184,7 +187,6 @@ export const getRecipesBySauceIdQuery = defineQuery(`
     "slug": slug.current,
     tags,
     meat,
-    versions,
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
@@ -207,7 +209,7 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
     && (
       !defined($siteCode)
       || $siteCode != "LFD"
-      || "LFD" in coalesce(versions, [])
+      || ${lfdRecipeAvailabilityFilter}
     )
   ] | order(name asc){
     _id,
@@ -215,7 +217,6 @@ export const getRecipesBySauceIdsQuery = defineQuery(`
     "slug": slug.current,
     tags,
     meat,
-    versions,
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "descriptionPlain": "",
     "mainImage": {
@@ -240,7 +241,6 @@ export const getRecipeByIdQuery = defineQuery(`
     serves,
     tags,
     meat,
-    versions,
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
@@ -250,21 +250,9 @@ export const getRecipeByIdQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    "dgfIngredients": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfIngredients
-    ),
-    "dgfDirections": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfDirections
-    ),
-    "dgfNotes": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfNotes
-    ),
-    lfdIngredients,
-    lfdDirections,
-    lfdNotes,
+    ingredients,
+    directions,
+    notes,
     "dgfSauces": select(
       defined($siteCode) && $siteCode == "LFD" => [],
       dgfSauces[]->{
@@ -316,7 +304,6 @@ export const getRecipeBySlugQuery = defineQuery(`
     serves,
     tags,
     meat,
-    versions,
     "categories": array::compact(categories[]->{ _id, title, slug }),
     "mainImage": {
       "id": coalesce(mainImage.asset._ref, ""),
@@ -326,21 +313,9 @@ export const getRecipeBySlugQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    "dgfIngredients": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfIngredients
-    ),
-    "dgfDirections": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfDirections
-    ),
-    "dgfNotes": select(
-      defined($siteCode) && $siteCode == "LFD" => null,
-      dgfNotes
-    ),
-    lfdIngredients,
-    lfdDirections,
-    lfdNotes,
+    ingredients,
+    directions,
+    notes,
     "dgfSauces": select(
       defined($siteCode) && $siteCode == "LFD" => [],
       dgfSauces[]->{

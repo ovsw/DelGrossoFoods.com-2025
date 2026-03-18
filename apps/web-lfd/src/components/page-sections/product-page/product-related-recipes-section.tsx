@@ -29,7 +29,6 @@ export async function ProductRelatedRecipesSection({
       slug: string;
       tags: string[] | null;
       meat: string[] | null;
-      versions: string[];
       categories: Array<{
         _id: string;
         title: string;
