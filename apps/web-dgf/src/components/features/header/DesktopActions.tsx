@@ -1,4 +1,3 @@
-import { CartButton } from "./CartButton";
 import { RecipesButton } from "./RecipesButton";
 
 type DesktopActionsProps = {
@@ -37,7 +36,6 @@ export function DesktopActions({ ctaButton }: DesktopActionsProps) {
           {ctaLabel}
         </RecipesButton>
       ) : null}
-      <CartButton variant="outline" />
     </div>
   );
 }

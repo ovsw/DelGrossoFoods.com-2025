@@ -95,14 +95,15 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
               currentPath={pathname ?? undefined}
             />
 
-            {/* Desktop Search and Cart */}
-            <DesktopActions ctaButton={hasCtaButton ? ctaButton : undefined} />
+            <div className="flex items-center space-x-4">
+              {/* Desktop CTA */}
+              <DesktopActions
+                ctaButton={hasCtaButton ? ctaButton : undefined}
+              />
 
-            {/* Mobile actions group */}
-            <div className="flex items-center space-x-4 lg:hidden">
               {/* Mobile Recipes Button */}
               {hasCtaButton ? (
-                <div>
+                <div className="lg:hidden">
                   <RecipesButton
                     size="sm"
                     className="max-[450px]:h-9 max-[450px]:w-9 max-[450px]:justify-center max-[450px]:px-0"
@@ -115,10 +116,9 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
                   </RecipesButton>
                 </div>
               ) : null}
-              {/* Mobile Cart Button */}
-              <div>
-                <CartButton />
-              </div>
+
+              {/* Shared cart link across breakpoints */}
+              <CartButton />
 
               {/* Mobile menu button */}
               <MobileMenuToggle

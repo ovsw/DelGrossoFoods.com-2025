@@ -14,6 +14,23 @@ import { createPresentationDataAttribute } from "@/lib/sanity/presentation";
 import { lfdLeadershipIndexPageQuery } from "@/lib/sanity/queries";
 import { getSEOMetadata } from "@/lib/seo";
 
+function getLeaderImageAlt(
+  leaderName: string | null | undefined,
+  imageAlt: string | null | undefined,
+): string {
+  const normalizedAlt = imageAlt?.trim() ?? "";
+  if (!normalizedAlt) {
+    return "";
+  }
+
+  const normalizedLeaderName = leaderName?.trim().toLowerCase() ?? "";
+  if (normalizedAlt.toLowerCase() === normalizedLeaderName) {
+    return "";
+  }
+
+  return normalizedAlt;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const indexData = await sanityFetch({
     query: lfdLeadershipIndexPageQuery,
@@ -162,7 +179,7 @@ export default async function LeadershipPage() {
                         image={leader.image}
                         width={640}
                         height={800}
-                        alt={leader.image.alt ?? leader.name ?? ""}
+                        alt={getLeaderImageAlt(leader.name, leader.image.alt)}
                         className="h-full w-full object-cover"
                       />
                     ) : null}
