@@ -244,7 +244,6 @@ export const featuredRecipesBlock = /* groq */ `
       _id,
       name,
       "slug": slug.current,
-      versions,
       meat,
       tags,
       "dgfSauces": array::compact(dgfSauces[]->{

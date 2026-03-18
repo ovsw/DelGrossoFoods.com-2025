@@ -109,8 +109,8 @@ export async function generateMetadata({
 
   // Get first few sentences of ingredients or directions as description
   const descriptionSource =
-    recipe.dgfIngredients?.[0]?.children?.[0]?.text ||
-    recipe.lfdIngredients?.[0]?.children?.[0]?.text;
+    recipe.ingredients?.[0]?.children?.[0]?.text ||
+    recipe.directions?.[0]?.children?.[0]?.text;
 
   const descriptionClean = descriptionSource
     ? stegaClean(descriptionSource).trim()

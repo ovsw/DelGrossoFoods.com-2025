@@ -102,7 +102,7 @@ const INDEXED_COLLECTIONS: IndexCollectionConfig[] = [
       icon: DocumentTextIcon,
       siteFilters: {
         LFD: {
-          filter: 'count(versions[@ == "LFD"]) > 0',
+          filter: "count(coalesce(lfdSauces, [])) > 0",
         },
       },
     },
