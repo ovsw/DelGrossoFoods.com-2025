@@ -90,13 +90,8 @@ export const recipeType = defineType({
       icon: BlockContentIcon,
     },
     {
-      name: "dgf-content",
-      title: "DGF Legacy Content",
-      icon: BlockContentIcon,
-    },
-    {
-      name: "lfd-content",
-      title: "LFD Legacy Content",
+      name: "sauces",
+      title: "Sauces",
       icon: BlockContentIcon,
     },
     {
@@ -142,16 +137,6 @@ export const recipeType = defineType({
       ],
     }),
     defineField({
-      name: "versions",
-      description:
-        "Legacy availability state kept only for migration reporting. Recipe availability is now derived from sauce fields.",
-      title: "Versions",
-      type: "array",
-      of: [{ type: "string" }],
-      readOnly: true,
-      hidden: true,
-    }),
-    defineField({
       name: "dgfSauces",
       title: "DGF Sauces used",
       type: "array",
@@ -161,7 +146,7 @@ export const recipeType = defineType({
           to: [{ type: "sauce" }],
         }),
       ],
-      group: "dgf-content",
+      group: "sauces",
       description: "Link to one or more DGF sauces used in this recipe.",
     }),
     defineField({
@@ -174,7 +159,7 @@ export const recipeType = defineType({
           to: [{ type: "sauce" }],
         }),
       ],
-      group: "lfd-content",
+      group: "sauces",
       description: "Link to one or more LFD sauces used in this recipe.",
     }),
     defineField({
@@ -275,8 +260,7 @@ export const recipeType = defineType({
       type: "array",
       of: [defineArrayMember({ type: "block" })],
       group: "main-content",
-      description:
-        "Unified recipe ingredients used by both sites. DGF legacy content is preferred during migration when present.",
+      description: "Unified recipe ingredients used by both sites.",
       validation: (Rule) => [
         Rule.required().error("Ingredients are required."),
         Rule.custom((value) => validatePortableTextListUsage(value)),
@@ -288,8 +272,7 @@ export const recipeType = defineType({
       type: "array",
       of: [defineArrayMember({ type: "block" })],
       group: "main-content",
-      description:
-        "Unified recipe directions used by both sites. DGF legacy content is preferred during migration when present.",
+      description: "Unified recipe directions used by both sites.",
       validation: (Rule) => [
         Rule.required().error("Directions are required."),
         Rule.custom((value) => validatePortableTextListUsage(value)),
@@ -301,44 +284,7 @@ export const recipeType = defineType({
       type: "array",
       of: [defineArrayMember({ type: "block" })],
       group: "main-content",
-      description:
-        "Unified optional recipe notes used by both sites. DGF legacy content is preferred during migration when present.",
-      validation: (Rule) =>
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-    }),
-
-    defineField({
-      name: "dgfIngredients",
-      title: "Legacy DGF Ingredients",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      description:
-        "Legacy DGF ingredients kept temporarily as migration source data.",
-      validation: (Rule) => [
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "dgfDirections",
-      title: "Legacy DGF Directions",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      description:
-        "Legacy DGF directions kept temporarily as migration source data.",
-      validation: (Rule) => [
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "dgfNotes",
-      title: "Legacy DGF Notes",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "dgf-content",
-      description:
-        "Legacy optional DGF notes kept temporarily as migration source data.",
+      description: "Unified optional recipe notes used by both sites.",
       validation: (Rule) =>
         Rule.custom((value) => validatePortableTextListUsage(value)),
     }),
@@ -353,41 +299,6 @@ export const recipeType = defineType({
         filter: 'line == "Organic"',
       },
       hidden: () => !isDgfStudio,
-    }),
-    defineField({
-      name: "lfdIngredients",
-      title: "Legacy LFD Ingredients",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      description:
-        "Legacy LFD ingredients kept temporarily as migration source data.",
-      validation: (Rule) => [
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "lfdDirections",
-      title: "Legacy LFD Directions",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      description:
-        "Legacy LFD directions kept temporarily as migration source data.",
-      validation: (Rule) => [
-        Rule.custom((value) => validatePortableTextListUsage(value)),
-      ],
-    }),
-    defineField({
-      name: "lfdNotes",
-      title: "Legacy LFD Notes",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
-      group: "lfd-content",
-      description:
-        "Legacy optional LFD notes kept temporarily as migration source data.",
-      validation: (Rule) =>
-        Rule.custom((value) => validatePortableTextListUsage(value)),
     }),
     defineField({
       name: "orderRank",

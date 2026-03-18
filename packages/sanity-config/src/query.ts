@@ -12,42 +12,6 @@ const lfdRecipeAvailabilityFilter = /* groq */ `
   count(coalesce(lfdSauces, [])) > 0
 `;
 
-const recipeHasLegacyDgfContent = /* groq */ `
-  count(coalesce(dgfIngredients, [])) > 0
-  || count(coalesce(dgfDirections, [])) > 0
-  || count(coalesce(dgfNotes, [])) > 0
-`;
-
-const recipeUnifiedIngredientsProjection = /* groq */ `
-  "ingredients": coalesce(
-    ingredients,
-    select(
-      ${recipeHasLegacyDgfContent} => dgfIngredients,
-      lfdIngredients
-    )
-  )
-`;
-
-const recipeUnifiedDirectionsProjection = /* groq */ `
-  "directions": coalesce(
-    directions,
-    select(
-      ${recipeHasLegacyDgfContent} => dgfDirections,
-      lfdDirections
-    )
-  )
-`;
-
-const recipeUnifiedNotesProjection = /* groq */ `
-  "notes": coalesce(
-    notes,
-    select(
-      ${recipeHasLegacyDgfContent} => dgfNotes,
-      lfdNotes
-    )
-  )
-`;
-
 export const queryImageType = defineQuery(`
   *[_type == "page" && defined(image)][0]{
     ${imageFragment}
@@ -286,9 +250,9 @@ export const getRecipeByIdQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    ${recipeUnifiedIngredientsProjection},
-    ${recipeUnifiedDirectionsProjection},
-    ${recipeUnifiedNotesProjection},
+    ingredients,
+    directions,
+    notes,
     "dgfSauces": select(
       defined($siteCode) && $siteCode == "LFD" => [],
       dgfSauces[]->{
@@ -349,9 +313,9 @@ export const getRecipeBySlugQuery = defineQuery(`
       "alt": mainImage.alt
     },
     "video": ${recipeVideoFragment},
-    ${recipeUnifiedIngredientsProjection},
-    ${recipeUnifiedDirectionsProjection},
-    ${recipeUnifiedNotesProjection},
+    ingredients,
+    directions,
+    notes,
     "dgfSauces": select(
       defined($siteCode) && $siteCode == "LFD" => [],
       dgfSauces[]->{
