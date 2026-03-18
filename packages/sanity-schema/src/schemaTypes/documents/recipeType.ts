@@ -144,6 +144,9 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          options: {
+            filter: 'line == "Original"',
+          },
         }),
       ],
       group: "sauces",
@@ -157,6 +160,9 @@ export const recipeType = defineType({
         defineArrayMember({
           type: "reference",
           to: [{ type: "sauce" }],
+          options: {
+            filter: 'line == "Ultra-Premium"',
+          },
         }),
       ],
       group: "sauces",
