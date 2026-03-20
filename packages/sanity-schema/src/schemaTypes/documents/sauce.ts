@@ -138,7 +138,7 @@ export const sauce = defineType({
           components: { input: AltTextFromField },
           options: {
             sourceField: "name",
-            template: "a jar of DelGrosso's ${value} sauce",
+            template: "a jar of DelGrosso's ${value}",
           } as StringOptions & AltTextFromFieldOptions,
         }),
       ],
