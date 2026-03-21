@@ -73,3 +73,6 @@ engine.bin
 
 .claude/
 .sanity-backups/
+
+
+node-compile-cache/*

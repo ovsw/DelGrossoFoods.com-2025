@@ -473,16 +473,25 @@ export const ogFieldsFragment = /* groq */ `
     defined(seoDescription) => seoDescription,
     _type == "sauce" => pt::text(description),
     _type == "product" => coalesce(pt::text(description), name),
-    _type == "recipe" => coalesce(pt::text(description), name),
+    _type == "recipe" => select(
+      defined(name) => "Learn how to make " + name + " with DelGrosso sauces.",
+      ""
+    ),
     description
   )), ""),
-  "image": coalesce(
-    mainImage.asset->url,
-    image.asset->url
+  "image": select(
+    _type == "recipe" => mainImage.asset->url,
+    coalesce(
+      mainImage.asset->url,
+      image.asset->url
+    )
   ) + "?w=566&h=566&dpr=2&fit=max",
-  "dominantColor": coalesce(
-    mainImage.asset->metadata.palette.dominant.background,
-    image.asset->metadata.palette.dominant.background
+  "dominantColor": select(
+    _type == "recipe" => mainImage.asset->metadata.palette.dominant.background,
+    coalesce(
+      mainImage.asset->metadata.palette.dominant.background,
+      image.asset->metadata.palette.dominant.background
+    )
   ),
   "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",
   "date": coalesce(date, _createdAt)

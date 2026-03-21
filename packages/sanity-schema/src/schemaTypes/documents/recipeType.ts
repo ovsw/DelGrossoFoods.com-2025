@@ -10,7 +10,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { PathnameFieldComponent } from "../../components/slug-field-component";
 import { GROUP } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
-import { seoFields } from "../../utils/seo-fields";
+import { recipeSeoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
@@ -317,7 +317,7 @@ export const recipeType = defineType({
       type: "string",
       hidden: true, // Hide this field from the editor
     }),
-    ...seoFields.filter((field) => field.name !== "seoHideFromLists"),
+    ...recipeSeoFields.filter((field) => field.name !== "seoHideFromLists"),
     ...ogFields,
   ],
   preview: {

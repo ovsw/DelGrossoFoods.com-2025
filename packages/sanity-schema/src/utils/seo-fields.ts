@@ -53,3 +53,26 @@ export const seoFields = [
     group: GROUP.SEO,
   }),
 ];
+
+const recipeSeoDescriptionOverrides = new Map<string, string>([
+  [
+    "seoTitle",
+    "Optional override. If left blank, recipes use the recipe name as the SEO title.",
+  ],
+  [
+    "seoDescription",
+    'Optional override. If left blank, recipes use "Learn how to make {recipe name} with DelGrosso sauces."',
+  ],
+  [
+    "seoImage",
+    "Optional override. If left blank, recipes use the recipe main image for SEO and social sharing.",
+  ],
+]);
+
+export const recipeSeoFields = seoFields.map((field) =>
+  defineField({
+    ...field,
+    description:
+      recipeSeoDescriptionOverrides.get(field.name) ?? field.description,
+  }),
+);
