@@ -10,6 +10,9 @@ import { defineField, defineType } from "sanity";
 import type { AltTextFromFieldOptions } from "../../components/inputs/AltTextFromField";
 import { AltTextFromField } from "../../components/inputs/AltTextFromField";
 import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { GROUP } from "../../utils/constant";
+import { ogFields } from "../../utils/og-fields";
+import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
@@ -32,6 +35,8 @@ export const sauce = defineType({
     { name: "images", title: "Images", icon: ImageIcon },
     { name: "nutritional", title: "Nutritional Info", icon: BarChartIcon },
     { name: "author", title: "Author", icon: UserIcon },
+    { name: GROUP.SEO, title: "SEO" },
+    { name: GROUP.OG, title: "Open Graph" },
   ],
   fields: [
     defineField({
@@ -267,6 +272,8 @@ export const sauce = defineType({
         }),
       ],
     }),
+    ...seoFields.filter((field) => field.name !== "seoHideFromLists"),
+    ...ogFields,
   ],
   preview: {
     select: {

@@ -8,6 +8,9 @@ import {
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { GROUP } from "../../utils/constant";
+import { ogFields } from "../../utils/og-fields";
+import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
@@ -100,6 +103,8 @@ export const recipeType = defineType({
       icon: DropIcon,
       hidden: () => !isDgfStudio,
     },
+    { name: GROUP.SEO, title: "SEO" },
+    { name: GROUP.OG, title: "Open Graph" },
   ],
   fieldsets: [{ name: "extra-info", options: { columns: 2 } }],
   fields: [
@@ -312,6 +317,8 @@ export const recipeType = defineType({
       type: "string",
       hidden: true, // Hide this field from the editor
     }),
+    ...seoFields.filter((field) => field.name !== "seoHideFromLists"),
+    ...ogFields,
   ],
   preview: {
     select: {

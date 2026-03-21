@@ -153,23 +153,32 @@ export async function generateMetadata({
     typeof cleanedName === "string" && cleanedName.trim().length > 0
       ? cleanedName.trim()
       : String(rawName).trim();
+  const seoTitleClean = stegaClean(product.seoTitle ?? "");
+  const seoTitle =
+    typeof seoTitleClean === "string" ? seoTitleClean.trim() : "";
 
   const rawDescription = product.descriptionPlain ?? "";
   const cleanedDescription = stegaClean(rawDescription);
-  const description =
+  const fallbackDescription =
     typeof cleanedDescription === "string" &&
     cleanedDescription.trim().length > 0
       ? cleanedDescription.trim()
       : String(rawDescription).trim();
+  const seoDescriptionClean = stegaClean(product.seoDescription ?? "");
+  const seoDescription =
+    typeof seoDescriptionClean === "string" ? seoDescriptionClean.trim() : "";
+  const description =
+    seoDescription ||
+    fallbackDescription ||
+    `Take a closer look at ${name || "this product"} from La Famiglia DelGrosso.`;
 
   return getSEOMetadata({
-    title: name || `Product: ${slug}`,
-    description:
-      description ||
-      `Take a closer look at ${name || "this product"} from La Famiglia DelGrosso.`,
+    title: seoTitle || name || `Product: ${slug}`,
+    description,
     slug: `/store/${slug}`,
     contentId: product._id,
     contentType: product._type,
+    seoNoIndex: product.seoNoIndex ?? false,
     pageType: "article",
   });
 }

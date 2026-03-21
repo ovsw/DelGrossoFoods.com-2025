@@ -3,6 +3,9 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { USDPriceInput } from "../../components/inputs/USDPriceInput";
 import { PathnameFieldComponent } from "../../components/slug-field-component";
+import { GROUP } from "../../utils/constant";
+import { ogFields } from "../../utils/og-fields";
+import { seoFields } from "../../utils/seo-fields";
 import { createSlug } from "../../utils/slug";
 import {
   createSlugValidator,
@@ -18,6 +21,8 @@ export const productType = defineType({
     { name: "basic", title: "Basic Info", icon: PackageIcon },
     { name: "shipping", title: "Shipping", icon: ControlsIcon },
     { name: "associations", title: "Associations", icon: TagIcon },
+    { name: GROUP.SEO, title: "SEO" },
+    { name: GROUP.OG, title: "Open Graph" },
   ],
   fieldsets: [
     { name: "storeInfo", title: "Store Info", options: { columns: 2 } },
@@ -164,6 +169,8 @@ export const productType = defineType({
       group: "basic",
       validation: (Rule) => Rule.required(),
     }),
+    ...seoFields.filter((field) => field.name !== "seoHideFromLists"),
+    ...ogFields,
   ],
   preview: {
     select: {

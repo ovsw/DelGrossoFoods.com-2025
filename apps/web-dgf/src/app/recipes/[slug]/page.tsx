@@ -106,6 +106,9 @@ export async function generateMetadata({
   const name = (
     typeof cleanedName === "string" ? cleanedName : String(rawName)
   ).trim();
+  const seoTitleClean = stegaClean(recipe.seoTitle ?? "");
+  const seoTitle =
+    typeof seoTitleClean === "string" ? seoTitleClean.trim() : "";
 
   // Get first few sentences of ingredients or directions as description
   const descriptionSource =
@@ -115,13 +118,17 @@ export async function generateMetadata({
   const descriptionClean = descriptionSource
     ? stegaClean(descriptionSource).trim()
     : null;
+  const seoDescriptionClean = stegaClean(recipe.seoDescription ?? "");
+  const seoDescription =
+    typeof seoDescriptionClean === "string" ? seoDescriptionClean.trim() : "";
 
   const description =
+    seoDescription ||
     descriptionClean ||
     `Learn how to make ${name} with La Famiglia DelGrosso sauces.`;
 
   return getSEOMetadata({
-    title: name || `Recipe: ${slug}`,
+    title: seoTitle || name || `Recipe: ${slug}`,
     description:
       description.length > 160
         ? `${description.substring(0, 157)}...`
@@ -129,6 +136,7 @@ export async function generateMetadata({
     slug: `/recipes/${slug}`,
     contentId: recipe._id,
     contentType: recipe._type,
+    seoNoIndex: recipe.seoNoIndex ?? false,
     pageType: "article",
   });
 }
