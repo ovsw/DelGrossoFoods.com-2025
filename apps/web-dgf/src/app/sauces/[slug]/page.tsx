@@ -74,21 +74,30 @@ export async function generateMetadata({
   const name = (
     typeof cleanedName === "string" ? cleanedName : String(rawName)
   ).trim();
+  const seoTitleClean = stegaClean(sauce.seoTitle ?? "");
+  const seoTitle =
+    typeof seoTitleClean === "string" ? seoTitleClean.trim() : "";
   const cleanedDescription = stegaClean(sauce.descriptionPlain ?? "");
-  const description = (
+  const fallbackDescription = (
     typeof cleanedDescription === "string"
       ? cleanedDescription
       : String(sauce.descriptionPlain ?? "")
   ).trim();
+  const seoDescriptionClean = stegaClean(sauce.seoDescription ?? "");
+  const seoDescription =
+    typeof seoDescriptionClean === "string" ? seoDescriptionClean.trim() : "";
+  const description =
+    seoDescription ||
+    fallbackDescription ||
+    `Learn more about ${name || "this sauce"} from La Famiglia DelGrosso.`;
 
   return getSEOMetadata({
-    title: name || `Sauce: ${slug}`,
-    description:
-      description ||
-      `Learn more about ${name || "this sauce"} from La Famiglia DelGrosso.`,
+    title: seoTitle || name || `Sauce: ${slug}`,
+    description,
     slug: `/sauces/${slug}`,
     contentId: sauce._id,
     contentType: sauce._type,
+    seoNoIndex: sauce.seoNoIndex ?? false,
     pageType: "article",
   });
 }

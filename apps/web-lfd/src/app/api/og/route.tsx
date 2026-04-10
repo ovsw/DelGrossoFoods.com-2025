@@ -5,7 +5,6 @@ import type { ImageResponseOptions } from "next/server";
 
 import LogoSvg from "@/components/elements/logo";
 import type { Maybe } from "@/types";
-import { getTitleCase } from "@/utils";
 
 import { getOgMetaData } from "./og-config";
 import {
@@ -15,6 +14,8 @@ import {
 } from "./og-data";
 
 export const runtime = "edge";
+const LFD_OG_BRAND_BACKGROUND = "#000000";
+const PACKSHOT_CONTENT_TYPES = new Set(["product", "sauce"]);
 
 const errorContent = (
   <div tw="flex flex-col w-full h-full items-center justify-center">
@@ -30,13 +31,25 @@ type SeoImageRenderProps = {
 
 type ContentProps = Record<string, string>;
 
-type DominantColorSeoImageRenderProps = {
+type OgContentRenderInput = {
   image?: Maybe<string>;
   title?: Maybe<string>;
   dominantColor?: Maybe<string>;
-  date?: Maybe<string>;
   _type?: Maybe<string>;
   description?: Maybe<string>;
+};
+
+type OgContentData = OgContentRenderInput & {
+  seoImage?: Maybe<string>;
+};
+
+type NormalizedOgContentData = {
+  image: string | null;
+  title: string;
+  dominantColor: string;
+  description: string | null;
+  contentType: string | null;
+  seoImage: string | null;
 };
 
 const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
@@ -47,14 +60,125 @@ const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
   );
 };
 
+const cleanString = (value?: Maybe<string>): string | null => {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+};
+
+const normalizeOgContentData = (
+  input: OgContentData,
+): NormalizedOgContentData => {
+  const contentType = cleanString(input._type);
+
+  return {
+    image: cleanString(input.image),
+    title: cleanString(input.title) ?? "La Famiglia DelGrosso Sauces",
+    dominantColor: cleanString(input.dominantColor) ?? "#12061F",
+    description: cleanString(input.description),
+    contentType,
+    seoImage: cleanString(input.seoImage),
+  };
+};
+
+const isPackshotContentType = (contentType: string | null): boolean =>
+  contentType !== null && PACKSHOT_CONTENT_TYPES.has(contentType);
+
+const packshotContentRender = ({
+  image,
+  title,
+  description,
+}: NormalizedOgContentData) => {
+  return (
+    <div
+      tw="flex flex-row overflow-hidden relative w-full h-full"
+      style={{
+        fontFamily: "Inter",
+        backgroundColor: LFD_OG_BRAND_BACKGROUND,
+      }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        style={{ position: "absolute", top: 0, left: 0 }}
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="packshot-gradient"
+            x1="0%"
+            y1="100%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.06)" }} />
+            <stop
+              offset="100%"
+              style={{ stopColor: "rgba(255,255,255,0.14)" }}
+            />
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#packshot-gradient)" />
+      </svg>
+
+      <div
+        tw="flex-1 p-10 flex flex-col justify-between relative"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div
+          tw="flex justify-between items-start w-full"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <div tw="flex items-center" style={{ gap: 16 }}>
+            <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
+          </div>
+        </div>
+
+        <div tw="flex flex-col" style={{ gap: 20, maxWidth: "92%" }}>
+          <h1 tw="text-5xl font-bold leading-tight text-white">{title}</h1>
+          {description && <p tw="text-lg text-white">{description}</p>}
+        </div>
+      </div>
+
+      <div
+        tw="flex items-center justify-center p-8 relative"
+        style={{ width: 630, height: 630 }}
+      >
+        <div
+          tw="flex items-center justify-center"
+          style={{
+            width: 566,
+            height: 566,
+            padding: 16,
+          }}
+        >
+          <img
+            src={image ?? ""}
+            width={566}
+            height={566}
+            alt="Content preview"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const dominantColorSeoImageRender = ({
   image,
   title,
   dominantColor,
-  date,
   description,
-  _type,
-}: DominantColorSeoImageRenderProps) => {
+}: NormalizedOgContentData) => {
   return (
     <div
       tw="flex flex-row overflow-hidden relative w-full"
@@ -94,16 +218,6 @@ const dominantColorSeoImageRender = ({
             {/* Inline SVG logo; Tailwind classes not applied in OG, so rely on style */}
             <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
           </div>
-          <div
-            tw="flex text-white px-4 py-2 rounded-full text-sm font-medium"
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-          >
-            {new Date(date ?? new Date()).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </div>
         </div>
 
         <h1
@@ -113,17 +227,6 @@ const dominantColorSeoImageRender = ({
           {title}
         </h1>
         {description && <p tw="text-lg text-white">{description}</p>}
-        {_type && (
-          <div
-            tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
-            style={{
-              backgroundColor: "#ffffff",
-              color: dominantColor ?? "#12061F",
-            }}
-          >
-            {getTitleCase(_type)}
-          </div>
-        )}
       </div>
 
       <div
@@ -238,27 +341,38 @@ const getOptions = async ({
   };
 };
 
+const renderOgContent = (data: OgContentData) => {
+  const normalized = normalizeOgContentData(data);
+
+  if (normalized.seoImage) {
+    return seoImageRender({ seoImage: normalized.seoImage });
+  }
+
+  if (normalized.image && isPackshotContentType(normalized.contentType)) {
+    return packshotContentRender(normalized);
+  }
+
+  return dominantColorSeoImageRender(normalized);
+};
+
 const getHomePageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
   const [result, err] = await getHomePageOGData(id);
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 const getSlugPageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
   const [result, err] = await getSlugPageOGData(id);
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 
 const getGenericPageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
   const [result, err] = await getGenericPageOGData(id);
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 
 const block = {

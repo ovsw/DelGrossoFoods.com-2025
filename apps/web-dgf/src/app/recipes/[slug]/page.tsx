@@ -1,13 +1,12 @@
-// (kept imports tidy after refactor)
 import { sanityFetch } from "@workspace/sanity-config/live";
 import {
   getAllRecipeSlugsForStaticParamsQuery,
   getRecipeBySlugQuery,
 } from "@workspace/sanity-config/query";
+import { resolveRecipeSeo } from "@workspace/sanity-config/recipe-seo";
 import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { stegaClean } from "next-sanity";
 
 import { RecipeDetailsSection } from "@/components/page-sections/recipe-page/recipe-details-section";
 import { RecipeHeroSection } from "@/components/page-sections/recipe-page/recipe-hero-section";
@@ -101,34 +100,16 @@ export async function generateMetadata({
     });
   }
 
-  const rawName = recipe.name ?? slug;
-  const cleanedName = stegaClean(rawName);
-  const name = (
-    typeof cleanedName === "string" ? cleanedName : String(rawName)
-  ).trim();
-
-  // Get first few sentences of ingredients or directions as description
-  const descriptionSource =
-    recipe.ingredients?.[0]?.children?.[0]?.text ||
-    recipe.directions?.[0]?.children?.[0]?.text;
-
-  const descriptionClean = descriptionSource
-    ? stegaClean(descriptionSource).trim()
-    : null;
-
-  const description =
-    descriptionClean ||
-    `Learn how to make ${name} with La Famiglia DelGrosso sauces.`;
+  const resolvedSeo = resolveRecipeSeo(recipe);
 
   return getSEOMetadata({
-    title: name || `Recipe: ${slug}`,
-    description:
-      description.length > 160
-        ? `${description.substring(0, 157)}...`
-        : description,
+    title: resolvedSeo.title,
+    description: resolvedSeo.description,
     slug: `/recipes/${slug}`,
-    contentId: recipe._id,
-    contentType: recipe._type,
+    contentId: resolvedSeo.contentId,
+    contentType: resolvedSeo.contentType,
+    socialImageUrl: resolvedSeo.image ?? undefined,
+    seoNoIndex: resolvedSeo.seoNoIndex,
     pageType: "article",
   });
 }
