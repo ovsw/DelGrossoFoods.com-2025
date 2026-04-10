@@ -18,6 +18,8 @@ export const runtime = "edge";
 
 const OG_CACHE_CONTROL =
   "public, s-maxage=86400, stale-while-revalidate=604800";
+const DGF_OG_BRAND_BACKGROUND = "#004e42";
+const PACKSHOT_CONTENT_TYPES = new Set(["product", "sauce"]);
 const libreBaskervilleRegularUrl = new URL(
   "./fonts/libre-baskerville-latin-400-normal.woff",
   import.meta.url,
@@ -45,7 +47,6 @@ type OgContentRenderInput = {
   image?: Maybe<string>;
   title?: Maybe<string>;
   dominantColor?: Maybe<string>;
-  date?: Maybe<string>;
   _type?: Maybe<string>;
   description?: Maybe<string>;
 };
@@ -57,8 +58,7 @@ type OgContentData = OgContentRenderInput & {
 type NormalizedOgContentData = {
   title: string;
   description: string | null;
-  label: string | null;
-  date: string;
+  contentType: string | null;
   image: string | null;
   seoImage: string | null;
   dominantColor: string;
@@ -78,14 +78,6 @@ const cleanString = (value?: Maybe<string>): string | null => {
   return normalized.length > 0 ? normalized : null;
 };
 
-const normalizeDateString = (value?: Maybe<string>): string => {
-  const fallback = new Date().toISOString();
-  const normalized = cleanString(value);
-  if (!normalized) return fallback;
-  const parsed = new Date(normalized);
-  return Number.isNaN(parsed.getTime()) ? fallback : parsed.toISOString();
-};
-
 const normalizeOgContentData = (
   input: OgContentData,
 ): NormalizedOgContentData => {
@@ -94,28 +86,110 @@ const normalizeOgContentData = (
   return {
     title: cleanString(input.title) ?? "DelGrosso Foods",
     description: cleanString(input.description),
-    label: labelSource ? getTitleCase(labelSource) : null,
-    date: normalizeDateString(input.date),
+    contentType: labelSource,
     image: cleanString(input.image),
     seoImage: cleanString(input.seoImage),
     dominantColor: cleanString(input.dominantColor) ?? "#12061F",
   };
 };
 
-const formatDisplayDate = (date: string): string =>
-  new Date(date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+const isPackshotContentType = (contentType: string | null): boolean =>
+  contentType !== null && PACKSHOT_CONTENT_TYPES.has(contentType);
+
+const packshotContentRender = ({
+  image,
+  title,
+  description,
+}: NormalizedOgContentData) => {
+  return (
+    <div
+      tw="flex flex-row overflow-hidden relative w-full h-full"
+      style={{
+        fontFamily: "Libre Baskerville",
+        backgroundColor: DGF_OG_BRAND_BACKGROUND,
+      }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        style={{ position: "absolute", top: 0, left: 0 }}
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="packshot-gradient"
+            x1="0%"
+            y1="100%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" style={{ stopColor: "rgba(18,6,31,0.18)" }} />
+            <stop
+              offset="100%"
+              style={{ stopColor: "rgba(255,255,255,0.12)" }}
+            />
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#packshot-gradient)" />
+      </svg>
+
+      <div
+        tw="flex-1 p-10 flex flex-col justify-between relative"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div
+          tw="flex justify-between items-start w-full"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <div tw="flex items-center" style={{ gap: 16 }}>
+            <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
+          </div>
+        </div>
+
+        <div tw="flex flex-col" style={{ gap: 20, maxWidth: "92%" }}>
+          <h1 tw="text-5xl font-bold leading-tight text-white">{title}</h1>
+          {description && <p tw="text-lg text-white">{description}</p>}
+        </div>
+      </div>
+
+      <div
+        tw="flex items-center justify-center p-8 relative"
+        style={{ width: 630, height: 630 }}
+      >
+        <div
+          tw="flex items-center justify-center"
+          style={{
+            width: 566,
+            height: 566,
+            padding: 16,
+          }}
+        >
+          <img
+            src={image ?? ""}
+            width={566}
+            height={566}
+            alt="Content preview"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const contentImageRender = ({
   image,
   title,
   dominantColor,
-  date,
   description,
-  label,
 }: NormalizedOgContentData) => {
   return (
     <div
@@ -159,12 +233,6 @@ const contentImageRender = ({
             {/* Inline SVG logo; Tailwind classes not applied in OG, so rely on style */}
             <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
           </div>
-          <div
-            tw="flex text-white px-4 py-2 rounded-full text-sm"
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-          >
-            {formatDisplayDate(date)}
-          </div>
         </div>
 
         <h1
@@ -174,17 +242,6 @@ const contentImageRender = ({
           {title}
         </h1>
         {description && <p tw="text-lg text-white">{description}</p>}
-        {label && (
-          <div
-            tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
-            style={{
-              backgroundColor: "#ffffff",
-              color: dominantColor,
-            }}
-          >
-            {label}
-          </div>
-        )}
       </div>
 
       <div
@@ -222,9 +279,7 @@ const contentImageRender = ({
 const brandFallbackRender = ({
   title,
   dominantColor,
-  date,
   description,
-  label,
 }: NormalizedOgContentData) => {
   return (
     <div
@@ -271,28 +326,11 @@ const brandFallbackRender = ({
           }}
         >
           <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
-          <div
-            tw="flex text-white px-4 py-2 rounded-full text-sm"
-            style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-          >
-            {formatDisplayDate(date)}
-          </div>
         </div>
 
         <div tw="flex flex-col" style={{ gap: 20, maxWidth: "92%" }}>
           <h1 tw="text-5xl font-bold leading-tight text-white">{title}</h1>
           {description && <p tw="text-lg text-white">{description}</p>}
-          {label && (
-            <div
-              tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
-              style={{
-                backgroundColor: "#ffffff",
-                color: dominantColor,
-              }}
-            >
-              {label}
-            </div>
-          )}
         </div>
       </div>
 
@@ -311,15 +349,6 @@ const brandFallbackRender = ({
             boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
           }}
         >
-          <div
-            tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.22)",
-              color: "#ffffff",
-            }}
-          >
-            {label ?? "Family Recipe"}
-          </div>
           <div
             tw="flex items-center justify-center"
             style={{
@@ -388,6 +417,10 @@ const renderOgContent = (data: OgContentData) => {
 
   if (normalized.seoImage) {
     return seoImageRender({ seoImage: normalized.seoImage });
+  }
+
+  if (normalized.image && isPackshotContentType(normalized.contentType)) {
+    return packshotContentRender(normalized);
   }
 
   if (normalized.image) {
