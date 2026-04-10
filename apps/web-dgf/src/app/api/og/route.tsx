@@ -16,6 +16,17 @@ import {
 
 export const runtime = "edge";
 
+const OG_CACHE_CONTROL =
+  "public, s-maxage=86400, stale-while-revalidate=604800";
+const libreBaskervilleRegularUrl = new URL(
+  "./fonts/libre-baskerville-latin-400-normal.woff",
+  import.meta.url,
+);
+const libreBaskervilleBoldUrl = new URL(
+  "./fonts/libre-baskerville-latin-700-normal.woff",
+  import.meta.url,
+);
+
 const errorContent = (
   <div tw="flex flex-col w-full h-full items-center justify-center">
     <div tw=" flex w-full h-full items-center justify-center ">
@@ -30,13 +41,27 @@ type SeoImageRenderProps = {
 
 type ContentProps = Record<string, string>;
 
-type DominantColorSeoImageRenderProps = {
+type OgContentRenderInput = {
   image?: Maybe<string>;
   title?: Maybe<string>;
   dominantColor?: Maybe<string>;
   date?: Maybe<string>;
   _type?: Maybe<string>;
   description?: Maybe<string>;
+};
+
+type OgContentData = OgContentRenderInput & {
+  seoImage?: Maybe<string>;
+};
+
+type NormalizedOgContentData = {
+  title: string;
+  description: string | null;
+  label: string | null;
+  date: string;
+  image: string | null;
+  seoImage: string | null;
+  dominantColor: string;
 };
 
 const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
@@ -47,20 +72,57 @@ const seoImageRender = ({ seoImage }: SeoImageRenderProps) => {
   );
 };
 
-const dominantColorSeoImageRender = ({
+const cleanString = (value?: Maybe<string>): string | null => {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+};
+
+const normalizeDateString = (value?: Maybe<string>): string => {
+  const fallback = new Date().toISOString();
+  const normalized = cleanString(value);
+  if (!normalized) return fallback;
+  const parsed = new Date(normalized);
+  return Number.isNaN(parsed.getTime()) ? fallback : parsed.toISOString();
+};
+
+const normalizeOgContentData = (
+  input: OgContentData,
+): NormalizedOgContentData => {
+  const labelSource = cleanString(input._type);
+
+  return {
+    title: cleanString(input.title) ?? "DelGrosso Foods",
+    description: cleanString(input.description),
+    label: labelSource ? getTitleCase(labelSource) : null,
+    date: normalizeDateString(input.date),
+    image: cleanString(input.image),
+    seoImage: cleanString(input.seoImage),
+    dominantColor: cleanString(input.dominantColor) ?? "#12061F",
+  };
+};
+
+const formatDisplayDate = (date: string): string =>
+  new Date(date).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+const contentImageRender = ({
   image,
   title,
   dominantColor,
   date,
   description,
-  _type,
-}: DominantColorSeoImageRenderProps) => {
+  label,
+}: NormalizedOgContentData) => {
   return (
     <div
       tw="flex flex-row overflow-hidden relative w-full"
       style={{
-        fontFamily: "Inter",
-        backgroundColor: dominantColor ?? "#12061F",
+        fontFamily: "Libre Baskerville",
+        backgroundColor: dominantColor,
       }}
     >
       <svg
@@ -71,11 +133,14 @@ const dominantColorSeoImageRender = ({
       >
         <defs>
           <linearGradient id="gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" style={{ stopColor: "transparent" }} />
-            <stop offset="100%" style={{ stopColor: "white" }} />
+            <stop offset="0%" style={{ stopColor: "rgba(18,6,31,0.2)" }} />
+            <stop
+              offset="100%"
+              style={{ stopColor: "rgba(255,255,255,0.18)" }}
+            />
           </linearGradient>
         </defs>
-        <rect width="100%" height="100%" fill="url(#gradient)" opacity="0.2" />
+        <rect width="100%" height="100%" fill="url(#gradient)" />
       </svg>
 
       <div
@@ -95,14 +160,10 @@ const dominantColorSeoImageRender = ({
             <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
           </div>
           <div
-            tw="flex text-white px-4 py-2 rounded-full text-sm font-medium"
+            tw="flex text-white px-4 py-2 rounded-full text-sm"
             style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
           >
-            {new Date(date ?? new Date()).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {formatDisplayDate(date)}
           </div>
         </div>
 
@@ -113,15 +174,15 @@ const dominantColorSeoImageRender = ({
           {title}
         </h1>
         {description && <p tw="text-lg text-white">{description}</p>}
-        {_type && (
+        {label && (
           <div
             tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
             style={{
               backgroundColor: "#ffffff",
-              color: dominantColor ?? "#12061F",
+              color: dominantColor,
             }}
           >
-            {getTitleCase(_type)}
+            {label}
           </div>
         )}
       </div>
@@ -137,35 +198,146 @@ const dominantColorSeoImageRender = ({
             height: 566,
             backgroundColor: "rgba(255, 255, 255, 0.2)",
             borderRadius: 24,
-            boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.05), 0 2px 4px -1px rgba(0,0,0,0.03), 0 4px 6px -1px rgba(0,0,0,0.05), 0 8px 10px -1px rgba(0,0,0,0.05)",
+            boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
           }}
         >
-          <div tw="flex relative w-full h-full">
-            {image ? (
-              <img
-                src={image}
-                width={566}
-                height={566}
-                alt="Content preview"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 24,
-                  boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <div tw="flex items-center justify-center h-full w-full">
-                <img
-                  src={"https://picsum.photos/566/566"}
-                  alt="Logo"
-                  width={400}
-                  height={400}
-                />
-              </div>
-            )}
+          <img
+            src={image ?? ""}
+            width={566}
+            height={566}
+            alt="Content preview"
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: 24,
+              objectFit: "cover",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const brandFallbackRender = ({
+  title,
+  dominantColor,
+  date,
+  description,
+  label,
+}: NormalizedOgContentData) => {
+  return (
+    <div
+      tw="flex flex-row overflow-hidden relative w-full h-full"
+      style={{
+        fontFamily: "Libre Baskerville",
+        backgroundColor: dominantColor,
+      }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        style={{ position: "absolute", top: 0, left: 0 }}
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="brand-fallback-gradient"
+            x1="0%"
+            y1="100%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" style={{ stopColor: "rgba(18,6,31,0.28)" }} />
+            <stop
+              offset="100%"
+              style={{ stopColor: "rgba(255,255,255,0.14)" }}
+            />
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#brand-fallback-gradient)" />
+      </svg>
+
+      <div
+        tw="flex-1 p-10 flex flex-col justify-between relative"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div
+          tw="flex justify-between items-start w-full"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <LogoSvg style={{ width: 160, height: 32, color: "#ffffff" }} />
+          <div
+            tw="flex text-white px-4 py-2 rounded-full text-sm"
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+          >
+            {formatDisplayDate(date)}
+          </div>
+        </div>
+
+        <div tw="flex flex-col" style={{ gap: 20, maxWidth: "92%" }}>
+          <h1 tw="text-5xl font-bold leading-tight text-white">{title}</h1>
+          {description && <p tw="text-lg text-white">{description}</p>}
+          {label && (
+            <div
+              tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
+              style={{
+                backgroundColor: "#ffffff",
+                color: dominantColor,
+              }}
+            >
+              {label}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        tw="flex items-center justify-center p-8 relative"
+        style={{ width: 630, height: 630 }}
+      >
+        <div
+          tw="flex flex-col items-center justify-between"
+          style={{
+            width: 566,
+            height: 566,
+            padding: 44,
+            borderRadius: 24,
+            backgroundColor: "rgba(255,255,255,0.14)",
+            boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
+          }}
+        >
+          <div
+            tw="flex px-5 py-2 rounded-full text-base font-semibold self-start"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.22)",
+              color: "#ffffff",
+            }}
+          >
+            {label ?? "Family Recipe"}
+          </div>
+          <div
+            tw="flex items-center justify-center"
+            style={{
+              width: "100%",
+              flex: 1,
+            }}
+          >
+            <LogoSvg style={{ width: 260, height: 260, color: "#ffffff" }} />
+          </div>
+          <div
+            tw="flex"
+            style={{
+              color: "rgba(255,255,255,0.9)",
+              fontSize: 28,
+              lineHeight: 1.2,
+            }}
+          >
+            Since 1947
           </div>
         </div>
       </div>
@@ -173,32 +345,12 @@ const dominantColorSeoImageRender = ({
   );
 };
 
-async function getTtfFont(
-  family: string,
-  axes: string[],
-  value: number[],
-): Promise<ArrayBuffer> {
-  const familyParam = `${axes.join(",")}@${value.join(",")}`;
-
-  // Get css style sheet with user agent Mozilla/5.0 Firefox/1.0 to ensure non-variable TTF is returned
-  const cssCall = await fetch(
-    `https://fonts.googleapis.com/css2?family=${family}:${familyParam}&display=swap`,
-    {
-      headers: {
-        "User-Agent": "Mozilla/5.0 Firefox/1.0",
-      },
-    },
-  );
-
-  const css = await cssCall.text();
-  const ttfUrl = css.match(/url\(([^)]+)\)/)?.[1];
-
-  if (!ttfUrl) {
-    throw new Error("Failed to extract font URL from CSS");
-  }
-
-  return await fetch(ttfUrl).then((res) => res.arrayBuffer());
-}
+const libreBaskervilleRegularPromise = fetch(libreBaskervilleRegularUrl).then(
+  (res) => res.arrayBuffer(),
+);
+const libreBaskervilleBoldPromise = fetch(libreBaskervilleBoldUrl).then((res) =>
+  res.arrayBuffer(),
+);
 
 const getOptions = async ({
   width,
@@ -207,58 +359,71 @@ const getOptions = async ({
   width: number;
   height: number;
 }): Promise<ImageResponseOptions> => {
-  const [interRegular, interBold, interSemiBold] = await Promise.all([
-    getTtfFont("Inter", ["wght"], [400]),
-    getTtfFont("Inter", ["wght"], [700]),
-    getTtfFont("Inter", ["wght"], [600]),
+  const [libreBaskervilleRegular, libreBaskervilleBold] = await Promise.all([
+    libreBaskervilleRegularPromise,
+    libreBaskervilleBoldPromise,
   ]);
   return {
     width,
     height,
     fonts: [
       {
-        name: "Inter",
-        data: interRegular,
+        name: "Libre Baskerville",
+        data: libreBaskervilleRegular,
         style: "normal",
         weight: 400,
       },
       {
-        name: "Inter",
-        data: interBold,
+        name: "Libre Baskerville",
+        data: libreBaskervilleBold,
         style: "normal",
         weight: 700,
-      },
-      {
-        name: "Inter",
-        data: interSemiBold,
-        style: "normal",
-        weight: 600,
       },
     ],
   };
 };
 
+const renderOgContent = (data: OgContentData) => {
+  const normalized = normalizeOgContentData(data);
+
+  if (normalized.seoImage) {
+    return seoImageRender({ seoImage: normalized.seoImage });
+  }
+
+  if (normalized.image) {
+    return contentImageRender(normalized);
+  }
+
+  return brandFallbackRender(normalized);
+};
+
 const getHomePageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
-  const [result, err] = await getHomePageOGData(id);
+  const [result, err] = (await getHomePageOGData(id)) as [
+    OgContentData | undefined,
+    unknown,
+  ];
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 const getSlugPageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
-  const [result, err] = await getSlugPageOGData(id);
+  const [result, err] = (await getSlugPageOGData(id)) as [
+    OgContentData | undefined,
+    unknown,
+  ];
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 
 const getGenericPageContent = async ({ id }: ContentProps) => {
   if (!id) return undefined;
-  const [result, err] = await getGenericPageOGData(id);
+  const [result, err] = (await getGenericPageOGData(id)) as [
+    OgContentData | undefined,
+    unknown,
+  ];
   if (err || !result) return undefined;
-  if (result?.seoImage) return seoImageRender({ seoImage: result.seoImage });
-  return dominantColorSeoImageRender(result);
+  return renderOgContent(result);
 };
 
 const block = {
@@ -275,9 +440,16 @@ export async function GET({ url }: Request): Promise<ImageResponse> {
   const image = block[type] ?? getGenericPageContent;
   try {
     const content = await image(para);
-    return new ImageResponse(content ? content : errorContent, options);
+    const response = new ImageResponse(
+      content ? content : errorContent,
+      options,
+    );
+    response.headers.set("Cache-Control", OG_CACHE_CONTROL);
+    return response;
   } catch (err) {
     console.log({ err });
-    return new ImageResponse(errorContent, options);
+    const response = new ImageResponse(errorContent, options);
+    response.headers.set("Cache-Control", OG_CACHE_CONTROL);
+    return response;
   }
 }

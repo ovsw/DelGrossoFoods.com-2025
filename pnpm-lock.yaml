@@ -195,6 +195,9 @@ importers:
 
   apps/web-dgf:
     dependencies:
+      "@fontsource/libre-baskerville":
+        specifier: ^5.2.10
+        version: 5.2.10
       "@mux/mux-player-react":
         specifier: ^3.7.0
         version: 3.7.0(@types/react-dom@19.1.7(@types/react@19.2.9))(@types/react@19.2.9)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2348,6 +2351,12 @@ packages:
     resolution:
       {
         integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==,
+      }
+
+  "@fontsource/libre-baskerville@5.2.10":
+    resolution:
+      {
+        integrity: sha512-Y/bGj4cOdWhAxU4+sBPen3MB5Og3t/WvezVL+05CJ7cvhDQUKpQFUuw/hm1IQKRc9u0lWs8VP2MKDOK2uQtloQ==,
       }
 
   "@hello-pangea/dnd@18.0.1":
@@ -15215,6 +15224,8 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
 
   "@floating-ui/utils@0.2.10": {}
+
+  "@fontsource/libre-baskerville@5.2.10": {}
 
   "@hello-pangea/dnd@18.0.1(@types/react@19.2.9)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)":
     dependencies:
