@@ -493,6 +493,10 @@ export const ogFieldsFragment = /* groq */ `
       image.asset->metadata.palette.dominant.background
     )
   ),
-  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max",
+  "seoImage": select(
+    _type == "sauce" => null,
+    _type == "product" => null,
+    seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max"
+  ),
   "date": coalesce(date, _createdAt)
 `;
