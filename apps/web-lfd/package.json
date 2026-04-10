@@ -27,7 +27,7 @@
     "framer-motion": "^11.18.2",
     "fuse.js": "^7.1.0",
     "lucide-react": "^0.539.0",
-    "next": "15.5.9",
+    "next": "16.2.3",
     "next-sanity": "^11.6.12",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
