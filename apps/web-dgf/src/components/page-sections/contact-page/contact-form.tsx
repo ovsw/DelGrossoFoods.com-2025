@@ -10,7 +10,7 @@ import dgfLogo from "@workspace/ui/src/images/logo_0001_dgf.png";
 import lfdLogo from "@workspace/ui/src/images/logo_0002_lfd-family-photo.png";
 import { CheckCircle, LoaderCircle } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { announce } from "@/lib/a11y/announce";
@@ -24,6 +24,13 @@ interface ContactFormData {
   lastName: string;
   email: string;
   phone?: string;
+  addressLine1?: string;
+  city?: string;
+  zip?: string;
+  state?: string;
+  howDidYouHearAboutUs?: "" | "store" | "word-of-mouth" | "media-ad" | "other";
+  nameOfSupermarket?: string;
+  otherReferralDetail?: string;
   brand: "la-famiglia" | "delgrosso-foods" | "organic" | "";
   message: string;
 }
@@ -36,6 +43,7 @@ export function ContactForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    clearErrors,
     reset,
     setValue,
     watch,
@@ -46,12 +54,32 @@ export function ContactForm() {
       lastName: "",
       email: "",
       phone: "",
+      addressLine1: "",
+      city: "",
+      zip: "",
+      state: "",
+      howDidYouHearAboutUs: "",
+      nameOfSupermarket: "",
+      otherReferralDetail: "",
       brand: "",
       message: "",
     },
   });
 
   const watchedBrand = watch("brand");
+  const watchedReferralSource = watch("howDidYouHearAboutUs");
+
+  useEffect(() => {
+    if (watchedReferralSource !== "store") {
+      setValue("nameOfSupermarket", "");
+      clearErrors("nameOfSupermarket");
+    }
+
+    if (watchedReferralSource !== "other") {
+      setValue("otherReferralDetail", "");
+      clearErrors("otherReferralDetail");
+    }
+  }, [clearErrors, setValue, watchedReferralSource]);
 
   const onSubmit = async (data: ContactFormData) => {
     setFormState("submitting");
@@ -207,6 +235,168 @@ export function ContactForm() {
               disabled={isSubmitting}
             />
           </div>
+
+          <div className="space-y-4">
+            <fieldset className="space-y-4">
+              <legend className="block text-sm font-medium text-foreground">
+                Address
+              </legend>
+              <div>
+                <label
+                  htmlFor="address-line-1"
+                  className="block text-sm font-medium text-foreground mb-2"
+                >
+                  Address Line 1
+                </label>
+                <input
+                  type="text"
+                  id="address-line-1"
+                  {...register("addressLine1")}
+                  className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="123 Main St"
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
+                <div>
+                  <label
+                    htmlFor="contact-city"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-city"
+                    {...register("city")}
+                    className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Tipton"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-zip"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    Zip
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-zip"
+                    {...register("zip")}
+                    className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="16684"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-state"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    State
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-state"
+                    {...register("state")}
+                    className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="PA"
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div>
+            <label
+              htmlFor="hear-about-us"
+              className="block text-sm font-medium text-foreground mb-2"
+            >
+              How did you hear about us
+            </label>
+            <select
+              id="hear-about-us"
+              {...register("howDidYouHearAboutUs")}
+              className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={isSubmitting}
+            >
+              <option value="">Select an option</option>
+              <option value="store">Discovered product in a store</option>
+              <option value="word-of-mouth">Word of mouth</option>
+              <option value="media-ad">
+                Saw a TV show/Magazine article/Ad that featured DelGrosso
+              </option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          {watchedReferralSource === "store" && (
+            <div>
+              <label
+                htmlFor="supermarket-name"
+                className="block text-sm font-medium text-foreground mb-2"
+              >
+                Name of Supermarket *
+              </label>
+              <input
+                type="text"
+                id="supermarket-name"
+                {...register("nameOfSupermarket", {
+                  validate: (value) =>
+                    watchedReferralSource !== "store" ||
+                    value?.trim() ||
+                    "Name of Supermarket is required",
+                })}
+                className={`w-full rounded-md border bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                  errors.nameOfSupermarket ? "border-red-500" : "border-input"
+                }`}
+                placeholder="Enter the store name"
+                disabled={isSubmitting}
+              />
+              {errors.nameOfSupermarket && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.nameOfSupermarket.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {watchedReferralSource === "other" && (
+            <div>
+              <label
+                htmlFor="referral-detail"
+                className="block text-sm font-medium text-foreground mb-2"
+              >
+                Please tell us how you heard about us *
+              </label>
+              <input
+                type="text"
+                id="referral-detail"
+                {...register("otherReferralDetail", {
+                  validate: (value) =>
+                    watchedReferralSource !== "other" ||
+                    value?.trim() ||
+                    "Please tell us how you heard about us",
+                })}
+                className={`w-full rounded-md border bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                  errors.otherReferralDetail ? "border-red-500" : "border-input"
+                }`}
+                placeholder="Enter your answer"
+                disabled={isSubmitting}
+              />
+              {errors.otherReferralDetail && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.otherReferralDetail.message}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Brand Selection Section */}
