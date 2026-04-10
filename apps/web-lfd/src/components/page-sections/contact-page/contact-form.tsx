@@ -342,7 +342,7 @@ export function ContactForm() {
                 {...register("nameOfSupermarket", {
                   validate: (value) =>
                     watchedReferralSource !== "store" ||
-                    value?.trim() ||
+                    Boolean(value?.trim()) ||
                     "Name of Supermarket is required",
                 })}
                 className={`w-full rounded-md border bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
@@ -373,7 +373,7 @@ export function ContactForm() {
                 {...register("otherReferralDetail", {
                   validate: (value) =>
                     watchedReferralSource !== "other" ||
-                    value?.trim() ||
+                    Boolean(value?.trim()) ||
                     "Please tell us how you heard about us",
                 })}
                 className={`w-full rounded-md border bg-background px-3.5 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
