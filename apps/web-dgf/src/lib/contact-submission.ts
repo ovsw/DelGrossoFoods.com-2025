@@ -9,13 +9,30 @@ export type ContactFormPayload = {
   lastName: string;
   email: string;
   phone?: string;
+  addressLine1?: string;
+  city?: string;
+  zip?: string;
+  state?: string;
+  howDidYouHearAboutUs?: "" | "store" | "word-of-mouth" | "media-ad" | "other";
+  nameOfSupermarket?: string;
+  otherReferralDetail?: string;
   brand: "la-famiglia" | "delgrosso-foods" | "organic" | "";
   message: string;
 };
 
+export type ContactSubmissionSuccess = {
+  ok: true;
+  referenceId: string;
+};
+
+export type ContactSubmissionFailure = {
+  ok: false;
+  message: string;
+};
+
 export type ContactSubmissionResponse =
-  | { ok: true; referenceId: string }
-  | { ok: false; message: string };
+  | ContactSubmissionSuccess
+  | ContactSubmissionFailure;
 
 export const CONTACT_SUBMISSION_VALIDATION_MESSAGES = new Set([
   "Invalid form submission",
@@ -26,7 +43,13 @@ export const CONTACT_SUBMISSION_VALIDATION_MESSAGES = new Set([
   "Please select a brand",
   "Message is required",
   "Message must be at least 10 characters",
+  "Name of Supermarket is required",
+  "Please tell us how you heard about us",
 ]);
+
+type CleanContactFormPayload = {
+  [K in keyof ContactFormPayload]: string;
+};
 
 function cleanOptional(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
@@ -42,12 +65,9 @@ function requireNonEmptyString(value: unknown, fieldName: string): string {
 
 function normalizeEmail(value: unknown): string {
   const email = requireNonEmptyString(value, "Email");
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-
-  if (!emailPattern.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) {
     throw new Error("Please enter a valid email address including a domain");
   }
-
   return email.toLowerCase();
 }
 
@@ -59,32 +79,70 @@ function normalizeBrand(value: unknown): ContactFormPayload["brand"] {
   ) {
     return value;
   }
-
   throw new Error("Please select a brand");
+}
+
+function normalizeReferralSource(
+  value: unknown,
+): ContactFormPayload["howDidYouHearAboutUs"] {
+  if (
+    value === "" ||
+    value === "store" ||
+    value === "word-of-mouth" ||
+    value === "media-ad" ||
+    value === "other"
+  ) {
+    return value;
+  }
+  return "";
 }
 
 export function normalizeContactFormPayload(
   input: unknown,
-): ContactFormPayload {
+): CleanContactFormPayload {
   if (!input || typeof input !== "object") {
     throw new Error("Invalid form submission");
   }
 
   const data = input as Record<string, unknown>;
-  const message = requireNonEmptyString(data.message, "Message");
-
-  if (message.length < 10) {
-    throw new Error("Message must be at least 10 characters");
-  }
-
-  return {
+  const referralSource = normalizeReferralSource(data.howDidYouHearAboutUs);
+  const cleaned: CleanContactFormPayload = {
     firstName: requireNonEmptyString(data.firstName, "First name"),
     lastName: requireNonEmptyString(data.lastName, "Last name"),
     email: normalizeEmail(data.email),
     phone: cleanOptional(data.phone),
+    addressLine1: cleanOptional(data.addressLine1),
+    city: cleanOptional(data.city),
+    zip: cleanOptional(data.zip),
+    state: cleanOptional(data.state),
+    howDidYouHearAboutUs: referralSource,
+    nameOfSupermarket: cleanOptional(data.nameOfSupermarket),
+    otherReferralDetail: cleanOptional(data.otherReferralDetail),
     brand: normalizeBrand(data.brand),
-    message,
+    message: requireNonEmptyString(data.message, "Message"),
   };
+
+  if (cleaned.message.length < 10) {
+    throw new Error("Message must be at least 10 characters");
+  }
+
+  if (referralSource === "store" && !cleaned.nameOfSupermarket) {
+    throw new Error("Name of Supermarket is required");
+  }
+
+  if (referralSource === "other" && !cleaned.otherReferralDetail) {
+    throw new Error("Please tell us how you heard about us");
+  }
+
+  if (referralSource !== "store") {
+    cleaned.nameOfSupermarket = "";
+  }
+
+  if (referralSource !== "other") {
+    cleaned.otherReferralDetail = "";
+  }
+
+  return cleaned;
 }
 
 function getDatePrefix(now: Date): string {
@@ -121,7 +179,7 @@ export function generateReferenceId(now = new Date()): string {
 }
 
 export function buildFormsparkPayload(
-  payload: ContactFormPayload,
+  payload: CleanContactFormPayload,
   referenceId: string,
   subjectLabel: string,
 ) {

@@ -28,7 +28,6 @@ export async function POST(request: Request): Promise<Response> {
     const body = await request.json();
     const payload = normalizeContactFormPayload(body);
     const referenceId = generateReferenceId();
-
     const formsparkResponse = await fetch(FORMSPARK_URL, {
       method: "POST",
       headers: {
