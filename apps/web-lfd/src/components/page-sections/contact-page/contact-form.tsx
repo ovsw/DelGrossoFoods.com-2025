@@ -14,22 +14,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { announce } from "@/lib/a11y/announce";
-
-const FORMSPARK_URL = process.env.NEXT_PUBLIC_FORMSPARK_URL;
+import type {
+  ContactFormPayload,
+  ContactSubmissionResponse,
+} from "@/lib/contact-submission";
 
 type FormState = "idle" | "submitting" | "success" | "error";
-
-interface ContactFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  brand: "la-famiglia" | "delgrosso-foods" | "organic" | "";
-  message: string;
-}
+const CONTACT_SUBMIT_ENDPOINT = "/api/contact-submit";
+const GENERIC_ERROR_MESSAGE =
+  "Sorry, there was an error sending your message. Please try again.";
 
 export function ContactForm() {
   const [formState, setFormState] = useState<FormState>("idle");
+  const [referenceId, setReferenceId] = useState<string | null>(null);
 
   const {
     register,
@@ -39,7 +36,7 @@ export function ContactForm() {
     reset,
     setValue,
     watch,
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormPayload>({
     mode: "onChange",
     defaultValues: {
       firstName: "",
@@ -53,15 +50,12 @@ export function ContactForm() {
 
   const watchedBrand = watch("brand");
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormPayload) => {
     setFormState("submitting");
-
-    if (!FORMSPARK_URL) {
-      throw new Error("Form service not configured");
-    }
+    setReferenceId(null);
 
     try {
-      const response = await fetch(FORMSPARK_URL, {
+      const response = await fetch(CONTACT_SUBMIT_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,11 +64,14 @@ export function ContactForm() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const result = (await response.json()) as ContactSubmissionResponse;
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.ok ? GENERIC_ERROR_MESSAGE : result.message);
       }
 
       setFormState("success");
+      setReferenceId(result.referenceId);
       reset();
       announce(
         "Thank you for your message! We'll get back to you soon.",
@@ -84,8 +81,7 @@ export function ContactForm() {
       console.error("Form submission error:", error);
       setFormState("error");
       setError("root", {
-        message:
-          "Sorry, there was an error sending your message. Please try again.",
+        message: error instanceof Error ? error.message : GENERIC_ERROR_MESSAGE,
       });
       announce(
         "Sorry, there was an error sending your message. Please try again.",
@@ -372,6 +368,7 @@ export function ContactForm() {
               <p className="text-green-800 text-sm">
                 Thank you for your message! We&apos;ll get back to you within
                 24-48 hours.
+                {referenceId ? ` Reference ID: ${referenceId}.` : ""}
               </p>
             </div>
           </div>
