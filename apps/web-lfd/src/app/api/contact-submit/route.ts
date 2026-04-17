@@ -10,6 +10,8 @@ export const runtime = "nodejs";
 const FORMSPARK_URL =
   process.env.FORMSPARK_URL ?? process.env.NEXT_PUBLIC_FORMSPARK_URL;
 const SUBJECT_LABEL = "La Famiglia DelGrosso Contact Submission";
+const GENERIC_ERROR_MESSAGE =
+  "Sorry, there was an error sending your message. Please try again.";
 
 export async function POST(request: Request): Promise<Response> {
   if (!FORMSPARK_URL) {
@@ -47,8 +49,7 @@ export async function POST(request: Request): Promise<Response> {
       return Response.json(
         {
           ok: false,
-          message:
-            "Sorry, there was an error sending your message. Please try again.",
+          message: GENERIC_ERROR_MESSAGE,
         },
         { status: 502 },
       );
@@ -60,10 +61,7 @@ export async function POST(request: Request): Promise<Response> {
     });
   } catch (error) {
     const message =
-      error instanceof Error
-        ? error.message
-        : "Sorry, there was an error sending your message. Please try again.";
-
+      error instanceof Error ? error.message : GENERIC_ERROR_MESSAGE;
     const status = CONTACT_SUBMISSION_VALIDATION_MESSAGES.has(message)
       ? 400
       : 500;
@@ -75,10 +73,7 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json(
       {
         ok: false,
-        message:
-          status === 400
-            ? message
-            : "Sorry, there was an error sending your message. Please try again.",
+        message: status === 400 ? message : GENERIC_ERROR_MESSAGE,
       },
       { status },
     );

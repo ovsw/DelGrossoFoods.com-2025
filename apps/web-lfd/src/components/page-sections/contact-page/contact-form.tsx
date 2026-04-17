@@ -21,6 +21,8 @@ import type {
 
 type FormState = "idle" | "submitting" | "success" | "error";
 const CONTACT_SUBMIT_ENDPOINT = "/api/contact-submit";
+const GENERIC_ERROR_MESSAGE =
+  "Sorry, there was an error sending your message. Please try again.";
 
 export function ContactForm() {
   const [formState, setFormState] = useState<FormState>("idle");
@@ -86,11 +88,7 @@ export function ContactForm() {
       const result = (await response.json()) as ContactSubmissionResponse;
 
       if (!response.ok || !result.ok) {
-        throw new Error(
-          result.ok
-            ? "Sorry, there was an error sending your message. Please try again."
-            : result.message,
-        );
+        throw new Error(result.ok ? GENERIC_ERROR_MESSAGE : result.message);
       }
 
       setFormState("success");
@@ -104,8 +102,7 @@ export function ContactForm() {
       console.error("Form submission error:", error);
       setFormState("error");
       setError("root", {
-        message:
-          "Sorry, there was an error sending your message. Please try again.",
+        message: error instanceof Error ? error.message : GENERIC_ERROR_MESSAGE,
       });
       announce(
         "Sorry, there was an error sending your message. Please try again.",

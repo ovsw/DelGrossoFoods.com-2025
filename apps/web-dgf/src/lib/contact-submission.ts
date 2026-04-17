@@ -1,7 +1,8 @@
 import { randomBytes } from "node:crypto";
 
-const CROCKFORD_BASE32_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const REFERENCE_ID_LENGTH = 8;
+const REFERENCE_ID_LETTERS = "ABCDEFGHJKMNPQRSTUVWXYZ";
+const RANDOM_SUFFIX_LENGTH = 4;
+const EASTERN_TIMEZONE = "America/New_York";
 
 export type ContactFormPayload = {
   firstName: string;
@@ -38,7 +39,7 @@ export const CONTACT_SUBMISSION_VALIDATION_MESSAGES = new Set([
   "First name is required",
   "Last name is required",
   "Email is required",
-  "Please enter a valid email address",
+  "Please enter a valid email address including a domain",
   "Please select a brand",
   "Message is required",
   "Message must be at least 10 characters",
@@ -63,11 +64,11 @@ function requireNonEmptyString(value: unknown, fieldName: string): string {
 }
 
 function normalizeEmail(value: unknown): string {
-  const email = requireNonEmptyString(value, "Email").toLowerCase();
+  const email = requireNonEmptyString(value, "Email");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) {
-    throw new Error("Please enter a valid email address");
+    throw new Error("Please enter a valid email address including a domain");
   }
-  return email;
+  return email.toLowerCase();
 }
 
 function normalizeBrand(value: unknown): ContactFormPayload["brand"] {
@@ -144,16 +145,37 @@ export function normalizeContactFormPayload(
   return cleaned;
 }
 
-export function generateReferenceId(): string {
-  const bytes = randomBytes(REFERENCE_ID_LENGTH);
+function getDatePrefix(now: Date): string {
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: EASTERN_TIMEZONE,
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  const parts = formatter.formatToParts(now);
+  const values = Object.fromEntries(
+    parts
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
+  ) as Record<"month" | "day" | "year", string>;
+
+  return `${values.month}${values.day}${values.year}`;
+}
+
+function getRandomSuffix(): string {
+  const bytes = randomBytes(RANDOM_SUFFIX_LENGTH);
   let output = "";
 
   for (const byte of bytes) {
-    output +=
-      CROCKFORD_BASE32_ALPHABET[byte % CROCKFORD_BASE32_ALPHABET.length];
+    output += REFERENCE_ID_LETTERS[byte % REFERENCE_ID_LETTERS.length];
   }
 
   return output;
+}
+
+export function generateReferenceId(now = new Date()): string {
+  return `${getDatePrefix(now)}-${getRandomSuffix()}`;
 }
 
 export function buildFormsparkPayload(
