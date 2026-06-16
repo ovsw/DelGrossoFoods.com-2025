@@ -70,7 +70,7 @@ export function Header({ navigationLinks, ctaButton }: HeaderProps) {
           aria-label="Main navigation"
           className="nav_contain mx-auto mt-8 max-w-[80rem] rounded-lg  bg-th-light-100 p-1 [box-shadow:var(--shadow-nav)]"
         >
-          <div className="nav_layout flex h-16 items-center justify-between rounded-sm border border-th-brown-400 px-4 sm:px-6 lg:px-8">
+          <div className="nav_layout flex h-16 items-center justify-between gap-x-2 rounded-sm border border-th-brown-400 px-4 sm:gap-x-4 sm:px-6 lg:px-8">
             {/* Logo */}
             <div className="flex-shrink-1 flex align-bottom">
               <Link
