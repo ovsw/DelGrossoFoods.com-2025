@@ -33,6 +33,7 @@ function resolveReadOnly(props: StringInputProps): boolean {
       parent: contextualProps.parent,
       value,
       currentUser: contextualProps.currentUser ?? null,
+      path: props.path,
     };
 
     return Boolean(schemaReadOnly(context));

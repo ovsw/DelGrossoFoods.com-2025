@@ -5,7 +5,7 @@ import {
   createPageTemplate,
   getPresentationUrl,
 } from "@workspace/sanity-schema/utils/helper";
-import { defineConfig } from "sanity";
+import { defineConfig, defineLocaleResourceBundle } from "sanity";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import {
@@ -39,6 +39,14 @@ const allowedPreviewOrigins = Array.from(
     ].filter((origin): origin is string => Boolean(origin)),
   ),
 );
+const presentationLabelOverrides = defineLocaleResourceBundle({
+  locale: "en-US",
+  namespace: "presentation",
+  resources: {
+    "narrow-tabs.preview-tab.label": "Preview",
+    "narrow-tabs.content-tab.label": "Page content",
+  },
+});
 
 export default defineConfig({
   name: "lfd",
@@ -58,8 +66,10 @@ export default defineConfig({
         },
       },
       allowOrigins: allowedPreviewOrigins,
+      title: "Visual editor",
     }),
     structureTool({
+      title: "All content",
       structure,
     }),
     presentationUrl(),
@@ -87,5 +97,8 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: createPageTemplate(),
+  },
+  i18n: {
+    bundles: [presentationLabelOverrides],
   },
 });
