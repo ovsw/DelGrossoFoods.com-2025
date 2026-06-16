@@ -40,7 +40,7 @@ export function CartButton({
       >
         <ShoppingCart className="size-5" aria-hidden="true" />
       </span>
-      <span>Cart</span>
+      <span className="max-[450px]:hidden">Cart</span>
       {/* Visual badge for quantity (updated externally via data attribute) */}
       <span
         className={cn(
