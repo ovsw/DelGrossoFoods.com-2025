@@ -2,6 +2,10 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "stream",
   "globalEnv": [
+    "CONSTANT_CONTACT_CLIENT_ID",
+    "CONSTANT_CONTACT_CLIENT_SECRET",
+    "CONSTANT_CONTACT_LIST_ID",
+    "CONSTANT_CONTACT_REFRESH_TOKEN",
     "FOXY_CART_SIGNING_KEY",
     "SANITY_API_READ_TOKEN",
     "SANITY_API_WRITE_TOKEN",

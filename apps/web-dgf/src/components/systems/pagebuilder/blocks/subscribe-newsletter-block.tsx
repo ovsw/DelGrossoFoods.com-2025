@@ -2,12 +2,12 @@
 import { Button } from "@workspace/ui/components/button";
 import { Section } from "@workspace/ui/components/section";
 import { cn } from "@workspace/ui/lib/utils";
-import { ChevronRight, LoaderCircle } from "lucide-react";
-import Form from "next/form";
-import { useFormStatus } from "react-dom";
+import { CheckCircle, ChevronRight, LoaderCircle } from "lucide-react";
+import { type FormEvent, useId, useState } from "react";
 
-// import { newsletterSubmission } from "@/action/newsletter-submission";
 import { RichText } from "@/components/elements/rich-text";
+import { announce } from "@/lib/a11y/announce";
+import type { NewsletterSubmissionResponse } from "@/lib/newsletter-submission";
 
 import type { PageBuilderBlockProps } from "../types";
 import { resolveSectionSpacing } from "../utils/section-spacing";
@@ -23,6 +23,11 @@ import { resolveSectionSpacing } from "../utils/section-spacing";
 // );
 
 type SubscribeNewsletterProps = PageBuilderBlockProps<"subscribeNewsletter">;
+type NewsletterFormState = "idle" | "submitting" | "success" | "error";
+
+const NEWSLETTER_SUBMIT_ENDPOINT = "/api/newsletter-submit";
+const GENERIC_ERROR_MESSAGE =
+  "Sorry, there was an error subscribing. Please try again.";
 
 const SUBSCRIBE_GRADIENT_CLASSES = cn(
   "[--subscribe-bg-color:var(--color-brand-green)]",
@@ -32,8 +37,13 @@ const SUBSCRIBE_GRADIENT_CLASSES = cn(
   "bg-(--subscribe-bg-color)",
 );
 
-function SubscribeNewsletterButton({ className }: { className?: string }) {
-  const { pending } = useFormStatus();
+function SubscribeNewsletterButton({
+  className,
+  pending,
+}: {
+  className?: string;
+  pending: boolean;
+}) {
   return (
     <Button
       type="submit"
@@ -87,6 +97,46 @@ export function SubscribeNewsletterBlock({
   isPageTop = false,
 }: SubscribeNewsletterProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
+  const emailId = useId();
+  const [email, setEmail] = useState("");
+  const [formState, setFormState] = useState<NewsletterFormState>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isSubmitting = formState === "submitting";
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormState("submitting");
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch(NEWSLETTER_SUBMIT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const result = (await response.json()) as NewsletterSubmissionResponse;
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.ok ? GENERIC_ERROR_MESSAGE : result.message);
+      }
+
+      setEmail("");
+      setFormState("success");
+      announce(
+        "Thank you for signing up for the DelGrosso newsletter.",
+        "polite",
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : GENERIC_ERROR_MESSAGE;
+      setFormState("error");
+      setErrorMessage(message);
+      announce(message, "assertive");
+    }
+  };
 
   return (
     <Section
@@ -114,27 +164,49 @@ export function SubscribeNewsletterBlock({
                 className="prose-base text-balance"
               />
             ) : null}
-            <Form
+            <form
               className="mx-auto grid w-full max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-0"
-              // action={newsletterSubmission}
-              action={() => {}}
+              onSubmit={handleSubmit}
             >
               <div className="grid">
-                <label htmlFor="newsletter-email" className="sr-only">
+                <label htmlFor={emailId} className="sr-only">
                   Email address
                 </label>
                 <input
                   type="email"
                   name="email"
-                  id="newsletter-email"
+                  id={emailId}
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    if (formState !== "idle") {
+                      setFormState("idle");
+                      setErrorMessage(null);
+                    }
+                  }}
                   required
                   aria-label="Email address"
                   placeholder="Enter your email address"
+                  disabled={isSubmitting}
                   className="w-full rounded-full border border-brand-green-text/30 bg-th-light-100 px-5 py-3 text-base text-th-dark-900 placeholder:text-th-dark-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/40 sm:rounded-r-none"
                 />
               </div>
-              <SubscribeNewsletterButton className="sm:rounded-l-none" />
-            </Form>
+              <SubscribeNewsletterButton
+                className="sm:rounded-l-none"
+                pending={isSubmitting}
+              />
+            </form>
+            {formState === "success" ? (
+              <div className="mx-auto flex max-w-xl items-center justify-center gap-2 rounded-md border border-th-light-100/35 bg-th-light-100/15 px-4 py-3 text-sm font-medium text-brand-green-text">
+                <CheckCircle className="h-5 w-5" aria-hidden="true" />
+                <p>Thank you for signing up.</p>
+              </div>
+            ) : null}
+            {formState === "error" && errorMessage ? (
+              <div className="mx-auto max-w-xl rounded-md border border-brand-red/40 bg-th-light-100 px-4 py-3 text-sm font-medium text-brand-red">
+                <p>{errorMessage}</p>
+              </div>
+            ) : null}
             {helperText ? (
               <RichText
                 richText={helperText}
