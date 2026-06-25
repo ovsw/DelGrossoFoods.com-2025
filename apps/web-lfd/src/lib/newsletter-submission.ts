@@ -1,9 +1,24 @@
+import { randomUUID } from "node:crypto";
+
+import { Redis } from "@upstash/redis";
+
 const CONSTANT_CONTACT_TOKEN_URL =
   "https://authz.constantcontact.com/oauth2/default/v1/token";
 const CONSTANT_CONTACT_SIGNUP_URL =
   "https://api.cc.email/v3/contacts/sign_up_form";
 const CONSTANT_CONTACT_REQUEST_DEADLINE_MS = 10_000;
 const CONSTANT_CONTACT_TOKEN_EXPIRY_BUFFER_MS = 60_000;
+const CONSTANT_CONTACT_REFRESH_LOCK_SECONDS = 30;
+const CONSTANT_CONTACT_REFRESH_LOCK_RETRY_MS = 250;
+const CONSTANT_CONTACT_REFRESH_LOCK_ATTEMPTS = 40;
+const CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE =
+  "Newsletter service is unavailable.";
+const RELEASE_CONSTANT_CONTACT_REFRESH_LOCK_SCRIPT = `
+if redis.call("get", KEYS[1]) == ARGV[1] then
+  return redis.call("del", KEYS[1])
+end
+return 0
+`;
 
 function encodeBasicAuthCredentials(
   clientId: string,
@@ -67,6 +82,7 @@ export type ConstantContactTokenRequest = {
   clientId: string;
   clientSecret: string;
   refreshToken: string;
+  tokenStoreKey: string;
 };
 
 type ConstantContactTokenCache = {
@@ -77,6 +93,7 @@ type ConstantContactTokenCache = {
 
 const constantContactTokenCache = new Map<string, ConstantContactTokenCache>();
 const constantContactTokenRefreshPromises = new Map<string, Promise<string>>();
+let constantContactRedis: Redis | null = null;
 
 function getCachedConstantContactAccessToken(
   cacheKey: string,
@@ -88,6 +105,19 @@ function getCachedConstantContactAccessToken(
     return null;
   }
 
+  return cache.accessToken;
+}
+
+function getValidConstantContactAccessToken(
+  cacheKey: string,
+  cache: ConstantContactTokenCache | null,
+  now = Date.now(),
+): string | null {
+  if (!cache || cache.expiresAt <= now) {
+    return null;
+  }
+
+  constantContactTokenCache.set(cacheKey, cache);
   return cache.accessToken;
 }
 
@@ -120,6 +150,140 @@ function cleanOptional(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function getConstantContactRedis(): Redis {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!url || !token) {
+    throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
+  }
+
+  constantContactRedis ??= new Redis({
+    url,
+    token,
+  });
+
+  return constantContactRedis;
+}
+
+function parseConstantContactTokenCache(
+  input: unknown,
+): ConstantContactTokenCache | null {
+  if (!input || typeof input !== "object") {
+    return null;
+  }
+
+  const data = input as Record<string, unknown>;
+  const accessToken = cleanOptional(data.accessToken);
+  const refreshToken = cleanOptional(data.refreshToken);
+  const expiresAt =
+    typeof data.expiresAt === "number"
+      ? data.expiresAt
+      : typeof data.expiresAt === "string"
+        ? Number(data.expiresAt)
+        : Number.NaN;
+
+  if (!accessToken || !refreshToken || !Number.isFinite(expiresAt)) {
+    return null;
+  }
+
+  return {
+    accessToken,
+    refreshToken,
+    expiresAt,
+  };
+}
+
+async function getStoredConstantContactToken(
+  redis: Redis,
+  cacheKey: string,
+): Promise<ConstantContactTokenCache | null> {
+  try {
+    const stored = await redis.get<unknown>(cacheKey);
+    const token = parseConstantContactTokenCache(stored);
+
+    if (stored !== null && !token) {
+      console.error("Constant Contact token store contains invalid data", {
+        tokenStoreKey: cacheKey,
+      });
+    }
+
+    if (token) {
+      constantContactTokenCache.set(cacheKey, token);
+    }
+
+    return token;
+  } catch (error) {
+    console.error("Constant Contact token store read failed", {
+      tokenStoreKey: cacheKey,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
+  }
+}
+
+async function setStoredConstantContactToken(
+  redis: Redis,
+  cacheKey: string,
+  token: ConstantContactTokenCache,
+): Promise<void> {
+  try {
+    await redis.set(cacheKey, token);
+  } catch (error) {
+    console.error("Constant Contact token store write failed", {
+      tokenStoreKey: cacheKey,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
+  }
+}
+
+async function acquireConstantContactRefreshLock(
+  redis: Redis,
+  lockKey: string,
+  lockValue: string,
+): Promise<boolean> {
+  try {
+    const result = await redis.set(lockKey, lockValue, {
+      nx: true,
+      ex: CONSTANT_CONTACT_REFRESH_LOCK_SECONDS,
+    });
+
+    return result === "OK";
+  } catch (error) {
+    console.error("Constant Contact token refresh lock failed", {
+      tokenStoreKey: lockKey,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
+  }
+}
+
+async function releaseConstantContactRefreshLock(
+  redis: Redis,
+  lockKey: string,
+  lockValue: string,
+): Promise<void> {
+  try {
+    await redis.eval(
+      RELEASE_CONSTANT_CONTACT_REFRESH_LOCK_SCRIPT,
+      [lockKey],
+      [lockValue],
+    );
+  } catch (error) {
+    console.error("Constant Contact token refresh lock release failed", {
+      tokenStoreKey: lockKey,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 function requireNonEmptyString(value: unknown, fieldName: string): string {
   const cleaned = cleanOptional(value);
   if (!cleaned) {
@@ -148,12 +312,10 @@ export function normalizeNewsletterPayload(
 }
 
 async function refreshConstantContactAccessToken(
-  { clientId, clientSecret, refreshToken }: ConstantContactTokenRequest,
-  cacheKey: string,
-): Promise<string> {
+  { clientId, clientSecret }: ConstantContactTokenRequest,
+  currentRefreshToken: string,
+): Promise<ConstantContactTokenCache> {
   const credentials = encodeBasicAuthCredentials(clientId, clientSecret);
-  const currentRefreshToken =
-    constantContactTokenCache.get(cacheKey)?.refreshToken ?? refreshToken;
   const body = new URLSearchParams({
     grant_type: "refresh_token",
     refresh_token: currentRefreshToken,
@@ -179,7 +341,7 @@ async function refreshConstantContactAccessToken(
 
       return { response, token };
     },
-    "Newsletter service is unavailable.",
+    CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE,
   );
 
   const expiresInSeconds = getPositiveExpiresInSeconds(token.expires_in);
@@ -189,27 +351,105 @@ async function refreshConstantContactAccessToken(
       status: response.status,
       statusText: response.statusText,
     });
-    throw new Error("Newsletter service is unavailable.");
+    throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
   }
 
-  const cache = {
+  return {
     accessToken: token.access_token,
     refreshToken: cleanOptional(token.refresh_token) || currentRefreshToken,
     expiresAt: getConstantContactTokenExpiresAt(expiresInSeconds),
   };
+}
 
-  constantContactTokenCache.set(cacheKey, cache);
+async function getConstantContactAccessTokenWithLock({
+  redis,
+  request,
+  cacheKey,
+}: {
+  redis: Redis;
+  request: ConstantContactTokenRequest;
+  cacheKey: string;
+}): Promise<string> {
+  const lockKey = `${cacheKey}:refresh-lock`;
+  const lockValue = randomUUID();
 
-  return cache.accessToken;
+  for (
+    let attempt = 0;
+    attempt < CONSTANT_CONTACT_REFRESH_LOCK_ATTEMPTS;
+    attempt += 1
+  ) {
+    const lockAcquired = await acquireConstantContactRefreshLock(
+      redis,
+      lockKey,
+      lockValue,
+    );
+
+    if (lockAcquired) {
+      try {
+        const storedToken = await getStoredConstantContactToken(
+          redis,
+          cacheKey,
+        );
+        const storedAccessToken = getValidConstantContactAccessToken(
+          cacheKey,
+          storedToken,
+        );
+
+        if (storedAccessToken) {
+          return storedAccessToken;
+        }
+
+        const refreshedToken = await refreshConstantContactAccessToken(
+          request,
+          storedToken?.refreshToken ?? request.refreshToken,
+        );
+
+        await setStoredConstantContactToken(redis, cacheKey, refreshedToken);
+        constantContactTokenCache.set(cacheKey, refreshedToken);
+
+        return refreshedToken.accessToken;
+      } finally {
+        await releaseConstantContactRefreshLock(redis, lockKey, lockValue);
+      }
+    }
+
+    await wait(CONSTANT_CONTACT_REFRESH_LOCK_RETRY_MS);
+
+    const storedToken = await getStoredConstantContactToken(redis, cacheKey);
+    const storedAccessToken = getValidConstantContactAccessToken(
+      cacheKey,
+      storedToken,
+    );
+
+    if (storedAccessToken) {
+      return storedAccessToken;
+    }
+  }
+
+  console.error("Constant Contact token refresh lock timed out", {
+    tokenStoreKey: cacheKey,
+  });
+  throw new Error(CONSTANT_CONTACT_SERVICE_UNAVAILABLE_MESSAGE);
 }
 
 export async function getConstantContactAccessToken(
   request: ConstantContactTokenRequest,
 ): Promise<string> {
-  const cacheKey = request.clientId;
+  const cacheKey = request.tokenStoreKey;
   const cachedAccessToken = getCachedConstantContactAccessToken(cacheKey);
   if (cachedAccessToken) {
     return cachedAccessToken;
+  }
+
+  const redis = getConstantContactRedis();
+  const storedToken = await getStoredConstantContactToken(redis, cacheKey);
+  const storedAccessToken = getValidConstantContactAccessToken(
+    cacheKey,
+    storedToken,
+  );
+
+  if (storedAccessToken) {
+    return storedAccessToken;
   }
 
   const existingRefreshPromise =
@@ -218,10 +458,11 @@ export async function getConstantContactAccessToken(
     return existingRefreshPromise;
   }
 
-  const refreshPromise = refreshConstantContactAccessToken(
+  const refreshPromise = getConstantContactAccessTokenWithLock({
+    redis,
     request,
     cacheKey,
-  ).finally(() => {
+  }).finally(() => {
     constantContactTokenRefreshPromises.delete(cacheKey);
   });
 

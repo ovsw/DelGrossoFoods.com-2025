@@ -11,6 +11,9 @@ const CLIENT_ID = process.env.CONSTANT_CONTACT_CLIENT_ID;
 const CLIENT_SECRET = process.env.CONSTANT_CONTACT_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.CONSTANT_CONTACT_REFRESH_TOKEN;
 const LIST_ID = process.env.CONSTANT_CONTACT_LIST_ID;
+const TOKEN_STORE_KEY = process.env.CONSTANT_CONTACT_TOKEN_STORE_KEY;
+const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 const GENERIC_ERROR_MESSAGE =
   "Sorry, there was an error subscribing. Please try again.";
 
@@ -26,7 +29,15 @@ export async function POST(request: Request): Promise<Response> {
   try {
     const payload = normalizeNewsletterPayload(body);
 
-    if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !LIST_ID) {
+    if (
+      !CLIENT_ID ||
+      !CLIENT_SECRET ||
+      !REFRESH_TOKEN ||
+      !LIST_ID ||
+      !TOKEN_STORE_KEY ||
+      !UPSTASH_REDIS_REST_URL ||
+      !UPSTASH_REDIS_REST_TOKEN
+    ) {
       return Response.json(
         {
           ok: false,
@@ -40,6 +51,7 @@ export async function POST(request: Request): Promise<Response> {
       clientId: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       refreshToken: REFRESH_TOKEN,
+      tokenStoreKey: TOKEN_STORE_KEY,
     });
 
     await submitNewsletterSignup({

@@ -21,6 +21,7 @@
     "@sanity/client": "^7.14.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/visual-editing": "^3.0.3",
+    "@upstash/redis": "^1.38.0",
     "@workspace/sanity-config": "workspace:*",
     "@workspace/ui": "workspace:*",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
