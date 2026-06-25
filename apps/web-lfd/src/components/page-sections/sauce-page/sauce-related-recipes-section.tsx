@@ -1,31 +1,19 @@
-import { sanityFetch } from "@workspace/sanity-config/live";
-import { getRecipesBySauceIdQuery } from "@workspace/sanity-config/query";
-import { getSiteParams } from "@workspace/sanity-config/site";
 import type { JSX } from "react";
 
 import { RelatedRecipesLayout } from "@/components/layouts/related-recipes-layout";
 import type { RecipeListItem } from "@/types";
-import { handleErrors } from "@/utils";
 
 interface SauceRelatedRecipesSectionProps {
-  readonly sauceId: string | undefined;
+  readonly recipes: RecipeListItem[];
   readonly sauceName?: string | null;
 }
 
-export async function SauceRelatedRecipesSection({
-  sauceId,
+export function SauceRelatedRecipesSection({
+  recipes,
   sauceName,
-}: SauceRelatedRecipesSectionProps): Promise<JSX.Element | null> {
-  if (!sauceId) return null;
-
-  const [result] = await handleErrors(
-    sanityFetch({
-      query: getRecipesBySauceIdQuery,
-      params: { ...getSiteParams(), sauceId },
-    }),
-  );
-  const items = (result?.data ?? []) as RecipeListItem[];
-  if (!items || items.length === 0) return null;
+}: SauceRelatedRecipesSectionProps): JSX.Element | null {
+  const items = recipes;
+  if (items.length === 0) return null;
   const hasMultipleItems = items.length > 1;
   const heading =
     hasMultipleItems && sauceName

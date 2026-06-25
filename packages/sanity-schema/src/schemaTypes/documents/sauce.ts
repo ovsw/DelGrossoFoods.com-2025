@@ -19,6 +19,20 @@ import {
   createUniqueSlugRule,
 } from "../../utils/slug-validation";
 
+const commonSauceJarSizes = [
+  "26 oz.",
+  "24 oz.",
+  "16.9 oz.",
+  "16 oz.",
+  "14 oz.",
+  "13.5 oz.",
+];
+
+const sauceJarSizeOptions =
+  process.env.SANITY_STUDIO_SITE_CODE === "DGF"
+    ? [...commonSauceJarSizes, "15 oz."]
+    : commonSauceJarSizes;
+
 export const sauce = defineType({
   name: "sauce",
   title: "Sauce",
@@ -117,7 +131,7 @@ export const sauce = defineType({
       title: "Jar Size",
       type: "string",
       options: {
-        list: ["26 oz.", "24 oz.", "16.9 oz.", "16 oz.", "14 oz.", "13.5 oz."],
+        list: sauceJarSizeOptions,
       },
       group: "basic",
       validation: (rule) => rule.required().error("Jar size is required"),

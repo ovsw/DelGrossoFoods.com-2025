@@ -17,10 +17,12 @@ import type { SanityButtonProps } from "@/types";
 
 interface SauceHeroSectionProps {
   readonly sauce: NonNullable<GetSauceBySlugQueryResult>;
+  readonly hasRelatedRecipes: boolean;
 }
 
 export function SauceHeroSection({
   sauce,
+  hasRelatedRecipes,
 }: SauceHeroSectionProps): JSX.Element {
   // Name: visible uses raw; logic/alt use cleaned
   const rawName = sauce.name ?? "";
@@ -64,7 +66,10 @@ export function SauceHeroSection({
       openInNewTab: false,
       icon: <ShoppingCart className="size-4" aria-hidden="true" />,
     },
-    {
+  ];
+
+  if (hasRelatedRecipes) {
+    buttons.push({
       _key: "see-recipes",
       _type: "button" as const,
       text: "See Recipes",
@@ -72,8 +77,8 @@ export function SauceHeroSection({
       href: "#related-recipes",
       openInNewTab: false,
       icon: <BookOpen className="size-4" aria-hidden="true" />,
-    },
-  ];
+    });
+  }
 
   const backgroundImage =
     "/images/bg/counter-wall-5-no-bottom-border-ultrawide-p-2600-taller.jpg";
