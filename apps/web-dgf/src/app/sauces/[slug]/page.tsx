@@ -2,8 +2,10 @@
 import { sanityFetch } from "@workspace/sanity-config/live";
 import {
   getAllSauceSlugsForStaticParamsQuery,
+  getRecipesBySauceIdQuery,
   getSauceBySlugQuery,
 } from "@workspace/sanity-config/query";
+import { getSiteParams } from "@workspace/sanity-config/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stegaClean } from "next-sanity";
@@ -13,6 +15,7 @@ import { SauceNutritionalInfoSection } from "@/components/page-sections/sauce-pa
 import { SauceRelatedProductsSection } from "@/components/page-sections/sauce-page/sauce-related-products-section";
 import { SauceRelatedRecipesSection } from "@/components/page-sections/sauce-page/sauce-related-recipes-section";
 import { getSEOMetadata } from "@/lib/seo";
+import type { RecipeListItem } from "@/types";
 import { handleErrors } from "@/utils";
 
 async function fetchSauce(slug: string) {
@@ -28,6 +31,21 @@ async function fetchSauce(slug: string) {
   );
 
   return result?.data ?? null;
+}
+
+async function fetchRelatedRecipes(
+  sauceId: string | undefined,
+): Promise<RecipeListItem[]> {
+  if (!sauceId) return [];
+
+  const [result] = await handleErrors(
+    sanityFetch({
+      query: getRecipesBySauceIdQuery,
+      params: { ...getSiteParams(), sauceId },
+    }),
+  );
+
+  return (result?.data ?? []) as RecipeListItem[];
 }
 
 async function fetchSauceStaticParams(): Promise<Array<{ slug: string }>> {
@@ -114,14 +132,20 @@ export default async function SauceDetailPage({
     notFound();
   }
 
-  // Related recipes are fetched within the page section
+  const relatedRecipes = await fetchRelatedRecipes(sauce._id);
 
   return (
     <>
-      <SauceHeroSection sauce={sauce} />
+      <SauceHeroSection
+        sauce={sauce}
+        hasRelatedRecipes={relatedRecipes.length > 0}
+      />
       <SauceNutritionalInfoSection sauce={sauce} />
       <SauceRelatedProductsSection sauceId={sauce._id} />
-      <SauceRelatedRecipesSection sauceId={sauce._id} sauceName={sauce.name} />
+      <SauceRelatedRecipesSection
+        recipes={relatedRecipes}
+        sauceName={sauce.name}
+      />
     </>
   );
 }
