@@ -30,6 +30,35 @@ const NEWSLETTER_SUBMIT_ENDPOINT = "/api/newsletter-submit";
 const GENERIC_ERROR_MESSAGE =
   "Sorry, there was an error subscribing. Please try again.";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isNewsletterSubmissionSuccess(
+  result: unknown,
+): result is Extract<NewsletterSubmissionResponse, { ok: true }> {
+  return isRecord(result) && result.ok === true;
+}
+
+function isNewsletterSubmissionFailure(
+  result: unknown,
+): result is Extract<NewsletterSubmissionResponse, { ok: false }> {
+  return (
+    isRecord(result) &&
+    result.ok === false &&
+    typeof result.message === "string" &&
+    result.message.trim().length > 0
+  );
+}
+
+function getNewsletterFailureMessage(result: unknown): string | null {
+  if (!isNewsletterSubmissionFailure(result)) {
+    return null;
+  }
+
+  return result.message.trim();
+}
+
 const LFD_NEWSLETTER_BRAND_GREEN = "oklch(0.38 0.07 178)";
 
 function SubscribeNewsletterButton({
@@ -92,11 +121,25 @@ export function SubscribeNewsletterBlock({
   isPageTop = false,
 }: SubscribeNewsletterProps) {
   const { spacingTop, spacingBottom } = resolveSectionSpacing(spacing);
-  const emailId = useId();
+  const formId = useId();
+  const emailId = `${formId}-email`;
   const [email, setEmail] = useState("");
   const [formState, setFormState] = useState<NewsletterFormState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isSubmitting = formState === "submitting";
+  const isSuccess = formState === "success";
+  const isError = formState === "error" && Boolean(errorMessage);
+  const feedbackId = `${formId}-feedback`;
+  const helperTextId = `${formId}-helper`;
+  const hasFeedback = isSuccess || isError;
+  const emailDescribedBy =
+    helperText && hasFeedback
+      ? `${helperTextId} ${feedbackId}`
+      : helperText
+        ? helperTextId
+        : hasFeedback
+          ? feedbackId
+          : undefined;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -112,24 +155,27 @@ export function SubscribeNewsletterBlock({
         },
         body: JSON.stringify({ email }),
       });
-      const result = (await response.json()) as NewsletterSubmissionResponse;
+      const result: unknown = await response.json();
 
-      if (!response.ok || !result.ok) {
-        throw new Error(result.ok ? GENERIC_ERROR_MESSAGE : result.message);
+      if (response.ok && isNewsletterSubmissionSuccess(result)) {
+        setEmail("");
+        setFormState("success");
+        announce(
+          "Thank you for signing up for the DelGrosso newsletter.",
+          "polite",
+        );
+        return;
       }
 
-      setEmail("");
-      setFormState("success");
-      announce(
-        "Thank you for signing up for the DelGrosso newsletter.",
-        "polite",
-      );
-    } catch (error) {
       const message =
-        error instanceof Error ? error.message : GENERIC_ERROR_MESSAGE;
+        getNewsletterFailureMessage(result) ?? GENERIC_ERROR_MESSAGE;
       setFormState("error");
       setErrorMessage(message);
       announce(message, "assertive");
+    } catch {
+      setFormState("error");
+      setErrorMessage(GENERIC_ERROR_MESSAGE);
+      announce(GENERIC_ERROR_MESSAGE, "assertive");
     }
   };
 
@@ -178,6 +224,8 @@ export function SubscribeNewsletterBlock({
                     }
                   }}
                   required
+                  aria-describedby={emailDescribedBy}
+                  aria-invalid={isError || undefined}
                   aria-label="Email address"
                   placeholder="Enter your email address"
                   disabled={isSubmitting}
@@ -189,23 +237,37 @@ export function SubscribeNewsletterBlock({
                 pending={isSubmitting}
               />
             </form>
-            {formState === "success" ? (
-              <div className="mx-auto flex max-w-xl items-center justify-center gap-2 rounded-md border border-th-light-100/35 bg-th-light-100/15 px-4 py-3 text-sm font-medium text-brand-green-text">
+            {isSuccess ? (
+              <div
+                id={feedbackId}
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="mx-auto flex max-w-xl items-center justify-center gap-2 rounded-md border border-th-light-100/35 bg-th-light-100/15 px-4 py-3 text-sm font-medium text-brand-green-text"
+              >
                 <CheckCircle className="h-5 w-5" aria-hidden="true" />
                 <p>Thank you for signing up.</p>
               </div>
             ) : null}
-            {formState === "error" && errorMessage ? (
-              <div className="mx-auto max-w-xl rounded-md border border-brand-red/40 bg-th-light-100 px-4 py-3 text-sm font-medium text-brand-red">
+            {isError && errorMessage ? (
+              <div
+                id={feedbackId}
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                className="mx-auto max-w-xl rounded-md border border-brand-red/40 bg-th-light-100 px-4 py-3 text-sm font-medium text-brand-red"
+              >
                 <p>{errorMessage}</p>
               </div>
             ) : null}
             {helperText ? (
-              <RichText
-                richText={helperText}
-                invert
-                className="prose-sm text-balance opacity-80"
-              />
+              <div id={helperTextId}>
+                <RichText
+                  richText={helperText}
+                  invert
+                  className="prose-sm text-balance opacity-80"
+                />
+              </div>
             ) : null}
           </div>
         </div>

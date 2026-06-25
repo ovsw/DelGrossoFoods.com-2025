@@ -2,6 +2,37 @@ const CONSTANT_CONTACT_TOKEN_URL =
   "https://authz.constantcontact.com/oauth2/default/v1/token";
 const CONSTANT_CONTACT_SIGNUP_URL =
   "https://api.cc.email/v3/contacts/sign_up_form";
+const CONSTANT_CONTACT_REQUEST_DEADLINE_MS = 10_000;
+const CONSTANT_CONTACT_TOKEN_EXPIRY_BUFFER_MS = 60_000;
+
+function encodeBasicAuthCredentials(
+  clientId: string,
+  clientSecret: string,
+): string {
+  return Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+}
+
+async function runConstantContactWithDeadline<T>(
+  operation: (signal: AbortSignal) => Promise<T>,
+  errorMessage: string,
+): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    CONSTANT_CONTACT_REQUEST_DEADLINE_MS,
+  );
+
+  try {
+    return await operation(controller.signal);
+  } catch (error) {
+    if (error instanceof Error && error.message === errorMessage) {
+      throw error;
+    }
+    throw new Error(errorMessage);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 export type NewsletterSubmissionPayload = {
   email: string;
@@ -28,11 +59,62 @@ export const NEWSLETTER_SUBMISSION_VALIDATION_MESSAGES = new Set([
 type ConstantContactTokenResponse = {
   access_token?: string;
   token_type?: string;
-  expires_in?: number;
+  expires_in?: number | string;
   refresh_token?: string;
-  error?: string;
-  error_description?: string;
 };
+
+export type ConstantContactTokenRequest = {
+  clientId: string;
+  clientSecret: string;
+  refreshToken: string;
+};
+
+type ConstantContactTokenCache = {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
+};
+
+const constantContactTokenCache = new Map<string, ConstantContactTokenCache>();
+const constantContactTokenRefreshPromises = new Map<string, Promise<string>>();
+
+function getCachedConstantContactAccessToken(
+  cacheKey: string,
+  now = Date.now(),
+): string | null {
+  const cache = constantContactTokenCache.get(cacheKey);
+
+  if (!cache || cache.expiresAt <= now) {
+    return null;
+  }
+
+  return cache.accessToken;
+}
+
+function getPositiveExpiresInSeconds(
+  value: ConstantContactTokenResponse["expires_in"],
+): number | null {
+  const expiresInSeconds =
+    typeof value === "number"
+      ? value
+      : typeof value === "string"
+        ? Number(value)
+        : Number.NaN;
+
+  return Number.isFinite(expiresInSeconds) && expiresInSeconds > 0
+    ? expiresInSeconds
+    : null;
+}
+
+function getConstantContactTokenExpiresAt(expiresInSeconds: number): number {
+  return (
+    Date.now() +
+    Math.max(
+      expiresInSeconds * 1000 - CONSTANT_CONTACT_TOKEN_EXPIRY_BUFFER_MS,
+      0,
+    )
+  );
+}
 
 function cleanOptional(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
@@ -65,46 +147,87 @@ export function normalizeNewsletterPayload(
   };
 }
 
-export async function getConstantContactAccessToken({
-  clientId,
-  clientSecret,
-  refreshToken,
-}: {
-  clientId: string;
-  clientSecret: string;
-  refreshToken: string;
-}): Promise<string> {
-  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
-    "base64",
-  );
+async function refreshConstantContactAccessToken(
+  { clientId, clientSecret, refreshToken }: ConstantContactTokenRequest,
+  cacheKey: string,
+): Promise<string> {
+  const credentials = encodeBasicAuthCredentials(clientId, clientSecret);
+  const currentRefreshToken =
+    constantContactTokenCache.get(cacheKey)?.refreshToken ?? refreshToken;
   const body = new URLSearchParams({
     grant_type: "refresh_token",
-    refresh_token: refreshToken,
+    refresh_token: currentRefreshToken,
   });
 
-  const response = await fetch(CONSTANT_CONTACT_TOKEN_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${credentials}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
+  const { response, token } = await runConstantContactWithDeadline(
+    async (signal) => {
+      const response = await fetch(CONSTANT_CONTACT_TOKEN_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+        body,
+        cache: "no-store",
+        signal,
+      });
+
+      const token: ConstantContactTokenResponse = response.ok
+        ? ((await response.json()) as ConstantContactTokenResponse)
+        : {};
+
+      return { response, token };
     },
-    body,
-    cache: "no-store",
-  });
+    "Newsletter service is unavailable.",
+  );
 
-  const token = (await response.json()) as ConstantContactTokenResponse;
+  const expiresInSeconds = getPositiveExpiresInSeconds(token.expires_in);
 
-  if (!response.ok || !token.access_token) {
+  if (!response.ok || !token.access_token || !expiresInSeconds) {
     console.error("Constant Contact token refresh failed", {
       status: response.status,
-      error: token.error,
-      errorDescription: token.error_description,
+      statusText: response.statusText,
     });
     throw new Error("Newsletter service is unavailable.");
   }
 
-  return token.access_token;
+  const cache = {
+    accessToken: token.access_token,
+    refreshToken: cleanOptional(token.refresh_token) || currentRefreshToken,
+    expiresAt: getConstantContactTokenExpiresAt(expiresInSeconds),
+  };
+
+  constantContactTokenCache.set(cacheKey, cache);
+
+  return cache.accessToken;
+}
+
+export async function getConstantContactAccessToken(
+  request: ConstantContactTokenRequest,
+): Promise<string> {
+  const cacheKey = request.clientId;
+  const cachedAccessToken = getCachedConstantContactAccessToken(cacheKey);
+  if (cachedAccessToken) {
+    return cachedAccessToken;
+  }
+
+  const existingRefreshPromise =
+    constantContactTokenRefreshPromises.get(cacheKey);
+  if (existingRefreshPromise) {
+    return existingRefreshPromise;
+  }
+
+  const refreshPromise = refreshConstantContactAccessToken(
+    request,
+    cacheKey,
+  ).finally(() => {
+    constantContactTokenRefreshPromises.delete(cacheKey);
+  });
+
+  constantContactTokenRefreshPromises.set(cacheKey, refreshPromise);
+
+  return refreshPromise;
 }
 
 export async function submitNewsletterSignup({
@@ -116,26 +239,29 @@ export async function submitNewsletterSignup({
   email: string;
   listId: string;
 }): Promise<void> {
-  const response = await fetch(CONSTANT_CONTACT_SIGNUP_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      email_address: email,
-      list_memberships: [listId],
-    }),
-    cache: "no-store",
-  });
+  const response = await runConstantContactWithDeadline(
+    (signal) =>
+      fetch(CONSTANT_CONTACT_SIGNUP_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email_address: email,
+          list_memberships: [listId],
+        }),
+        cache: "no-store",
+        signal,
+      }),
+    "Sorry, there was an error subscribing. Please try again.",
+  );
 
   if (!response.ok) {
-    const errorBody = await response.text();
     console.error("Constant Contact newsletter signup failed", {
       status: response.status,
       statusText: response.statusText,
-      body: errorBody,
     });
     throw new Error("Sorry, there was an error subscribing. Please try again.");
   }

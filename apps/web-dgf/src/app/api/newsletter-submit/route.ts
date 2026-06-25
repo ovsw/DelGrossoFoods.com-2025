@@ -15,19 +15,27 @@ const GENERIC_ERROR_MESSAGE =
   "Sorry, there was an error subscribing. Please try again.";
 
 export async function POST(request: Request): Promise<Response> {
-  if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !LIST_ID) {
-    return Response.json(
-      {
-        ok: false,
-        message: "Newsletter service is not configured.",
-      },
-      { status: 500 },
-    );
+  let body: unknown;
+
+  try {
+    body = await request.json();
+  } catch {
+    body = null;
   }
 
   try {
-    const body = await request.json();
     const payload = normalizeNewsletterPayload(body);
+
+    if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !LIST_ID) {
+      return Response.json(
+        {
+          ok: false,
+          message: "Newsletter service is not configured.",
+        },
+        { status: 500 },
+      );
+    }
+
     const accessToken = await getConstantContactAccessToken({
       clientId: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
