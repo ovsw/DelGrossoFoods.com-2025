@@ -242,11 +242,10 @@ export default async function ProductDetailPage({
             ) : hasManySauces ? (
               <>
                 <div className="text-center">
-                  <Eyebrow text="Pairs well with" />
-                  <h2 className="heading-section">Complementary sauces</h2>
+                  <Eyebrow text="Sauce Info" />
+                  <h2 className="heading-section">Sauces in this Pack</h2>
                   <p className="mt-4 text-muted-foreground">
-                    Build your next meal with these favorites from La Famiglia
-                    DelGrosso.
+                    Click on any of the sauces below to get more info.
                   </p>
                 </div>
 
