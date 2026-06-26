@@ -51,7 +51,7 @@ export function SauceHeroSection({
     lineSlug === "original"
       ? "DelGrosso's Original"
       : lineSlug === "organic"
-        ? "DelGrosso's Organic"
+        ? "DelGrosso Organic"
         : lineSlug === "premium"
           ? "La Famiglia DelGrosso's"
           : getLineDisplayName(rawLine);
