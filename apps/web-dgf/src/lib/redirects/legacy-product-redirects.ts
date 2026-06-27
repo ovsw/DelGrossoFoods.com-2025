@@ -127,23 +127,23 @@ export const legacyProductRedirectSpec: readonly RedirectSpec[] = [
   },
   {
     source: "/products/ultra-premium/",
-    destination: "/sauces?productLine=premium",
+    destination: "/sauces?productLine=ultra-premium",
   },
   {
     source: "/products/ultra-premium/red-pasta-sauce/",
-    destination: "/sauces?productLine=premium&sauceType=pasta",
+    destination: "/sauces?productLine=ultra-premium&sauceType=pasta",
   },
   {
     source: "/products/ultra-premium/white-pasta-sauce/",
-    destination: "/sauces?productLine=premium&sauceType=pasta",
+    destination: "/sauces?productLine=ultra-premium&sauceType=pasta",
   },
   {
     source: "/products/ultra-premium/pizza-sauce/",
-    destination: "/sauces?productLine=premium&sauceType=pizza",
+    destination: "/sauces?productLine=ultra-premium&sauceType=pizza",
   },
   {
     source: "/products/ultra-premium/sandwich-sauce/",
-    destination: "/sauces?productLine=premium&sauceType=sandwich",
+    destination: "/sauces?productLine=ultra-premium&sauceType=sandwich",
   },
 ] as const;
 

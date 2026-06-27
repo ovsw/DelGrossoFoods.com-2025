@@ -2,8 +2,9 @@
 // Mapping canonical slugs to Sanity labels, display labels, and badge colors
 import { stegaClean } from "next-sanity";
 
-export type LineSlug = "original" | "organic" | "premium";
+export type LineSlug = "original" | "organic" | "ultra-premium";
 export type TypeSlug = "pasta" | "pizza" | "salsa" | "sandwich";
+export type LineBadgeVariant = "original" | "organic" | "premium";
 
 export type LineLabel = "Original" | "Organic" | "Ultra-Premium";
 export type TypeLabel =
@@ -16,15 +17,16 @@ export interface BadgeConfig {
   readonly text: string;
   /**
    * Visual variant key expected by the shared <Badge /> component.
-   * Typically the canonical slug (e.g., "original", "organic", "pizza").
+   * Product lines may use a separate visual key (e.g., ultra-premium -> premium).
    */
-  readonly variant: "neutral" | LineSlug | TypeSlug;
+  readonly variant: "neutral" | LineBadgeVariant | TypeSlug;
 }
 
 interface LineConfigItem {
   readonly label: LineLabel;
   readonly display: string;
   readonly displayName?: string;
+  readonly badgeVariant: LineBadgeVariant;
 }
 
 interface TypeConfigItem {
@@ -43,15 +45,18 @@ export const lineMap: Record<LineSlug, LineConfigItem> = {
   original: {
     label: "Original",
     display: "Original",
+    badgeVariant: "original",
   },
   organic: {
     label: "Organic",
     display: "Organic",
+    badgeVariant: "organic",
   },
-  premium: {
+  "ultra-premium": {
     label: "Ultra-Premium",
     display: "Ultra Premium",
     displayName: "La Famiglia DelGrosso",
+    badgeVariant: "premium",
   },
 } as const;
 
@@ -87,7 +92,7 @@ export const typeMap: Record<TypeSlug, TypeConfigItem> = {
 const inverseLine: Record<LineLabel, LineSlug> = {
   Original: "original",
   Organic: "organic",
-  "Ultra-Premium": "premium",
+  "Ultra-Premium": "ultra-premium",
 } as const;
 
 /**
@@ -103,8 +108,8 @@ const inverseType: Record<TypeLabel, TypeSlug> = {
 /**
  * Convert a human-readable product line label from Sanity into a canonical line slug.
  *
- * Why: UI components (e.g., Badge variants, filters) key off stable slugs
- * such as "original"/"organic"/"premium" rather than the display labels.
+ * Why: filters key off URL-safe slugs such as "original"/"organic"/"ultra-premium"
+ * rather than display labels.
  *
  * Note: Strings coming from the Sanity Live Content API may contain hidden
  * steganographic metadata for live preview features. We call `stegaClean` to
@@ -113,7 +118,7 @@ const inverseType: Record<TypeLabel, TypeSlug> = {
  * Examples:
  * - toLineSlug("Original") -> "original"
  * - toLineSlug("Organic") -> "organic"
- * - toLineSlug("Ultra-Premium") -> "premium"
+ * - toLineSlug("Ultra-Premium") -> "ultra-premium"
  */
 export function toLineSlug(label: unknown): LineSlug | undefined {
   if (!label) return undefined;
@@ -121,6 +126,25 @@ export function toLineSlug(label: unknown): LineSlug | undefined {
   // Clean it to ensure exact key matches against our inverse map.
   const clean = stegaClean(String(label));
   return inverseLine[clean as LineLabel];
+}
+
+const legacyLineSlugParamAliases: Partial<Record<string, LineSlug>> = {
+  premium: "ultra-premium",
+} as const;
+
+/**
+ * Convert incoming URL param values into canonical product line slugs.
+ *
+ * Serializers only emit canonical slugs. The legacy "premium" param is accepted
+ * so old links are normalized to "ultra-premium" on page load.
+ */
+export function toLineSlugFromParam(value: unknown): LineSlug | undefined {
+  if (!value) return undefined;
+  const clean = stegaClean(String(value));
+  if ((allLineSlugs as readonly string[]).includes(clean)) {
+    return clean as LineSlug;
+  }
+  return legacyLineSlugParamAliases[clean];
 }
 
 /**
@@ -189,7 +213,7 @@ export function getLineBadge(label: unknown): BadgeConfig {
   }
   return {
     text: cfg.display,
-    variant: slug ?? "neutral",
+    variant: cfg.badgeVariant,
   };
 }
 
@@ -240,7 +264,11 @@ export function getTypeBadge(label: unknown): BadgeConfig {
  * Enumerates all valid product line slugs.
  * Useful for filters, checkboxes, or generating UI menus.
  */
-export const allLineSlugs: LineSlug[] = ["original", "organic", "premium"];
+export const allLineSlugs: LineSlug[] = [
+  "original",
+  "organic",
+  "ultra-premium",
+];
 
 /**
  * Enumerates all valid sauce type slugs.

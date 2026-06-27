@@ -4,7 +4,7 @@ import {
   type MeatSlug,
   type RecipeTagSlug,
 } from "@/config/recipe-taxonomy";
-import { allLineSlugs, type LineSlug } from "@/config/sauce-taxonomy";
+import { type LineSlug, toLineSlugFromParam } from "@/config/sauce-taxonomy";
 import type { SortOrder } from "@/types";
 
 // Utility function to generate slug from title
@@ -60,9 +60,9 @@ export function parseSearchParams(
   const search = typeof params.search === "string" ? params.search : "";
 
   const productLineRaw = toArray(params.productLine);
-  const productLine = productLineRaw.filter((v): v is LineSlug =>
-    (allLineSlugs as readonly string[]).includes(v),
-  ) as LineSlug[];
+  const productLine = productLineRaw
+    .map(toLineSlugFromParam)
+    .filter((v): v is LineSlug => v !== undefined);
 
   const tagsRaw = toArray(params.tags);
   const tags = tagsRaw.filter((v): v is RecipeTagSlug =>

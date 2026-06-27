@@ -109,7 +109,10 @@ export function ProductCard({
     // Unique line badge (skip if mixed/none)
     const lineSlug = getUniqueLineSlug(sauceLines ?? undefined);
     if (lineSlug) {
-      badges.push({ text: lineMap[lineSlug].display, variant: lineSlug });
+      badges.push({
+        text: lineMap[lineSlug].display,
+        variant: lineMap[lineSlug].badgeVariant,
+      });
     }
 
     // Type badge: single => specific, multiple => Mix

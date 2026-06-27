@@ -1,7 +1,7 @@
 import {
-  allLineSlugs,
   allTypeSlugs,
   type LineSlug,
+  toLineSlugFromParam,
   type TypeSlug,
 } from "@/config/sauce-taxonomy";
 import type { SortOrder } from "@/types";
@@ -33,9 +33,9 @@ export function parseSearchParams(
   const search = typeof params.search === "string" ? params.search : "";
 
   const productLineRaw = toArray(params.productLine);
-  const productLine = productLineRaw.filter((v): v is LineSlug =>
-    (allLineSlugs as readonly string[]).includes(v),
-  ) as LineSlug[];
+  const productLine = productLineRaw
+    .map(toLineSlugFromParam)
+    .filter((v): v is LineSlug => v !== undefined);
 
   const sauceTypeRaw =
     typeof params.sauceType === "string" ? params.sauceType : undefined;
