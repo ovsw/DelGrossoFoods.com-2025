@@ -358,7 +358,7 @@ export function RecipesClient({ items, initialState, categories }: Props) {
         ...filters.productLine.map((slug) => ({
           key: `line-${slug}`,
           text: lineMap[slug].display,
-          variant: slug,
+          variant: lineMap[slug].badgeVariant,
           onRemove: () => toggleLine(slug, false),
         })),
         ...filters.tags.map((slug) => ({

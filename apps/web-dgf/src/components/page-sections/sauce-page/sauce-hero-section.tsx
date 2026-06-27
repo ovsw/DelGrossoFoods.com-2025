@@ -52,7 +52,7 @@ export function SauceHeroSection({
       ? "DelGrosso's Original"
       : lineSlug === "organic"
         ? "DelGrosso Organic"
-        : lineSlug === "premium"
+        : lineSlug === "ultra-premium"
           ? "La Famiglia DelGrosso's"
           : getLineDisplayName(rawLine);
 
@@ -107,7 +107,7 @@ export function SauceHeroSection({
   const authorAltText = authorImage?.alt || cleanedAuthorName || "Sauce author";
 
   const showAuthor =
-    lineSlug === "premium" && (hasAuthorName || authorImage?.id);
+    lineSlug === "ultra-premium" && (hasAuthorName || authorImage?.id);
 
   const authorNameAttribute = showAuthor
     ? createPresentationDataAttribute({

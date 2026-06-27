@@ -289,7 +289,7 @@ export function ProductsClient({ items, initialState }: Props) {
         ...filters.productLine.map((slug) => ({
           key: `line-${slug}`,
           text: lineMap[slug].display,
-          variant: slug,
+          variant: lineMap[slug].badgeVariant,
           onRemove: () => toggleLine(slug, false),
         })),
         ...(filters.sauceType !== "all" && filters.sauceType !== "mix"
