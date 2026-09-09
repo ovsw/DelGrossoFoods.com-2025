@@ -1,3 +1,5 @@
+"use client";
+
 import { createIubendaBootstrap, iubendaSites } from "../lib/iubenda";
 
 export function IubendaHead({
@@ -10,8 +12,10 @@ export function IubendaHead({
   // React 19 emits normal head children AFTER its async bootstrap scripts.
   // A native head preamble keeps Iubenda's classic snippet first. All values
   // are fixed numeric IDs or escaped by createIubendaBootstrap, never CMS HTML.
-  // Next still appends its metadata/styles/scripts. Iubenda also inserts nodes,
-  // so this server-owned head must not be compared as a static HTML string.
+  // React acquires the head singleton during hydration. Never give the browser
+  // an innerHTML assignment: it would remove Next's hoisted CSS and metadata.
+  // These parser-loaded scripts are server-only, unmanaged head content.
+  if (typeof window !== "undefined") return <head suppressHydrationWarning />;
   const html = `<meta charset="utf-8"><script id="dg-iubenda-config">${createIubendaBootstrap(site, gaId)}</script>
 <script src="https://cs.iubenda.com/autoblocking/${iubendaSites[site].siteId}.js"></script>
 <script src="https://cdn.iubenda.com/cs/gpp/stub.js"></script>

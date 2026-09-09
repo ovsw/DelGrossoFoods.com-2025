@@ -21,6 +21,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = path.join(root, "apps/web-dgf");
 const fixture = await mkdtemp(path.join(tmpdir(), "dg-consent-"));
+const production = process.env.CONSENT_TEST_PRODUCTION === "1";
 const port = Number(process.env.CONSENT_TEST_PORT || 3197);
 const localBase = `http://127.0.0.1:${port}`;
 // Route only this origin to the local fixture. Chromium retains the HTTPS host
@@ -43,6 +44,28 @@ try {
     path.join(root, "node_modules/typescript"),
     path.join(fixture, "node_modules/typescript"),
   );
+  await writeFile(
+    path.join(fixture, "tsconfig.json"),
+    JSON.stringify({
+      compilerOptions: {
+        target: "ES2017",
+        lib: ["dom", "dom.iterable", "esnext"],
+        module: "esnext",
+        moduleResolution: "bundler",
+        jsx: "preserve",
+        esModuleInterop: true,
+        skipLibCheck: true,
+        noEmit: true,
+        plugins: [{ name: "next" }],
+      },
+      include: [
+        "next-env.d.ts",
+        "app/**/*.ts",
+        "app/**/*.tsx",
+        ".next/types/**/*.ts",
+      ],
+    }),
+  );
   await mkdir(path.join(fixture, "app/next"), { recursive: true });
   await writeFile(
     path.join(fixture, "package.json"),
@@ -58,6 +81,8 @@ try {
   await writeFile(
     path.join(fixture, "app/layout.tsx"),
     `
+import './fixture.css';
+import { RefreshProbe } from './refresh-probe';
 import { headers } from 'next/headers';
 import { IubendaHead } from ${modulePath("packages/ui/src/components/iubenda-head")};
 import { TrackingAnalytics } from ${modulePath("packages/ui/src/components/tracking-consent")};
@@ -68,7 +93,7 @@ export default async function Layout({children}) {
  const store = site === 'LFD' ? 'delgrossosauce' : 'delgrossofoods';
  const policy = site === 'LFD' ? '49130163' : '61608121';
  return <html lang="en"><IubendaHead site={site} gaId="G-CONSENTTEST" /><body>
- <TrackingAnalytics gaId="G-CONSENTTEST" />
+ <RefreshProbe /><TrackingAnalytics gaId="G-CONSENTTEST" />
  <Link href="/">Home</Link><Link href="/next">Next page</Link>
  <footer><a href={"https://www.iubenda.com/privacy-policy/" + policy + "/cookie-policy?an=no&s_ck=false&newmarkup=yes"} className="iubenda-cs-uspr-link">Notice at Collection</a><a href={"https://www.iubenda.com/privacy-policy/" + policy + "/legal#privacy_rights_under_us_state_laws"} className="iubenda-cs-preferences-link">Your Privacy Choices</a></footer>
  <a href={"https://" + store + ".foxycart.com/cart?cart=view"}>Cart</a>
@@ -90,11 +115,47 @@ export default async function Page() { const RecipeVideoClient = (await headers(
     path.join(fixture, "app/next/page.tsx"),
     'export const metadata = {title: "Second route"}; export default function Page() {return <h1>Second route</h1>;}',
   );
+  await writeFile(
+    path.join(fixture, "app/fixture.css"),
+    "body { background-color: rgb(12, 34, 56); }\n",
+  );
+  await writeFile(
+    path.join(fixture, "app/refresh-probe.tsx"),
+    `
+'use client';
+import {useEffect} from 'react';
+import {useRouter} from 'next/navigation';
+export function RefreshProbe() {
+ const router = useRouter();
+ useEffect(() => {document.documentElement.dataset.hydrated = 'true';}, []);
+ return <button onClick={() => router.refresh()}>Refresh route</button>;
+}`,
+  );
+  if (production) {
+    const build = spawn(
+      process.execPath,
+      [path.join(app, "node_modules/next/dist/bin/next"), "build"],
+      {
+        cwd: fixture,
+        env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
+    build.stdout.on("data", (d) => {
+      serverLog += d;
+    });
+    build.stderr.on("data", (d) => {
+      serverLog += d;
+    });
+    const code = await new Promise((resolve) => build.once("exit", resolve));
+    assert.equal(code, 0, serverLog);
+    console.log("PASS production fixture build");
+  }
   server = spawn(
     process.execPath,
     [
       path.join(app, "node_modules/next/dist/bin/next"),
-      "dev",
+      production ? "start" : "dev",
       "--hostname",
       "127.0.0.1",
       "--port",
@@ -212,7 +273,34 @@ export default async function Page() { const RecipeVideoClient = (await headers(
       { timeout: 45000 },
     );
     await b.page.waitForFunction(() => window.__gaLoads === 1);
-    assert.equal(await b.page.title(), "Consent fixture");
+    await b.page.waitForFunction(
+      () => document.documentElement.dataset.hydrated === "true",
+    );
+    async function assertHead(title) {
+      assert.equal(await b.page.title(), title);
+      assert.equal(
+        await b.page.evaluate(
+          () => getComputedStyle(document.body).backgroundColor,
+        ),
+        "rgb(12, 34, 56)",
+      );
+      assert(
+        (await b.page
+          .locator('head link[rel="stylesheet"], head style')
+          .count()) > 0,
+      );
+    }
+    await assertHead("Consent fixture");
+    await b.page
+      .getByRole("button", { name: "Refresh route", exact: true })
+      .click();
+    await b.page.waitForResponse(
+      (response) =>
+        response.url().startsWith(base) &&
+        response.headers()["content-type"]?.includes("text/x-component"),
+    );
+    await b.page.waitForTimeout(500);
+    await assertHead("Consent fixture");
 
     await b.page.waitForFunction(() => !!window.FC, { timeout: 30000 });
     await b.page.locator("mux-player").waitFor();
@@ -251,6 +339,7 @@ export default async function Page() { const RecipeVideoClient = (await headers(
     await b.page.getByRole("link", { name: "Next page", exact: true }).click();
     await b.page.getByRole("heading", { name: "Second route" }).waitFor();
     await b.page.waitForFunction(() => document.title === "Second route");
+    await assertHead("Second route");
     assert.equal(await b.page.evaluate(() => window.__gaLoads), 1);
     assert.equal(gaRequests(b.requests).length, 1);
     await b.page.getByRole("link", { name: "Home", exact: true }).click();

@@ -21,7 +21,7 @@ Both recipe players wait for CMP readiness. With permission denied, Mux mounts w
 
 ## Native head order
 
-`iubenda-head.tsx` renders the head's initial native HTML. In React 19/Next 15.5.9, ordinary head children come after hoisted Next bootstrap scripts. The head preamble preserves this order in emitted HTML:
+`iubenda-head.tsx` is a client boundary that renders the head's initial native HTML only on the server. In the browser it returns a head with no `dangerouslySetInnerHTML` prop, leaving the parser-loaded snippet unmanaged. React acquires the head singleton during hydration; supplying that prop in the browser would replace Next's CSS, metadata, and other head nodes. In React 19/Next 15.5.9, ordinary head children come after hoisted Next bootstrap scripts. The head preamble preserves this order in emitted HTML:
 
 1. Local configuration and callbacks.
 2. Synchronous site-specific autoblocker.
@@ -41,14 +41,14 @@ From the repository root:
 node --test packages/ui/tests/iubenda.test.mjs
 pnpm --filter web-dgf typecheck
 pnpm --filter web-lfd typecheck
-CONSENT_TEST_ORIGIN=https://dg-consent-preview.vercel.app PLAYWRIGHT_MODULE=/path/to/installed/playwright node scripts/test-consent-browser.mjs
+CONSENT_TEST_PRODUCTION=1 CONSENT_TEST_ORIGIN=https://dg-consent-preview.vercel.app PLAYWRIGHT_MODULE=/path/to/installed/playwright node scripts/test-consent-browser.mjs
 ```
 
-The browser test creates and removes a temporary Next fixture. It imports the real shared controller and each app's video component, uses both real CMP configurations, and loads each site's Foxy store. It intercepts GA to prevent test analytics from reaching production. It checks native HTML order, no initial GA preload, default US permissions, footer controls without duplicate widgets, client routing, withdrawal during playback, saved opt-outs, GPC, Mux playback without telemetry, and CMP load failure.
+The browser test creates and removes a temporary Next fixture. `CONSENT_TEST_PRODUCTION=1` runs `next build` and `next start`, then checks that CSS and title survive hydration, a router refresh, and client navigation. This regression reproduced the deployed head-resource loss before the fix. It imports the real shared controller and each app's video component, uses both real CMP configurations, and loads each site's Foxy store. It intercepts GA to prevent test analytics from reaching production. It checks native HTML order, no initial GA preload, default US permissions, footer controls without duplicate widgets, client routing, withdrawal during playback, saved opt-outs, GPC, Mux playback without telemetry, and CMP load failure.
 
 With `CONSENT_TEST_ORIGIN` set as above, Playwright routes that HTTPS origin to the local fixture while Chromium retains the preview hostname and public-suffix cookie rules. The test saves Reject all through the real panel, verifies cookies exist, checks the withdrawal reload, then opens a fresh context with saved storage and checks that the three switches remain unchecked. This is a preview-host equivalent test, not a Vercel deployment.
 
-This fixture does not replace full-site QA. The current checkout has no `SANITY_API_READ_TOKEN`, so both full builds compile and typecheck but stop when collecting page data. Checkout submission and CMS-backed full pages still need validation with the normal site environment. No deployment or policy mutation is part of these tests.
+This fixture does not replace full-site QA. Local full-site builds have no `SANITY_API_READ_TOKEN`, so they compile and typecheck but stop when collecting page data. Both Vercel preview builds passed at PR head `685a44e` using the existing project environment. Those previews have an empty GA ID; the intercepted fixture proves the GA gate, not live preview analytics. Checkout submission and CMS-backed full pages still need validation with the normal site environment. No deployment or policy mutation is part of these tests.
 
 ## Sources
 
