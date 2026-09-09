@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/terms-and-conditions",
+        destination: "https://www.iubenda.com/terms-and-conditions/61608121",
+        permanent: true,
+      },
+      {
         source: "/privacy-policy",
         destination: "https://www.iubenda.com/privacy-policy/61608121",
         permanent: true,

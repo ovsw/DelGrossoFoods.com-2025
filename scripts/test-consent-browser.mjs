@@ -66,6 +66,10 @@ try {
       ],
     }),
   );
+  await writeFile(
+    path.join(fixture, "postcss.config.js"),
+    `module.exports = { plugins: { [${JSON.stringify(require.resolve("@tailwindcss/postcss", { paths: [path.join(root, "packages/ui")] }))}]: {} } };`,
+  );
   await mkdir(path.join(fixture, "app/next"), { recursive: true });
   await writeFile(
     path.join(fixture, "package.json"),
@@ -81,7 +85,9 @@ try {
   await writeFile(
     path.join(fixture, "app/layout.tsx"),
     `
+import ${modulePath("packages/ui/src/styles/globals.css")};
 import './fixture.css';
+import { LegalFooter } from './legal-footer';
 import { RefreshProbe } from './refresh-probe';
 import { headers } from 'next/headers';
 import { IubendaHead } from ${modulePath("packages/ui/src/components/iubenda-head")};
@@ -95,10 +101,30 @@ export default async function Layout({children}) {
  return <html lang="en"><IubendaHead site={site} gaId="G-CONSENTTEST" /><body>
  <RefreshProbe /><TrackingAnalytics gaId="G-CONSENTTEST" />
  <Link href="/">Home</Link><Link href="/next">Next page</Link>
- <footer><a href={"https://www.iubenda.com/privacy-policy/" + policy + "/cookie-policy?an=no&s_ck=false&newmarkup=yes"} className="iubenda-cs-uspr-link">Notice at Collection</a><a href={"https://www.iubenda.com/privacy-policy/" + policy + "/legal#privacy_rights_under_us_state_laws"} className="iubenda-cs-preferences-link">Your Privacy Choices</a></footer>
+ <LegalFooter site={site} />
  <a href={"https://" + store + ".foxycart.com/cart?cart=view"}>Cart</a>
  <Script src={"https://cdn.foxycart.com/" + store + "/loader.js"} strategy="beforeInteractive" />
  {children}</body></html>;
+}`,
+  );
+  await writeFile(
+    path.join(fixture, "app/legal-footer.tsx"),
+    `
+'use client';
+import {usePathname} from 'next/navigation';
+import {FooterShell} from ${modulePath("packages/ui/src/components/footer-shell")};
+import {IubendaLegalLink} from ${modulePath("packages/ui/src/components/iubenda-legal-link")};
+import {IubendaPrivacyControls} from ${modulePath("packages/ui/src/components/iubenda-privacy-controls")};
+export function LegalFooter({site}) {
+ const pathname = usePathname();
+ const policy = site === 'LFD' ? '49130163' : '61608121';
+ const links = [
+  ['Privacy Policy', 'https://www.iubenda.com/privacy-policy/' + policy],
+  ['Cookie Policy', 'https://www.iubenda.com/privacy-policy/' + policy + '/cookie-policy'],
+  ['Terms and Conditions', 'https://www.iubenda.com/terms-and-conditions/' + policy]
+ ];
+ return <FooterShell brandBlock={<div style={{textAlign:'left'}}><p>Business address</p><IubendaPrivacyControls site={site}/></div>} contactBlock={<p>Business contact</p>} socialBlock={<p>Social links</p>}
+ legalItems={links.map(([label, href]) => ({id:label, content:<IubendaLegalLink key={pathname+href} href={href}>{label}</IubendaLegalLink>}))} />;
 }`,
   );
   await writeFile(
@@ -205,6 +231,7 @@ export function RefreshProbe() {
     storageState,
     gpc = false,
     failCmp = false,
+    failEmbed = false,
   } = {}) {
     const context = await browser.newContext({
       storageState,
@@ -243,6 +270,11 @@ export function RefreshProbe() {
     await context.route(/https:\/\/[^/]*google-analytics\.com\//, (route) =>
       route.fulfill({ status: 204, body: "" }),
     );
+    if (failEmbed)
+      await context.route("https://cdn.iubenda.com/iubenda*.js", (route) => {
+        if (route.request().url().includes("/cs/")) return route.continue();
+        return route.abort();
+      });
     if (failCmp)
       await context.route(/https:\/\/(?:cdn|cs)\.iubenda\.com\//, (route) =>
         route.abort(),
@@ -266,6 +298,34 @@ export function RefreshProbe() {
     requests.filter((u) =>
       /(?:litix\.io|mux\.com\/.*(?:analytics|beacon))/.test(u),
     );
+  async function checkLightbox(page, label) {
+    const link = page.getByRole("link", { name: label, exact: true });
+    await page.waitForFunction(
+      (label) =>
+        Array.from(document.querySelectorAll("a.iubenda-embed")).find(
+          (a) => a.textContent === label,
+        )?.onclick,
+      label,
+    );
+    const before = page.url();
+    await link.click();
+    await page.locator("#iubenda-pp").waitFor({ state: "visible" });
+    assert.equal(page.url(), before, "Lightbox must not navigate the page");
+    const frame = page.locator("#iubenda-pp iframe");
+    await frame.waitFor();
+    assert.match(await frame.getAttribute("src"), /iubenda/);
+    const content = await (await frame.elementHandle()).contentFrame();
+    await content.waitForFunction(() => document.body?.innerText.length > 300);
+    assert.match(
+      await content.locator("body").innerText(),
+      new RegExp(label, "i"),
+    );
+    await page
+      .locator("#iubenda-pp")
+      .getByRole("button", { name: "Close", exact: true })
+      .click();
+    await page.locator("#iubenda-pp").waitFor({ state: "detached" });
+  }
   for (const site of ["DGF", "LFD"]) {
     const b = await open({ site });
     await b.page.waitForFunction(
@@ -291,6 +351,46 @@ export function RefreshProbe() {
       );
     }
     await assertHead("Consent fixture");
+    for (const width of [1440, 390, 320]) {
+      await b.page.setViewportSize({ width, height: 900 });
+      const group = b.page.getByRole("group", { name: "US privacy controls" });
+      const box = await group.boundingBox();
+      assert(
+        box && box.x >= 0 && box.x + box.width <= width,
+        "Privacy group fits viewport",
+      );
+      assert.equal(
+        await group.evaluate((el) => getComputedStyle(el).backgroundColor),
+        "rgb(255, 255, 255)",
+      );
+      assert.equal(await group.locator("img").count(), 1);
+      assert.equal(
+        await b.page.locator("footer ul .iubenda-cs-preferences-link").count(),
+        0,
+      );
+      await b.page
+        .locator("footer")
+        .screenshot({ path: "/tmp/dg-legal-" + site + "-" + width + ".png" });
+      if (width === 390) {
+        await group
+          .getByRole("link", { name: "Your Privacy Choices", exact: true })
+          .click();
+        await b.page
+          .getByRole("button", { name: "Save and continue", exact: true })
+          .click();
+        await b.page.locator("#iubenda-iframe").waitFor({ state: "hidden" });
+        assert.equal(await b.page.locator(".iub__us-widget").count(), 0);
+      }
+      await checkLightbox(b.page, "Privacy Policy");
+      await assertHead("Consent fixture");
+    }
+    await b.page.setViewportSize({ width: 1440, height: 900 });
+    await checkLightbox(b.page, "Cookie Policy");
+    if (process.env.CONSENT_TEST_TERMS === "1")
+      await checkLightbox(b.page, "Terms and Conditions");
+    console.log(
+      `PASS ${site}: desktop/mobile legal lightbox and privacy group; CSS/title retained`,
+    );
     await b.page
       .getByRole("button", { name: "Refresh route", exact: true })
       .click();
@@ -340,6 +440,12 @@ export function RefreshProbe() {
     await b.page.getByRole("heading", { name: "Second route" }).waitFor();
     await b.page.waitForFunction(() => document.title === "Second route");
     await assertHead("Second route");
+    await checkLightbox(b.page, "Privacy Policy");
+    await checkLightbox(b.page, "Cookie Policy");
+    if (process.env.CONSENT_TEST_TERMS === "1")
+      await checkLightbox(b.page, "Terms and Conditions");
+    await assertHead("Second route");
+    console.log(`PASS ${site}: replaced legal links work after client routing`);
     assert.equal(await b.page.evaluate(() => window.__gaLoads), 1);
     assert.equal(gaRequests(b.requests).length, 1);
     await b.page.getByRole("link", { name: "Home", exact: true }).click();
@@ -458,6 +564,38 @@ export function RefreshProbe() {
       await entry.context.close();
     }
   }
+  const fallback = await open({ failEmbed: true });
+  await fallback.page.waitForFunction(
+    () => document.documentElement.dataset.hydrated === "true",
+  );
+  for (const label of [
+    "Privacy Policy",
+    "Cookie Policy",
+    "Terms and Conditions",
+  ]) {
+    const link = fallback.page.getByRole("link", { name: label, exact: true });
+    const href = await link.getAttribute("href");
+    assert.match(href, /^https:\/\/www\.iubenda\.com\//);
+    await fallback.context.route(href, (route) =>
+      route.fulfill({
+        contentType: "text/html",
+        body: "<h1>Direct legal fallback reached</h1>",
+      }),
+    );
+    await link.click();
+    await fallback.page
+      .getByRole("heading", { name: "Direct legal fallback reached" })
+      .waitFor();
+    assert.equal(fallback.page.url(), href);
+    await fallback.page.goto(base);
+    await fallback.page.waitForFunction(
+      () => document.documentElement.dataset.hydrated === "true",
+    );
+  }
+  console.log(
+    "PASS blocked embed: all three native links navigate to their hosted URLs",
+  );
+  await fallback.context.close();
   const failed = await open({ failCmp: true });
   await failed.page.waitForTimeout(2000);
   assert.equal(gaRequests(failed.requests).length, 0);

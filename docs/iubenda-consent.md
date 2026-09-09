@@ -65,3 +65,15 @@ The single review for PR #177 reported two minor findings:
 - **Rejected — swap footer fallback URLs:** the current Notice at Collection link uses the cookie-policy URL with `iubenda-cs-uspr-link`; Your Privacy Choices uses the legal page's US-rights fragment with `iubenda-cs-preferences-link`. Main directly verified these native URLs on live DG2Go. The official guide assigns the classes to Notice at Collection and preferences respectively, and the provider's inline widget uses its cookie-policy URL for Notice at Collection. Swapping the URLs would change the useful native fallbacks. Both footers remain unchanged.
 
 No second review was run. The existing import-sort change in `packages/ui/tests/iubenda.test.mjs` was preserved.
+
+## Hosted legal lightboxes and footer controls
+
+Branch `feat/iubenda-legal-lightbox` starts from production `13d135def4f898ad9ff51e857b6e58f5f003da6b`.
+
+Both footers now use native hosted Privacy, Cookie, and Terms anchors with DG2Go's exact `iubenda-nostyle no-brand iubenda-noiframe iubenda-embed` classes. The shared `IubendaLegalLink` loads the official `https://cdn.iubenda.com/iubenda.js` after mount. It tracks initialized DOM nodes with a WeakSet and shares an in-flight load; new links mounted through client routing trigger the provider's normal scan again. Existing nodes are not rebound by this owner. No local click handler cancels navigation, so a failed embed script leaves the hosted URL as the fallback.
+
+Foods `/terms-and-conditions` redirects permanently to `https://www.iubenda.com/terms-and-conditions/61608121`. Sauce redirects both `/terms-and-conditions` and its existing typo `/terms-and-conditons` to `https://www.iubenda.com/terms-and-conditions/49130163`. CMS content is unchanged. Main owns Terms configuration and final approval; loading a document in this test is not approval of its content.
+
+The shared `IubendaPrivacyControls` moves Notice at Collection and Your Privacy Choices below the address in the left footer block. It uses the DG2Go white, bordered two-part group, blue opt-out icon, and original CMP hook classes. At very narrow widths (360px or less) it stacks the two links to prevent overflow. Only Privacy, Cookie, and Terms remain in the legal row. The CMP controller and tested native head implementation are unchanged.
+
+Verification uses the existing production Next fixture with the real shared footer shell, compiled site CSS, and provider scripts. It checks 1440px, 390px, and 320px layouts, real legal content in the provider lightbox, remounted links after client routing, mobile and desktop CMP preferences, no duplicate widget, native fallbacks with the embed script blocked, and retained CSS/title. Run with `CONSENT_TEST_TERMS=1` in addition to the documented production-fixture command to include the current hosted Terms pages. Browser evidence is a local HTTPS preview-host equivalent fixture; full CMS page appearance remains a Vercel preview check.
