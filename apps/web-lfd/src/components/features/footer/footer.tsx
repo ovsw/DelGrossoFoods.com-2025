@@ -362,11 +362,41 @@ export function Footer({ data, settingsData }: FooterProps) {
         },
         {
           id: "privacy",
-          content: <Link href="/privacy-policy">Privacy Policy</Link>,
+          content: (
+            <a href="https://www.iubenda.com/privacy-policy/49130163">
+              Privacy Policy
+            </a>
+          ),
         },
         {
           id: "cookie",
-          content: <Link href="/cookie-policy">Cookie Policy</Link>,
+          content: (
+            <a href="https://www.iubenda.com/privacy-policy/49130163/cookie-policy">
+              Cookie Policy
+            </a>
+          ),
+        },
+        {
+          id: "notice-at-collection",
+          content: (
+            <a
+              href="https://www.iubenda.com/privacy-policy/49130163/cookie-policy?an=no&s_ck=false&newmarkup=yes"
+              className="iubenda-cs-uspr-link"
+            >
+              Notice at Collection
+            </a>
+          ),
+        },
+        {
+          id: "privacy-choices",
+          content: (
+            <a
+              href="https://www.iubenda.com/privacy-policy/49130163/legal#privacy_rights_under_us_state_laws"
+              className="iubenda-cs-preferences-link"
+            >
+              Your Privacy Choices
+            </a>
+          ),
         },
       ]}
       rootProps={toDataProps(footerDataAttributeGetter("columns"))}
