@@ -33,6 +33,22 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: "/privacy-policy",
+        destination: "https://www.iubenda.com/privacy-policy/49130163",
+        permanent: true,
+      },
+      {
+        source: "/cookie-policy",
+        destination:
+          "https://www.iubenda.com/privacy-policy/49130163/cookie-policy",
+        permanent: true,
+      },
+      {
+        source: "/terms-and-conditions",
+        destination: "/terms-and-conditons",
+        permanent: true,
+      },
       ...getLegacyRecipeRedirects(),
       ...getLegacyShopOnlineRedirects(),
       {

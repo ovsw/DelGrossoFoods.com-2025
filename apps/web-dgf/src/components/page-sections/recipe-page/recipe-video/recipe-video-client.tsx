@@ -2,6 +2,7 @@
 
 import MuxPlayer from "@mux/mux-player-react";
 import { Button } from "@workspace/ui/components/button";
+import { useTrackingPermission } from "@workspace/ui/components/tracking-consent";
 import { AlertCircle, Play } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -54,6 +55,7 @@ export function RecipeVideoClient({
   ariaLabel,
   className,
 }: Props) {
+  const permission = useTrackingPermission();
   const [hasError, setHasError] = useState(false);
   const [retryKey, setRetryKey] = useState(0);
 
@@ -78,6 +80,14 @@ export function RecipeVideoClient({
     );
   }
 
+  if (permission === "pending") {
+    return (
+      <div className={className}>
+        <p role="status">Preparing video privacy settings…</p>
+      </div>
+    );
+  }
+
   if (hasError) {
     return (
       <div className={className} {...(ariaLabel ? { role: "region" } : {})}>
@@ -92,6 +102,8 @@ export function RecipeVideoClient({
         <MuxPlayer
           key={retryKey} // Force re-mount on retry
           playbackId={playbackId}
+          disableTracking={permission !== "allowed"}
+          disableCookies={permission !== "allowed"}
           streamType="on-demand"
           poster={posterUrl || undefined}
           metadata={metadata}

@@ -1,8 +1,9 @@
 import "@workspace/ui/styles/globals.css";
 import "./background.css";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { SanityLive } from "@workspace/sanity-config/live";
+import { IubendaHead } from "@workspace/ui/components/iubenda-head";
+import { TrackingAnalytics } from "@workspace/ui/components/tracking-consent";
 import {
   // Geist, Geist_Mono,
   Libre_Baskerville,
@@ -54,6 +55,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
       style={{ colorScheme: "light" } as React.CSSProperties}
     >
+      <IubendaHead site="DGF" gaId={gaMeasurementId} />
       <body
         className={`${fontSerif.variable}
         font-serif antialiased`}
@@ -65,6 +67,7 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
+        <TrackingAnalytics gaId={gaMeasurementId} />
         <Providers>
           <HeaderServer />
           <main id="main">{children}</main>
@@ -103,7 +106,6 @@ export default async function RootLayout({
           <SanityLive />
         </Suspense>
       </body>
-      {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
     </html>
   );
 }

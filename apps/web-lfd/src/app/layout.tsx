@@ -3,8 +3,9 @@ import "@workspace/ui/styles/lfd-theme.css";
 import "./typography.css";
 import "./background.css";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { SanityLive } from "@workspace/sanity-config/live";
+import { IubendaHead } from "@workspace/ui/components/iubenda-head";
+import { TrackingAnalytics } from "@workspace/ui/components/tracking-consent";
 import { Libre_Baskerville, Poppins } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
@@ -55,6 +56,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
       style={{ colorScheme: "light" } as React.CSSProperties}
     >
+      <IubendaHead site="LFD" gaId={gaMeasurementId} />
       <body
         className={`${fontSans.variable} ${fontSerif.variable} font-sans antialiased`}
       >
@@ -64,6 +66,7 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
+        <TrackingAnalytics gaId={gaMeasurementId} />
         <Providers>
           <HeaderServer />
           <main id="main">{children}</main>
@@ -102,7 +105,6 @@ export default async function RootLayout({
           <SanityLive />
         </Suspense>
       </body>
-      {gaMeasurementId ? <GoogleAnalytics gaId={gaMeasurementId} /> : null}
     </html>
   );
 }
