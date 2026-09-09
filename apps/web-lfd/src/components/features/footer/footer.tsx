@@ -5,6 +5,8 @@ import type {
   LfdGlobalSeoSettingsQueryResult,
 } from "@workspace/sanity-config/types";
 import { FooterShell } from "@workspace/ui/components/footer-shell";
+import { IubendaLegalLink } from "@workspace/ui/components/iubenda-legal-link";
+import { IubendaPrivacyControls } from "@workspace/ui/components/iubenda-privacy-controls";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -331,6 +333,7 @@ export function Footer({ data, settingsData }: FooterProps) {
         />
       </Link>
       {addressBlock}
+      <IubendaPrivacyControls site="LFD" />
     </div>
   );
 
@@ -357,45 +360,25 @@ export function Footer({ data, settingsData }: FooterProps) {
         {
           id: "terms",
           content: (
-            <Link href="/terms-and-conditions">Terms and Conditions</Link>
+            <IubendaLegalLink href="https://www.iubenda.com/terms-and-conditions/49130163">
+              Terms and Conditions
+            </IubendaLegalLink>
           ),
         },
         {
           id: "privacy",
           content: (
-            <a href="https://www.iubenda.com/privacy-policy/49130163">
+            <IubendaLegalLink href="https://www.iubenda.com/privacy-policy/49130163">
               Privacy Policy
-            </a>
+            </IubendaLegalLink>
           ),
         },
         {
           id: "cookie",
           content: (
-            <a href="https://www.iubenda.com/privacy-policy/49130163/cookie-policy">
+            <IubendaLegalLink href="https://www.iubenda.com/privacy-policy/49130163/cookie-policy">
               Cookie Policy
-            </a>
-          ),
-        },
-        {
-          id: "notice-at-collection",
-          content: (
-            <a
-              href="https://www.iubenda.com/privacy-policy/49130163/cookie-policy?an=no&s_ck=false&newmarkup=yes"
-              className="iubenda-cs-uspr-link"
-            >
-              Notice at Collection
-            </a>
-          ),
-        },
-        {
-          id: "privacy-choices",
-          content: (
-            <a
-              href="https://www.iubenda.com/privacy-policy/49130163/legal#privacy_rights_under_us_state_laws"
-              className="iubenda-cs-preferences-link"
-            >
-              Your Privacy Choices
-            </a>
+            </IubendaLegalLink>
           ),
         },
       ]}

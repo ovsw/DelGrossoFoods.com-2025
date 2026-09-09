@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/terms-and-conditons",
+        destination: "https://www.iubenda.com/terms-and-conditions/49130163",
+        permanent: true,
+      },
+      {
         source: "/privacy-policy",
         destination: "https://www.iubenda.com/privacy-policy/49130163",
         permanent: true,
@@ -46,7 +51,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/terms-and-conditions",
-        destination: "/terms-and-conditons",
+        destination: "https://www.iubenda.com/terms-and-conditions/49130163",
         permanent: true,
       },
       ...getLegacyRecipeRedirects(),
