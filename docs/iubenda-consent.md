@@ -56,3 +56,12 @@ This fixture does not replace full-site QA. The current checkout has no `SANITY_
 - Actual classic snippets returned for sites 4618045 and 4618044 (saved in the rollout task).
 - [Current CMP core inspected during implementation](https://cdn.iubenda.com/cookie_solution/iubenda_cs/1.105.0/core-en.js) — US purpose defaults, GPC, callback order, footer detection.
 - [DGF autoblocker](https://cs.iubenda.com/autoblocking/4618045.js) — targeted exclusion attribute.
+
+## CodeRabbit review resolution
+
+The single review for PR #177 reported two minor findings:
+
+- **Fixed — hydration warning filter:** `scripts/test-consent-browser.mjs` now requires the React hydration marker and at least one parsed diff line. Every removed attribute must match a known Iubenda annotation. Missing markers, empty diffs, and unknown warnings remain errors. Eight focused cases passed, including valid vendor annotations and missing, empty, changed-format, and mixed-attribute messages.
+- **Rejected — swap footer fallback URLs:** the current Notice at Collection link uses the cookie-policy URL with `iubenda-cs-uspr-link`; Your Privacy Choices uses the legal page's US-rights fragment with `iubenda-cs-preferences-link`. Main directly verified these native URLs on live DG2Go. The official guide assigns the classes to Notice at Collection and preferences respectively, and the provider's inline widget uses its cookie-policy URL for Notice at Collection. Swapping the URLs would change the useful native fallbacks. Both footers remain unchanged.
+
+No second review was run. The existing import-sort change in `packages/ui/tests/iubenda.test.mjs` was preserved.

@@ -347,16 +347,22 @@ export default async function Page() { const RecipeVideoClient = (await headers(
       const unexpected = entry.errors.filter((message) => {
         // The native autoblocker annotates SSR nodes before React starts. React
         // reports attribute-only differences in dev, without recovering/remounting.
+        const marker = "https://react.dev/link/hydration-mismatch";
+        const markerIndex = message.indexOf(marker);
+        const diffLines =
+          markerIndex === -1
+            ? []
+            : message
+                .slice(markerIndex + marker.length)
+                .split("\n")
+                .filter((line) => /^-\s+/.test(line));
         const vendorAttributesOnly =
           message.startsWith("A tree hydrated but some attributes") &&
-          message
-            .split("https://react.dev/link/hydration-mismatch")
-            .pop()
-            .split("\n")
-            .filter((line) => /^-\s+/.test(line))
-            .every((line) =>
-              /^-\s+data-(?:cmp-ab|cmp-info|iub-enabled)=/.test(line),
-            );
+          markerIndex !== -1 &&
+          diffLines.length > 0 &&
+          diffLines.every((line) =>
+            /^-\s+data-(?:cmp-ab|cmp-info|iub-enabled)=/.test(line),
+          );
         return !vendorAttributesOnly;
       });
       assert.equal(unexpected.length, 0, JSON.stringify(unexpected));
