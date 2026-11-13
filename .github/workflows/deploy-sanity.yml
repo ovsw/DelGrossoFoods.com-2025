@@ -89,6 +89,9 @@ jobs:
         working-directory: ${{ matrix.workingDirectory }}
         run: |
           echo "Deploying Sanity Studio..."
-          pnpm run deploy
+          # --schema-required: Clark, the Telegram editing bot, reads the
+          # deployed schema (docs/agents/clark.md), so a deploy that leaves
+          # the schema behind must fail.
+          pnpm run deploy --schema-required
         env:
           CI: true
