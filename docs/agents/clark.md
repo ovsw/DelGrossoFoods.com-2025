@@ -48,6 +48,11 @@ and not one.
    `@workspace/sanity-schema`, so the two deployed schemas describe the same
    content types. Never leave a schema change undeployed.
 
+   Two cases deploy nothing: a push by Dependabot (the workflow only builds
+   the Studios) and a push to the branch `feat/multisite-dgf-lfd` (the
+   workflow ignores it). When a schema change reaches `main` that way, run
+   the workflow by hand from the Actions tab ("Run workflow" on `main`).
+
    The workflow also runs on feature branches, and a branch deploy
    overwrites the deployed schema with the branch's schema. Clark reads the
    newest one. So merge a branch with a schema change soon after its last

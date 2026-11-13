@@ -202,7 +202,11 @@ calls.
   `Original` or `Organic`. It shows a product with only La Famiglia
   DelGrosso sauces, or with no sauces (for example merchandise). The other
   website's store shows every product. So every product of this store is
-  for sale on both websites: say so in the plan.
+  for sale on both websites.
+- Say in the plan on which website the product is for sale, before and
+  after the change. A change to `sauces` can move it: adding an `Original`
+  or `Organic` sauce takes the product off this website's store (it stays
+  on the other one), and removing the last one puts it here.
 - A request about a product that this store does not show belongs to the
   DelGrosso Foods group.
 - A new product needs the name, the SKU, the product category, the shipping
@@ -288,9 +292,9 @@ calls.
   `site` reference to `site-LFD`, and its sections. Start a landing page
   with a Campaign Hero. A new page is not in the menu until the client asks
   for a menu link.
-- The legal pages hold legal text. Change them only with the exact text from
-  the client, and tell the group that Ovi should check a legal change. The
-  Terms page forwards to the privacy service: a change there goes to Ovi.
+- The legal pages hold legal text, and the privacy service serves part of
+  it. Any change to a legal page goes to Ovi, also when the client gives the
+  exact text.
 - The History page (`historyPage-LFD`) has a `timeline`: a list of `markers`,
   each with a `heading` (often the year), a `subtitle`, the `content` and an
   optional `image`. Clark may add, change and reorder markers. Dates and
@@ -310,7 +314,7 @@ calls.
 | Feature cards with icon (`featureCardsIcon`) | A row of short points, each with an icon, a title and a line of text                      | Use only an icon that a card on this website already has                                                    |
 | Three product panels (`threeProductPanels`)  | Three tall panels that present three products or lines                                    | Exactly 3 panels                                                                                            |
 | Image link cards (`imageLinkCards`)          | Cards with a photo, a title, a line of text and a link to another page                    | `title` required; each card needs `title` and `description`                                                 |
-| Featured recipes (`featuredRecipes`)         | Three recipes picked by hand                                                              | Exactly 3 recipes, each one live                                                                            |
+| Featured recipes (`featuredRecipes`)         | Three recipes picked by hand                                                              | Exactly 3 recipes, each one live and with a sauce in `lfdSauces`                                            |
 | FAQ (`faqAccordion`)                         | A list of questions that open on a click                                                  | `title` required; each question once                                                                        |
 | Call to action (`cta`)                       | A band with a title, a line of text and buttons                                           | `surfaceColor` is `default`, `none`, `red`, `green` or `black`                                              |
 | Long text (`longForm`)                       | A long text with headings: an article, a statement, a legal text                          | `title` and `body` required                                                                                 |

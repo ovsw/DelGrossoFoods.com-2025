@@ -194,7 +194,11 @@ calls.
 - This website's store shows every product. The other website's store hides
   a product when one of its `sauces` is `Original` or `Organic`. So a
   product with only La Famiglia DelGrosso sauces, or with no sauces (for
-  example merchandise), is for sale on both websites: say so in the plan.
+  example merchandise), is for sale on both websites.
+- Say in the plan on which website the product is for sale, before and
+  after the change. A change to `sauces` can move it: adding an `Original`
+  or `Organic` sauce takes the product off the other website's store, and
+  removing the last one puts it there.
 - A new product needs the name, the SKU, the product category, the shipping
   category, the price, the weight and a photo. Ask for what is missing in
   one message.
@@ -278,9 +282,9 @@ calls.
   `site` reference to `site-DGF`, and its sections. Start a landing page
   with a Campaign Hero. A new page is not in the menu until the client asks
   for a menu link.
-- The legal pages hold legal text. Change them only with the exact text from
-  the client, and tell the group that Ovi should check a legal change. The
-  Terms page forwards to the privacy service: a change there goes to Ovi.
+- The legal pages hold legal text, and the privacy service serves part of
+  it. Any change to a legal page goes to Ovi, also when the client gives the
+  exact text.
 - The History page (`historyPage-DGF`) has a `timeline`: a list of `markers`,
   each with a `heading` (often the year), a `subtitle`, the `content` and an
   optional `image`. Clark may add, change and reorder markers. Dates and
